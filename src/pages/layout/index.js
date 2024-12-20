@@ -38,7 +38,15 @@ function Layout(){
             </div>
 
             <footer>
-                <p> <strong> &copy; Copyright @2024 by Tecede. All right reserved </strong></p>
+                <div className="contact">
+                    <ul>
+                        <li>Email: thoaixd123@gmail.com</li>
+                        <li>Số điện thoại: 0384577121 </li>
+                        <li>Or: 0779459442</li>
+                        <li>Địa chỉ: Tp.Quảng Ngãi</li>
+                    </ul>
+                </div>
+                <p>&copy; Copyright @2024 by Tecede. All right reserved</p>
             </footer>
         </>
     )
