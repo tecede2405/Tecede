@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 
 
 function Home() {
-    const [text, setText] = useState("Chào mừng đến với trang web này...");
+    const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -14,9 +14,9 @@ function Home() {
       setTimeout(() => {
         // Đổi chữ sau khi ẩn
         setText((prevText) =>
-          prevText === "Chào mừng đến với trang web này..."
+          prevText === "Cảm ơn bạn đã ghé vào trang web này..."
             ? "Đây là website do Thoại Xayda coding!"
-            : "Chào mừng đến với trang web này..."
+            : "Cảm ơn bạn đã ghé vào trang web này..."
         );
         setIsVisible(true); // Hiện lại chữ mới
       }, 500); // Thời gian chờ ẩn chữ hoàn toàn (khớp với CSS animation)

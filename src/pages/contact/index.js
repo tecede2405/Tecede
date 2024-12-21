@@ -5,7 +5,8 @@ function Contact() {
            <div className="about">
             <Tabbar />
             <p>hiện chưa hoàn thành....</p>
-            --- đây là trang Contact ---
+            <p>--- đây là trang Contact ---</p>
+            <p>Trang này sẽ liên tục cập nhật ...</p>
            </div>
         </>
     )

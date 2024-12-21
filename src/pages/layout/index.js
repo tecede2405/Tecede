@@ -40,13 +40,12 @@ function Layout(){
             <footer>
                 <div className="contact">
                     <ul>
+                        <li>Số điện thoại: 0384577121</li>
                         <li>Email: thoaixd123@gmail.com</li>
-                        <li>Số điện thoại: 0384577121 </li>
-                        <li>Or: 0779459442</li>
                         <li>Địa chỉ: Tp.Quảng Ngãi</li>
                     </ul>
                 </div>
-                <p>&copy; Copyright @2024 by Tecede. All right reserved</p>
+                <p>Copyright &copy; 2024 by Tecede. All right reserved</p>
             </footer>
         </>
     )
