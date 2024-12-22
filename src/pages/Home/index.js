@@ -58,7 +58,7 @@ function Home() {
               </div>
               <div className="Home__history">
                 <p>"Tại đây, bạn sẽ tìm thấy sự kết hợp độc đáo giữa niềm vui giải trí và sự sáng tạo của lập trình, mang đến trải nghiệm mới mẻ và khác biệt."</p>
-                <img src="https://i.pinimg.com/474x/26/dd/c6/26ddc657d8f3165817b3313ea715277e.jpg" alt="" />
+                <img src="https://i.pinimg.com/originals/4c/b5/a7/4cb5a7b65a3ed8a201d96600d081ed2e.gif" alt="" />
               </div>
               <div className="Home__history">
                 <p>"Nếu bạn yêu thích nội dung tại đây, đừng quên để lại bình luận hoặc chia sẻ với mình suy nghĩ của bạn nhé!"</p>
