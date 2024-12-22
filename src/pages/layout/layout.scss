@@ -79,7 +79,7 @@ footer{
     z-index: 1000;
     background-image : url(https://i.pinimg.com/originals/5d/0a/e4/5d0ae43b27813f1fc512f4a897c6933e.gif);
     background-position: center; 
-    .contact{
+    .footer-contact{
         text-align : center;
         width: 100%;
         padding-top:20px;
@@ -160,9 +160,25 @@ footer{
         color: #fff;
     }
 }
-
+.gif-noel{
+    position: absolute;
+    top: 65px;
+    right:0;
+    width: 100px;
+    height: 100px;
+}
+.gif-noel-2 {
+    position: absolute;
+    top: 70px;
+    left:200px;
+    width: 100px;
+    height: 70px;
+}
 .Home{
     display:flex;
+    background-image: url(https://i.pinimg.com/originals/5d/93/6f/5d936f4dece46b0d54376fc5b8b8c3be.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
     &__main{
         flex:1;
     }
@@ -284,9 +300,12 @@ footer{
         &__produce{
             width: 80%!important;
             img{
-                width: 30%;
+                width: 50%;
             }
         }
+    }
+    .gif-noel-2{
+        left: 150px;
     }
   }
 
@@ -313,11 +332,10 @@ footer{
         flex: none;
         &__produce{
             height: 400px!important;
-            width: 60%!important;
+            width: 80%!important;
             flex-direction : column;
             margin: 20px auto;;
             &--desc{
-                color: blue;
                 font-size: 16px;
                 font-weight: 700;
             }
@@ -330,7 +348,6 @@ footer{
             img{
                 width: 100%;
                 height: 70%;
-                margin-bottom: 5px;
             }
         }
         &__display{
@@ -386,6 +403,13 @@ footer{
     .animated-text{
         font-size: 22px;
     } 
+
+    .gif-noel-2{
+        top: 90px;
+        left: 5px;
+        height: 50px;
+        width: 60px;
+    }
     
   }
 
@@ -431,9 +455,20 @@ footer{
     }
     .about{
         &__produce{
-            height: 320px!important;
-            width: 80%!important;
+            height: 400px!important;
+            width: 90%!important ;
+            margin-top: 30px!important;
+            p{
+                padding: 0!important;
+            }
+            img{
+                width: 90%!important;
+                height: 70%!important;
+            }
         }
+    }
+    .gif-noel-2{
+        left:-10px;
     }
   }
 
@@ -501,9 +536,16 @@ footer{
     
   }
   
+
+
+
+
   //About 
   .about{
     display: flex;
+    background-image: url(https://i.pinimg.com/originals/5d/93/6f/5d936f4dece46b0d54376fc5b8b8c3be.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
     &__content{
         width: 100%;
     }
@@ -516,6 +558,11 @@ footer{
         align-items:center;
         justify-content: center;
         border-bottom: 1px solid #ddd;
+        background: #ffffff13;
+        border-radius: 8px;
+        &--desc{
+            color: blue;
+        }
         p{
             font-size: 14px;
             font-weight: 500;
@@ -535,10 +582,8 @@ footer{
 
 
 
-
-
-
   //Contact 
   .contact{
     display:flex;
+    background-image: url(https://i.pinimg.com/originals/5d/93/6f/5d936f4dece46b0d54376fc5b8b8c3be.gif);
   }

@@ -27,6 +27,8 @@ function Home() {
     return (
         <>
         <div className="Home">
+          <img src="https://i.pinimg.com/originals/7f/1f/76/7f1f76ac29bc01ad318abbf0468b1062.gif" alt="" className="gif-noel"/>
+          <img src="https://i.pinimg.com/originals/22/b9/1d/22b91dee1b1b4c1a9424418ffb9b0aa4.gif" alt="" className="gif-noel-2" />
             {/* tabbar */}
             <Tabbar />
             {/* main */}

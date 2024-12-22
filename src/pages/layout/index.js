@@ -12,7 +12,7 @@ function Layout(){
                     <img src={logo} alt="logo-Page" className="header__image"/>
                     </a>
                 </div>
-
+                
                 <div className="header__menu">
                     <ul>
                         <li>
@@ -36,9 +36,8 @@ function Layout(){
             <div className="layout-main">
                 <Outlet />
             </div>
-
             <footer>
-                <div className="contact">
+                <div className="footer-contact">
                     <ul>
                         <li>Số điện thoại: 0384577121</li>
                         <li>Email: thoaixd123@gmail.com</li>
