@@ -410,8 +410,8 @@ footer{
         flex-direction: column;
         flex: none;
         &__produce{
-            height: 400px!important;
-            width: 80%!important;
+            height: 400px;
+            width: 70%!important;
             flex-direction : column;
             margin: 20px auto;;
             &--desc{
@@ -425,7 +425,7 @@ footer{
                 margin: 10px 0 20px 0;
             }
             img{
-                width: 100%;
+                width: 60%;
                 height: 70%;
             }
         }
@@ -622,6 +622,10 @@ footer{
         &__produce{
             p{
                 padding: 0 20px!important;
+                margin-bottom: 5px;
+            }
+            img{
+                height: 70%!important;
             }
         }
     }
