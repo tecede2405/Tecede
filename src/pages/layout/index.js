@@ -2,15 +2,16 @@ import logo from '../../img/home-image.png';
 import {NavLink, Outlet } from 'react-router-dom';
 import { FaBars } from "react-icons/fa";
 import './layout.scss';
+import BackgroundMusic from '../../component/Music/index';
 function Layout(){
     return (
         <>
             <header className="header">
                 <div className="header__logo">
-                    <FaBars className="header__fabar" />
                     <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank" >
                     <img src={logo} alt="logo-Page" className="header__image"/>
-                    </a>
+                    </a> 
+                   <BackgroundMusic />
                 </div>
                 
                 <div className="header__menu">
@@ -36,6 +37,9 @@ function Layout(){
             <div className="layout-main">
                 <Outlet />
             </div>
+            
+           
+
             <footer>
                 <div className="footer-contact">
                     <ul>

@@ -10,6 +10,7 @@ function Tabbar(){
                     <li><a href="https://www.youtube.com/@Tecede2405" target="_blank"><FaYoutube class="icon"/> Youtube</a></li>
                     <li><a href="https://www.tiktok.com/@p.qthoai2405_" target="_blank"><FaTiktok class="icon"/> Tiktok</a></li>
                     <li><a href="https://www.instagram.com/p.qthoai2405_/" target="_blank"><FaInstagram class="icon"/> Instagram</a></li>
+                    
                 </ul>
             </div>
         </>
