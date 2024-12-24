@@ -2,7 +2,7 @@ import Tabbar from '../../component/tabar';
 function Contact() {
     return (
         <>
-           <div className="about">
+           <div className="contact">
             <Tabbar />
             <p>hiện chưa hoàn thành....</p>
             <p>--- đây là trang Contact ---</p>
