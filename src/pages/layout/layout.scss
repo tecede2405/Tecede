@@ -9,7 +9,7 @@
     border-bottom: 1px solid #ddd;
     align-items:center;
     justify-content: space-between;
-    background-image : url(https://i.pinimg.com/originals/5d/0a/e4/5d0ae43b27813f1fc512f4a897c6933e.gif);
+    background-image : url(https://i.pinimg.com/originals/b9/3d/49/b93d49cfb9653b743ef2692cb9d3f205.gif);
     background-position:center;
     box-shadow: 5px 0 10px rgba(118, 57, 57, 0.382);
     z-index: 1000;
@@ -78,7 +78,7 @@ footer{
     align-items : center;
     justify-content:center;
     z-index: 1000;
-    background-image : url(https://i.pinimg.com/originals/5d/0a/e4/5d0ae43b27813f1fc512f4a897c6933e.gif);
+    background-image : url(https://i.pinimg.com/originals/b9/3d/49/b93d49cfb9653b743ef2692cb9d3f205.gif);
     background-position: center; 
     .footer-contact{
         text-align : center;
@@ -117,7 +117,7 @@ footer{
     top: 50px;
     z-index: 999;
     width: 12%;
-    background: #fff;
+    background: linear-gradient(135deg, #FF0000, #ff2f00, #f6ff00);
     backdrop-filter: blur(10px);
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5);
     margin: 0;
@@ -130,7 +130,8 @@ footer{
         text-align: center;
         padding: 15px 0;
         margin: 0;
-        background-image : url(https://i.pinimg.com/originals/60/e3/e7/60e3e793ba7b737682bbecb520118a49.gif);
+        background-image : url(https://i.pinimg.com/originals/17/c7/dd/17c7dd149a7d1083fbda3c05da66f2f4.gif);
+        background-size:cover;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }   
     ul{
@@ -175,7 +176,8 @@ footer{
 }
 .Home{
     display:flex;
-    background-image: url(https://i.pinimg.com/originals/60/e3/e7/60e3e793ba7b737682bbecb520118a49.gif);
+    background-attachment: fixed;
+    background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     &__main{
@@ -199,6 +201,7 @@ footer{
         border-radius: 8px;
         margin-bottom: 50px;
         margin-left: 10px;
+        background: rgba(209, 36, 6, 0.6);
         h2{
             color: #fff;
         }
@@ -206,6 +209,11 @@ footer{
             text-align:center;
             margin:0;
             color: #fff;
+            text-shadow: 
+                -1px -1px 0 black, 
+                1px -1px 0 black, 
+                -1px  1px 0 black, 
+                1px  1px 0 black;
         }
         img{
             width: 100%;
@@ -231,6 +239,11 @@ footer{
             font-size: 14px;
             text-align:center;
             color: #fff;
+            text-shadow: 
+            -1px -1px 0 black, 
+            1px -1px 0 black, 
+            -1px  1px 0 black, 
+            1px  1px 0 black;
         }
         img{
             width: 40%;
@@ -256,8 +269,10 @@ footer{
   
   .animated-text {
     text-shadow: 
-    2px 2px 4px rgba(0, 0, 0, 0.1), /* Bóng đen mờ nhẹ */
-    -2px -2px 6px rgba(128, 0, 128, 0.8); /* Viền tím đậm và sáng */
+    -1px -1px 0 black, 
+    1px -1px 0 black, 
+    -1px  1px 0 black, 
+    1px  1px 0 black; 
     transition: transform 0.5s ease, opacity 0.5s ease;
     color: #fff;
     font-size: 40px;
@@ -279,7 +294,8 @@ footer{
   //About 
   .about{
     display: flex;
-    background-image: url(https://i.pinimg.com/originals/60/e3/e7/60e3e793ba7b737682bbecb520118a49.gif);
+    background-attachment: fixed;
+    background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     // background-position: center;
@@ -294,11 +310,16 @@ footer{
         display: flex;
         align-items:center;
         justify-content: center;
-        border-bottom: 1px solid #ddd;
-        background: #ffffff13;
+        border: 1px solid #ddd;
         border-radius: 8px;
+        background: rgba(209, 36, 6, 0.6);
         p{
             color: #fff;
+            text-shadow: 
+            -1px -1px 0 black, 
+            1px -1px 0 black, 
+            -1px  1px 0 black, 
+            1px  1px 0 black;
             font-size: 14px;
             font-weight: 500;
             padding: 0 30px;
@@ -346,9 +367,15 @@ footer{
   //Contact 
   .contact{
     display:flex;
-    background-image: url(https://i.pinimg.com/originals/60/e3/e7/60e3e793ba7b737682bbecb520118a49.gif);
+    background-attachment: fixed;
+    background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
     p{
         color: #fff;
+        text-shadow: 
+        -1px -1px 0 black, 
+        1px -1px 0 black, 
+        -1px  1px 0 black, 
+        1px  1px 0 black;
     }
   }
 
