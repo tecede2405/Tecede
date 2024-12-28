@@ -19,8 +19,8 @@ function About() {
                 <div className="about__produce about__produce--size">
                     <div className="about__title">
                         <p className="about__produce--desc">"Có thể sẽ có bạn thắc mắc cái tên Thoại Xayda và biệt danh "Tecede" có ý nghĩa gì đúng không?"</p>
-                        <p>Thực ra tên Thoại Xayda cũng chỉ được đặt ngẫu hứng từ nhiều năm về trước được lấy cảm hứng từ tên 1 chủng tộc trong phim 7 viên ngọc rồng.
-                        Còn biệt danh "Tecede" từ những kí tự đầu của cái tên đó mà ra. Te là 'T', ce là 'X' và de là 'D'.</p>
+                        <p>Thực ra tên Thoại Xayda cũng chỉ được đặt ngẫu hứng từ nhiều năm về trước được lấy cảm hứng từ phim Dragon Ball.
+                        Còn biệt danh "Tecede" từ những kí tự đầu của cái tên đó.</p>
                     </div>
                     <img className="about__display" src={ meme } alt="" />
                 </div>
