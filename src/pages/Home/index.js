@@ -46,7 +46,7 @@ function Home() {
                       <p className="Home__desc">"Blog này là nơi giao thoa giữa những giai điệu âm nhạc cuốn hút, thế giới giải trí sống động, những tựa game hấp dẫn, và hành trình khám phá lập trình đầy thú vị."</p>
                     </div>
                     <div className="Home__feature col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                      <img src="https://i.pinimg.com/736x/98/5e/c4/985ec4ad901e42c9373373278cb8447e.jpg" alt="" />
+                      <img src="https://i.pinimg.com/736x/3e/02/5c/3e025c29c3c0e2fcc5ad2019da82cfd2.jpg" alt="" />
                       <h2 className="Home__title">Tiêu đề</h2>
                       <p className="Home__desc">"Nếu bạn yêu thích âm nhạc, đam mê game, hay đang tìm hiểu về lập trình, đây sẽ là góc nhỏ dành riêng cho bạn!"</p>
                     </div>
