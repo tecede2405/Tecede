@@ -324,16 +324,6 @@ footer{
             font-weight: 500;
             padding: 0 30px;
         }
-        &--desc{
-            color: rgb(134, 235, 242)!important;
-            text-shadow: 
-                -1px -1px 0 black, 
-                1px -1px 0 black, 
-                -1px  1px 0 black, 
-                1px  1px 0 black;
-            font-size: 20px!important ;
-            font-weight: 700!important;
-        }
         img{
             width: 50%;
             height: 100%;
@@ -368,6 +358,8 @@ footer{
   .contact{
     display:flex;
     background-attachment: fixed;
+    background-repeat:no-repeat;
+    background-size: cover;
     background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
     p{
         color: #fff;
@@ -376,6 +368,11 @@ footer{
         1px -1px 0 black, 
         -1px  1px 0 black, 
         1px  1px 0 black;
+    }
+    &__content{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
   }
 
@@ -440,10 +437,6 @@ footer{
             width: 70%!important;
             flex-direction : column;
             margin: 20px auto;;
-            &--desc{
-                font-size: 16px;
-                font-weight: 700;
-            }
             p{
                 padding: 0;
                 margin: 0;
@@ -454,9 +447,6 @@ footer{
                 width: 60%;
                 height: 70%;
             }
-        }
-        &__display{
-            display: none;
         }
     }
 

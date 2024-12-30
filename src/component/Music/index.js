@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import nhactet from '../../audio/nhactet.mp3';
+import nhactetlofi from '../../audio/nhactetlofi.mp3';
 import lofi from '../../audio/lofi.mp3';
-import merry from '../../audio/merry.mp3';
 import nhacTrung from '../../audio/nhacTrung.mp3';
-const songs = [nhactet, lofi, merry, nhacTrung];
+import nhactetlofi2 from '../../audio/nhactetlofi2.mp3';
+const songs = [nhactetlofi, lofi,nhacTrung, nhactetlofi2];
 
 const BackgroundMusic = () => {
   const [isPlaying, setIsPlaying] = useState(false);
