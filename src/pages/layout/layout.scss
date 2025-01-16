@@ -207,12 +207,7 @@ footer{
         p{
             text-align:center;
             margin:0;
-            color: #fff;
-            text-shadow: 
-                -1px -1px 0 black, 
-                1px -1px 0 black, 
-                -1px  1px 0 black, 
-                1px  1px 0 black;
+            color: #000;
         }
         img{
             width: 100%;
@@ -235,12 +230,7 @@ footer{
         p{
             font-size: 14px;
             text-align:center;
-            color: #fff;
-            text-shadow: 
-            -1px -1px 0 black, 
-            1px -1px 0 black, 
-            -1px  1px 0 black, 
-            1px  1px 0 black;
+            color: #000;
         }
         img{
             width: 90%;
@@ -311,12 +301,7 @@ footer{
         justify-content: center;
         border-bottom: 1px solid #ddd;
         p{
-            color: #fff;
-            text-shadow: 
-            -1px -1px 0 black, 
-            1px -1px 0 black, 
-            -1px  1px 0 black, 
-            1px  1px 0 black;
+            color: #000;
             font-size: 14px;
             font-weight: 500;
             padding: 0 30px;
@@ -352,26 +337,26 @@ footer{
   }
 
   //Contact 
-  .contact{
-    display:flex;
-    // background-attachment: fixed;
-    // background-repeat:no-repeat;
-    // background-size: cover;
-    // background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
-    p{
-        color: #fff;
-        text-shadow: 
-        -1px -1px 0 black, 
-        1px -1px 0 black, 
-        -1px  1px 0 black, 
-        1px  1px 0 black;
-    }
-    &__content{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-  }
+//   .contact{
+//     display:flex;
+//     background-attachment: fixed;
+//     background-repeat:no-repeat;
+//     background-size: cover;
+//     background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
+//     p{
+//         color: #fff;
+//         text-shadow: 
+//         -1px -1px 0 black, 
+//         1px -1px 0 black, 
+//         -1px  1px 0 black, 
+//         1px  1px 0 black;
+//     }
+//     &__content{
+//         width: 100%;
+//         display: flex;
+//         flex-direction: column;
+//     }
+//   }
 
   @media (max-width: 1170px){
     .tabbar {
@@ -622,7 +607,7 @@ footer{
             }
             img{
                 width: 80%;
-                height:200px;
+                height:170px;
                 object-fit:cover;
                 box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
                 
