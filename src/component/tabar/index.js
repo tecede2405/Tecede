@@ -4,7 +4,7 @@ function Tabbar(){
     return(
         <>
         <div className="tabbar">
-                <p></p>
+                <p>My Channels</p>
                 <ul>
                     <li><a href="https://www.facebook.com/thoaidz.vx" target="_blank"><FaFacebook class="icon"/>FaceBook</a></li>
                     <li><a href="https://www.youtube.com/@Tecede2405" target="_blank"><FaYoutube class="icon"/> Youtube</a></li>
