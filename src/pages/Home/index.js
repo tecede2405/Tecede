@@ -1,7 +1,7 @@
 import hOme from "../../img/hOme.png";
 import Tabbar from '../../component/tabar';
 import React, { useState, useEffect } from "react";
-import video from "../../video/video redux.mp4";
+import video from "../../video/video redux (1).mp4";
 
 
 function Home() {

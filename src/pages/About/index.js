@@ -10,12 +10,12 @@ function About() {
             <Tabbar />
             <div className="about__content">
                 <div className="about__produce">
-                    <p>"Xin chào! Tôi là Thoại, một sinh viên yêu thích lập trình, game và âm nhạc. Đây chỉ là 1 project nho nhỏ ngẫu hứng của tôi."</p>
+                    <p>"Xin chào! Tôi là một sinh viên yêu thích lập trình, game và âm nhạc. Đây là 1 project nho nhỏ ngẫu hứng của tôi trong quá trình học lập trình."</p>
                     <img src={ Image } alt="" />
                 </div>
                 <div className="about__produce">
                     <img src={zhongli} alt="" />
-                    <p>"Blog này là nơi tôi chia sẻ hành trình học lập trình, những cảm nhận về âm nhạc, cùng với các bài viết về game và giải trí."</p>
+                    <p>"Blog này là nơi tôi chia sẻ hành trình học lập trình, những cảm nhận về âm nhạc, cùng với các bài viết về giải trí."</p>
                 </div>
                 <div className="about__project">
                     <img src={project1} alt="" />
@@ -23,7 +23,7 @@ function About() {
                 </div>
                 <div className="about__project">
                     <img src={project2} alt="" />
-                    <p>Đây là 1 project trong quá trình học chỉ có thể xem được ở màn hình laptop. Bạn cũng thể xem <a href="https://project-mini2-tecede.vercel.app/" target="_blank" rel="noopener noreferrer">Tại đây</a>.</p>
+                    <p>Đây là 1 project trong quá trình học, chỉ có thể xem được ở màn hình laptop. Bạn cũng thể xem <a href="https://project-mini2-tecede.vercel.app/" target="_blank" rel="noopener noreferrer">Tại đây</a>.</p>
                 </div>
             </div>
            </div>
