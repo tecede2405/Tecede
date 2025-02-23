@@ -1,7 +1,7 @@
 import hOme from "../../img/hOme.png";
 import Tabbar from '../../component/tabar';
 import React, { useState, useEffect } from "react";
-import video from "../../video/videoredux.mp4";
+
 
 
 function Home() {
@@ -71,7 +71,7 @@ function Home() {
               <div className="Home__video">
                 <h1>#1 Bắt đầu hành trình trong năm 2025</h1>
                 <p>"Ngày 22/2/2025, Học Redux trong React. Làm todoList p1."</p>
-                <video src={video} controls></video>
+                <video src="/video/videoredux.mp4" controls></video>
               </div> 
             </div>
         </div>
