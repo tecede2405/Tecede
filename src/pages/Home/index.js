@@ -1,7 +1,7 @@
-
+import hOme from "../../img/hOme.png";
 import Tabbar from '../../component/tabar';
 import React, { useState, useEffect } from "react";
-
+import video from "../../video/video redux.mp4";
 
 
 function Home() {
@@ -27,8 +27,8 @@ function Home() {
     return (
         <>
         <div className="Home">
-          <img src="https://i.pinimg.com/originals/ab/ff/54/abff54f67644a641d54ca6fb6cf0ce94.gif" alt="" className="gif-noel"/>
-          <img src="https://i.pinimg.com/originals/e2/30/6b/e2306b311719bea3da13247ce174ae4f.gif" alt="" className="gif-noel-2" />
+          {/* <img src="https://i.pinimg.com/originals/ab/ff/54/abff54f67644a641d54ca6fb6cf0ce94.gif" alt="" className="gif-noel"/>
+          <img src="https://i.pinimg.com/originals/e2/30/6b/e2306b311719bea3da13247ce174ae4f.gif" alt="" className="gif-noel-2" /> */}
             {/* tabbar */}
             <Tabbar />
             {/* main */}
@@ -66,7 +66,12 @@ function Home() {
               </div>
               <div className="Home__history">
                 <p>"Hy vọng mỗi bài viết sẽ giúp bạn vừa thư giãn vừa học hỏi, và mang đến chút cảm hứng cho những dự án hoặc trải nghiệm mới của bạn."</p>
-                <img src="https://i.pinimg.com/736x/4f/87/aa/4f87aa970e1e6bf9880d432495850423.jpg" alt="" />
+                <img src={hOme} alt="" />
+              </div>
+              <div className="Home__video">
+                <h1>#1 Bắt đầu hành trình trong năm 2025</h1>
+                <p>"Ngày 22/2/2025, Học Redux trong React. Làm todoList p1."</p>
+                <video src={video} controls></video>
               </div> 
             </div>
         </div>
