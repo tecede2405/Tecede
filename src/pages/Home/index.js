@@ -72,6 +72,11 @@ function Home() {
                 <h1>#1 Bắt đầu hành trình trong năm 2025</h1>
                 <p>"Ngày 22/2/2025, Học Redux trong React. Làm todoList p1."</p>
                 <video src="/video/videoredux.mp4" controls></video>
+              </div>
+              <div className="Home__video">
+                <h1>#2 Hoàn thành Todo list</h1>
+                <p>"Ngày 27/2/2025, Học Redux trong React. Làm todoList p2."</p>
+                <video src="/video/redux2.mp4" controls></video>
               </div> 
             </div>
         </div>
