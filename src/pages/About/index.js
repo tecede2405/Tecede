@@ -15,7 +15,7 @@ function About() {
                 </div>
                 <div className="about__produce">
                     <img src={zhongli} alt="" />
-                    <p>"Blog này là nơi tôi chia sẻ hành trình học lập trình, những cảm nhận về âm nhạc, cùng với các bài viết về giải trí."</p>
+                    <p>"Blog này là nơi tôi chia sẻ hành trình học lập trình."</p>
                 </div>
                 <div className="about__project">
                     <img src={project1} alt="" />

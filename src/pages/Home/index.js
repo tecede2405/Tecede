@@ -1,11 +1,11 @@
-import hOme from "../../img/hOme.png";
+// import hOme from "../../img/hOme.png";
 import Tabbar from '../../component/tabar';
 import React, { useState, useEffect } from "react";
-
+import Collapsed from "../../component/Collapse/index";
 
 
 function Home() {
-    const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
+  const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -38,25 +38,28 @@ function Home() {
                       {text}
                   </p>
               </div>
+            
               {/* Container */}
+
+              
               <div className="container">
-                    <div className="Home__feature col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                    <div className="Home__feature">
                       <img src="https://i.pinimg.com/736x/f5/d0/4e/f5d04ecb570d630d3dd7120738cdbe87.jpg" alt="" />
                       <h2 className="Home__title">Tiêu đề</h2>
-                      <p className="Home__desc">"Blog này là nơi giao thoa giữa những giai điệu âm nhạc cuốn hút, thế giới giải trí sống động, những tựa game hấp dẫn, và hành trình khám phá lập trình đầy thú vị."</p>
+                      <p className="Home__desc">"Blog này là nơi lưu giữ kiến thức và kinh nghiệm lập trình thông qua các đoạn video ngắn và các project nhỏ."</p>
                     </div>
-                    <div className="Home__feature col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                    <div className="Home__feature">
                       <img src="https://i.pinimg.com/736x/9c/d2/10/9cd21012fe34428af38953193c8e4397.jpg" alt="" />
                       <h2 className="Home__title">Tiêu đề</h2>
-                      <p className="Home__desc">"Nếu bạn yêu thích âm nhạc, đam mê game, hay đang tìm hiểu về lập trình, đây sẽ là góc nhỏ dành riêng cho bạn!"</p>
+                      <p className="Home__desc">"Mình muốn chia sẻ những bài viết về hành trình học của bản thân mình. Hành trình của mình bắt đầu với những dòng code đầu tiên trên giao diện front-end, từng bước khám phá HTML, CSS, JS, rồi đến React!"</p>
                     </div>
-                    <div className="Home__feature col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                    <div className="Home__feature">
                       <img src="https://i.pinimg.com/originals/9d/1f/82/9d1f82cc324e498dd5127a6ed0296dac.gif" alt="" />
                       <h2 className="Home__title">Tiêu đề</h2>
-                      <p className="Home__desc">"Mình muốn chia sẻ những bài viết mang cảm hứng từ thế giới giải trí và công nghệ, từ những bài hát đang hot, các trò chơi đáng thử, đến những dòng code."</p>
+                      <p className="Home__desc">"Khi đã tự tin với front-end, mình tiếp tục dấn thân vào thế giới back-end với Node.js, Express và MongoDB. Mục tiêu cuối cùng? Trở thành một fullstack developer thực thụ, làm chủ cả giao diện lẫn hệ thống phía server"</p>
                     </div>
               </div>
-              <div className="Home__history">
+              {/* <div className="Home__history">
                 <p>"Tại đây, bạn sẽ tìm thấy sự kết hợp độc đáo giữa niềm vui giải trí và sự sáng tạo của lập trình, mang đến trải nghiệm mới mẻ và khác biệt."</p>
                 <img src="https://i.pinimg.com/736x/27/24/79/272479b13b8a22f6d447260074c4de3d.jpg" alt="" />
               </div>
@@ -67,16 +70,18 @@ function Home() {
               <div className="Home__history">
                 <p>"Hy vọng mỗi bài viết sẽ giúp bạn vừa thư giãn vừa học hỏi, và mang đến chút cảm hứng cho những dự án hoặc trải nghiệm mới của bạn."</p>
                 <img src={hOme} alt="" />
-              </div>
+              </div> */}
+              <Collapsed />
+              
               <div className="Home__video">
                 <h1>#1 Bắt đầu hành trình trong năm 2025</h1>
                 <p>"Ngày 22/2/2025, Học Redux trong React. Làm todoList p1."</p>
-                <video src="/video/videoredux.mp4" controls></video>
+                <video src="/video/videoredux.mp4" controls poster="https://tse4.mm.bing.net/th?id=OIP.Llvht-xgYFfZekrchNus7wHaDt&pid=Api&P=0&h=180" ></video>
               </div>
               <div className="Home__video">
                 <h1>#2 Hoàn thành Todo list</h1>
                 <p>"Ngày 27/2/2025, Học Redux trong React. Làm todoList p2."</p>
-                <video src="/video/redux2.mp4" controls></video>
+                <video src="/video/redux2.mp4" controls poster="https://tse1.mm.bing.net/th?id=OIP.53Fk_ls_QEL5AHwzXhkVFgHaE5&pid=Api&P=0&h=180"></video>
               </div> 
             </div>
         </div>
