@@ -40,3 +40,16 @@
 *{
   box-sizing: border-box;
 }
+
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transition: transform 0.12s ease-out; /* Giúp con trỏ di chuyển mượt hơn */
+  mix-blend-mode: difference;
+  z-index: 9999;
+}
+
