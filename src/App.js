@@ -7,7 +7,7 @@ import About from './pages/About/index';
 import Contact from './pages/contact/index';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import CustomCursor from "./component/HoverEffect/index";
+// import CustomCursor from "./component/HoverEffect/index";
 import Loading from "./component/Loading/index";
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
         <Loading />
       ) : (
         <>
-          <CustomCursor />
+          {/* <CustomCursor /> */}
           <Routes>
             <Route path='/' element={<Layout />}>
               <Route index element={<Home />} />
