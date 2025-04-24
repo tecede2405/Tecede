@@ -10,6 +10,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import CustomCursor from "./component/HoverEffect/index";
 import Loading from "./component/Loading/index";
 
+// Các file nhạc (detail pages)
+import NhacTre from './pages/Music/NhacTre/index';
+import NhacUSUK from './pages/Music/Nhac usuk/index';
+import NhacTrungQuoc from './pages/Music/NhacTrung/index';
+import NhacEDM from './pages/Music/Nhac Edm/index';
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +37,11 @@ function App() {
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
+              {/* Các route cho các trang chi tiết nhạc */}
+              <Route path="music/nhac-tre" element={<NhacTre />} />
+              <Route path="music/usuk" element={<NhacUSUK />} />
+              <Route path="music/trung-quoc" element={<NhacTrungQuoc />} />
+              <Route path="music/edm" element={<NhacEDM />} />
             </Route>
           </Routes>
         </>

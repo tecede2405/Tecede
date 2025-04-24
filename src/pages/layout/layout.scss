@@ -162,33 +162,11 @@ footer{
         color: #fff;
     }
 }
-// .gif-noel{
-//     position: absolute;
-//     top: 65px;
-//     right:0;
-//     width: 100px;
-//     height: 100px; 
-// }
-// .gif-noel-2 {
-//     position: absolute;
-//     top: 70px;
-//     left:200px;
-//     width: 100px;
-//     height: 70px;
-// }
+
 .Home{
     display:flex;
-    // background-attachment: fixed;
-    // background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
-    // background-repeat: no-repeat;
-    // background-size: cover;
         width: 100%;
     height: 100%;
-    // --color: rgba(114, 114, 114, 0.3);
-    // background-color: #191a1a;
-    // background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
-    //     linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
-    // background-size: 55px 55px;
     &__main{
         flex:1;
     }
@@ -246,27 +224,6 @@ footer{
             object-fit:cover;
             box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
         }
-    }
-    &__video{
-        width:100%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        
-        h1{
-            text-align:center;
-            margin-top: 30px;
-        }
-        p{
-            text-align:center;
-        }
-        video{
-            width: 80%;
-            height: 60%;
-            margin-bottom: 20px;
-        }
-        
     }
 }
 
@@ -621,129 +578,140 @@ footer{
             font-size: 12px;
         }
     }
-    .about{
-        &__produce{
-            height: 400px!important;
-            width: 90%!important ;
-            margin-top: 30px!important;
-            p{
-                padding: 0!important;
-            }
-            img{
-                width: 90%!important;
-                height: 70%!important;
-            }
+    .about {
+        &__produce {
+          height: 400px;
+          width: 90%;
+          margin-top: 30px;
+      
+          p {
+            padding: 0;
+          }
+      
+          img {
+            width: 90%;
+            height: 70%;
+          }
         }
-        &__project{
-            height: 400px!important;
-            width: 90%!important ;
-            margin-top: 30px!important;
-            p{
-                padding: 0!important;
-            }
-            img{
-                height: 70%!important;
-            }
+      
+        &__project {
+          height: 400px;
+          width: 90%;
+          margin-top: 30px;
+      
+          p {
+            padding: 0;
+          }
+      
+          img {
+            height: 70%;
+          }
         }
-    }
-    .gif-noel-2{
-        left:-10px;
-    }
-  }
-
-  @media (max-width: 430px) {
-
-    .header{
-        &__image{
-            margin-left: 40px!important;
+      }
+      
+      .gif-noel-2 {
+        left: -10px;
+      }
+     }
+      @media (max-width: 430px) {
+      
+        .header {
+          &__image {
+            margin-left: 40px;
+          }
         }
-    }
-
-    
-    //Home
-    .Home{
-        &__feature{
-            height:330px;
+      
+        //Home
+        .Home {
+          &__feature {
+            height: 330px;
             margin: 0 auto;
             margin-bottom: 30px;    
-            width:90%;
+            width: 90%;
             box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-            img{
-                height:200px;
+      
+            img {
+              height: 200px;
             }
-        }
-        &__desc{
+          }
+      
+          &__desc {
             padding: 0 10px;
-            font-size:12px;
-        }
-        &__title{
-
+            font-size: 12px;
+          }
+      
+          &__title {
             font-size: 19px;
-        }
-        &__history{
+          }
+      
+          &__history {
             height: 300px;
-            width:80%;
+            width: 80%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            justify-content:center;
-            align-items:center;
+            justify-content: center;
+            align-items: center;
             padding-bottom: 20px;
-            margin-bottom:20px;
+            margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
-            p{
-                font-size: 14px;
-                text-align:center;
+      
+            p {
+              font-size: 14px;
+              text-align: center;
             }
-            img{
-                width: 100%;
-                height:170px;
-                object-fit:cover;
-                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-                
+      
+            img {
+              width: 100%;
+              height: 170px;
+              object-fit: cover;
+              box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
             }
+          }
         }
-    }
-
-    
-    //Container
-  .text-container{
-    height:30px;
-    }
-  .animated-text{
-    font-size:13px;
-    } 
-
-    .container{
-    flex-direction: column;
-    margin-top:20px;
-    }
-
-    .toggle-button {
-        font-size: 12px;
-        margin-bottom: 5px;
-        padding: 0 6px;
-    }
-    //about
-    .about {
-        &__produce{
-            p{
-                padding: 0 20px!important;
-                margin-bottom: 5px;
-            }
-            img{
-                height: 70%!important;
-            }
+      
+        // Container
+        .text-container {
+          height: 30px;
         }
-        &__project{
-            p{
-                padding: 0 20px!important;
-                margin-bottom: 5px;
-            }
+      
+        .animated-text {
+          font-size: 13px;
         }
-    }
-  }
-  
+      
+        .container {
+          flex-direction: column;
+          margin-top: 20px;
+        }
+      
+        .toggle-button {
+          font-size: 12px;
+          margin-bottom: 5px;
+          padding: 0 6px;
+        }
+      
+        // About
+        .about {
+          &__produce {
+            p {
+              padding: 0 20px;
+              margin-bottom: 5px;
+            }
+      
+            img {
+              height: 70%;
+            }
+          }
+      
+          &__project {
+            p {
+              padding: 0 20px;
+              margin-bottom: 5px;
+            }
+          }
+        }
+      }
+      
 
 
 

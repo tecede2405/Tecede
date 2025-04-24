@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^5.24.5",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.5",
     "cra-template": "1.2.0",
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.6.2",
