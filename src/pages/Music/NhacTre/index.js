@@ -20,7 +20,7 @@ import music17 from '../../../audio/NhacViet/Đom Đóm - Jack [Lyrics video].mp
 function NhacTre() {
   const songs = [
     {
-      title: 'yêu thương ngày đó',
+      title: 'Yêu thương ngày đó',
       artist: 'Soobin Hoàng Sơn',
       image: 'https://tse4.mm.bing.net/th?id=OIP.EGW2Hn7R8N1Ths8GJomXvAHaEK&pid=Api&P=0&h=180',
       file: music1,
@@ -117,7 +117,7 @@ function NhacTre() {
     },
     {
       title: 'Đom Đóm',
-      artist: 'Jack',
+      artist: 'Jack - J97',
       image: 'https://tse4.mm.bing.net/th?id=OIP.xHMVpAMmJDmT8FIEZkJpyAHaEK&pid=Api&P=0&h=180',
       file: music17,
     },
