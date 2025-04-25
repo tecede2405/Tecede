@@ -21,6 +21,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-left: 10px;
   }
   
   .music-card .card-title {
@@ -40,8 +41,5 @@
   @media (max-width: 960px){
     .music-container-box{
       flex-direction: column;
-    }
-    .card-body{
-      margin-left:10px;
     }
   }

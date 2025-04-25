@@ -1,14 +1,17 @@
-import "./nhacusuk.scss";
+
 import Tabbar from '../../../component/tabar/index';
 import music1 from '../../../audio/Nhac Usuk/Ellie Goulding - Love Me Like You Do (Lyrics).mp3';
 import music2 from '../../../audio/Nhac Usuk/Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video).mp3';
 import music3 from '../../../audio/Nhac Usuk/One Last Time x Coral Sea - Ariana Grande (Lyrics  Vietsub).mp3';
 import music4 from '../../../audio/Nhac Usuk/VietsubLyrics Until I Found You (Juliet to your Romeo) - Stephen Sanchez ft. Em Beihold.mp3';
 import music5 from '../../../audio/Nhac Usuk/we dont talk anymore.mp3';
+import music6 from '../../../audio/Nhac Usuk/Taylor Swift - Enchanted.mp3';
+import music7 from '../../../audio/Nhac Usuk/Unstoppable - Sia (Lyrics  Vietsub).mp3';
+import music8 from '../../../audio/Nhac Usuk/Ed Sheeran - Shape Of You [LyricsVietsub].mp3';
+import music9 from '../../../audio/Nhac Usuk/Ed Sheeran - Shape Of You [LyricsVietsub].mp3';
 
 
-
-function NhacTre() {
+function Nhacusuk() {
   const songs = [
     {
       title: 'Love Me Like You Do',
@@ -39,6 +42,30 @@ function NhacTre() {
       artist: 'Charlie Puth',
       image: 'https://tse1.mm.bing.net/th?id=OIP.wHq7pPQU9qx5utiVbIajSQHaHa&pid=Api&P=0&h=180',
       file: music5,
+    },
+    {
+      title: 'Enchanted',
+      artist: 'Taylor Swift',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.FI3k8VCKwUZ_aU0P1TL2_gHaDt&pid=Api&P=0&h=180',
+      file: music6,
+    },
+    {
+      title: 'Unstoppable',
+      artist: 'Sia',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.GXwD1V-Iu4Gyf1-vgaqBrwHaEK&pid=Api&P=0&h=180',
+      file: music7,
+    },
+    {
+      title: 'Shape of You',
+      artist: 'Ed Sheeran',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.vKdrt3iDSMBmyHZnlFgVswAAAA&pid=Api&P=0&h=180',
+      file: music8,
+    },
+    {
+      title: 'Closer',
+      artist: 'The Chainsmokers',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.L1XSugG-T_CMJYFem9rvBwHaHa&pid=Api&P=0&h=180',
+      file: music9,
     },
 
 
@@ -74,4 +101,4 @@ function NhacTre() {
   </>
  )
 }
-export default NhacTre;
+export default Nhacusuk;
