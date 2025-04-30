@@ -15,13 +15,16 @@
   .music-card img {
     border-radius: 8px;
   }
-  
+  .title-box-music{
+    margin-bottom:10px;
+  }
   .music-card .card-body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin-left: 10px;
+    background: #f8f9fa;
   }
   
   .music-card .card-title {

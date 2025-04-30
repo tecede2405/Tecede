@@ -131,21 +131,22 @@ function NhacTre() {
     <div className="music-container-box"> 
       <Tabbar />
       <div className="music-container container mt-4">
-            <h2 className="text-center mb-4">🎵 Nhạc Trẻ Việt Nam</h2>
+            <h2 className="title-box-music text-center">🎵 Nhạc Trẻ Việt Nam</h2>
+            <p className="text-center">Những bài này mình tự chọn lọc theo sở thích.</p>
             <div className="row">
               {songs.map((song, index) => (
-                <div className="col-md-4 mb-4" key={index}>
-                  <div className="music-card d-flex align-items-center p-3 border rounded">
-                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
+                <div className="col-md-4 mb-4 border rounded " key={index}>
+                  <div className="music-card d-flex align-items-center p-3 ">
+                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '60px', height: '60px', objectFit: 'cover' }} />
                     <div className="card-body d-flex flex-column">
                       <h5 className="card-title mb-1">{song.title}</h5>
                       <p className="card-text text-muted mb-2">{song.artist}</p>
-                      <audio controls style={{ width: '100%' }}>
+                    </div>
+                  </div>
+                  <audio controls className="custom-audio" style={{ width: '100%', marginTop: '10px'}}>
                         <source src={song.file} type="audio/mpeg" />
                         Trình duyệt của bạn không hỗ trợ phát nhạc.
                       </audio>
-                    </div>
-                  </div>
                 </div>
               ))}
             </div>

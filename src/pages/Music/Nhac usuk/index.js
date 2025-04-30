@@ -8,8 +8,9 @@ import music5 from '../../../audio/Nhac Usuk/we dont talk anymore.mp3';
 import music6 from '../../../audio/Nhac Usuk/Taylor Swift - Enchanted.mp3';
 import music7 from '../../../audio/Nhac Usuk/Unstoppable - Sia (Lyrics  Vietsub).mp3';
 import music8 from '../../../audio/Nhac Usuk/Ed Sheeran - Shape Of You [LyricsVietsub].mp3';
-import music9 from '../../../audio/Nhac Usuk/Ed Sheeran - Shape Of You [LyricsVietsub].mp3';
-
+import music9 from '../../../audio/Nhac Usuk/The Chainsmokers - Closer (Lyrics) ft. Halsey.mp3';
+import music10 from '../../../audio/Nhac Usuk/Ava Max - Into Your Arms (NO RAP) [LyricsVietsub]  TikTok Hits.mp3';
+import music11 from '../../../audio/Nhac Usuk/Trap Queen - Adriana Gomez  Eightfold X MKJ Remix (Lyrics  Vietsub).mp3';
 
 function Nhacusuk() {
   const songs = [
@@ -67,6 +68,18 @@ function Nhacusuk() {
       image: 'https://tse3.mm.bing.net/th?id=OIP.L1XSugG-T_CMJYFem9rvBwHaHa&pid=Api&P=0&h=180',
       file: music9,
     },
+    {
+      title: 'Into Tour Arms',
+      artist: 'Ava Max',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.95ex0rS7HUQrj_h7QKYoDgHaEK&pid=Api&P=0&h=180',
+      file: music10,
+    },
+    {
+      title: 'Trap Queen',
+      artist: 'Adriana Gomez',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.V-LjLrOAAOt0VP_zL8VvAgHaHa&pid=Api&P=0&h=180',
+      file: music11,
+    },
 
 
     // Thêm bài hát vào đây
@@ -78,21 +91,22 @@ function Nhacusuk() {
     <div className="music-container-box"> 
       <Tabbar />
       <div className="music-container container mt-4">
-            <h2 className="text-center mb-4">🎵 Nhạc Nước Ngoài Hot Tiktok</h2>
+            <h2 className="title-box-music text-center">🎵 Nhạc Nước Ngoài Hot Tiktok</h2>
+            <p className="text-center">Những bài này mình tự chọn lọc theo sở thích.</p>
             <div className="row">
               {songs.map((song, index) => (
-                <div className="col-md-4 mb-4" key={index}>
-                  <div className="music-card d-flex align-items-center p-3 border rounded">
-                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
+                <div className="col-md-4 mb-4 border rounded " key={index}>
+                  <div className="music-card d-flex align-items-center p-3 ">
+                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '60px', height: '60px', objectFit: 'cover' }} />
                     <div className="card-body d-flex flex-column">
                       <h5 className="card-title mb-1">{song.title}</h5>
                       <p className="card-text text-muted mb-2">{song.artist}</p>
-                      <audio controls style={{ width: '100%' }}>
+                    </div>
+                  </div>
+                  <audio controls className="custom-audio" style={{ width: '100%', marginTop: '10px'}}>
                         <source src={song.file} type="audio/mpeg" />
                         Trình duyệt của bạn không hỗ trợ phát nhạc.
                       </audio>
-                    </div>
-                  </div>
                 </div>
               ))}
             </div>
