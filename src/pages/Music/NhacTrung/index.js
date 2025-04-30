@@ -8,7 +8,7 @@ import music6 from '../../../audio/NhacTrung/[Vietsub] [Chinese Songs] Mang Ch�
 import music7 from '../../../audio/NhacTrung/[Vietsub] Thiếu niên (少年) - Mộng Nhiên.mp3';
 import music8 from '../../../audio/NhacTrung/你的答案 - 阿冗  Đáp án của bạn - A Nhũng  li ming de na dao guang hui.mp3';
 import music9 from '../../../audio/NhacTrung/[VietsubPinyin] Đâu đâu cũng là em  YoungCaptain  哪里都是你 - YoungCaptain.mp3';
-
+import music10 from '../../../audio/NhacTrung/[Vietsub  pinyin] Không biết phải làm sao 不知所措 - Vương Tĩnh Văn Không Mập 王靖雯不胖  TikTok.mp3';
 
 function NhacTrung() {
   const songs = [
@@ -66,6 +66,12 @@ function NhacTrung() {
       image: 'https://tse2.mm.bing.net/th?id=OIP.4An7eZsIHHXC8DjbGaSuuwHaEK&pid=Api&P=0&h=180',
       file: music9,
     },
+    {
+      title: 'Không biết phải làm sao',
+      artist: 'Vương Tĩnh Văn Không Mập',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.FnhgM14pFzq-Typ1cvLo9AHaEK&pid=Api&P=0&h=180',
+      file: music10,
+    },
 
 
     // Thêm bài hát vào đây
@@ -77,21 +83,22 @@ function NhacTrung() {
     <div className="music-container-box"> 
       <Tabbar />
       <div className="music-container container mt-4">
-            <h2 className="text-center mb-4">🎵 Nhạc Nước Ngoài Hot Tiktok</h2>
+            <h2 className="title-box-music text-center">🎵 Nhạc Trung Quốc</h2>
+            <p className="text-center">Nghe bao hay bao suy.</p>
             <div className="row">
               {songs.map((song, index) => (
-                <div className="col-md-4 mb-4" key={index}>
-                  <div className="music-card d-flex align-items-center p-3 border rounded">
-                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
+                <div className="col-md-4 mb-4 border rounded " key={index}>
+                  <div className="music-card d-flex align-items-center p-3 ">
+                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '60px', height: '60px', objectFit: 'cover' }} />
                     <div className="card-body d-flex flex-column">
                       <h5 className="card-title mb-1">{song.title}</h5>
                       <p className="card-text text-muted mb-2">{song.artist}</p>
-                      <audio controls style={{ width: '100%' }}>
+                    </div>
+                  </div>
+                  <audio controls className="custom-audio" style={{ width: '100%', marginTop: '10px'}}>
                         <source src={song.file} type="audio/mpeg" />
                         Trình duyệt của bạn không hỗ trợ phát nhạc.
                       </audio>
-                    </div>
-                  </div>
                 </div>
               ))}
             </div>

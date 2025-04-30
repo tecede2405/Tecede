@@ -19,7 +19,11 @@
     margin: 0 auto;
     margin-bottom: 30px;
   }
-  
+  .card-music{
+    height: 300px;
+    
+  }
+
   .card {
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -44,7 +48,7 @@
   }
   
   .card-body {
-    padding: 15px;
+    align-items: center;
     background-color: #fff;
   }
   
@@ -55,4 +59,9 @@
     color: #333;
   }
   
-
+  .card-desc{
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    margin-bottom: 0;
+  }

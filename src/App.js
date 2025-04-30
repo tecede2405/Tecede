@@ -9,12 +9,16 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import CustomCursor from "./component/HoverEffect/index";
 import Loading from "./component/Loading/index";
-
+import ScrollToTop from "./component/ScrollToTop/index";
 // Các file nhạc (detail pages)
 import NhacTre from './pages/Music/NhacTre/index';
 import NhacUSUK from './pages/Music/Nhac usuk/index';
 import NhacTrungQuoc from './pages/Music/NhacTrung/index';
 import NhacEDM from './pages/Music/Nhac Edm/index';
+import NhacTamTrang from './pages/Music/NhacTamTrang/index';
+
+
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -32,6 +36,7 @@ function App() {
       ) : (
         <>
           {/* <CustomCursor /> */}
+          <ScrollToTop />
           <Routes>
             <Route path='/' element={<Layout />}>
               <Route index element={<Home />} />
@@ -42,6 +47,7 @@ function App() {
               <Route path="music/usuk" element={<NhacUSUK />} />
               <Route path="music/trung-quoc" element={<NhacTrungQuoc />} />
               <Route path="music/edm" element={<NhacEDM />} />
+              <Route path="music/mood" element={<NhacTamTrang />} />
             </Route>
           </Routes>
         </>
