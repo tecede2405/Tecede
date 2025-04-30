@@ -1,6 +1,6 @@
 
 import Tabbar from '../../../component/tabar/index';
-import music1 from '../../../audio/NhacTamTrang/Sparkle (Instrumental Only).mp3';
+import music1 from '../../../audio/NhacTamTrang/Date 2.mp3';
 import music2 from '../../../audio/NhacTamTrang/This Love Instrumental (이 사랑 Instrumental).mp3';
 import music3 from '../../../audio/NhacTamTrang/Because I Miss You.mp3';
 import music4 from '../../../audio/NhacTamTrang/Nop.mp3';
@@ -14,9 +14,9 @@ import music9 from '../../../audio/NhacTamTrang/Seredris - Daylight日光Slowed 
 function NhacMood() {
   const songs = [
     {
-      title: 'Sparkle',
+      title: 'Date 2',
       artist: 'Anime Your Name',
-      image: 'https://tse2.mm.bing.net/th?id=OIP.jkBNcZOOwnHQ2dQqceMOegHaEK&pid=Api&P=0&h=180',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.59vLJC5R4F6-FGNpqAuQGAHaE4&pid=Api&P=0&h=180',
       file: music1,
     },
     {
