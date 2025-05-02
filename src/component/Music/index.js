@@ -16,8 +16,13 @@ import music14 from '../../audio/NhacViet/Tìm Một Người Như Thế - Trung
 import music15 from '../../audio/NhacViet/Tùng TeA - Già Cùng Nhau Là Được ft. PC ( Prod. VoVanDuc. )  Official MV.mp3';
 import music16 from '../../audio/NhacViet/Âm Thầm Bên Em.mp3';
 import music17 from '../../audio/NhacViet/Đom Đóm - Jack [Lyrics video].mp3';
-
-const allSongs = [music1, music2, music3, music4, music5, music6, music7, music8, music9, music10, music11, music12, music13, music14, music15, music16, music17];
+import music18 from '../../audio/NhacViet/suýt nữa thì.mp3';
+import music19 from '../../audio/NhacViet/MIN - ĐỪNG YÊU NỮA, EM MỆT RỒI  OFFICIAL MUSIC VIDEO.mp3';
+import music20 from '../../audio/NhacViet/CẢM GIÁC LÚC ẤY SẼ RA SAO  LOU HOÀNG  OFFICIAL AUDIO.mp3';
+const allSongs = [music1, music2, music3, music4, music5,
+  music6, music7, music8, music9, music10, music11, music12,
+  music13, music14, music15, music16, music17, music18,music19,
+  music20];
 
 const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
