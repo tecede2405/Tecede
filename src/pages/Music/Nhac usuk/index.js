@@ -194,7 +194,7 @@ function Nhacusuk() {
       <div className="music-container">
         {/* music card  */}
         <div className="container mt-4">
-              <h2 className="title-box-music text-center">🎵 Nhạc Trẻ Việt Nam</h2>
+              <h2 className="title-box-music text-center">🎵 Nhạc Âu Mĩ</h2>
               <p className="text-center">Những bài này mình tự chọn lọc theo sở thích.</p>
               <div className="row">
                 {songs.map((song, index) => (
