@@ -147,7 +147,7 @@ function NhacMood() {
                   <div className="col-md-5 mb-4" key={index}>
                     <div key={index} className={`music-card d-flex align-items-center p-3 song-item ${currentIndex === index ? "active" : ""}`} onClick={() => handlePlay(index)}>
                       <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-                      <div className="card-body d-flex flex-column">
+                      <div className="card-music-body d-flex flex-column">
                         <h5 className="card-title mb-1">{song.title}</h5>
                         <p className="card-text text-muted mb-2">{song.artist}</p>
                       </div>
@@ -167,7 +167,7 @@ function NhacMood() {
                               style={{ width: '40px', height: '40px', objectFit: 'cover' }}
                           />
                           <button onClick={handlePrev} className="change-song">⏮</button>
-                          <div className="card-body d-flex flex-column">
+                          <div className="card-music-body d-flex flex-column">
                               <h5 className="card-render-title mb-1">{songs[currentIndex].title}</h5>
                               <p className="card-render-text text-muted mb-2">{songs[currentIndex].artist}</p>
                           </div>
