@@ -694,18 +694,19 @@ footer{
         .about {
           &__produce {
             p {
-              padding: 0 20px;
+              padding: 0;
               margin-bottom: 5px;
             }
       
             img {
+              width: 100%;
               height: 70%;
             }
           }
       
           &__project {
             p {
-              padding: 0 20px;
+              padding: 0;
               margin-bottom: 5px;
             }
           }

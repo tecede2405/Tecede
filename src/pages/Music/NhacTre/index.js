@@ -1,4 +1,5 @@
 import "./nhactre.scss";
+import React, { useState, useRef, useEffect } from "react";
 import Tabbar from '../../../component/tabar/index';
 import music1 from '../../../audio/NhacViet/[Lyrics] Yêu Thương Ngày Đó - Soobin Hoàng Sơn  OST Yêu Em Bất Chấp.mp3';
 import music2 from '../../../audio/NhacViet/Bình Yên Nơi Đâu  Sơn Tùng M-TP.mp3';
@@ -17,6 +18,10 @@ import music14 from '../../../audio/NhacViet/Tìm Một Người Như Thế - Tr
 import music15 from '../../../audio/NhacViet/Tùng TeA - Già Cùng Nhau Là Được ft. PC ( Prod. VoVanDuc. )  Official MV.mp3';
 import music16 from '../../../audio/NhacViet/Âm Thầm Bên Em.mp3';
 import music17 from '../../../audio/NhacViet/Đom Đóm - Jack [Lyrics video].mp3';
+import music18 from '../../../audio/NhacViet/suýt nữa thì.mp3';
+import music19 from '../../../audio/NhacViet/MIN - ĐỪNG YÊU NỮA, EM MỆT RỒI  OFFICIAL MUSIC VIDEO.mp3';
+import music20 from '../../../audio/NhacViet/CẢM GIÁC LÚC ẤY SẼ RA SAO  LOU HOÀNG  OFFICIAL AUDIO.mp3';
+
 function NhacTre() {
   const songs = [
     {
@@ -121,38 +126,119 @@ function NhacTre() {
       image: 'https://tse4.mm.bing.net/th?id=OIP.xHMVpAMmJDmT8FIEZkJpyAHaEK&pid=Api&P=0&h=180',
       file: music17,
     },
-
-    // Thêm bài hát vào đây
+    {
+      title: 'Suýt nữa thì',
+      artist: 'ANDIEZ',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.df-kdKU3-6fnmnkUd-vNxAHaHa&pid=Api&P=0&h=180',
+      file: music18,
+    },
+    {
+      title: 'Đừng yêu nữa, em mệt rồi',
+      artist: 'MIN',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.Ne58V1BFG6driYe9Lz3dawHaFj&pid=Api&P=0&h=180',
+      file: music19,
+    },
+    {
+      title: 'Cảm giác lúc ấy sẽ ra sao',
+      artist: 'Lou Hoàng',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.j8cTvXjNTs6zKl0zBKwbPwHaHa&pid=Api&P=0&h=180',
+      file: music20,
+    },
   ];
 
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const audioRef = useRef(null);
 
-  return(
+  useEffect(() => {
+    if (currentIndex !== null && audioRef.current) {
+      audioRef.current.load();
+      audioRef.current.play().catch((err) => {
+        console.log("Không thể phát tự động:", err);
+      });
+    }
+  }, [currentIndex]);
+  
+  const handleEnded = () => {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < songs.length) {
+      setCurrentIndex(nextIndex);
+    } else {
+      setCurrentIndex(null); // Dừng khi hết danh sách
+    }
+  };
+
+  const handlePlay = (index) => {
+    setCurrentIndex(index);
+  };
+
+    const handlePrev = () => {
+      if (songs.length === 0) return;
+      setCurrentIndex((prev) => (prev - 1 + songs.length) % songs.length);
+  };
+
+  const handleNext = () => {
+      if (songs.length === 0) return;
+      setCurrentIndex((prev) => (prev + 1) % songs.length);
+  };
+
+  return (
     <>
     <div className="music-container-box"> 
       <Tabbar />
-      <div className="music-container container mt-4">
-            <h2 className="title-box-music text-center">🎵 Nhạc Trẻ Việt Nam</h2>
-            <p className="text-center">Những bài này mình tự chọn lọc theo sở thích.</p>
-            <div className="row">
-              {songs.map((song, index) => (
-                <div className="col-md-4 mb-4 border rounded " key={index}>
-                  <div className="music-card d-flex align-items-center p-3 ">
-                    <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '60px', height: '60px', objectFit: 'cover' }} />
-                    <div className="card-body d-flex flex-column">
-                      <h5 className="card-title mb-1">{song.title}</h5>
-                      <p className="card-text text-muted mb-2">{song.artist}</p>
+      <div className="music-container">
+        {/* music card  */}
+        <div className="container mt-4">
+              <h2 className="title-box-music text-center">🎵 Nhạc Trẻ Việt Nam</h2>
+              <p className="text-center">Những bài này mình tự chọn lọc theo sở thích.</p>
+              <div className="row">
+                {songs.map((song, index) => (
+                  <div className="col-md-5 mb-4" key={index}>
+                    <div key={index} className={`music-card d-flex align-items-center p-3 song-item ${currentIndex === index ? "active" : ""}`} onClick={() => handlePlay(index)}>
+                      <img src={song.image} className="rounded mr-3" alt={song.title} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                      <div className="card-body d-flex flex-column">
+                        <h5 className="card-title mb-1">{song.title}</h5>
+                        <p className="card-text text-muted mb-2">{song.artist}</p>
+                      </div>
                     </div>
                   </div>
-                  <audio controls className="custom-audio" style={{ width: '100%', marginTop: '10px'}}>
-                        <source src={song.file} type="audio/mpeg" />
-                        Trình duyệt của bạn không hỗ trợ phát nhạc.
+                ))}
+              </div>
+          </div>
+          {/* music render */}
+          {currentIndex !== null && (
+                  <div className="audio-container">
+                      <div className="music-card d-flex align-items-center p-3">
+                          <img
+                              src={songs[currentIndex].image}
+                              alt={songs[currentIndex].title}
+                              className="img-audio"
+                              style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+                          />
+                          <button onClick={handlePrev} className="change-song">⏮</button>
+                          <div className="card-body d-flex flex-column">
+                              <h5 className="card-render-title mb-1">{songs[currentIndex].title}</h5>
+                              <p className="card-render-text text-muted mb-2">{songs[currentIndex].artist}</p>
+                          </div>
+                          <button onClick={handleNext} className="change-song">⏭</button>
+                      </div>
+
+                      <audio
+                          ref={audioRef}
+                          controls
+                          className="custom-audio"
+                          onEnded={handleEnded}  // Gọi khi bài hát kết thúc
+                      >
+                          <source src={songs[currentIndex].file} type="audio/mpeg" />
+                          Trình duyệt của bạn không hỗ trợ phát nhạc.
                       </audio>
-                </div>
-              ))}
-            </div>
-        </div>
+                  </div>
+              )}
       </div>
+    </div>
   </>
  )
 }
+
+
+
 export default NhacTre;

@@ -16,11 +16,11 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin: 0 auto;
     margin-bottom: 30px;
+  
   }
   .card-music{
-    height: 300px;
+    height: auto;
     
   }
 
@@ -36,8 +36,12 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
   
+  .card-music {
+    padding: 0 !important;
+  }
   .card-img-top {
     width: 100%;
+    min-width: none;
     height: 200px;
     object-fit: cover; /* Đảm bảo ảnh không bị méo, luôn phủ đầy không gian */
     transition: transform 0.3s ease-in-out; /* Thêm transition cho hiệu ứng zoom ảnh */

@@ -19,9 +19,9 @@ function HomeMusic() {
             <p className="music-box-desc">"Click vào để xem chi tiết"</p>
         </div>
         <div className="container">
-            <div className="row">
+            <div className="row row-card">
                 {musicData.map((item, index) => (
-                <div className="card-music col-xl-3 col-lg-4 col-md-3 col-sm-12 col-12 mb-4" key={index} onClick={() => navigate(`/music/${item.path}`)}>
+                <div className="card-music col-xl-3 col-lg-4 col-md-5 col-sm-5 col-12 mb-4" key={index} onClick={() => navigate(`/music/${item.path}`)}>
                     <div className="card">
                         <img src={item.image} className="card-img-top" alt={item.title} />
                         <div className="card-body">
