@@ -20,7 +20,24 @@ import music17 from '../../../audio/Nhac Usuk/[VietsubLyrics] A Thousand Years -
 import music18 from '../../../audio/Nhac Usuk/[Lyrics  Vietsub] double take - dhruv (slowed).mp3';
 import music19 from '../../../audio/Nhac Usuk/I Miss You - Czarina (Lyrics & Vietsub).mp3';
 import music20 from '../../../audio/Nhac Usuk/Send My Love  Sit Still, Look Pretty (Acoustic Mashup) (Nightcore Version).mp3';
-
+import music21 from '../../../audio/Nhac Usuk/Troye Sivan - Angel Baby (Lyrics).mp3';
+import music22 from '../../../audio/Nhac Usuk/The Way I Still Love You - Hattie Cover (Lyrics  Vietsub).mp3';
+import music23 from '../../../audio/Nhac Usuk/People - Libianca ft. Becky G  Sped Up & Reverb (Lyrics  Vietsub).mp3';
+import music24 from '../../../audio/Nhac Usuk/Landslide - Oh Wonder  Sped Up (Lyrics  Vietsub).mp3';
+import music25 from '../../../audio/Nhac Usuk/All For Love - Tungevaag, Raaban (Lyrics  Vietsub).mp3';
+import music26 from '../../../audio/Nhac Usuk/echo - Alexander Stewart _ acoustic (Lyrics + Vietsub) ♫.mp3';
+import music27 from '../../../audio/Nhac Usuk/Daydreamer - KarlK ft. GuitK (Lyrics  Vietsub).mp3';
+import music28 from '../../../audio/Nhac Usuk/End of Time - K-391, Alan Walker & Ahrix (Lyrics  Vietsub).mp3';
+import music29 from '../../../audio/Nhac Usuk/Flowers - Dirty Palm & Conor Ross ft. Chandler Blasé (Lyrics  Vietsub).mp3';
+import music30 from '../../../audio/Nhac Usuk/Dream With You - Blvmenkind ft. Sam Darton (Lyrics  Vietsub).mp3';
+import music31 from '../../../audio/Nhac Usuk/Kill Em With Kindness - Selena Gomez  Robby Burke Bootleg Remix (Lyrics  Vietsub).mp3';
+import music32 from '../../../audio/Nhac Usuk/All I Got - Said The Sky ft. Kwesi (Lyrics  Vietsub).mp3';
+import music33 from '../../../audio/Nhac Usuk/Pretty Girl - Maggie Lindemann  Cheat Codes  Cade Remix (Lyrics  Vietsub).mp3';
+import music34 from '../../../audio/Nhac Usuk/Hear Me Now - Alok, Bruno Martini ft. Zeeba (Lyrics  Vietsub).mp3';
+import music35 from '../../../audio/Nhac Usuk/Mine - Phoebe Ryan  Illenium Remix (Lyrics  Vietsub).mp3';
+import music36 from '../../../audio/Nhac Usuk/Creep - Gamper & Dadoni ft. Ember Island (Lyrics  Vietsub).mp3';
+import music37 from '../../../audio/Nhac Usuk/End Of The Night - Danny Avila (Lyrics  Vietsub).mp3';
+import music38 from '../../../audio/Nhac Usuk/Hero - Cash Cash ft. Christina.mp3';
 
 
 
@@ -146,6 +163,117 @@ function Nhacusuk() {
       image: 'https://tse4.mm.bing.net/th?id=OIP.Vs1tJpR_kfKVH8sSWEQuJgHaEK&pid=Api&P=0&h=180',
       file: music20,
     },
+    {
+      title: 'Baby angle',
+      artist: 'Troye Sivan',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.Z7YYNbFWagbvLdsxswKFMQHaEK&pid=Api&P=0&h=180',
+      file: music21,
+    },
+    {
+      title: 'The Way I Still Love You',
+      artist: 'Hattie Cover',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.CdaONPxXGnk5QvOhQlZeFgHaEK&pid=Api&P=0&h=180',
+      file: music22,
+    },
+    {
+      title: 'People',
+      artist: 'Libianca ft. Becky G',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.LbI7h9-_Opw91Hp4mCLSxwHaEK&pid=Api&P=0&h=180',
+      file: music23,
+    },
+    {
+      title: 'Landslide',
+      artist: 'Oh Wonder',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.lUabQxmlr5EI2O1dIP6fcQHaEK&pid=Api&P=0&h=180',
+      file: music24,
+    },
+    {
+      title: 'All For Love',
+      artist: 'Tungevaag, Raaban',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.p7B9pLKEZxqFW4HP7ogiwQHaHa&pid=Api&P=0&h=180',
+      file: music25,
+    },
+    {
+      title: 'echo',
+      artist: 'Alexander Stewart',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.XzLI1080ln0RJLQ5IMqR1gHaEK&pid=Api&P=0&h=180',
+      file: music26,
+    },
+    {
+      title: 'Daydreamer',
+      artist: 'KarlK ft. GuitK',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.8B9tJ4tYgyxDyJMrCxS9pQHaEo&pid=Api&P=0&h=180',
+      file: music27,
+    },
+    {
+      title: 'End of time',
+      artist: 'K-391, Alan Walker & Ahrix',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.yOuqAcxHXwaBAcR8CDTw_AHaEK&pid=Api&P=0&h=180',
+      file: music28,
+    },
+    {
+      title: 'Flowers',
+      artist: 'Dirty Palm & Conor Ross ft. Chandler Blasé',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.iao8ectfbKPyEI8iyl7XYQAAAA&pid=Api&P=0&h=180',
+      file: music29,
+    },
+    {
+      title: 'Dream with you',
+      artist: 'Blvmenkind ft. Sam Darton',
+      image: 'https://tse2.mm.bing.net/th?id=OIP._NvTWNT1ErzmhNsVXsYHUQHaEK&pid=Api&P=0&h=180',
+      file: music30,
+    },
+    {
+      title: 'Kill Em With Kindness',
+      artist: 'Selena Gomez',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.HreHFR4fJpt6AYGKNLewkQHaHa&pid=Api&P=0&h=180',
+      file: music31,
+    },
+    {
+      title: 'All I Got',
+      artist: 'Said The Sky ft. Kwesi',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.5WqgGkKvk1mT1tvyuDzLqQHaEK&pid=Api&P=0&h=180',
+      file: music32,
+    },
+    {
+      title: 'Pretty Girl',
+      artist: 'Maggie Lindemann',
+      image: 'https://i.ytimg.com/vi/eTTeUjR4f1k/maxresdefault.jpg',
+      file: music33,
+    },
+    {
+      title: 'Hear Me Now',
+      artist: 'Alok, Bruno Martini ft. Zeeba',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.nIehskoBWco1iMdTU3m2dAHaEK&pid=Api&P=0&h=180',
+      file: music34,
+    },
+    {
+      title: 'Mine',
+      artist: 'Phoebe Ryan',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.iwksmMAIVvLc6JfYXhFmRAHaEK&pid=Api&P=0&h=180',
+      file: music35,
+    },
+    {
+      title: 'Creep',
+      artist: 'Gamper & Dadoni ft. Ember Island',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.YoGZCSAghO93muP4D5esWAHaHa&pid=Api&P=0&h=180',
+      file: music36,
+    },
+    {
+      title: 'End Of The Night',
+      artist: 'Danny Avila',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.nfN4j1iox3H1GXwJhgtspgHaEK&pid=Api&P=0&h=180',
+      file: music37,
+    },
+    {
+      title: 'Hero',
+      artist: 'Cash Cash ft. Christina Perri',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.L-Iug_ZnjQShXiDuBxl9hAHaEK&pid=Api&P=0&h=180',
+      file: music38,
+    },
+
+
+
 
 
 
