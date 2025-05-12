@@ -38,11 +38,72 @@ import music35 from '../../../audio/Nhac Usuk/Mine - Phoebe Ryan  Illenium Remix
 import music36 from '../../../audio/Nhac Usuk/Creep - Gamper & Dadoni ft. Ember Island (Lyrics  Vietsub).mp3';
 import music37 from '../../../audio/Nhac Usuk/End Of The Night - Danny Avila (Lyrics  Vietsub).mp3';
 import music38 from '../../../audio/Nhac Usuk/Hero - Cash Cash ft. Christina.mp3';
-
-
+import music39 from '../../../audio/Nhac Usuk/Astrid S - Hurts So Good.mp3';
+import music40 from '../../../audio/Nhac Usuk/Sasha Alex Sloan - Dancing With Your Ghost (Lyric Video).mp3';
+import music41 from '../../../audio/Nhac Usuk/Halsey - Without Me.mp3';
+import music42 from '../../../audio/Nhac Usuk/David Kushner - Daylight (Official Music Video).mp3';
+import music43 from '../../../audio/Nhac Usuk/Clean Bandit - Symphony (LyricsVietsub) feat. Zara Larsson.mp3';
+import music44 from '../../../audio/Nhac Usuk/Maroon 5 - Girls Like You ft. Cardi B (Official Music Video).mp3';
+import music45 from '../../../audio/Nhac Usuk/Avicii - Waiting For Love.mp3';
+import music46 from '../../../audio/Nhac Usuk/David Guetta - Titanium ft. Sia (Official Video).mp3';
+import music47 from '../../../audio/Nhac Usuk/Marshmello ft. Bastille - Happier (Official Music Video).mp3';
 
 function Nhacusuk() {
   const songs = [
+    {
+      title: 'Happier',
+      artist: 'Marshmello ft. Bastille',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.NSRfdVEN0RpMM9PGE_l5gAHaEK&pid=Api&P=0&h=180',
+      file: music47,
+    },
+    {
+      title: 'Titanium',
+      artist: 'David Guetta ft. Sia',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.gFbfxPP_ZJ32pNpevX0oCgHaHa&pid=Api&P=0&h=180',
+      file: music46,
+    },
+    {
+      title: 'Waiting For Love',
+      artist: 'Avicii',
+      image: 'https://i0.wp.com/aanii.net/wp-content/uploads/2021/07/Avicii-Waiting-For-Love.jpeg?fit=1280%2C720&ssl=1',
+      file: music45,
+    },
+    {
+      title: 'Girls Like You',
+      artist: 'Maroon 5 ft. Cardi B',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.XerS9PNxSB-5-1ieek_t9QAAAA&pid=Api&P=0&h=180',
+      file: music44,
+    },
+    {
+      title: 'Symphony',
+      artist: 'Clean Bandit',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.c8GRpmt6c6GD5RckFN8m2QHaEK&pid=Api&P=0&h=180',
+      file: music43,
+    },
+    {
+      title: 'Daylight',
+      artist: 'David Kushner',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.1-YWBT6WM2YiAqP_V_wMjwHaEK&pid=Api&P=0&h=180',
+      file: music42,
+    },
+    {
+      title: 'Without Me',
+      artist: 'Halsey',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.SVg29xl2PKod2MN1SEv0FgAAAA&pid=Api&P=0&h=180',
+      file: music41,
+    },
+    {
+      title: 'Dancing with your ghost',
+      artist: 'Sasha Alex Sloan',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.iHWRlMfP6LlfVDQSRvSS8QHaEK&pid=Api&P=0&h=180',
+      file: music40,
+    },
+    {
+      title: 'Hurts So Good',
+      artist: 'Astrid S',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.rCxccKO6C5M5YosZ_3cxtwAAAA&pid=Api&P=0&h=180',
+      file: music39,
+    },
     {
       title: 'Love Me Like You Do',
       artist: 'Ellie Goulding',

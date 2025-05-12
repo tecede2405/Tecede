@@ -63,15 +63,7 @@ function Home() {
                 <HomeMusic />
               </div>
             </div>
-         
-
-
-
-
-
-
-
-
+  
 
         </div>
       </>
