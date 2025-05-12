@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-
 import Tabbar from '../../../component/tabar/index';
 import music1 from '../../../audio/NhacEDM/Ahrix - Nova.mp3';
 import music2 from '../../../audio/NhacEDM/Legends Never Die (ft. Against The Current)  Worlds 2017 - League of Legends.mp3';
@@ -11,9 +10,37 @@ import music7 from '../../../audio/NhacEDM/Ampyx - Holo.mp3';
 import music8 from '../../../audio/NhacEDM/Where We Started - Lost Sky ft. Jex (Lyrics  Vietsub).mp3';
 import music9 from '../../../audio/NhacEDM/Jim Yosef - Firefly  Progressive House  NCS - Copyright Free Music.mp3';
 import music10 from '../../../audio/NhacEDM/Tobu & Syndec - Dusk (Radio Edit).mp3';
+import music11 from '../../../audio/NhacEDM/DEAF KEV - Safe & Sound with Sendi Hoxha  House  NCS - Copyright Free Music.mp3';
+import music12 from '../../../audio/NhacEDM/Syn Cole - Time  Future House  NCS - Copyright Free Music.mp3';
+import music13 from '../../../audio/NhacEDM/cant wait - Jim Yosef.mp3';
+import music14 from '../../../audio/NhacEDM/Axel Johansson - Miracles (Lyrics) ft. Tina Stachowiak.mp3';
 
 function NhacTrung() {
   const songs = [
+    {
+      title: 'Miracles',
+      artist: 'Axel Johansson',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.3NfLjA_Msp7nANO6ugNV3QHaHa&pid=Api&P=0&h=180',
+      file: music14,
+    },
+    {
+      title: 'Cant Wait',
+      artist: 'Jim Yosef',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.BrMeIz4T8ikA-eqIiPLcOgHaEK&pid=Api&P=0&h=180',
+      file: music13,
+    },
+    {
+      title: 'Time',
+      artist: 'Syn Cole',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.pO6d2qtanK9Qy9s2_WGyNwHaHa&pid=Api&P=0&h=180',
+      file: music12,
+    },
+    {
+      title: 'Safe & Sound with Sendi Hoxha',
+      artist: 'DEAF KEV',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.r1-VxQrjLjnJNxSDPJCXmwHaEK&pid=Api&P=0&h=180',
+      file: music11,
+    },
     {
       title: 'Nova',
       artist: 'Ahrix',

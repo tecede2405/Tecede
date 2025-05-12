@@ -42,7 +42,7 @@
   .card-img-top {
     width: 100%;
     min-width: none;
-    height: 200px;
+    height:auto;
     object-fit: cover; /* Đảm bảo ảnh không bị méo, luôn phủ đầy không gian */
     transition: transform 0.3s ease-in-out; /* Thêm transition cho hiệu ứng zoom ảnh */
   }
@@ -52,7 +52,7 @@
   }
   
   .card-body {
-    height: 110px;
+    height: 135px;
     align-items: center;
     background-color: #fff;
   }
