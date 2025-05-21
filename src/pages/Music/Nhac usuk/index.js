@@ -47,9 +47,52 @@ import music44 from '../../../audio/Nhac Usuk/Maroon 5 - Girls Like You ft. Card
 import music45 from '../../../audio/Nhac Usuk/Avicii - Waiting For Love.mp3';
 import music46 from '../../../audio/Nhac Usuk/David Guetta - Titanium ft. Sia (Official Video).mp3';
 import music47 from '../../../audio/Nhac Usuk/Marshmello ft. Bastille - Happier (Official Music Video).mp3';
+import music48 from '../../../audio/Nhac Usuk/Cry - Cigarettes After Sex.mp3';
+import music49 from '../../../audio/Nhac Usuk/Dont lets me down.mp3';
+import music50 from '../../../audio/Nhac Usuk/Ed Sheeran - Photograph (Lyrics).mp3';
+import music51 from '../../../audio/Nhac Usuk/OneRepublic - Counting Stars (Lyrics).mp3';
+import music52 from '../../../audio/Nhac Usuk/its you.mp3';
+import music53  from '../../../audio/Nhac Usuk/Powfu - death bed (coffee for your head) (Lyrics) ft. beabadoobee.mp3'
+
 
 function Nhacusuk() {
   const songs = [
+    {
+      title: 'Death bed',
+      artist: 'Powfu ft. beabadoobee',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.eZx981DYyu1EEO0Rs4A5gQHaHa&pid=Api&P=0&h=180',
+      file: music53,
+    },
+    {
+      title: 'Its You',
+      artist: 'Ali Gatie',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.txMrPyHss9LH95rc5llFEgHaEK&pid=Api&P=0&h=180',
+      file: music52,
+    },
+    {
+      title: 'Counting Stars',
+      artist: 'OneRepublic',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.LY8_vMg-hqtwmq8cRcNzEAHaHa&pid=Api&P=0&h=180',
+      file: music51,
+    },
+    {
+      title: 'Photograph',
+      artist: 'Ed Sheeran',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.jV8K7Rm3AMcit7Bs267bGgAAAA&pid=Api&P=0&h=180',
+      file: music50,
+    },
+     {
+      title: 'Dont Let Me Down',
+      artist: 'The Chainsmokers ft. Daya',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.GuH9LgFTtN4cscDVJyP9KAHaDh&pid=Api&P=0&h=180',
+      file: music49,
+    },
+     {
+      title: 'Cry',
+      artist: 'Cigarettes After Sex',
+      image: 'https://tse2.explicit.bing.net/th?id=OIP.Ihf-iJ8BwpNvXdVAfzJ82wHaGw&pid=Api&P=0&h=180',
+      file: music48,
+    },
     {
       title: 'Happier',
       artist: 'Marshmello ft. Bastille',
@@ -332,12 +375,6 @@ function Nhacusuk() {
       image: 'https://tse1.mm.bing.net/th?id=OIP.L-Iug_ZnjQShXiDuBxl9hAHaEK&pid=Api&P=0&h=180',
       file: music38,
     },
-
-
-
-
-
-
     // Thêm bài hát vào đây
   ];
 
