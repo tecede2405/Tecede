@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom"; 
+
 import "./homemusic.scss";
 import vpop from "../../img/music-thumnail/vpop.png";
 import usuk from "../../img/music-thumnail/usuk.png";
 import china from "../../img/music-thumnail/china.png";
 import edm from "../../img/music-thumnail/edm.png";
 import sad from "../../img/music-thumnail/sad.png";
+import 'animate.css';
 const musicData = [
     { title: "Nhạc Việt Nam", image: vpop, path: "nhac-tre",desc: "Nhạc vui buồn lẫn lộn,cực kì đa dạng thể loại từ thời tối cổ đến hiện đại." },
     { title: "Nhạc Âu Mĩ", image: usuk, path: "usuk",desc: "Khi âm nhạc là liều thuốc chữa lành, nghe bao chill." },
@@ -16,6 +18,7 @@ const musicData = [
 function HomeMusic() {
     const navigate = useNavigate();
 
+
   return (
     <>
         <div>
@@ -25,7 +28,8 @@ function HomeMusic() {
         <div className="container">
             <div className="row row-card">
                 {musicData.map((item, index) => (
-                <div className="card-music col-xl-2 col-lg-3 col-md-3 col-sm-5 col-5 mb-4" key={index} onClick={() => navigate(`/music/${item.path}`)}>
+                <div className="card-music col-xl-2 col-lg-3 col-md-3 col-sm-5 col-5 mb-4 animate__animated animate__flip"
+                 data-wow-duration="1.5s" data-wow-delay="0.3s" key={index} onClick={() => navigate(`/music/${item.path}`)}>
                     <div className="card">
                         <img src={item.image} className="card-img-top" alt={item.title} />
                         <div className="card-body">

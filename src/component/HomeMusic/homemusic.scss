@@ -38,7 +38,25 @@
   
   .card-music {
     padding: 0 !important;
+    // opacity:0;
+    // transform: scale(0.6);
+    // animation : ScaleIn linear both;
+    // animation-timeline: view();
+    // animation-range: entry 0% cover 40%;
   }
+
+  @keyframes ScaleIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+
   .card-img-top {
     width: 100%;
     min-width: none;
