@@ -28,7 +28,7 @@ function HomeMusic() {
         <div className="container">
             <div className="row row-card">
                 {musicData.map((item, index) => (
-                <div className="card-music col-xl-2 col-lg-3 col-md-3 col-sm-5 col-5 mb-4 animate__animated animate__flip"
+                <div className="card-music col-xl-2 col-lg-3 col-md-3 col-sm-4 col-5 mb-3 animate__animated animate__flip"
                  data-wow-duration="1.5s" data-wow-delay="0.3s" key={index} onClick={() => navigate(`/music/${item.path}`)}>
                     <div className="card">
                         <img src={item.image} className="card-img-top" alt={item.title} />
