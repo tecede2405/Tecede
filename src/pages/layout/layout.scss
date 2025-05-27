@@ -117,7 +117,7 @@ footer{
     position: sticky;
     top: 50px;
     z-index: 999;
-    width: 12%;
+    width: 16%;
     background: #fff;
     backdrop-filter: blur(10px);
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5);
@@ -180,7 +180,7 @@ footer{
 
     &__feature{
         width: 30%;
-        height:420px;
+        height:440px;
         display: flex;
         flex-direction : column;
         justify-content:start;
@@ -191,6 +191,7 @@ footer{
         border-bottom: 1px solid #ddd;
         h2{
             color: #000 ;
+            text-align: center;
         }
         p{
             text-align:center;
@@ -199,32 +200,11 @@ footer{
         }
         img{
             width: 100%;
-            height:60%;
+            height:50%;
             object-fit:cover;
         }
     }
-    &__history{
-        height: 500px;
-        width:80%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content:center;
-        align-items:center;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #000;
-        p{
-            font-size: 14px;
-            text-align:center;
-            color: #000;
-        }
-        img{
-            width: 90%;
-            height:70%;
-            object-fit:cover;
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-    }
+    
 }
 
 
@@ -361,12 +341,6 @@ footer{
         &__feature{
             height: 470px;
         }
-        &__history{
-            height: 400px;
-            img{
-                height: 80%;
-            }
-        }
     }
 
     .text-container{
@@ -390,25 +364,23 @@ footer{
             }
         }
     }
-    .gif-noel-2{
-        left: 150px;
-    }
   }
 
 
   @media (max-width: 960px){
     .tabbar {
-        background: #4a49498a;
+        background: #fff;
+        
         p{
-            background: #bab6b6;
             height: 40px;
+            padding-bottom: 35px;
         }
     }
     //home 
     .Home{
-        flex-direction: column;
+        // flex-direction: column;
         &__feature{
-            height: 420px;
+            height: 430px;
             margin-left:20px;
           
         }
@@ -416,14 +388,11 @@ footer{
             font-size: 13px;
             padding: 0 20px;;
         }
-        &__history{
-            height: 300px;
-           
-        }
+
     }
     //about 
     .about{
-        flex-direction: column;
+      
         flex: none;
         &__produce{
             height: 400px;
@@ -461,46 +430,9 @@ footer{
 
 
     //contact
-    .contact{
-        flex-direction: column;
-    }
+   
 
-    .tabbar{
-        width: 100%;
-        display:flex;
-        height:40px;
-        p{
-            width: 20%;
-            font-size:10px;
-            padding:0;
-            align-items:center;
-            justify-content:center;
-            display:flex;
-            flex-direction:column;
-        }
-        ul{
-            display:flex;
-            flex:1;
-            li{
-                width: 25%;
-                
-                a {
-                    height: 100%;
-                    width: 100%;
-                    font-weight: 700;
-                    font-size: 10px;
-                    display: flex;
-                    justify-content:center;
-                    margin: 0;
-                    .icon{
-                        font-size: 17px;
-                        margin: 0 2px;
-                    }
-                }
-            }
-        }
-       
-    }
+   
     .text-container{
         height:50px;
     }
@@ -512,20 +444,64 @@ footer{
 
   @media (max-width: 768px){
     .Home{
-        flex-direction: column;
         
         &__feature{
+            flex-direction:row;
             width: 100%;
-            height: 420px;
-            margin-left:20px;
+            height: auto;
+            margin-left:0;
+            padding: 0 20px;
+            margin: 20px 0;
+            border-top: 1px solid #ddd;
+            img{
+                width: 100px;
+                height :auto;
+                object-fit: cover;
+                aspect-ratio: 1/1;
+            }
+            &__feature-text{
+                flex:1;
+                height: auto;
+            }
         }
         &__desc{
             font-size: 14px;
         }
     }
-    .container {
-        flex-direction: column;
+    .tabbar{
+        width: 25%;
     }
+     .about {
+        &__produce {
+          height: 400px;
+          width: 90%;
+          margin-top: 30px;
+      
+          p {
+            padding: 0;
+          }
+      
+          img {
+            width: 90%;
+            height: 70%;
+          }
+        }
+      
+        &__project {
+          height: 400px;
+          width: 90%;
+          margin-top: 30px;
+      
+          p {
+            padding: 0;
+          }
+      
+          img {
+            height: 70%;
+          }
+        }
+      }
+   
   }
 
 
@@ -570,15 +546,71 @@ footer{
         width:100%!important ;
     }
     .Home{
-        &__history{
-            height:420px;
-            margin-top:20px;
-        }
+        flex-direction: column;
+
         &__desc{
             font-size: 12px;
         }
+        &__feature{
+            margin: 0 auto;
+            margin-bottom: 30px;    
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+            img{
+                width: 100px;
+                height: auto;
+                aspect-ratio: 1/1;
+            }
+        }
+        &__main{
+         
+            flex:1;
+        }
+    }
+
+    .animated-text {
+          font-size: 18px;
+    }
+
+      .tabbar{
+        width: 100%;
+        display:flex;
+        height:40px;
+        background: rgba(74, 73, 73, .541);
+        p{
+            width: 20%;
+            font-size:10px;
+            padding:0;
+            align-items:center;
+            justify-content:center;
+            display:flex;
+            flex-direction:column;
+            background: #bab6b6;
+        }
+        ul{
+            display:flex;
+            flex:1;
+            li{
+                width: 25%;
+                
+                a {
+                    height: 100%;
+                    width: 100%;
+                    font-weight: 700;
+                    font-size: 10px;
+                    display: flex;
+                    justify-content:center;
+                    margin: 0;
+                    .icon{
+                        font-size: 17px;
+                        margin: 0 2px;
+                    }
+                }
+            }
+        }
+       
     }
     .about {
+        flex-direction: column;
         &__produce {
           height: 400px;
           width: 90%;
@@ -608,10 +640,10 @@ footer{
           }
         }
       }
+       .contact{
+        flex-direction: column;
+        }
       
-      .gif-noel-2 {
-        left: -10px;
-      }
      }
       @media (max-width: 430px) {
       
@@ -623,17 +655,6 @@ footer{
       
         //Home
         .Home {
-          &__feature {
-            height: 330px;
-            margin: 0 auto;
-            margin-bottom: 30px;    
-            width: 90%;
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-      
-            img {
-              height: 200px;
-            }
-          }
       
           &__desc {
             padding: 0 10px;
@@ -642,31 +663,6 @@ footer{
       
           &__title {
             font-size: 19px;
-          }
-      
-          &__history {
-            height: 300px;
-            width: 80%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-      
-            p {
-              font-size: 14px;
-              text-align: center;
-            }
-      
-            img {
-              width: 100%;
-              height: 170px;
-              object-fit: cover;
-              box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-            }
           }
         }
       

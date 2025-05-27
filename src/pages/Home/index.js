@@ -43,18 +43,26 @@ function Home() {
               <div className="container">
                     <div className="Home__feature">
                       <img src="https://i.pinimg.com/736x/f5/d0/4e/f5d04ecb570d630d3dd7120738cdbe87.jpg" alt="" />
-                      <h2 className="Home__title">Tiêu đề</h2>
-                      <p className="Home__desc">"Blog này là nơi lưu giữ kiến thức và kinh nghiệm lập trình thông qua các đoạn video ngắn và các project nhỏ."</p>
+                      <div className="Home__feature-text">
+                        <h2 className="Home__title">Tiêu đề</h2>
+                        <p className="Home__desc">"Blog này là nơi lưu giữ kiến thức và kinh nghiệm lập trình thông qua các đoạn video ngắn và các project nhỏ."</p>
+                      </div>
+                      
                     </div>
                     <div className="Home__feature">
                       <img src="https://i.pinimg.com/736x/9c/d2/10/9cd21012fe34428af38953193c8e4397.jpg" alt="" />
-                      <h2 className="Home__title">Tiêu đề</h2>
-                      <p className="Home__desc">"Mình muốn chia sẻ những bài viết về hành trình học của bản thân mình. Hành trình của mình bắt đầu với những dòng code đầu tiên trên giao diện front-end, từng bước khám phá HTML, CSS, JS, rồi đến React!"</p>
+                      <div className="Home__feature-text">
+                        <h2 className="Home__title">Tiêu đề</h2>
+                        <p className="Home__desc">"Mình muốn chia sẻ những bài viết về hành trình học của bản thân mình. Hành trình của mình bắt đầu với những dòng code đầu tiên trên giao diện front-end, từng bước khám phá HTML, CSS, JS, rồi đến React!"</p>
+                      </div>
+                      
                     </div>
                     <div className="Home__feature">
                       <img src="https://i.pinimg.com/originals/9d/1f/82/9d1f82cc324e498dd5127a6ed0296dac.gif" alt="" />
-                      <h2 className="Home__title">Tiêu đề</h2>
-                      <p className="Home__desc">"Khi đã tự tin với front-end, mình tiếp tục dấn thân vào thế giới back-end với Node.js, Express và MongoDB. Mục tiêu cuối cùng? Trở thành một fullstack developer thực thụ, làm chủ cả giao diện lẫn hệ thống phía server"</p>
+                      <div className="Home__feature-text">
+                        <h2 className="Home__title">Tiêu đề</h2>
+                        <p className="Home__desc">"Khi đã tự tin với front-end, mình tiếp tục dấn thân vào thế giới back-end với Node.js, Express và MongoDB. Mục tiêu cuối cùng? Trở thành một fullstack developer thực thụ, làm chủ cả giao diện lẫn hệ thống phía server"</p>
+                      </div> 
                     </div>
               </div>
               <Collapsed />
