@@ -11,8 +11,36 @@ import music9 from '../audio/NhacTamTrang/Seredris - Daylight日光Slowed by xxx
 import music10 from '../audio/NhacTamTrang/Epic Music VN - LAST REUNION (Peter Roe).mp3';
 import music11 from '../audio/NhacTamTrang/Call of SilenceClear Sky Remix 伴奏(Nhạc đệm)  Clear Sky.mp3';
 import music12 from '../audio/NhacTamTrang/因为不能见所以很想念 (Beat宿命版).mp3';
+import music13 from '../audio/NhacTamTrang/Take Your Hand.mp3';
+import music14 from '../audio/NhacTamTrang/关于你 (伴奏版).mp3';
+import music15 from '../audio/NhacTamTrang/Track in Time (Piano Version).mp3';
+import music16 from '../audio/NhacTamTrang/those time (piano).mp3';
 
 const songs = [
+  {
+      title: 'Those Time',
+      artist: 'Emptiness',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.DqrGm-Q5X3npvWWoqtXIGwHaEo&pid=Api&P=0&h=180',
+      file: music16,
+    },
+  {
+      title: 'Track in time',
+      artist: 'Dennis Kuo',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.3xId3e8J9bi9lNjflGo34QHaHa&pid=Api&P=0&h=180',
+      file: music15 ,
+    },
+  {
+      title: 'Điều về em',
+      artist: 'Trịnh Nhuận Trạch',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.5pLzUgzxL227D5UsD2DD-QAAAA&pid=Api&P=0&h=180',
+      file: music14,
+    },
+  {
+      title: 'Take Your Hand',
+      artist: 'Patrick Smith',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.hBNnn-T3HHJ2x_PusOapBQHaEK&pid=Api&P=0&h=180',
+      file: music13,
+    },
     {
       title: 'Date 2',
       artist: 'Anime Your Name',

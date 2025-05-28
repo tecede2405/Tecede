@@ -14,7 +14,9 @@
     "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.30.3",
     "sass": "^1.83.0",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^4.2.4",
     "wowjs": "^1.1.3"
   },

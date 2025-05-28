@@ -168,11 +168,8 @@
 
 
 
-  @media (max-width: 960px){
-    .music-container-box{
-      flex-direction: column;
-    }
-  }
+ 
+
    @media (max-width: 768px) {
   .profile {
     padding: 10px; 
@@ -187,4 +184,13 @@
   .profile .profile-desc {
     font-size: 12px;
   }
+  .music-container{
+    flex:1;
+  }
 }
+
+ @media (max-width: 540px){
+    .music-container-box{
+      flex-direction: column;
+    }
+  }

@@ -12,8 +12,29 @@ import music11 from '../audio/NhacEDM/DEAF KEV - Safe & Sound with Sendi Hoxha  
 import music12 from '../audio/NhacEDM/Syn Cole - Time  Future House  NCS - Copyright Free Music.mp3';
 import music13 from '../audio/NhacEDM/cant wait - Jim Yosef.mp3';
 import music14 from '../audio/NhacEDM/Axel Johansson - Miracles (Lyrics) ft. Tina Stachowiak.mp3';
+import music15 from '../audio/NhacEDM/JJD - Adventure  Glitch Hop  NCS - Copyright Free Music.mp3';
+import music16 from '../audio/NhacEDM/Zaza - Be Together  Electronic  NCS - Copyright Free Music.mp3';
+import music17 from '../audio/NhacEDM/Disfigure - Blank  Melodic Dubstep  NCS - Copyright Free Music.mp3';
 
  const songs = [
+  {
+      title: 'Blank',
+      artist: 'Disfigure',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.47sxXDEdYTv-GG92CkVPDgHaHa&pid=Api&P=0&h=180',
+      file: music17,
+    },
+  {
+      title: 'Be Together',
+      artist: 'Zaza',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.RcYZ22kezhQiQ_f4GS51HwHaEK&pid=Api&P=0&h=180',
+      file: music16,
+    },
+   {
+      title: 'Adventure',
+      artist: 'JJD',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.1Vxiyr0bQew-OVnhSxBpjwHaHa&pid=Api&P=0&h=180',
+      file: music15,
+    },
     {
       title: 'Miracles',
       artist: 'Axel Johansson',
