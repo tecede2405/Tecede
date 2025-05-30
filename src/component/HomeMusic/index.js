@@ -8,11 +8,11 @@ import edm from "../../img/musics-thumbnail/edm.png";
 import mood from "../../img/musics-thumbnail/mood.png";
 import 'animate.css';
 const musicData = [
-    { image: nhactre, path: "nhac-tre"},
-    { image: usuk, path: "usuk"},
-    {image: china , path: "trung-quoc"},
-    {image: edm, path: "edm"},
-    {image: mood, path: "mood"},
+    {title:nhactre, image: nhactre, path: "nhac-tre"},
+    {title: usuk, image: usuk, path: "usuk"},
+    {title: china, image: china, path: "trung-quoc"},
+    {title: edm, image: edm, path: "edm"},
+    {title: mood, image: mood, path: "mood"},
 ];
 
 function HomeMusic() {
@@ -32,7 +32,6 @@ function HomeMusic() {
                  data-wow-duration="1.5s" data-wow-delay="0.3s" key={index} onClick={() => navigate(`/music/${item.path}`)}>
                     <div className="card">
                         <img src={item.image} className="card-img-top" alt={item.title} />
-                        
                     </div>
                 </div>
                 ))}    

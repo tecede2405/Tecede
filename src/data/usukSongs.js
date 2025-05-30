@@ -51,8 +51,23 @@ import music50 from '../audio/Nhac Usuk/Ed Sheeran - Photograph (Lyrics).mp3';
 import music51 from '../audio/Nhac Usuk/OneRepublic - Counting Stars (Lyrics).mp3';
 import music52 from '../audio/Nhac Usuk/its you.mp3';
 import music53  from '../audio/Nhac Usuk/Powfu - death bed (coffee for your head) (Lyrics) ft. beabadoobee.mp3'
+import music54  from '../audio/Nhac Usuk/I dont wanna see you anymore.mp3'
+import music55  from '../audio/Nhac Usuk/Timbaland - Apologize (Lyrics) Feat. OneRepublic.mp3'
+
 
   const songs = [
+     {
+      title: 'Apologize',
+      artist: 'Timbaland',
+      image: 'https://i.ytimg.com/vi/BuBqBgphDEE/maxresdefault.jpg',
+      file: music55,
+    },
+     {
+      title: 'I dont wanna see you anymore',
+      artist: 'NineOne',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.AMKl86ArzzvGyHvd8E9LwwHaEK&pid=Api&P=0&h=180',
+      file: music54,
+    },
     {
       title: 'Death bed',
       artist: 'Powfu ft. beabadoobee',
