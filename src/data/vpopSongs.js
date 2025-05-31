@@ -25,7 +25,7 @@ import music24 from '../audio/NhacViet/Kaidinh x @SIVAN1411  - Thế hệ tan v�
 import music25 from '../audio/NhacViet/Orange - Tự Sự ft. Thuận Nguyễn l Qua Bển Làm Chi OST - Phim đang chiếu tại rạp.mp3';
 import music26 from '../audio/NhacViet/Phùng Khánh Linh - Hôm Nay Tôi Buồn (Official Music Video).mp3';
 import music27 from '../audio/NhacViet/CÔ ẤY NÓI - NGÔ ANH ĐẠT  OFFICIAL LYRICS VIDEO.mp3';
-import music28 from '../audio/NhacViet/Thương Em Là Điều Anh Không Thể Ngờ .mp3';
+import music28 from '../audio/NhacViet/TELDAKTN.mp3';
 import music29 from '../audio/NhacViet/Thì Thôi - Reddy  MV Lyrics Official.mp3';
 import music30 from '../audio/NhacViet/SIVAN - haydeanhduoccungemdau ft. Kai Đinh (Official Music Video).mp3';
 import music31 from '../audio/NhacViet/24H - LyLy ft. Magazine.mp3';
@@ -34,7 +34,7 @@ import music33 from '../audio/NhacViet/Em Gái Mưa [ Lyric ]  Hương Tràm  Zy
 import music34 from '../audio/NhacViet/Đừng Ai Nhắc Về Anh Ấy - Trà My Idol (Lyrics Video).mp3';
 import music35 from '../audio/NhacViet/ĐỢI - 52Hz (prod. RIO)  Official Lyric Video.mp3';
 import music36 from '../audio/NhacViet/tlinh - nếu lúc đó  OFFICIAL VISUALIZER.mp3';
-import music37 from '../audio/NhacViet/[LYRIC] SAO EM VÔ TÌNH  JACK x K-ICM ft. LIAM.mp3';
+// import music37 from '../audio/NhacViet/Sao Em Vô Tình.mp3';
 import music38 from '../audio/NhacViet/[OFFICIAL MV] VỀ BÊN ANH - Jack (G5R).mp3';
 
 
@@ -46,12 +46,12 @@ const songs = [
       image: 'https://tse2.mm.bing.net/th?id=OIP.s1c-4AXOp-VKaA0RHOqWZgHaEK&pid=Api&P=0&h=180',
       file: music38,
     },
-  {
-      title: 'SAO EM VÔ TÌNH',
-      artist: 'JACK x K-ICM ft. LIAM',
-      image: 'https://tse2.mm.bing.net/th?id=OIP.zz-XasjhTdLuLpq7zV-fXAHaEK&pid=Api&P=0&h=180',
-      file: music37,
-    },
+  // {
+  //     title: 'SAO EM VÔ TÌNH',
+  //     artist: 'JACK x K-ICM ft. LIAM',
+  //     image: 'https://tse2.mm.bing.net/th?id=OIP.zz-XasjhTdLuLpq7zV-fXAHaEK&pid=Api&P=0&h=180',
+  //     file: music37,
+  //   },
    {
       title: 'nếu lúc đó',
       artist: 'tlinh',
