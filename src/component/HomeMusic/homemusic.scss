@@ -22,29 +22,15 @@
   }
   .card-music{
     height: auto;
-    
-  }
-
-  .card {
     border: 1px solid #ddd;
+    padding: 0 !important;
     border-radius: 10px;
     overflow: hidden; /* Cắt phần ảnh vượt ra ngoài */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease-in-out;
   }
   
-  .card:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .card-music {
-    padding: 0 !important;
-    // opacity:0;
-    // transform: scale(0.6);
-    // animation : ScaleIn linear both;
-    // animation-timeline: view();
-    // animation-range: entry 0% cover 40%;
-  }
+
 
   @keyframes ScaleIn {
     0% {
@@ -58,7 +44,7 @@
   }
 
 
-  .card-img-top {
+  .card-img {
     width: 100%;
     min-width: none;
     height:auto;
@@ -66,7 +52,7 @@
     transition: transform 0.3s ease-in-out; /* Thêm transition cho hiệu ứng zoom ảnh */
   }
   
-  .card-img-top:hover {
+  .card-img:hover {
     transform: scale(1.1);
   }
   

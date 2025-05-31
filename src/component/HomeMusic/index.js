@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom"; 
 
+import MusicCarousel from "../Carousel/MusicCarousel";
 import "./homemusic.scss";
 import nhactre from "../../img/musics-thumbnail/nhactre.png";
 import usuk from "../../img/musics-thumbnail/usuk.png";
@@ -8,15 +8,14 @@ import edm from "../../img/musics-thumbnail/edm.png";
 import mood from "../../img/musics-thumbnail/mood.png";
 import 'animate.css';
 const musicData = [
-    {title:nhactre, image: nhactre, path: "nhac-tre"},
-    {title: usuk, image: usuk, path: "usuk"},
-    {title: china, image: china, path: "trung-quoc"},
-    {title: edm, image: edm, path: "edm"},
-    {title: mood, image: mood, path: "mood"},
+    {title: "nhactre", image: nhactre, path: "nhac-tre"},
+    {title: "usuk", image: usuk, path: "usuk"},
+    {title: "china", image: china, path: "trung-quoc"},
+    {title: "edm", image: edm, path: "edm"},
+    {title: "mood", image: mood, path: "mood"},
 ];
 
 function HomeMusic() {
-    const navigate = useNavigate();
 
 
   return (
@@ -25,18 +24,9 @@ function HomeMusic() {
             <h2 className="music-box-title">Trạm phát nhạc</h2>
             <p className="music-box-desc">"Nhạc sẽ luôn được cập nhật thường xuyên. <br />Click vào để xem chi tiết"</p>
         </div>
-        <div className="container">
-            <div className="row row-card">
-                {musicData.map((item, index) => (
-                <div className="card-music col-xl-2 col-lg-3 col-md-3 col-sm-4 col-5 mb-3 animate__animated animate__flip"
-                 data-wow-duration="1.5s" data-wow-delay="0.3s" key={index} onClick={() => navigate(`/music/${item.path}`)}>
-                    <div className="card">
-                        <img src={item.image} className="card-img-top" alt={item.title} />
-                    </div>
-                </div>
-                ))}    
-            </div>
-        </div>
+        <div className="container mt-4 mb-5">
+            <MusicCarousel items={musicData} />
+        </div>  
     </>
    )
 }
