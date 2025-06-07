@@ -42,7 +42,6 @@ const AutoSlideInfinite = ({ items }) => {
                 width: "100%",
                 aspectRatio: "1 / 1",
                 objectFit: "cover",
-                borderRadius: "12px",
               }}
               className="card-img animate__animated animate__fadeIn"
               onClick={() => navigate(`/music/${items.path}`)}
