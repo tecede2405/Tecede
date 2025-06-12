@@ -34,24 +34,108 @@ import music33 from '../audio/NhacViet/Em Gái Mưa [ Lyric ]  Hương Tràm  Zy
 import music34 from '../audio/NhacViet/Đừng Ai Nhắc Về Anh Ấy - Trà My Idol (Lyrics Video).mp3';
 import music35 from '../audio/NhacViet/ĐỢI - 52Hz (prod. RIO)  Official Lyric Video.mp3';
 import music36 from '../audio/NhacViet/tlinh - nếu lúc đó  OFFICIAL VISUALIZER.mp3';
-// import music37 from '../audio/NhacViet/Sao Em Vô Tình.mp3';
-import music38 from '../audio/NhacViet/[OFFICIAL MV] VỀ BÊN ANH - Jack (G5R).mp3';
-
+import music37 from '../audio/NhacViet/[OFFICIAL MV] VỀ BÊN ANH - Jack (G5R).mp3';
+import music38 from '../audio/NhacViet/PC - 10 Ngàn Năm ( Prod. Duckie ) [Official Audio].mp3';
+import music39 from '../audio/NhacViet/Như Anh Đã Thấy Em (CTTDE2) - PhucXp ft. Freak D.mp3';
+import music40 from '../audio/NhacViet/Hẹn em kiếp sau.mp3';
+import music41 from '../audio/NhacViet/Ôm Em lần Cuối (Lofi Ver.) - Nit ft. Sing x Freak D.mp3';
+import music42 from '../audio/NhacViet/Phố Cũ Còn Anh (Freak D Lofi Ver.) - Quinn ft Chilly.mp3';
+import music43 from '../audio/NhacViet/(xuân)_ Hư không - Kha  EP tình.mp3';
+import music44 from '../audio/NhacViet/Lý Do Nào Để Quay Lại Với Nhau - Par SG x New$oulZLyrics.mp3';
+import music45 from '../audio/NhacViet/LÀ BẠN KHÔNG THỂ YÊU  LYRICS  LOU HOÀNG.mp3';
+import music46 from '../audio/NhacViet/Cảm nắng - SUNI Hạ Linh.mp3';
+import music47 from '../audio/NhacViet/người ta có thương mình đâu.mp3';
+import music48 from '../audio/NhacViet/Kiêu Ngạo (Lofi Ver.) - Huy Vạc x Freak D.mp3';
+import music49 from '../audio/NhacViet/Người Kế Nhiệm (Lofi Ver.) - Anh Khoa x Freak D.mp3';
+import music50 from '../audio/NhacViet/Đảo Không Người (Lofi Ver.) - Ngô Anh Đạt x Orinn.mp3';
 
 
 const songs = [
   {
+      title: 'Đảo Không Người',
+      artist: 'Ngô Anh Đạt',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.j2RtSmqjI3eurLSy7CPN6QHaEK&pid=Api&P=0&h=180',
+      file: music50,
+    },
+  {
+      title: 'Người Kế Nhiệm ',
+      artist: 'Anh Khoa',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.-R6I7oLPgiVKw5V9F1KOaQHaEK&pid=Api&P=0&h=180',
+      file: music49,
+    },
+  {
+      title: 'Kiêu Ngạo',
+      artist: 'Huy Vạc x Freak D',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.hb2Z5reVHWtDHvcdbYfVBQHaEK&pid=Api&P=0&h=180',
+      file: music48,
+    },
+  {
+      title: 'Người ta có thương mình đâu',
+      artist: 'Trúc Nhân',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.TUZ6dj_-BhdmL4_rukHIkgAAAA&pid=Api&P=0&h=180',
+      file: music47,
+    },
+    {
+      title: 'CẢM NẮNG',
+      artist: 'SUNI HẠ LINH',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.QCAI0m4kdljg8FXK3pwQxwHaEK&pid=Api&P=0&h=180',
+      file: music46,
+    },
+    {
+      title: 'LÀ BẠN KHÔNG THỂ YÊU',
+      artist: 'LOU HOÀNG',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.yhzEGIEl5lG7IHo9OdPOHQHaEK&pid=Api&P=0&h=180',
+      file: music45,
+    },
+  {
+      title: 'Lý Do Nào Để Quay Lại Với Nhau',
+      artist: 'PAR SG x New$oulZ',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.oEDUdhiqZH2PbkTclBXu4AHaEK&pid=Api&P=0&h=180',
+      file: music44,
+    },
+  {
+      title: 'Hư không ',
+      artist: 'Kha',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.oLc1g-A7ATjeFdo6mx4M-gHaEK&pid=Api&P=0&h=180',
+      file: music43,
+    },
+    {
+      title: 'Phố Cũ Còn Anh',
+      artist: 'Quinn ft Chilly',
+      image: 'https://i.ytimg.com/vi/plecW_gMfos/maxresdefault.jpg',
+      file: music42,
+    },
+  {
+      title: 'Ôm Em lần Cuối',
+      artist: 'Nit ft. Sing x Freak D',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.3greZnYjOUoXU1JPu1i4zQHaEK&pid=Api&P=0&h=180',
+      file: music41,
+    },
+   {
+      title: 'Hẹn Em Kiếp Sau',
+      artist: 'Lã. x Duy Phúc x TiB',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.hYFjU1tXrlv3d_I1GORnSQHaEK&pid=Api&P=0&h=180',
+      file: music40,
+    },
+   {
+      title: 'Như Anh Đã Thấy Em',
+      artist: 'PhucXp ft. Freak D',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.923ERMEvefgwBEYy68fZzAHaEK&pid=Api&P=0&h=180',
+      file: music39,
+    },
+   {
+      title: '10 Ngàn Năm',
+      artist: 'PC Prod. Duckie',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.mLDmWZuZb--nTJKs-8S-BwHaHa&pid=Api&P=0&h=180',
+      file: music38,
+    },
+  {
       title: 'VỀ BÊN ANH',
       artist: 'Jack (G5R)',
       image: 'https://tse2.mm.bing.net/th?id=OIP.s1c-4AXOp-VKaA0RHOqWZgHaEK&pid=Api&P=0&h=180',
-      file: music38,
+      file: music37,
     },
-  // {
-  //     title: 'SAO EM VÔ TÌNH',
-  //     artist: 'JACK x K-ICM ft. LIAM',
-  //     image: 'https://tse2.mm.bing.net/th?id=OIP.zz-XasjhTdLuLpq7zV-fXAHaEK&pid=Api&P=0&h=180',
-  //     file: music37,
-  //   },
+ 
    {
       title: 'nếu lúc đó',
       artist: 'tlinh',
