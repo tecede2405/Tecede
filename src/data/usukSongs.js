@@ -56,6 +56,7 @@ import music55  from '../audio/Nhac Usuk/Timbaland - Apologize (Lyrics) Feat. On
 
 
   const songs = [
+    
      {
       title: 'Apologize',
       artist: 'Timbaland',
@@ -125,7 +126,7 @@ import music55  from '../audio/Nhac Usuk/Timbaland - Apologize (Lyrics) Feat. On
     {
       title: 'Girls Like You',
       artist: 'Maroon 5 ft. Cardi B',
-      image: 'https://tse4.mm.bing.net/th?id=OIP.XerS9PNxSB-5-1ieek_t9QAAAA&pid=Api&P=0&h=180',
+      image: 'https://stat.ameba.jp/user_images/20180602/09/sippin-on-sunshine/49/bf/j/o0850085014203047699.jpg?caw=800',
       file: music44,
     },
     {

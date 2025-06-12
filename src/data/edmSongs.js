@@ -15,8 +15,32 @@ import music14 from '../audio/NhacEDM/Axel Johansson - Miracles (Lyrics) ft. Tin
 import music15 from '../audio/NhacEDM/JJD - Adventure  Glitch Hop  NCS - Copyright Free Music.mp3';
 import music16 from '../audio/NhacEDM/Zaza - Be Together  Electronic  NCS - Copyright Free Music.mp3';
 import music17 from '../audio/NhacEDM/Disfigure - Blank  Melodic Dubstep  NCS - Copyright Free Music.mp3';
+import music18 from '../audio/NhacEDM/Frontier.mp3';
+import music19 from '../audio/NhacEDM/Itro & Tobu - Cloud 9.mp3';
+import music20 from '../audio/NhacEDM/Vicetone - No Rest (Official Video  Lyrics).mp3';
+
+
+
 
  const songs = [
+  {
+      title: 'No Rest',
+      artist: 'Vicetone',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.LDZyPVdxvz-YVSC3ZAgLVQHaHa&pid=Api&P=0&h=180',
+      file: music20,
+    },
+  {
+      title: 'Cloud 9',
+      artist: 'Itro & Tobu',
+      image: 'https://i.ytimg.com/vi/o9nt6gakRD0/maxresdefault.jpg',
+      file: music19,
+    },
+   {
+      title: 'Frontier',
+      artist: 'Doctor Vox',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.iQE_mvWxJs72SQunkyzexwHaHa&pid=Api&P=0&h=180',
+      file: music18,
+    },
   {
       title: 'Blank',
       artist: 'Disfigure',

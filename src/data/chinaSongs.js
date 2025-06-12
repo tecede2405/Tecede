@@ -21,9 +21,25 @@ import music20 from '../audio/NhacTrung/[Vietsub] Khách Mời - Lộ Phi Văn  
 import music21 from '../audio/NhacTrung/[Vietsub] Người theo đuổi ánh sáng - Từ Vi.mp3';
 import music22 from '../audio/NhacTrung/[Vietsub] Xóa đi - Yên ( Hứa Giai Hào)  删了吧 - 烟(许佳豪).mp3';
 import music23 from '../audio/NhacTrung/[Vietsub  Pinyin] Đợi đến tháng 13 - Trần Tiểu Mãn等十三月- 陈小满.mp3';
+import music24 from '../audio/NhacTrung/[VietsubTiktok] Không Liên Quan Đến Anh - A Nhũng  与我无关 - 阿冗  Nhạc Hoa tâm trạng Diệp Tử.mp3';
+import music25 from '../audio/NhacTrung/[Vietsub] FALLING YOU - TĂNG KHẢ NY & ĐÔ TRÍ VĂN (Chiếc Bật Lửa Và Váy Công Chúa Ost  点燃我,温暖你 Ost).mp3';
+
+
 
 
 const songs = [
+   {
+      title: 'FALLING YOU',
+      artist: 'TĂNG KHẢ NY & ĐÔ TRÍ VĂN',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.we8dAgPKsKCGk1KrOQQKYgHaEK&pid=Api&P=0&h=180',
+      file: music25,
+    },
+  {
+      title: 'Không Liên Quan Đến Anh',
+      artist: 'A Nhũng',
+      image: 'https://i.ytimg.com/vi/uLaMk-5-32o/hqdefault.jpg',
+      file: music24,
+    },
   {
       title: 'Đợi đến tháng 13',
       artist: 'Trần Tiểu Mãn',
