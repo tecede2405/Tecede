@@ -1,5 +1,16 @@
 .collapsed {
     width: 90%;
     margin: 0 auto; 
-    background: #fff;   
+    background: #212121;
+    color: #fff;
+}
+.ant-collapse-header svg{
+    color: #fff;
+}
+.ant-collapse-header-text{
+    color: #fff;
+}
+.ant-collapse-content-box {
+    background: #212121;
+    color: #fff; 
 }

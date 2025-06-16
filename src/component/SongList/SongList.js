@@ -19,7 +19,7 @@ export default function SongList({ songs, currentIndex, onPlay }) {
             />
             <div className="card-music-body d-flex flex-column">
               <h5 className="card-title mb-1">{song.title}</h5>
-              <p className="card-text text-muted mb-2">{song.artist}</p>
+              <p className="card-text mb-2">{song.artist}</p>
             </div>
           </div>
         </div>

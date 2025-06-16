@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./searchBox.scss";
 
 export default function SearchBar({ songs, onSelectSong }) {
   const [search, setSearch] = useState("");
@@ -59,9 +60,9 @@ export default function SearchBar({ songs, onSelectSong }) {
               />
               <div>
                 <div>
-                  <strong>{song.title}</strong>
+                  <strong className="suggestion-song-title">{song.title}</strong>
                 </div>
-                <small className="text-muted">{song.artist}</small>
+                <small className="suggestion-song-text">{song.artist}</small>
               </div>
             </li>
           ))}

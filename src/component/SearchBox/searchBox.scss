@@ -1,0 +1,27 @@
+.form-control{
+    background: #303030;
+    border:0;
+    color: #ddd!important;
+}
+.form-control::placeholder{
+    color: #ddd;
+    opacity: 0.5;
+}
+.form-control:focus{
+    background: #303030;
+    border: 1px solid #ddd;
+}
+.suggestions-list{
+    background: #303030;
+}
+
+.suggestion-song-title{
+    color: #ddd;
+}
+
+.suggestion-song-text{
+    color: #ddd;
+}
+.suggestions-list:hover{
+    background: #303030;
+}

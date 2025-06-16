@@ -23,11 +23,52 @@ import music22 from '../audio/NhacTrung/[Vietsub] Xóa đi - Yên ( Hứa Giai H
 import music23 from '../audio/NhacTrung/[Vietsub  Pinyin] Đợi đến tháng 13 - Trần Tiểu Mãn等十三月- 陈小满.mp3';
 import music24 from '../audio/NhacTrung/[VietsubTiktok] Không Liên Quan Đến Anh - A Nhũng  与我无关 - 阿冗  Nhạc Hoa tâm trạng Diệp Tử.mp3';
 import music25 from '../audio/NhacTrung/[Vietsub] FALLING YOU - TĂNG KHẢ NY & ĐÔ TRÍ VĂN (Chiếc Bật Lửa Và Váy Công Chúa Ost  点燃我,温暖你 Ost).mp3';
-
+import music26 from '../audio/NhacTrung/Một Bước Xa Xôi 一步之遥- Nhậm NhiênTik Tok.mp3';
+import music27 from '../audio/NhacTrung/Bại tướng.mp3';
+import music28 from '../audio/NhacTrung/Người từng yêu.mp3';
+import music29 from '../audio/NhacTrung/[Vietsub] Thanh Trừ - Vương Hân Thần, Tô Tinh Tiệp  清空 - 王忻辰蘇星婕.mp3';
+import music30 from '../audio/NhacTrung/[Vietsub] Tây Lâu Biệt Tự - Doãn Tích MiênTiểu Điền Âm Nhạc Xã  西楼别序 - 尹昔眠小田音乐社.mp3';
+import music31 from '../audio/NhacTrung/[VietsubTiktok] Sau Này Khi Gặp Được Anh Ấy - Hồ 66  后来遇见他 - 胡66  Nhạc Hoa tâm trạng.mp3';
 
 
 
 const songs = [
+  {
+      title: 'Sau Này Khi Gặp Được Anh Ấy', 
+      artist: 'Hồ 66',
+      image: 'https://i.ytimg.com/vi/h8BHGoknQ3k/maxresdefault.jpg',
+      file: music31,
+    },
+  {
+      title: 'Tây Lâu Biệt Tự', 
+      artist: 'Doãn Tích Miên/Tiểu Điền Âm Nhạc Xã',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.2UGB5OCR_p3c4URsIaYJdwHaHa&pid=Api&P=0&h=180',
+      file: music30,
+    },
+  {
+      title: 'Thanh Trừ', 
+      artist: 'Vương Hân Thần, Tô Tinh Tiệp',
+      image: 'https://i.ytimg.com/vi/Y4pmmQkm9n8/maxresdefault.jpg',
+      file: music29,
+    },
+  {
+      title: 'Người từng yêu', 
+      artist: 'Nhậm Nhiên',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.ip23aNi4flRB0Bh6u27YUQHaEK&pid=Api&P=0&h=180',
+      file: music28,
+    },
+  {
+      title: 'Bại tướng', 
+      artist: 'Nhậm Nhiên',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.mO1o7cH2_Ui7L3C0cvZqUAHaEK&pid=Api&P=0&h=180',
+      file: music27,
+    },
+   {
+      title: 'Một Bước Xa Xôi', 
+      artist: 'Nhậm Nhiên',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.rpi22MXe_f2SUqckKjtwAAHaEK&pid=Api&P=0&h=180',
+      file: music26,
+    },
    {
       title: 'FALLING YOU',
       artist: 'TĂNG KHẢ NY & ĐÔ TRÍ VĂN',

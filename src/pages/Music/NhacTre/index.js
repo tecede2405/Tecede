@@ -42,7 +42,7 @@ function NhacTre() {
 
 
         <div className="container mt-4">
-          <h6>Tìm nhạc ở đây nè...</h6>
+          <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
           <SearchBar songs={playlist} onSelectSong={handlePlay} />
 
           <SongList songs={playlist || []} currentIndex={currentIndex} onPlay={handlePlay} />
@@ -65,7 +65,7 @@ function NhacTre() {
                 <h5 className="card-render-title mb-1">
                   {playlist[currentIndex].title}
                 </h5>
-                <p className="card-render-text text-muted mb-2">
+                <p className="card-render-text mb-2">
                   {playlist[currentIndex].artist}
                 </p>
               </div>
