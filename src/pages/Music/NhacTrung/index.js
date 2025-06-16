@@ -24,9 +24,7 @@ function NhacTrung() {
     <div className="music-container-box">
       <Tabbar />
       <div className="music-container">
-        <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3" style={{
-        background: "linear-gradient(135deg, #2b5876, #4e4376)"
-        }}>
+        <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
                   <img src={china} alt="" className="profile-image" />
                   <div className="profile-info text-center text-md-start">
                     <h4 className="profile-title">Nhạc Trung Quốc 🎵</h4>
@@ -40,7 +38,7 @@ function NhacTrung() {
                   </div>
                 </div>
         <div className="container mt-4">
-          <h6>Tìm nhạc ở đây nè...</h6>
+          <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
           <SearchBar songs={playlist} onSelectSong={handlePlay} />
 
           <SongList songs={playlist || []} currentIndex={currentIndex} onPlay={handlePlay} />
@@ -63,7 +61,7 @@ function NhacTrung() {
                 <h5 className="card-render-title mb-1">
                   {playlist[currentIndex].title}
                 </h5>
-                <p className="card-render-text text-muted mb-2">
+                <p className="card-render-text mb-2">
                   {playlist[currentIndex].artist}
                 </p>
               </div>

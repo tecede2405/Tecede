@@ -167,7 +167,7 @@ const songs = [
       file: music32,
     },
   {
-      title: '24H',
+      title: '24 Giờ',
       artist: 'LyLy ft. Magazine',
       image: 'https://tse1.mm.bing.net/th?id=OIP.-RaPbr7QCE5x3EB9y20zCQHaFj&pid=Api&P=0&h=180',
       file: music31,

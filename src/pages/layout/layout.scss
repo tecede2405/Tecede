@@ -9,7 +9,7 @@
     border-bottom: 1px solid #ddd;
     align-items:center;
     justify-content: space-between;
-    background-color:#000;
+    background-color:#1a1a1a;
     background-position:center;
     box-shadow: 5px 0 10px rgba(118, 57, 57, 0.382);
     z-index: 1000;
@@ -22,7 +22,7 @@
         
     }
     &__fabar{
-        color: #fff;
+        color: #ddd;
         width:45px;
         margin-left: 20px;
         margin-right: 10px;
@@ -47,7 +47,7 @@
                 .menu__page{
                     width: 120px;
                     height: 100%;
-                    color: #fff;
+                    color: #ddd;
                     font-weight: 700;
                     text-decoration: none;
                     display: flex;
@@ -78,7 +78,7 @@ footer{
     align-items : center;
     justify-content:center;
     z-index: 1000;
-    background: #000;
+    background: #181818;
     // background-image : url(https://i.pinimg.com/originals/b9/3d/49/b93d49cfb9653b743ef2692cb9d3f205.gif);
     // background-position: center; 
     .footer-contact{
@@ -90,7 +90,7 @@ footer{
         ul{
             list-style: none;
             li{
-                color: #fff;
+                color: #ddd;
                 text-shadow: 
                 -1px -1px 0 black, 
                 1px -1px 0 black, 
@@ -102,7 +102,7 @@ footer{
     p {
         width: 100%;
         height: 50px;
-        color: #fff;
+        color: #ddd;
         font-weight: 600;
         text-align: center;
         margin:0;
@@ -118,22 +118,21 @@ footer{
     top: 50px;
     z-index: 999;
     width: 16%;
-    background: #fff;
+    background: #181818;
     backdrop-filter: blur(10px);
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5);
     margin: 0;
     padding:0;
-
+    color: #ddd;
     p{
         width: 100%;
         height: 50px ;
-        color: #383737;
+        
         font-weight: 700;
         text-align: center;
         padding: 15px 0;
         margin: 0;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        background: #fff;
         border-bottom: 1px solid #000;
     }   
     ul{
@@ -147,7 +146,7 @@ footer{
         width: 100%;
         font-weight: 700;
         padding: 7px 0;
-        color: #383737;
+        color: #ddd;
         display: flex;
         justify-content: start;
         align-items: center;
@@ -165,8 +164,10 @@ footer{
 
 .Home{
     display:flex;
-        width: 100%;
+    width: 100%;
     height: 100%;
+    background: #212121;
+    color: #ddd;
     &__main{
         flex:1;
     }
@@ -188,15 +189,13 @@ footer{
         margin-bottom: 50px;
         margin-left: 10px;
         overflow: hidden;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #333333;
         h2{
-            color: #000 ;
             text-align: center;
         }
         p{
             text-align:center;
             margin:0;
-            color: #000 ;
         }
         img{
             width: 100%;
@@ -245,6 +244,8 @@ footer{
   //About 
   .about{
     display: flex;
+    background: #212121;
+    color: #ddd;
     // background-attachment: fixed;
     // background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
     // background-repeat: no-repeat;
@@ -261,9 +262,8 @@ footer{
         display: flex;
         align-items:center;
         justify-content: center;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #333333;
         p{
-            color: #000;
             font-size: 14px;
             font-weight: 500;
             padding: 0 30px;
@@ -281,24 +281,20 @@ footer{
         margin: 0 auto;
         margin-top: 30px;
         padding-bottom: 50px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #333333;
         img{
             width: 70%;
             height: 250px;
             margin-right: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #333333;
         }
-        p{
-            color: #000;
+        p{  
             font-size: 14px;
             font-weight: 500;
             padding: 0 30px;
         }
     }
   }
-
-
-
 
 
   .hidden-audio { 
@@ -324,11 +320,12 @@ footer{
     display:flex;
     width: 100%;
     height: 100%;
+    background: #212121;
     &__content{
         height: 68vh;
     }
     &__title {
-        color:#000;
+        color:#ddd;
         font-size: 30px;
         font-weight: 600;
         text-align:center;
@@ -369,8 +366,6 @@ footer{
 
   @media (max-width: 960px){
     .tabbar {
-        background: #fff;
-        
         p{
             height: 40px;
             padding-bottom: 35px;
@@ -392,7 +387,6 @@ footer{
     }
     //about 
     .about{
-      
         flex: none;
         &__produce{
             height: 400px;
@@ -571,43 +565,42 @@ footer{
           font-size: 18px;
     }
 
-      .tabbar{
-        width: 100%;
+    .tabbar{
+    width: 100%;
+    display:flex;
+    height:40px;
+    p{
+        width: 20%;
+        font-size:10px;
+        padding:0;
+        align-items:center;
+        justify-content:center;
         display:flex;
-        height:40px;
-        background: rgba(74, 73, 73, .541);
-        p{
-            width: 20%;
-            font-size:10px;
-            padding:0;
-            align-items:center;
-            justify-content:center;
-            display:flex;
-            flex-direction:column;
-            background: #bab6b6;
-        }
-        ul{
-            display:flex;
-            flex:1;
-            li{
-                width: 25%;
-                
-                a {
-                    height: 100%;
-                    width: 100%;
-                    font-weight: 700;
-                    font-size: 10px;
-                    display: flex;
-                    justify-content:center;
-                    margin: 0;
-                    .icon{
-                        font-size: 17px;
-                        margin: 0 2px;
-                    }
+        flex-direction:column;
+        background: #181818;
+    }
+    ul{
+        display:flex;
+        flex:1;
+        li{
+            width: 25%;
+            
+            a {
+                height: 100%;
+                width: 100%;
+                font-weight: 700;
+                font-size: 10px;
+                display: flex;
+                justify-content:center;
+                margin: 0;
+                .icon{
+                    font-size: 17px;
+                    margin: 0 2px;
                 }
             }
         }
-       
+    }
+    
     }
     .about {
         flex-direction: column;

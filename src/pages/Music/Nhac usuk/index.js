@@ -24,11 +24,7 @@ function Nhacusuk() {
         <Tabbar />
         <div className="music-container">
           <div
-            className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3"
-            style={{
-              background: "linear-gradient(135deg, #232526, #414345)",
-            }}
-          >
+            className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
             <img src={usuk} alt="" className="profile-image" />
             <div className="profile-info text-center text-md-start">
               <h4 className="profile-title">Nhạc Âu Mỹ 🎵</h4>
@@ -46,7 +42,7 @@ function Nhacusuk() {
           </div>
 
           <div className="container mt-4">
-            <h6>Tìm nhạc ở đây nè...</h6>
+            <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
             <SearchBar songs={playlist} onSelectSong={handlePlay} />
 
             <SongList songs={playlist || []} currentIndex={currentIndex} onPlay={handlePlay} />
@@ -69,7 +65,7 @@ function Nhacusuk() {
                   <h5 className="card-render-title mb-1">
                     {playlist[currentIndex].title}
                   </h5>
-                  <p className="card-render-text text-muted mb-2">
+                  <p className="card-render-text mb-2">
                     {playlist[currentIndex].artist}
                   </p>
                 </div>
