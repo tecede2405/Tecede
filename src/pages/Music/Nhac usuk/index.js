@@ -5,6 +5,8 @@ import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
 import usuk from '../../../img/music-thumnail/usuk.png';
+import { FaStepBackward, FaStepForward } from "react-icons/fa";
+
 
 function Nhacusuk() {
   const {
@@ -59,7 +61,7 @@ function Nhacusuk() {
                   style={{ width: "40px", height: "40px", objectFit: "cover" }}
                 />
                 <button onClick={handlePrev} className="change-song">
-                  ⏮
+                  <FaStepBackward />
                 </button>
                 <div className="card-music-body d-flex flex-column">
                   <h5 className="card-render-title mb-1">
@@ -70,7 +72,7 @@ function Nhacusuk() {
                   </p>
                 </div>
                 <button onClick={handleNext} className="change-song">
-                  ⏭
+                  <FaStepForward />
                 </button>
               </div>
 
