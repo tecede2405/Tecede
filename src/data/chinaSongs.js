@@ -29,10 +29,134 @@ import music28 from '../audio/NhacTrung/Người từng yêu.mp3';
 import music29 from '../audio/NhacTrung/[Vietsub] Thanh Trừ - Vương Hân Thần, Tô Tinh Tiệp  清空 - 王忻辰蘇星婕.mp3';
 import music30 from '../audio/NhacTrung/[Vietsub] Tây Lâu Biệt Tự - Doãn Tích MiênTiểu Điền Âm Nhạc Xã  西楼别序 - 尹昔眠小田音乐社.mp3';
 import music31 from '../audio/NhacTrung/[VietsubTiktok] Sau Này Khi Gặp Được Anh Ấy - Hồ 66  后来遇见他 - 胡66  Nhạc Hoa tâm trạng.mp3';
-
-
+import music32 from '../audio/NhacTrung/[Vietsub  Pinyin] Bất Công - Trần Tử Tình  偏向 - 陈子晴  Nhạc Hoa tâm trạng.mp3';
+import music33 from '../audio/NhacTrung/[VietsubPinyin] Nếu Tình yêu Đã Lãng Quên - Uông Tô Lang & Thiện Y Thuần  如果爱忘了 - 汪苏泷 & 单依纯.mp3';
+import music34 from '../audio/NhacTrung/[Vietsub  Pinyin] Sau Khi Anh Đi - Tiểu Mị  我走后 - 小咪 (Tik Tok抖音).mp3';
+import music35 from '../audio/NhacTrung/[Vietsub  Pinyin] Dũng Khí - Miên Tử  勇气 - 棉子.mp3';
+import music36 from '../audio/NhacTrung/[Vietsub] Anh ấy nói - Từ Vi.mp3';
+import music37 from '../audio/NhacTrung/[LYRIC - VIETSUB] Ác ma đến từ thiên đường 來自天堂的魔鬼 - Đặng Tử Kỳ G.E.M.mp3';
+import music38 from '../audio/NhacTrung/[Vietsub] Đáy Biển 海底 - Nhất Chi Lựu Liên 一支榴莲.mp3';
+import music39 from '../audio/NhacTrung/[Vietsub] Đào Hoa Nặc (桃花诺) - Vượng Tử Tiểu Kiều (旺仔小乔) - Hot Douyin.mp3';
+import music40 from '../audio/NhacTrung/[Vietsub] Lạnh lẽo - Trương Bích Thần & Dương Tông Vỹ (OST Tam Sinh Tam Thế Thập Lý Đào Hoa).mp3';
+import music41 from '../audio/NhacTrung/[VietsubTiktok] Âm Thanh Của Nỗi Nhớ Anh  - Ngạo Thất Gia  是想你的声音啊 - 傲七爷  Nhạc Hoa tâm trạng.mp3';
+import music42 from '../audio/NhacTrung/[Vietsub] Mạc Vấn Quy Kỳ - Tưởng Tuyết Nhi  莫問歸期 - 蔣雪兒.mp3';
+import music43 from '../audio/NhacTrung/[Vietsub] Ngày trước sợ (从前怕) - Vu Đông Nhiên (于冬然) - Hot Douyin.mp3';
+import music44 from '../audio/NhacTrung/[Vietsub  Pinyin] Tình Yêu Vĩnh Viễn Không Mất Đi - Thiện Y Thuần  永不失恋的爱 - 单依纯.mp3';
+import music45 from '../audio/NhacTrung/Vietsub  PinyinThăm Cố Tri - Thiển Ảnh A  探故知 - 浅影阿.mp3';
+import music46 from '../audio/NhacTrung/[Vietsub] Dễ Thay Đổi - Vương Tĩnh Văn Không Mập   善變 - 王靖雯不胖.mp3';
+import music47 from '../audio/NhacTrung/[Vietsub] Kịch hay (好戏) - Vương Tĩnh Văn (王靖雯) - Hot Douyin.mp3';
+import music48 from '../audio/NhacTrung/[Vietsub] Đã quên hay chưa_ (忘了没有) - Vương Tĩnh Văn Không Mập (王靖雯不胖).mp3';
+import music49 from '../audio/NhacTrung/VIETSUB   HOT TIKTOK Không có lý do 没有理由   Ryan B &Chu Diên Anh 周延英.mp3';
 
 const songs = [
+   {
+      title: 'Không có lý do', 
+      artist: 'Ryan B &Chu Diên Anh',
+      image: 'https://i.ytimg.com/vi/gNRquyByuro/maxresdefault.jpg',
+      file: music49,
+    },
+    {
+      title: 'Đã quên hay chưa', 
+      artist: 'Vương Tĩnh Văn Không Mập',
+      image: 'https://i1.sndcdn.com/artworks-AyJa5BBdYQYBkvX8-CHYj6g-t500x500.jpg',
+      file: music48,
+    },
+   {
+      title: 'Kịch hay', 
+      artist: 'Vương Tĩnh Văn Không Mập',
+      image: 'https://i.ytimg.com/vi/mYIW5Upx9R8/maxresdefault.jpg',
+      file: music47,
+    },
+   {
+      title: 'Dễ Thay Đổi', 
+      artist: 'Vương Tĩnh Văn Không Mập',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.HVUiBfeWdYW_rHOoOoBdrwHaEK&pid=Api&P=0&h=180',
+      file: music46,
+    },
+   {
+      title: 'Thăm Cố Tri', 
+      artist: 'Thiển Ảnh A',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.Wt7tpAn7KjsnOvvg_IoicwHaHa&pid=Api&P=0&h=180',
+      file: music45,
+    },
+  {
+      title: 'Tình Yêu Vĩnh Viễn Không Mất Đi', 
+      artist: 'Vương Tĩnh Văn Không Mập',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.fz63NVzzM0ogMIU1Hhqv7QHaHa&pid=Api&P=0&h=180',
+      file: music44,
+    },
+   {
+      title: 'Ngày trước sợ', 
+      artist: 'Vu Đông Nhiên',
+      image: 'https://i.ytimg.com/vi/zaAGEUua4mE/maxresdefault.jpg',
+      file: music43,
+    },
+   {
+      title: 'Mạc Vấn Quy Kỳ', 
+      artist: 'Tưởng Tuyết Nhi',
+      image: 'https://avatar-ex-swe.nixcdn.com/song/2019/10/25/d/7/6/c/1571969552591_640.jpg',
+      file: music42,
+    },
+  {
+      title: 'Âm Thanh Của Nỗi Nhớ Anh', 
+      artist: 'Ngạo Thất Gia',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.9jvC0HOGatWQJQlAIlUCQQHaHa&pid=Api&P=0&h=180',
+      file: music41,
+    },
+  {
+      title: 'Lạnh lẽo', 
+      artist: 'Trương Bích Thần & Dương Tông Vỹ',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.YamaGiw_woQmGaVBw-iasgHaEK&pid=Api&P=0&h=180',
+      file: music40,
+    },
+   {
+      title: 'Đào Hoa Nặc', 
+      artist: 'Vượng Tử Tiểu Kiều',
+      image: 'https://webtiengtrung.com/wp-content/uploads/2023/03/%C4%91%C3%A0o-hoa-n%E1%BA%B7c.jpg',
+      file: music39,
+    },
+  {
+      title: 'Đáy Biển', 
+      artist: 'Nhất Chi Lựu Liên',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.2900vfOG5ZutG0geq6yrlAHaEK&pid=Api&P=0&h=180',
+      file: music38,
+    },
+  {
+      title: 'Ác ma đến từ thiên đường', 
+      artist: 'Đặng Tử Kỳ G.E.M',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.vWREv-LYsQXu4Xf3PuPjQAHaEK&pid=Api&P=0&h=180',
+      file: music37,
+    },
+  {
+      title: 'Anh ấy nói', 
+      artist: 'Từ Vi',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.vmdTco9GuLgJ2kEo0iacOAHaEK&pid=Api&P=0&h=180',
+      file: music36,
+    },
+   {
+      title: 'Dũng Khí', 
+      artist: 'Miên Tử',
+      image: 'https://i.ytimg.com/vi/UMOE4g6QBQ4/maxresdefault.jpg',
+      file: music35,
+    },
+  {
+      title: 'Sau Khi Anh Đi', 
+      artist: 'Tiểu Mị',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.9SJZPvE__fF-iCZMFz5z3AHaEK&pid=Api&P=0&h=180',
+      file: music34,
+    },
+    {
+      title: 'Nếu Tình yêu Đã Lãng Quên', 
+      artist: 'Uông Tô Lang & Thiện Y Thuần',
+      image: 'https://tse4.mm.bing.net/th?id=OIP._-sxCoPimaGvAk-mh-aF4wHaEK&pid=Api&P=0&h=180',
+      file: music33,
+    },
+  {
+      title: 'Bất Công', 
+      artist: 'Trần Tử Tình',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.z1X4p9dgTa95Qv9S8BXwRgHaEK&pid=Api&P=0&h=180',
+      file: music32,
+    },
   {
       title: 'Sau Này Khi Gặp Được Anh Ấy', 
       artist: 'Hồ 66',

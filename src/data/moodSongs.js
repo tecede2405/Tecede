@@ -15,8 +15,17 @@ import music13 from '../audio/NhacTamTrang/Take Your Hand.mp3';
 import music14 from '../audio/NhacTamTrang/关于你 (伴奏版).mp3';
 import music15 from '../audio/NhacTamTrang/Track in Time (Piano Version).mp3';
 import music16 from '../audio/NhacTamTrang/those time (piano).mp3';
+import music17 from '../audio/NhacTamTrang/Chezile - Beanie (Lyrics).mp3';
+
+
 
 const songs = [
+  {
+      title: 'Beanie',
+      artist: 'Chezile',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.earshvVCJUVEnSvTeu34awHaEK&pid=Api&P=0&h=180',
+      file: music17,
+    },
   {
       title: 'Those Time',
       artist: 'Emptiness',

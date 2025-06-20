@@ -48,9 +48,29 @@ import music47 from '../audio/NhacViet/người ta có thương mình đâu.mp3'
 import music48 from '../audio/NhacViet/Kiêu Ngạo (Lofi Ver.) - Huy Vạc x Freak D.mp3';
 import music49 from '../audio/NhacViet/Người Kế Nhiệm (Lofi Ver.) - Anh Khoa x Freak D.mp3';
 import music50 from '../audio/NhacViet/Đảo Không Người (Lofi Ver.) - Ngô Anh Đạt x Orinn.mp3';
-
+import music51 from '../audio/NhacViet/SEAN  SAU ĐÊM NAY ft. TWENY x SSHINE  OFFICIAL MUSIC VIDEO.mp3';
+import music52 from '../audio/NhacViet/Kay Châu Anh - Think About U (prod. Terra Minor x Peakrozes).mp3';
+import music53 from '../audio/NhacViet/Ước Nguyện - Kha ( Official MV ).mp3';
 
 const songs = [
+  {
+      title: 'Ước Nguyện',
+      artist: 'Kha',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.Q-G9gkJBkKYcUPoWZmxZ4wHaHa&pid=Api&P=0&h=180',
+      file: music53,
+    },
+  {
+      title: 'Think About U',
+      artist: 'Kay Châu Anh',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.nOvZlMo8HfFq41M1t76_WQHaHa&pid=Api&P=0&h=180',
+      file: music52,
+    },
+  {
+      title: 'SAU ĐÊM NAY',
+      artist: 'SEAN ft. TWENY x SSHINE',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.R2QWZ1LM2uxTpx_rogY75AAAAA&pid=Api&P=0&h=180',
+      file: music51,
+    },
   {
       title: 'Đảo Không Người',
       artist: 'Ngô Anh Đạt',
