@@ -6,6 +6,8 @@ import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
 import china from '../../../img/music-thumnail/china.png';
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
+import { useEffect } from "react";
+
 
 function NhacTrung() {
   
@@ -19,6 +21,42 @@ function NhacTrung() {
     handleNext,
     handleShufflePlaylist, 
   } = useMusicPlayer(songs);
+
+  useEffect(() => {
+  if (
+    currentIndex !== null &&
+    playlist &&
+    playlist.length > currentIndex &&
+    'mediaSession' in navigator
+  ) {
+    const song = playlist[currentIndex];
+
+    navigator.mediaSession.metadata = new window.MediaMetadata({
+      title: song.title,
+      artist: song.artist,
+      album: "EDM Playlist",
+      artwork: [
+        {
+          src: song.image,
+          sizes: "512x512",
+          type: "image/jpeg",
+        }
+      ]
+    });
+
+    navigator.mediaSession.setActionHandler("play", () => {
+      audioRef.current.play();
+    });
+
+    navigator.mediaSession.setActionHandler("pause", () => {
+      audioRef.current.pause();
+    });
+
+    navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+    navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+  }
+}, [currentIndex, playlist, audioRef, handlePrev, handleNext]);
+
 
   return (
     <>
