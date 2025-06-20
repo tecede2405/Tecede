@@ -47,7 +47,7 @@
                             <li>Địa chỉ: Tp.Quảng Ngãi</li>
                         </ul>
                     </div>
-                    <p>Copyright &copy; 2024 by Tecede. All right reserved</p>
+                    <p>Copyright &copy; 2024 by Tecede. All right reserved.</p>
                 </footer>
             </>
         )

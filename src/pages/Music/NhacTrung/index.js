@@ -34,7 +34,7 @@ function NhacTrung() {
                       onClick={handleShufflePlaylist}
                       className="shuffle"
                     >
-                      🔀 Phát Ngẫu Nhiên
+                      Phát Ngẫu Nhiên
                     </button>
                   </div>
                 </div>
