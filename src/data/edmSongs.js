@@ -18,11 +18,37 @@ import music17 from '../audio/NhacEDM/Disfigure - Blank  Melodic Dubstep  NCS - 
 import music18 from '../audio/NhacEDM/Frontier.mp3';
 import music19 from '../audio/NhacEDM/Itro & Tobu - Cloud 9.mp3';
 import music20 from '../audio/NhacEDM/Vicetone - No Rest (Official Video  Lyrics).mp3';
-
-
+import music21 from '../audio/NhacEDM/OVSKY - Start Again (Official Audio).mp3';
+import music22 from '../audio/NhacEDM/Diviners - Savannah (feat. Philly K)  Tropical House  NCS - Copyright Free Music.mp3';
+import music23 from '../audio/NhacEDM/K-391 - Summertime [Sunshine].mp3';
+import music24 from '../audio/NhacEDM/Alan Walker - Force.mp3';
 
 
  const songs = [
+   {
+      title: 'Force',
+      artist: 'Alan Walker',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.t046g0k55drT0-8zTZWfyQHaEK&pid=Api&P=0&h=180',
+      file: music24,
+    },
+   {
+      title: 'Summertime',
+      artist: 'K-391',
+      image: 'https://i.ytimg.com/vi/25N1pdzvp4c/maxresdefault.jpg',
+      file: music23,
+    },
+  {
+      title: 'Savannah',
+      artist: 'Diviners feat. Philly K',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.-LAAw1YHlkhVPPIsRrfk0AHaHa&pid=Api&P=0&h=180',
+      file: music22,
+    },
+   {
+      title: 'Start Again',
+      artist: 'OVSKY',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.CY_O1I1I2kMVpmKq3YrHbAHaHa&pid=Api&P=0&h=180',
+      file: music21,
+    },
   {
       title: 'No Rest',
       artist: 'Vicetone',

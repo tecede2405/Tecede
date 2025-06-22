@@ -50,13 +50,40 @@ import music49 from '../audio/Nhac Usuk/Dont lets me down.mp3';
 import music50 from '../audio/Nhac Usuk/Ed Sheeran - Photograph (Lyrics).mp3';
 import music51 from '../audio/Nhac Usuk/OneRepublic - Counting Stars (Lyrics).mp3';
 import music52 from '../audio/Nhac Usuk/its you.mp3';
-import music53  from '../audio/Nhac Usuk/Powfu - death bed (coffee for your head) (Lyrics) ft. beabadoobee.mp3'
-import music54  from '../audio/Nhac Usuk/I dont wanna see you anymore.mp3'
-import music55  from '../audio/Nhac Usuk/Timbaland - Apologize (Lyrics) Feat. OneRepublic.mp3'
+import music53 from '../audio/Nhac Usuk/Powfu - death bed (coffee for your head) (Lyrics) ft. beabadoobee.mp3'
+import music54 from '../audio/Nhac Usuk/I dont wanna see you anymore.mp3'
+import music55 from '../audio/Nhac Usuk/Timbaland - Apologize (Lyrics) Feat. OneRepublic.mp3'
+import music56 from '../audio/Nhac Usuk/Nothing On You - Barry Brizzy  (Vietsub  Lyric).mp3'
+import music57 from '../audio/Nhac Usuk/Billie Eilish - party favor (Gustixa Remix).mp3'
+import music58 from '../audio/Nhac Usuk/dandelions (Gustixa Remix).mp3'
+import music59 from '../audio/Nhac Usuk/Mitski - My Love Mine All Mine.mp3'
 
 
   const songs = [
-    
+    {
+      title: 'My Love Mine All Mine',
+      artist: 'Mitski',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.jQ0qKOasCE2TsASp1hd8UAHaEK&pid=Api&P=0&h=180',
+      file: music59,
+    },
+    {
+      title: 'Dandelions',
+      artist: 'Gustixa',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.e8eM0tsk10wQCGLaHvSIhgHaEK&pid=Api&P=0&h=180',
+      file: music58,
+    },
+      {
+      title: 'Party Favor',
+      artist: 'Gustixa',
+      image: 'https://i.ytimg.com/vi/UyMP8EeYtC8/maxresdefault.jpg',
+      file: music57,
+    },
+     {
+      title: 'Nothing On You',
+      artist: 'Barry Brizzy',
+      image: 'https://i.ytimg.com/vi/vOwuc4j2vL8/maxresdefault.jpg',
+      file: music56,
+    },
      {
       title: 'Apologize',
       artist: 'Timbaland',

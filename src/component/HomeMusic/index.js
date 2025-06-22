@@ -6,6 +6,7 @@ import usuk from "../../img/musics-thumbnail/usuk.png";
 import china from "../../img/musics-thumbnail/china.png";
 import edm from "../../img/musics-thumbnail/edm.png";
 import mood from "../../img/musics-thumbnail/mood.png";
+import phonk from "../../img/musics-thumbnail/phonk.png";
 import 'animate.css';
 const musicData = [
     {title: "nhactre", image: nhactre, path: "nhac-tre"},
@@ -13,6 +14,7 @@ const musicData = [
     {title: "china", image: china, path: "trung-quoc"},
     {title: "edm", image: edm, path: "edm"},
     {title: "mood", image: mood, path: "mood"},
+    {title: "phonk", image: phonk, path: "phonk"},
 ];
 
 function HomeMusic() {

@@ -16,7 +16,7 @@ import NhacUSUK from './pages/Music/Nhac usuk/index';
 import NhacTrungQuoc from './pages/Music/NhacTrung/index';
 import NhacEDM from './pages/Music/Nhac Edm/index';
 import NhacTamTrang from './pages/Music/NhacTamTrang/index';
-
+import NhacPhonk from './pages/Music/Nhac Phonk/index';
 
 
 
@@ -48,6 +48,7 @@ function App() {
               <Route path="music/trung-quoc" element={<NhacTrungQuoc />} />
               <Route path="music/edm" element={<NhacEDM />} />
               <Route path="music/mood" element={<NhacTamTrang />} />
+              <Route path="music/phonk" element={<NhacPhonk />} />
             </Route>
           </Routes>
         </>

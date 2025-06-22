@@ -22,7 +22,7 @@ export default function useAudioManager({
         album: "EDM Playlist",
         artwork: [
           {
-            src: "/logo.png", 
+            src: song.image, 
             sizes: "512x512",
             type: "image/png",
           },
