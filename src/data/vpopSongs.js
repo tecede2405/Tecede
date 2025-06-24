@@ -1,432 +1,371 @@
-import music1 from '../audio/NhacViet/[Lyrics] Yêu Thương Ngày Đó - Soobin Hoàng Sơn  OST Yêu Em Bất Chấp.mp3';
-import music2 from '../audio/NhacViet/Bình Yên Nơi Đâu  Sơn Tùng M-TP.mp3';
-import music3 from '../audio/NhacViet/Chi Pu  ANH ƠI Ở LẠI - Official MV (Chuyện Cám Tấm) (치푸).mp3';
-import music4 from '../audio/NhacViet/CÒN YÊU, ĐÂU AI RỜI ĐI - ĐỨC PHÚC  OFFICIAL MV.mp3';
-import music5 from '../audio/NhacViet/Dù cho tận thế.mp3';
-import music6 from '../audio/NhacViet/GHÉ QUA   OFFICIAL MV  Dick x PC x Tofu.mp3';
-import music7 from '../audio/NhacViet/HOA VÔ SẮC  ICM x JACK  OFFICIAL MUSIC VIDEO.mp3';
-import music8 from '../audio/NhacViet/HOAPROX x XESI - VÔ TÌNH  Official Lyric Video.mp3';
-import music9 from '../audio/NhacViet/HOÀNG TÔN - YÊU EM RẤT NHIỀU (Lyrics Video).mp3';
-import music10 from '../audio/NhacViet/NGÀY ĐẦU SAU CHIA TAY - ĐỨC PHÚC x THUỲ TIÊN x KHẮC HƯNG  OFFICIAL MUSIC VIDEO.mp3';
-import music11 from '../audio/NhacViet/Noo Phước Thịnh - Mãi Mãi Bên Nhau.mp3';
-import music12 from '../audio/NhacViet/Thêm Bao Nhiêu Lâu - Đạt G  OFFICIAL MV.mp3';
-import music13 from '../audio/NhacViet/THẰNG ĐIÊN  JUSTATEE x PHƯƠNG LY  OFFICIAL MV.mp3';
-import music14 from '../audio/NhacViet/Tìm Một Người Như Thế - Trungg I.U  OFFICIAL.mp3';
-import music15 from '../audio/NhacViet/Tùng TeA - Già Cùng Nhau Là Được ft. PC ( Prod. VoVanDuc. )  Official MV.mp3';
-import music16 from '../audio/NhacViet/Âm Thầm Bên Em.mp3';
-import music17 from '../audio/NhacViet/Đom Đóm - Jack [Lyrics video].mp3';
-import music18 from '../audio/NhacViet/suýt nữa thì.mp3';
-import music19 from '../audio/NhacViet/MIN - ĐỪNG YÊU NỮA, EM MỆT RỒI  OFFICIAL MUSIC VIDEO.mp3';
-import music20 from '../audio/NhacViet/CẢM GIÁC LÚC ẤY SẼ RA SAO  LOU HOÀNG  OFFICIAL AUDIO.mp3';
-import music21 from '../audio/NhacViet/Có ai thương em như anh.mp3';
-import music22 from '../audio/NhacViet/Có Chàng Trai Viết Lên Cây - Phan Mạnh Quỳnh  MẮT BIẾC OST.mp3';
-import music23 from '../audio/NhacViet/Wn  -  a b c d x y z n m a s a d (song 24)  3107.mp3';
-import music24 from '../audio/NhacViet/Kaidinh x @SIVAN1411  - Thế hệ tan vỡ  Official Lyric Video.mp3';
-import music25 from '../audio/NhacViet/Orange - Tự Sự ft. Thuận Nguyễn l Qua Bển Làm Chi OST - Phim đang chiếu tại rạp.mp3';
-import music26 from '../audio/NhacViet/Phùng Khánh Linh - Hôm Nay Tôi Buồn (Official Music Video).mp3';
-import music27 from '../audio/NhacViet/CÔ ẤY NÓI - NGÔ ANH ĐẠT  OFFICIAL LYRICS VIDEO.mp3';
-import music28 from '../audio/NhacViet/TELDAKTN.mp3';
-import music29 from '../audio/NhacViet/Thì Thôi - Reddy  MV Lyrics Official.mp3';
-import music30 from '../audio/NhacViet/SIVAN - haydeanhduoccungemdau ft. Kai Đinh (Official Music Video).mp3';
-import music31 from '../audio/NhacViet/24H - LyLy ft. Magazine.mp3';
-import music32 from '../audio/NhacViet/Giấc Mơ Của Em.mp3';
-import music33 from '../audio/NhacViet/Em Gái Mưa [ Lyric ]  Hương Tràm  ZymMii.mp3';
-import music34 from '../audio/NhacViet/Đừng Ai Nhắc Về Anh Ấy - Trà My Idol (Lyrics Video).mp3';
-import music35 from '../audio/NhacViet/ĐỢI - 52Hz (prod. RIO)  Official Lyric Video.mp3';
-import music36 from '../audio/NhacViet/tlinh - nếu lúc đó  OFFICIAL VISUALIZER.mp3';
-import music37 from '../audio/NhacViet/[OFFICIAL MV] VỀ BÊN ANH - Jack (G5R).mp3';
-import music38 from '../audio/NhacViet/PC - 10 Ngàn Năm ( Prod. Duckie ) [Official Audio].mp3';
-import music39 from '../audio/NhacViet/Như Anh Đã Thấy Em (CTTDE2) - PhucXp ft. Freak D.mp3';
-import music40 from '../audio/NhacViet/Hẹn em kiếp sau.mp3';
-import music41 from '../audio/NhacViet/Ôm Em lần Cuối (Lofi Ver.) - Nit ft. Sing x Freak D.mp3';
-import music42 from '../audio/NhacViet/Phố Cũ Còn Anh (Freak D Lofi Ver.) - Quinn ft Chilly.mp3';
-import music43 from '../audio/NhacViet/(xuân)_ Hư không - Kha  EP tình.mp3';
-import music44 from '../audio/NhacViet/Lý Do Nào Để Quay Lại Với Nhau - Par SG x New$oulZLyrics.mp3';
-import music45 from '../audio/NhacViet/LÀ BẠN KHÔNG THỂ YÊU  LYRICS  LOU HOÀNG.mp3';
-import music46 from '../audio/NhacViet/Cảm nắng - SUNI Hạ Linh.mp3';
-import music47 from '../audio/NhacViet/người ta có thương mình đâu.mp3';
-import music48 from '../audio/NhacViet/Kiêu Ngạo (Lofi Ver.) - Huy Vạc x Freak D.mp3';
-import music49 from '../audio/NhacViet/Người Kế Nhiệm (Lofi Ver.) - Anh Khoa x Freak D.mp3';
-import music50 from '../audio/NhacViet/Đảo Không Người (Lofi Ver.) - Ngô Anh Đạt x Orinn.mp3';
-import music51 from '../audio/NhacViet/SEAN  SAU ĐÊM NAY ft. TWENY x SSHINE  OFFICIAL MUSIC VIDEO.mp3';
-import music52 from '../audio/NhacViet/Kay Châu Anh - Think About U (prod. Terra Minor x Peakrozes).mp3';
-import music53 from '../audio/NhacViet/Ước Nguyện - Kha ( Official MV ).mp3';
-import music54 from '../audio/NhacViet/EM CƯỚI RỒI À - THANH HƯNG  Em cuoi roi a, khong doi anh nua a  Official MV  Valentine 2025.mp3';
-import music55 from '../audio/NhacViet/Chuyến Xe Cuộc Đời - Khắc Việt  Cover Phiên Bản Tác Giả Thanh Hưng.mp3';
-import music56 from '../audio/NhacViet/Lao Tâm Khổ Tứ  Thanh Hưng (Official MV).mp3';
-import music57 from '../audio/NhacViet/Vạn Sự Tùy Duyên - Thanh Hưng  Official Animation Music Video.mp3';
-import music58 from '../audio/NhacViet/Như Một Người Dưng - Thanh Hưng  Official Music Video.mp3';
-import music59 from '../audio/NhacViet/Tệ Thật, Anh Nhớ Em  Thanh Hưng  Official Lyric Video.mp3';
-import music60 from '../audio/NhacViet/Ai Đợi Mình Được Mãi - Thanh Hưng (Lyric Video).mp3';
-import music61 from '../audio/NhacViet/Em Muốn Ta Là Gì - Thanh Hưng  Official MV.mp3';
 
 const songs = [
    {
       title: 'Em Muốn Ta Là Gì',
       artist: 'Thanh Hưng',
       image: 'https://i.ytimg.com/vi/IGNwV4RJNeo/maxresdefault.jpg',
-      file: music61,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790571/Em_Mu%E1%BB%91n_Ta_L%C3%A0_G%C3%AC_-_Thanh_H%C6%B0ng_Official_MV_mbzhhv.mp3',
     },  
   {
       title: 'Ai Đợi Mình Được Mãi',
       artist: 'Thanh Hưng',
       image: 'https://zmp3-photo-fbcrawler.zadn.vn/thumb_video/1/8/e/6/18e638b01a202d757a7f0326e093313d.jpg',
-      file: music60,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790521/Ai_%C4%90%E1%BB%A3i_M%C3%ACnh_%C4%90%C6%B0%E1%BB%A3c_M%C3%A3i_-_Thanh_H%C6%B0ng_Lyric_Video_x4vos0.mp3',
     },
   {
       title: 'Tệ Thật, Anh Nhớ Em',
       artist: 'Thanh Hưng',
       image: 'https://tse2.mm.bing.net/th?id=OIP._VXWCyJlGBg-ReEXKrxdewHaEK&pid=Api&P=0&h=180',
-      file: music59,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790530/T%E1%BB%87_Th%E1%BA%ADt_Anh_Nh%E1%BB%9B_Em_Thanh_H%C6%B0ng_Official_Lyric_Video_mleehf.mp3',
     },
   {
       title: 'Như Một Người Dưng',
       artist: 'Thanh Hưng',
       image: 'https://tse1.mm.bing.net/th?id=OIP.sa_piuJfsJbP_NfESP_99AHaEK&pid=Api&P=0&h=180',
-      file: music58,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790512/Nh%C6%B0_M%E1%BB%99t_Ng%C6%B0%E1%BB%9Di_D%C6%B0ng_-_Thanh_H%C6%B0ng_Official_Music_Video_zl53do.mp3',
     },
   {
       title: 'Vạn Sự Tùy Duyên',
       artist: 'Thanh Hưng',
       image: 'https://i.ytimg.com/vi/jfpQHBsPzkU/maxresdefault.jpg',
-      file: music57,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790518/V%E1%BA%A1n_S%E1%BB%B1_T%C3%B9y_Duy%C3%AAn_-_Thanh_H%C6%B0ng_Official_Animation_Music_Video_ejdmf2.mp3',
     },
    {
       title: 'Lao Tâm Khổ Tứ',
       artist: 'Thanh Hưng',
       image: 'https://avatar-ex-swe.nixcdn.com/song/share/2023/02/27/4/f/e/5/1677479339168.jpg',
-      file: music56,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790529/Lao_T%C3%A2m_Kh%E1%BB%95_T%E1%BB%A9_Thanh_H%C6%B0ng_Official_MV_xdvwbe.mp3',
     },
    {
       title: 'Chuyến Xe Cuộc Đời',
       artist: 'Khắc Việt',
       image: 'https://tse3.mm.bing.net/th?id=OIP.Iu3puqaQ6Hz1UFTduBkHcQHaGa&pid=Api&P=0&h=180',
-      file: music55,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790412/Chuy%E1%BA%BFn_Xe_Cu%E1%BB%99c_%C4%90%E1%BB%9Di_-_Kh%E1%BA%AFc_Vi%E1%BB%87t_Cover_Phi%C3%AAn_B%E1%BA%A3n_T%C3%A1c_Gi%E1%BA%A3_Thanh_H%C6%B0ng_esazbx.mp3',
     },
   {
       title: 'EM CƯỚI RỒI À',
       artist: 'THANH HƯNG',
       image: 'https://i.ytimg.com/vi/fgCxSjrNvGA/maxresdefault.jpg',
-      file: music54,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790518/EM_C%C6%AF%E1%BB%9AI_R%E1%BB%92I_%C3%80_-_THANH_H%C6%AFNG_Em_cuoi_roi_a_khong_doi_anh_nua_a_Official_MV_Valentine_2025_bho78o.mp3',
     },
   {
       title: 'Ước Nguyện',
       artist: 'Kha',
       image: 'https://tse2.mm.bing.net/th?id=OIP.Q-G9gkJBkKYcUPoWZmxZ4wHaHa&pid=Api&P=0&h=180',
-      file: music53,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790521/%C6%AF%E1%BB%9Bc_Nguy%E1%BB%87n_-_Kha_Official_MV_cyotxx.mp3',
     },
   {
       title: 'Think About U',
       artist: 'Kay Châu Anh',
       image: 'https://tse4.mm.bing.net/th?id=OIP.nOvZlMo8HfFq41M1t76_WQHaHa&pid=Api&P=0&h=180',
-      file: music52,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790410/Kay_Ch%C3%A2u_Anh_-_Think_About_U_prod._Terra_Minor_x_Peakrozes_eopwvw.mp3',
     },
   {
       title: 'SAU ĐÊM NAY',
       artist: 'SEAN ft. TWENY x SSHINE',
       image: 'https://tse3.mm.bing.net/th?id=OIP.R2QWZ1LM2uxTpx_rogY75AAAAA&pid=Api&P=0&h=180',
-      file: music51,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790418/SEAN_SAU_%C4%90%C3%8AM_NAY_ft._TWENY_x_SSHINE_OFFICIAL_MUSIC_VIDEO_j0bw9c.mp3',
     },
   {
       title: 'Đảo Không Người',
       artist: 'Ngô Anh Đạt',
       image: 'https://tse4.mm.bing.net/th?id=OIP.j2RtSmqjI3eurLSy7CPN6QHaEK&pid=Api&P=0&h=180',
-      file: music50,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790511/%C4%90%E1%BA%A3o_Kh%C3%B4ng_Ng%C6%B0%E1%BB%9Di_Lofi_Ver._-_Ng%C3%B4_Anh_%C4%90%E1%BA%A1t_x_Orinn_eccmys.mp3',
     },
   {
       title: 'Người Kế Nhiệm ',
       artist: 'Anh Khoa',
       image: 'https://tse1.mm.bing.net/th?id=OIP.-R6I7oLPgiVKw5V9F1KOaQHaEK&pid=Api&P=0&h=180',
-      file: music49,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790451/Ng%C6%B0%E1%BB%9Di_K%E1%BA%BF_Nhi%E1%BB%87m_Lofi_Ver._-_Anh_Khoa_x_Freak_D_b1xx9z.mp3',
     },
   {
       title: 'Kiêu Ngạo',
       artist: 'Huy Vạc x Freak D',
       image: 'https://tse2.mm.bing.net/th?id=OIP.hb2Z5reVHWtDHvcdbYfVBQHaEK&pid=Api&P=0&h=180',
-      file: music48,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790413/Ki%C3%AAu_Ng%E1%BA%A1o_Lofi_Ver._-_Huy_V%E1%BA%A1c_x_Freak_D_wz8utr.mp3',
     },
   {
       title: 'Người ta có thương mình đâu',
       artist: 'Trúc Nhân',
       image: 'https://tse1.mm.bing.net/th?id=OIP.TUZ6dj_-BhdmL4_rukHIkgAAAA&pid=Api&P=0&h=180',
-      file: music47,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790415/ng%C6%B0%E1%BB%9Di_ta_c%C3%B3_th%C6%B0%C6%A1ng_m%C3%ACnh_%C4%91%C3%A2u_iypeuh.mp3',
     },
     {
       title: 'CẢM NẮNG',
       artist: 'SUNI HẠ LINH',
       image: 'https://tse2.mm.bing.net/th?id=OIP.QCAI0m4kdljg8FXK3pwQxwHaEK&pid=Api&P=0&h=180',
-      file: music46,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790418/C%E1%BA%A3m_n%E1%BA%AFng_-_SUNI_H%E1%BA%A1_Linh_rbhcjx.mp3',
     },
     {
       title: 'LÀ BẠN KHÔNG THỂ YÊU',
       artist: 'LOU HOÀNG',
       image: 'https://tse4.mm.bing.net/th?id=OIP.yhzEGIEl5lG7IHo9OdPOHQHaEK&pid=Api&P=0&h=180',
-      file: music45,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790456/L%C3%80_B%E1%BA%A0N_KH%C3%94NG_TH%E1%BB%82_Y%C3%8AU_LYRICS_LOU_HO%C3%80NG_f68zqn.mp3',
     },
   {
       title: 'Lý Do Nào Để Quay Lại Với Nhau',
       artist: 'PAR SG x New$oulZ',
       image: 'https://tse3.mm.bing.net/th?id=OIP.oEDUdhiqZH2PbkTclBXu4AHaEK&pid=Api&P=0&h=180',
-      file: music44,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790417/L%C3%BD_Do_N%C3%A0o_%C4%90%E1%BB%83_Quay_L%E1%BA%A1i_V%E1%BB%9Bi_Nhau_-_Par_SG_x_New_oulZLyrics_ilfmgu.mp3',
     },
   {
       title: 'Hư không ',
       artist: 'Kha',
       image: 'https://tse4.mm.bing.net/th?id=OIP.oLc1g-A7ATjeFdo6mx4M-gHaEK&pid=Api&P=0&h=180',
-      file: music43,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790576/xu%C3%A2n___H%C6%B0_kh%C3%B4ng_-_Kha_EP_t%C3%ACnh_qcpucb.mp3',
     },
     {
       title: 'Phố Cũ Còn Anh',
       artist: 'Quinn ft Chilly',
       image: 'https://i.ytimg.com/vi/plecW_gMfos/maxresdefault.jpg',
-      file: music42,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790408/Ph%E1%BB%91_C%C5%A9_C%C3%B2n_Anh_Freak_D_Lofi_Ver._-_Quinn_ft_Chilly_ffzvts.mp3',
     },
   {
       title: 'Ôm Em lần Cuối',
       artist: 'Nit ft. Sing x Freak D',
       image: 'https://tse3.mm.bing.net/th?id=OIP.3greZnYjOUoXU1JPu1i4zQHaEK&pid=Api&P=0&h=180',
-      file: music41,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790415/%C3%94m_Em_l%E1%BA%A7n_Cu%E1%BB%91i_Lofi_Ver._-_Nit_ft._Sing_x_Freak_D_ovumey.mp3',
     },
    {
       title: 'Hẹn Em Kiếp Sau',
       artist: 'Lã. x Duy Phúc x TiB',
       image: 'https://tse3.mm.bing.net/th?id=OIP.hYFjU1tXrlv3d_I1GORnSQHaEK&pid=Api&P=0&h=180',
-      file: music40,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790427/H%E1%BA%B9n_em_ki%E1%BA%BFp_sau_yhg36y.mp3',
     },
    {
       title: 'Như Anh Đã Thấy Em',
       artist: 'PhucXp ft. Freak D',
       image: 'https://tse4.mm.bing.net/th?id=OIP.923ERMEvefgwBEYy68fZzAHaEK&pid=Api&P=0&h=180',
-      file: music39,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790573/Nh%C6%B0_Anh_%C4%90%C3%A3_Th%E1%BA%A5y_Em_CTTDE2_-_PhucXp_ft._Freak_D_pzu21b.mp3',
     },
    {
       title: '10 Ngàn Năm',
       artist: 'PC Prod. Duckie',
       image: 'https://tse1.mm.bing.net/th?id=OIP.mLDmWZuZb--nTJKs-8S-BwHaHa&pid=Api&P=0&h=180',
-      file: music38,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790419/PC_-_10_Ng%C3%A0n_N%C4%83m_Prod._Duckie_Official_Audio_wraq3c.mp3',
     },
   {
       title: 'VỀ BÊN ANH',
       artist: 'Jack (G5R)',
       image: 'https://tse2.mm.bing.net/th?id=OIP.s1c-4AXOp-VKaA0RHOqWZgHaEK&pid=Api&P=0&h=180',
-      file: music37,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790425/OFFICIAL_MV_V%E1%BB%80_B%C3%8AN_ANH_-_Jack_G5R_ftkifg.mp3',
     },
  
    {
       title: 'nếu lúc đó',
       artist: 'tlinh',
       image: 'https://tse4.mm.bing.net/th?id=OIP.SoBI5Y51KrAfU_pivVYpxgHaEK&pid=Api&P=0&h=180',
-      file: music36,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790455/tlinh_-_n%E1%BA%BFu_l%C3%BAc_%C4%91%C3%B3_OFFICIAL_VISUALIZER_mjyjro.mp3',
     },
    {
       title: 'ĐỢI',
       artist: '52Hz (prod. RIO)',
       image: 'https://tse1.mm.bing.net/th?id=OIP.ZjUyjJxTeNnJ9lo2znPm2QHaEK&pid=Api&P=0&h=180',
-      file: music35,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790408/%C4%90%E1%BB%A2I_-_52Hz_prod._RIO_Official_Lyric_Video_atagp0.mp3',
     },
    {
       title: 'Đừng Ai Nhắc Về Anh Ấy',
       artist: 'Trà My Idol',
       image: 'https://tse1.mm.bing.net/th?id=OIP.NWBUzku97V-MUMLBTBmTDQHaHa&pid=Api&P=0&h=180',
-      file: music34,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790458/%C4%90%E1%BB%ABng_Ai_Nh%E1%BA%AFc_V%E1%BB%81_Anh_%E1%BA%A4y_-_Tr%C3%A0_My_Idol_Lyrics_Video_tjiedi.mp3',
     },
   {
       title: 'Em Gái Mưa',
       artist: 'Hương Tràm',
       image: 'https://tse2.mm.bing.net/th?id=OIP.agBEa5TR08Q71msafLKRigHaEK&pid=Api&P=0&h=180',
-      file: music33,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790503/Em_G%C3%A1i_M%C6%B0a_Lyric_H%C6%B0%C6%A1ng_Tr%C3%A0m_ZymMii_jns53b.mp3',
     },
   {
       title: 'Giấc Mơ Của Em',
       artist: 'MYLINA, fueled by boba',
       image: 'https://tse1.mm.bing.net/th?id=OIP.pi-Ei723jcvzHnhIkeYz0AHaHa&pid=Api&P=0&h=180',
-      file: music32,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790409/Gi%E1%BA%A5c_M%C6%A1_C%E1%BB%A7a_Em_eggd03.mp3',
     },
   {
       title: '24 Giờ',
       artist: 'LyLy ft. Magazine',
       image: 'https://tse1.mm.bing.net/th?id=OIP.-RaPbr7QCE5x3EB9y20zCQHaFj&pid=Api&P=0&h=180',
-      file: music31,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790421/24H_-_LyLy_ft._Magazine_aimcju.mp3',
     },
    {
       title: 'haydeanhduoccungemdau',
       artist: 'SIVAN ft. Kai Đinh',
       image: 'https://s.mxmcdn.net/images-storage/albums2/6/2/8/7/6/3/67367826_800_800.jpg',
-      file: music30,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790413/SIVAN_-_haydeanhduoccungemdau_ft._Kai_%C4%90inh_Official_Music_Video_d4qkyk.mp3',
     },
   {
       title: 'Thì Thôi',
       artist: 'Reddy',
       image: 'https://tse2.mm.bing.net/th?id=OIP.L7Re5cGUyQy4CqZhluWkeAHaEK&pid=Api&P=0&h=180',
-      file: music29,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790532/Th%C3%AC_Th%C3%B4i_-_Reddy_MV_Lyrics_Official_zgexfh.mp3',
     },
    {
       title: 'Thương E Là Điều A Ko Thể Ngờ',
       artist: 'Noo Phước Thịnh',
       image: 'https://tse3.mm.bing.net/th?id=OIP.7dpSMbmOcL33gVSvgCyTzQHaHa&pid=Api&P=0&h=180',
-      file: music28,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790517/TELDAKTN_kv01bh.mp3',
     },
   {
       title: 'CÔ ẤY NÓI',
       artist: 'NGÔ ANH ĐẠT',
       image: 'https://tse2.mm.bing.net/th?id=OIP.NgTtmpqeMQS-C_LJrII2XwAAAA&pid=Api&P=0&h=180',
-      file: music27,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790508/C%C3%94_%E1%BA%A4Y_N%C3%93I_-_NG%C3%94_ANH_%C4%90%E1%BA%A0T_OFFICIAL_LYRICS_VIDEO_gmwd6z.mp3',
     },
   {
       title: 'Hôm Nay Tôi Buồn',
       artist: 'Phùng Khánh Linh',
       image: 'https://tse2.mm.bing.net/th?id=OIP.ocwRi_3YCwZ41SolWkLF2wHaHa&pid=Api&P=0&h=180',
-      file: music26,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790497/Ph%C3%B9ng_Kh%C3%A1nh_Linh_-_H%C3%B4m_Nay_T%C3%B4i_Bu%E1%BB%93n_Official_Music_Video_dou7dz.mp3',
     },
   {
       title: 'Tự Sự',
       artist: 'Orange ft. Thuận Nguyễn',
       image: 'https://tse2.mm.bing.net/th?id=OIP.MtQ4gOMeEYNVxN-UmKPFyQHaEK&pid=Api&P=0&h=180',
-      file: music25,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790450/Orange_-_T%E1%BB%B1_S%E1%BB%B1_ft._Thu%E1%BA%ADn_Nguy%E1%BB%85n_l_Qua_B%E1%BB%83n_L%C3%A0m_Chi_OST_-_Phim_%C4%91ang_chi%E1%BA%BFu_t%E1%BA%A1i_r%E1%BA%A1p_taxsu6.mp3',
     },
   {
       title: 'Thế hệ tan vỡ',
       artist: 'Kaidinh x @SIVAN1411',
       image: 'https://tse1.mm.bing.net/th?id=OIP.i7gIc4DDwxTcaKoYV6peRQHaFj&pid=Api&P=0&h=180',
-      file: music24,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790503/Kaidinh_x_SIVAN1411_-_Th%E1%BA%BF_h%E1%BB%87_tan_v%E1%BB%A1_Official_Lyric_Video_oozrno.mp3',
     },
   {
       title: 'a b c d x y z n m a s a d',
       artist: 'W/n',
       image: 'https://tse3.mm.bing.net/th?id=OIP.WD1jLsAldgJvDTfjF1AB_gHaEK&pid=Api&P=0&h=180',
-      file: music23,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790412/Wn_-_a_b_c_d_x_y_z_n_m_a_s_a_d_song_24_3107_tstg4c.mp3',
     },
   {
       title: 'Có Chàng Trai Viết Lên Cây',
       artist: 'Phan Mạnh Quỳnh',
       image: 'https://tse4.mm.bing.net/th?id=OIP.GFZ9X0R5cnlSmk-CpmrjuwHaEK&pid=Api&P=0&h=180',
-      file: music22,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790509/C%C3%B3_Ch%C3%A0ng_Trai_Vi%E1%BA%BFt_L%C3%AAn_C%C3%A2y_-_Phan_M%E1%BA%A1nh_Qu%E1%BB%B3nh_M%E1%BA%AET_BI%E1%BA%BEC_OST_dltvqt.mp3',
     },
    {
       title: 'CÓ AI THƯƠNG EM NHƯ ANH',
       artist: 'Tóc Tiên',
       image: 'https://tse2.mm.bing.net/th?id=OIP.skKF7hWyElmR9Uz00bcPxAHaEK&pid=Api&P=0&h=180',
-      file: music21,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790452/C%C3%B3_ai_th%C6%B0%C6%A1ng_em_nh%C6%B0_anh_rhlquy.mp3',
     },
     {
       title: 'Yêu thương ngày đó',
       artist: 'Soobin Hoàng Sơn',
       image: 'https://tse4.mm.bing.net/th?id=OIP.EGW2Hn7R8N1Ths8GJomXvAHaEK&pid=Api&P=0&h=180',
-      file: music1,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790450/Lyrics_Y%C3%AAu_Th%C6%B0%C6%A1ng_Ng%C3%A0y_%C4%90%C3%B3_-_Soobin_Ho%C3%A0ng_S%C6%A1n_OST_Y%C3%AAu_Em_B%E1%BA%A5t_Ch%E1%BA%A5p_rtcgo7.mp3',
     },
     {
       title: 'Bình yên nơi đâu',
       artist: 'Sơn Tùng M-TP',
       image: 'https://tse4.mm.bing.net/th?id=OIP.KFdRlDnFRNJ9TP3doLVVggHaEK&pid=Api&P=0&h=180',
-      file: music2,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790421/B%C3%ACnh_Y%C3%AAn_N%C6%A1i_%C4%90%C3%A2u_S%C6%A1n_T%C3%B9ng_M-TP_hn83fk.mp3',
     },
     {
       title: 'Anh ơi ở lại',
       artist: 'Chi Pu',
       image: 'https://tse3.mm.bing.net/th?id=OIP.N7ydPkdw-S6FDgknC0QmwwHaEK&pid=Api&P=0&h=180',
-      file: music3,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790525/Chi_Pu_ANH_%C6%A0I_%E1%BB%9E_L%E1%BA%A0I_-_Official_MV_Chuy%E1%BB%87n_C%C3%A1m_T%E1%BA%A5m_%EC%B9%98%ED%91%B8_gvm9ap.mp3',
     },
     {
       title: 'Còn yêu đâu ai rời đi',
       artist: 'Đức Phúc',
       image: 'https://tse1.mm.bing.net/th?id=OIP.LNVYiWX_spX_SGD6i-D3gAHaEK&pid=Api&P=0&h=180',
-      file: music4,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790528/C%C3%92N_Y%C3%8AU_%C4%90%C3%82U_AI_R%E1%BB%9CI_%C4%90I_-_%C4%90%E1%BB%A8C_PH%C3%9AC_OFFICIAL_MV_anqp9r.mp3',
     },
     {
       title: 'Dù cho tận thế',
       artist: 'Erik',
       image: 'https://tse2.mm.bing.net/th?id=OIP.QhRkCVd03c98LJY-OL9slQHaEK&pid=Api&P=0&h=180',
-      file: music5,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790500/D%C3%B9_cho_t%E1%BA%ADn_th%E1%BA%BF_oiowks.mp3',
     },
     {
       title: 'GHÉ QUA',
       artist: 'Dick x PC x Tofu',
       image: 'https://tse4.mm.bing.net/th?id=OIP.wOX6u2kqWZ8dquE4bUsfjQHaEK&pid=Api&P=0&h=180',
-      file: music6,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790452/GH%C3%89_QUA_OFFICIAL_MV_Dick_x_PC_x_Tofu_vamsp1.mp3',
     },
     {
       title: 'HOA VÔ SẮC',
       artist: 'jack - J97',
       image: 'https://tse2.mm.bing.net/th?id=OIP.r6OdERak7dvkQDSRDTDXzgHaIl&pid=Api&P=0&h=180',
-      file: music7,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790521/HOA_V%C3%94_S%E1%BA%AEC_ICM_x_JACK_OFFICIAL_MUSIC_VIDEO_oh3n3m.mp3',
     },
     {
       title: 'VÔ TÌNH',
       artist: 'HOAPROX x XESI',
       image: 'https://tse2.mm.bing.net/th?id=OIP.kEmhLf3sUwZqcZ7oXJ7PigHaEK&pid=Api&P=0&h=180',
-      file: music8,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790456/HOAPROX_x_XESI_-_V%C3%94_T%C3%8CNH_Official_Lyric_Video_wawy7g.mp3',
     },
     {
       title: 'YÊU EM RẤT NHIỀU',
       artist: 'Hoàng Tôn',
       image: 'https://tse1.mm.bing.net/th?id=OIP.jA_hDtaiVJ8JIBj_UeaoZwHaEK&pid=Api&P=0&h=180',
-      file: music9,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790453/HO%C3%80NG_T%C3%94N_-_Y%C3%8AU_EM_R%E1%BA%A4T_NHI%E1%BB%80U_Lyrics_Video_zgwhsd.mp3',
     },
     {
       title: 'NGÀY ĐẦU SAU CHIA TAY',
       artist: 'ĐỨC PHÚC x THUỲ TIÊN x KHẮC HƯNG',
       image: 'https://tse1.mm.bing.net/th?id=OIP.F1ruQMgYWLE9HARop5_0qgHaEK&pid=Api&P=0&h=180',
-      file: music10,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790576/NG%C3%80Y_%C4%90%E1%BA%A6U_SAU_CHIA_TAY_-_%C4%90%E1%BB%A8C_PH%C3%9AC_x_THU%E1%BB%B2_TI%C3%8AN_x_KH%E1%BA%AEC_H%C6%AFNG_OFFICIAL_MUSIC_VIDEO_wwfkvt.mp3',
     },
     {
       title: 'Mãi Mãi Bên Nhau',
       artist: 'Noo Phước Thịnh',
       image: 'https://tse4.mm.bing.net/th?id=OIP.7uVWmOLs_MNocmJKgocYoAHaFj&pid=Api&P=0&h=180',
-      file: music11,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790465/Noo_Ph%C6%B0%E1%BB%9Bc_Th%E1%BB%8Bnh_-_M%C3%A3i_M%C3%A3i_B%C3%AAn_Nhau_tsjyrt.mp3',
     },
     {
       title: 'Thêm bao nhiêu lâu',
       artist: 'Đạt G',
       image: 'https://tse3.mm.bing.net/th?id=OIP.MxCZsY0YJ-7qCnGoy6W8gAHaEK&pid=Api&P=0&h=180',
-      file: music12,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790521/Th%C3%AAm_Bao_Nhi%C3%AAu_L%C3%A2u_-_%C4%90%E1%BA%A1t_G_OFFICIAL_MV_vaowhr.mp3',
     },
     {
       title: 'Thằng Điên',
       artist: 'JUSTATEE x PHƯƠNG LY',
       image: 'https://tse1.mm.bing.net/th?id=OIP.pzZmv7gHPp3kBmBCcTQlyQHaEK&pid=Api&P=0&h=180',
-      file: music13,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790498/TH%E1%BA%B0NG_%C4%90I%C3%8AN_JUSTATEE_x_PH%C6%AF%C6%A0NG_LY_OFFICIAL_MV_khg52p.mp3',
     },
     {
       title: 'Tìm Một Người Như Thế',
       artist: 'Trungg I.U',
       image: 'https://tse4.mm.bing.net/th?id=OIP.RefvCYH7FDjoD13h1bKcyAHaFj&pid=Api&P=0&h=180',
-      file: music14,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790462/T%C3%ACm_M%E1%BB%99t_Ng%C6%B0%E1%BB%9Di_Nh%C6%B0_Th%E1%BA%BF_-_Trungg_I.U_OFFICIAL_yukd4t.mp3',
     },
     {
       title: 'Già Cùng Nhau Là Được',
       artist: 'Tùng TeA ft PC',
       image: 'https://tse2.mm.bing.net/th?id=OIP.8re2DHAK9z6Ea_6D3mBtHgHaEK&pid=Api&P=0&h=180',
-      file: music15,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790418/T%C3%B9ng_TeA_-_Gi%C3%A0_C%C3%B9ng_Nhau_L%C3%A0_%C4%90%C6%B0%E1%BB%A3c_ft._PC_Prod._VoVanDuc._Official_MV_q7bu3r.mp3',
     },
     {
       title: 'Âm Thầm Bên Em',
       artist: 'Sơn Tùng M-TP',
       image: 'https://tse2.mm.bing.net/th?id=OIP.LUzHFHm6pCh6Y7Uz5kaK2AAAAA&pid=Api&P=0&h=180',
-      file: music16,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790497/%C3%82m_Th%E1%BA%A7m_B%C3%AAn_Em_nxf8hi.mp3',
     },
     {
       title: 'Đom Đóm',
       artist: 'Jack - J97',
       image: 'https://tse4.mm.bing.net/th?id=OIP.xHMVpAMmJDmT8FIEZkJpyAHaEK&pid=Api&P=0&h=180',
-      file: music17,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790526/%C4%90om_%C4%90%C3%B3m_-_Jack_Lyrics_video_otwbxl.mp3',
     },
     {
       title: 'Suýt nữa thì',
       artist: 'ANDIEZ',
       image: 'https://tse2.mm.bing.net/th?id=OIP.df-kdKU3-6fnmnkUd-vNxAHaHa&pid=Api&P=0&h=180',
-      file: music18,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790520/su%C3%BDt_n%E1%BB%AFa_th%C3%AC_lbtpc6.mp3',
     },
     {
       title: 'Đừng yêu nữa, em mệt rồi',
       artist: 'MIN',
       image: 'https://tse1.mm.bing.net/th?id=OIP.Ne58V1BFG6driYe9Lz3dawHaFj&pid=Api&P=0&h=180',
-      file: music19,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790508/MIN_-_%C4%90%E1%BB%AANG_Y%C3%8AU_N%E1%BB%AEA_EM_M%E1%BB%86T_R%E1%BB%92I_OFFICIAL_MUSIC_VIDEO_aqgqj9.mp3',
     },
     {
       title: 'Cảm giác lúc ấy sẽ ra sao',
       artist: 'Lou Hoàng',
       image: 'https://tse1.mm.bing.net/th?id=OIP.j8cTvXjNTs6zKl0zBKwbPwHaHa&pid=Api&P=0&h=180',
-      file: music20,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790422/C%E1%BA%A2M_GI%C3%81C_L%C3%9AC_%E1%BA%A4Y_S%E1%BA%BC_RA_SAO_LOU_HO%C3%80NG_OFFICIAL_AUDIO_ilweiu.mp3',
     },
   ];
 

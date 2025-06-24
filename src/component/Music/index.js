@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import allSongs from '../../data/HomeMusic'
+import allSongs from '../../data/vpopSongs';
 
 const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
@@ -37,7 +37,7 @@ const BackgroundMusic = () => {
 
   return (
     <div>
-      <audio id="background-music" src={playlist[currentIndex]} autoPlay={isPlaying} />
+      <audio id="background-music" src={playlist[currentIndex].file} autoPlay={isPlaying} />
       <button onClick={togglePlay} className="toggle-button">
         {isPlaying ? 'Tắt nhạc' : 'Bật nhạc'}
       </button>

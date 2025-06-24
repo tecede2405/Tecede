@@ -1,418 +1,358 @@
-import music1 from '../audio/Nhac Usuk/Ellie Goulding - Love Me Like You Do (Lyrics).mp3';
-import music2 from '../audio/Nhac Usuk/Lady Gaga, Bruno Mars - Die With A Smile (Official Music Video).mp3';
-import music3 from '../audio/Nhac Usuk/One Last Time x Coral Sea - Ariana Grande (Lyrics  Vietsub).mp3';
-import music4 from '../audio/Nhac Usuk/VietsubLyrics Until I Found You (Juliet to your Romeo) - Stephen Sanchez ft. Em Beihold.mp3';
-import music5 from '../audio/Nhac Usuk/we dont talk anymore.mp3';
-import music6 from '../audio/Nhac Usuk/Taylor Swift - Enchanted.mp3';
-import music7 from '../audio/Nhac Usuk/Unstoppable - Sia (Lyrics  Vietsub).mp3';
-import music8 from '../audio/Nhac Usuk/Ed Sheeran - Shape Of You [LyricsVietsub].mp3';
-import music9 from '../audio/Nhac Usuk/The Chainsmokers - Closer (Lyrics) ft. Halsey.mp3';
-import music10 from '../audio/Nhac Usuk/Ava Max - Into Your Arms (NO RAP) [LyricsVietsub]  TikTok Hits.mp3';
-import music11 from '../audio/Nhac Usuk/Trap Queen - Adriana Gomez  Eightfold X MKJ Remix (Lyrics  Vietsub).mp3';
-import music12 from '../audio/Nhac Usuk/THE ONE THAT GOT AWAY  KATY PERRY  LYRICS.mp3';
-import music13 from '../audio/Nhac Usuk/Why Not Me - Enrique Iglesias (Lyrics & Vietsub).mp3';
-import music14 from '../audio/Nhac Usuk/I Do - 911 (Lyrics & Vietsub).mp3';
-import music15 from '../audio/Nhac Usuk/Shadow Of The Sun - Professor Green [ Lyrics  Vietsub ].mp3';
-import music16 from '../audio/Nhac Usuk/Hayd - Head In The Clouds (Official Video).mp3';
-import music17 from '../audio/Nhac Usuk/[VietsubLyrics] A Thousand Years - Christina Perri.mp3';
-import music18 from '../audio/Nhac Usuk/[Lyrics  Vietsub] double take - dhruv (slowed).mp3';
-import music19 from '../audio/Nhac Usuk/I Miss You - Czarina (Lyrics & Vietsub).mp3';
-import music20 from '../audio/Nhac Usuk/Send My Love  Sit Still, Look Pretty (Acoustic Mashup) (Nightcore Version).mp3';
-import music21 from '../audio/Nhac Usuk/Troye Sivan - Angel Baby (Lyrics).mp3';
-import music22 from '../audio/Nhac Usuk/The Way I Still Love You - Hattie Cover (Lyrics  Vietsub).mp3';
-import music23 from '../audio/Nhac Usuk/People - Libianca ft. Becky G  Sped Up & Reverb (Lyrics  Vietsub).mp3';
-import music24 from '../audio/Nhac Usuk/Landslide - Oh Wonder  Sped Up (Lyrics  Vietsub).mp3';
-import music25 from '../audio/Nhac Usuk/All For Love - Tungevaag, Raaban (Lyrics  Vietsub).mp3';
-import music26 from '../audio/Nhac Usuk/Alexander Stewart - echo (acoustic).mp3';
-import music27 from '../audio/Nhac Usuk/Daydreamer - KarlK ft. GuitK (Lyrics  Vietsub).mp3';
-import music28 from '../audio/Nhac Usuk/End of Time - K-391, Alan Walker & Ahrix (Lyrics  Vietsub).mp3';
-import music29 from '../audio/Nhac Usuk/Flowers - Dirty Palm & Conor Ross ft. Chandler Blasé (Lyrics  Vietsub).mp3';
-import music30 from '../audio/Nhac Usuk/Dream With You - Blvmenkind ft. Sam Darton (Lyrics  Vietsub).mp3';
-import music31 from '../audio/Nhac Usuk/Kill Em With Kindness - Selena Gomez  Robby Burke Bootleg Remix (Lyrics  Vietsub).mp3';
-import music32 from '../audio/Nhac Usuk/All I Got - Said The Sky ft. Kwesi (Lyrics  Vietsub).mp3';
-import music33 from '../audio/Nhac Usuk/Pretty Girl - Maggie Lindemann  Cheat Codes  Cade Remix (Lyrics  Vietsub).mp3';
-import music34 from '../audio/Nhac Usuk/Hear Me Now - Alok, Bruno Martini ft. Zeeba (Lyrics  Vietsub).mp3';
-import music35 from '../audio/Nhac Usuk/Mine - Phoebe Ryan  Illenium Remix (Lyrics  Vietsub).mp3';
-import music36 from '../audio/Nhac Usuk/Creep - Gamper & Dadoni ft. Ember Island (Lyrics  Vietsub).mp3';
-import music37 from '../audio/Nhac Usuk/End Of The Night - Danny Avila (Lyrics  Vietsub).mp3';
-import music38 from '../audio/Nhac Usuk/Hero - Cash Cash ft. Christina.mp3';
-import music39 from '../audio/Nhac Usuk/Astrid S - Hurts So Good.mp3';
-import music40 from '../audio/Nhac Usuk/Sasha Alex Sloan - Dancing With Your Ghost (Lyric Video).mp3';
-import music41 from '../audio/Nhac Usuk/Halsey - Without Me.mp3';
-import music42 from '../audio/Nhac Usuk/David Kushner - Daylight (Official Music Video).mp3';
-import music43 from '../audio/Nhac Usuk/Clean Bandit - Symphony (LyricsVietsub) feat. Zara Larsson.mp3';
-import music44 from '../audio/Nhac Usuk/Maroon 5 - Girls Like You ft. Cardi B (Official Music Video).mp3';
-import music45 from '../audio/Nhac Usuk/Avicii - Waiting For Love.mp3';
-import music46 from '../audio/Nhac Usuk/David Guetta - Titanium ft. Sia (Official Video).mp3';
-import music47 from '../audio/Nhac Usuk/Marshmello ft. Bastille - Happier (Official Music Video).mp3';
-import music48 from '../audio/Nhac Usuk/Cry - Cigarettes After Sex.mp3';
-import music49 from '../audio/Nhac Usuk/Dont lets me down.mp3';
-import music50 from '../audio/Nhac Usuk/Ed Sheeran - Photograph (Lyrics).mp3';
-import music51 from '../audio/Nhac Usuk/OneRepublic - Counting Stars (Lyrics).mp3';
-import music52 from '../audio/Nhac Usuk/its you.mp3';
-import music53 from '../audio/Nhac Usuk/Powfu - death bed (coffee for your head) (Lyrics) ft. beabadoobee.mp3'
-import music54 from '../audio/Nhac Usuk/I dont wanna see you anymore.mp3'
-import music55 from '../audio/Nhac Usuk/Timbaland - Apologize (Lyrics) Feat. OneRepublic.mp3'
-import music56 from '../audio/Nhac Usuk/Nothing On You - Barry Brizzy  (Vietsub  Lyric).mp3'
-import music57 from '../audio/Nhac Usuk/Billie Eilish - party favor (Gustixa Remix).mp3'
-import music58 from '../audio/Nhac Usuk/dandelions (Gustixa Remix).mp3'
-import music59 from '../audio/Nhac Usuk/Mitski - My Love Mine All Mine.mp3'
-
 
   const songs = [
     {
       title: 'My Love Mine All Mine',
       artist: 'Mitski',
       image: 'https://tse4.mm.bing.net/th?id=OIP.jQ0qKOasCE2TsASp1hd8UAHaEK&pid=Api&P=0&h=180',
-      file: music59,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790321/Mitski_-_My_Love_Mine_All_Mine_dbaoob.mp3',
     },
     {
       title: 'Dandelions',
       artist: 'Gustixa',
       image: 'https://tse4.mm.bing.net/th?id=OIP.e8eM0tsk10wQCGLaHvSIhgHaEK&pid=Api&P=0&h=180',
-      file: music58,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790355/dandelions_Gustixa_Remix_gfqkrz.mp3',
     },
       {
       title: 'Party Favor',
       artist: 'Gustixa',
       image: 'https://i.ytimg.com/vi/UyMP8EeYtC8/maxresdefault.jpg',
-      file: music57,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790332/Billie_Eilish_-_party_favor_Gustixa_Remix_tiidmy.mp3',
     },
      {
       title: 'Nothing On You',
       artist: 'Barry Brizzy',
       image: 'https://i.ytimg.com/vi/vOwuc4j2vL8/maxresdefault.jpg',
-      file: music56,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790346/Nothing_On_You_-_Barry_Brizzy_Vietsub_Lyric_p5jzw3.mp3',
     },
      {
       title: 'Apologize',
       artist: 'Timbaland',
       image: 'https://i.ytimg.com/vi/BuBqBgphDEE/maxresdefault.jpg',
-      file: music55,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790335/Timbaland_-_Apologize_Lyrics_Feat._OneRepublic_litaxw.mp3',
     },
      {
       title: 'I dont wanna see you anymore',
       artist: 'NineOne',
       image: 'https://tse4.mm.bing.net/th?id=OIP.AMKl86ArzzvGyHvd8E9LwwHaEK&pid=Api&P=0&h=180',
-      file: music54,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790320/I_dont_wanna_see_you_anymore_dgys1d.mp3',
     },
     {
       title: 'Death bed',
       artist: 'Powfu ft. beabadoobee',
       image: 'https://tse4.mm.bing.net/th?id=OIP.eZx981DYyu1EEO0Rs4A5gQHaHa&pid=Api&P=0&h=180',
-      file: music53,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790323/Powfu_-_death_bed_coffee_for_your_head_Lyrics_ft._beabadoobee_j8ffds.mp3',
     },
     {
       title: 'Its You',
       artist: 'Ali Gatie',
       image: 'https://tse1.mm.bing.net/th?id=OIP.txMrPyHss9LH95rc5llFEgHaEK&pid=Api&P=0&h=180',
-      file: music52,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790341/its_you_is9mbg.mp3',
     },
     {
       title: 'Counting Stars',
       artist: 'OneRepublic',
       image: 'https://tse4.mm.bing.net/th?id=OIP.LY8_vMg-hqtwmq8cRcNzEAHaHa&pid=Api&P=0&h=180',
-      file: music51,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790365/OneRepublic_-_Counting_Stars_Lyrics_jxkmdc.mp3',
     },
     {
       title: 'Photograph',
       artist: 'Ed Sheeran',
       image: 'https://tse2.mm.bing.net/th?id=OIP.jV8K7Rm3AMcit7Bs267bGgAAAA&pid=Api&P=0&h=180',
-      file: music50,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790364/Ed_Sheeran_-_Photograph_Lyrics_tshmls.mp3',
     },
      {
       title: 'Dont Let Me Down',
       artist: 'The Chainsmokers ft. Daya',
       image: 'https://tse3.mm.bing.net/th?id=OIP.GuH9LgFTtN4cscDVJyP9KAHaDh&pid=Api&P=0&h=180',
-      file: music49,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790338/Dont_lets_me_down_ibqtkp.mp3',
     },
      {
       title: 'Cry',
       artist: 'Cigarettes After Sex',
       image: 'https://tse2.explicit.bing.net/th?id=OIP.Ihf-iJ8BwpNvXdVAfzJ82wHaGw&pid=Api&P=0&h=180',
-      file: music48,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790359/Cry_-_Cigarettes_After_Sex_kdni3j.mp3',
     },
     {
       title: 'Happier',
       artist: 'Marshmello ft. Bastille',
       image: 'https://tse1.mm.bing.net/th?id=OIP.NSRfdVEN0RpMM9PGE_l5gAHaEK&pid=Api&P=0&h=180',
-      file: music47,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790352/Marshmello_ft._Bastille_-_Happier_Official_Music_Video_oo4shf.mp3',
     },
     {
       title: 'Titanium',
       artist: 'David Guetta ft. Sia',
       image: 'https://tse4.mm.bing.net/th?id=OIP.gFbfxPP_ZJ32pNpevX0oCgHaHa&pid=Api&P=0&h=180',
-      file: music46,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790354/David_Guetta_-_Titanium_ft._Sia_Official_Video_siasz3.mp3',
     },
     {
       title: 'Waiting For Love',
       artist: 'Avicii',
       image: 'https://i0.wp.com/aanii.net/wp-content/uploads/2021/07/Avicii-Waiting-For-Love.jpeg?fit=1280%2C720&ssl=1',
-      file: music45,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790349/Avicii_-_Waiting_For_Love_qpafmu.mp3',
     },
     {
       title: 'Girls Like You',
       artist: 'Maroon 5 ft. Cardi B',
       image: 'https://stat.ameba.jp/user_images/20180602/09/sippin-on-sunshine/49/bf/j/o0850085014203047699.jpg?caw=800',
-      file: music44,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790371/Maroon_5_-_Girls_Like_You_ft._Cardi_B_Official_Music_Video_q3fgdm.mp3',
     },
     {
       title: 'Symphony',
       artist: 'Clean Bandit',
       image: 'https://tse2.mm.bing.net/th?id=OIP.c8GRpmt6c6GD5RckFN8m2QHaEK&pid=Api&P=0&h=180',
-      file: music43,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790341/Clean_Bandit_-_Symphony_LyricsVietsub_feat._Zara_Larsson_u6frkd.mp3',
     },
     {
       title: 'Daylight',
       artist: 'David Kushner',
       image: 'https://tse3.mm.bing.net/th?id=OIP.1-YWBT6WM2YiAqP_V_wMjwHaEK&pid=Api&P=0&h=180',
-      file: music42,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790351/David_Kushner_-_Daylight_Official_Music_Video_agvay5.mp3',
     },
     {
       title: 'Without Me',
       artist: 'Halsey',
       image: 'https://tse1.mm.bing.net/th?id=OIP.SVg29xl2PKod2MN1SEv0FgAAAA&pid=Api&P=0&h=180',
-      file: music41,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790355/Halsey_-_Without_Me_x8uwln.mp3',
     },
     {
       title: 'Dancing with your ghost',
       artist: 'Sasha Alex Sloan',
       image: 'https://tse4.mm.bing.net/th?id=OIP.iHWRlMfP6LlfVDQSRvSS8QHaEK&pid=Api&P=0&h=180',
-      file: music40,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790335/Sasha_Alex_Sloan_-_Dancing_With_Your_Ghost_Lyric_Video_cgof2m.mp3',
     },
     {
       title: 'Hurts So Good',
       artist: 'Astrid S',
       image: 'https://tse3.mm.bing.net/th?id=OIP.rCxccKO6C5M5YosZ_3cxtwAAAA&pid=Api&P=0&h=180',
-      file: music39,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790333/Astrid_S_-_Hurts_So_Good_qviquk.mp3',
     },
     {
       title: 'Love Me Like You Do',
       artist: 'Ellie Goulding',
       image: 'https://tse4.mm.bing.net/th?id=OIP.6LUYDO_GeW71Y86RQ05zkwHaEK&pid=Api&P=0&h=180',
-      file: music1,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790357/Ellie_Goulding_-_Love_Me_Like_You_Do_Lyrics_foupe2.mp3',
     },
     {
       title: 'Die With A Smile',
       artist: 'Lady Gaga, Bruno Mars',
       image: 'https://tse4.mm.bing.net/th?id=OIP.GBvpstTHiNPv8YSUUBU8TgHaER&pid=Api&P=0&h=180',
-      file: music2,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790361/Lady_Gaga_Bruno_Mars_-_Die_With_A_Smile_Official_Music_Video_tg6oau.mp3',
     },
     {
       title: 'One Last Time x Coral Sea',
       artist: 'Ariana Grande',
       image: 'https://tse3.mm.bing.net/th?id=OIP.gK5QctpoMzKUAqcZ1YmWXgHaEK&pid=Api&P=0&h=180',
-      file: music3,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790342/One_Last_Time_x_Coral_Sea_-_Ariana_Grande_Lyrics_Vietsub_nutepd.mp3',
     },
     {
       title: 'Until i found you',
       artist: 'Stephen Sanchez ft. Em Beihold',
       image: 'https://tse4.mm.bing.net/th?id=OIP.wUGDBiuCuhXLIFtqndTvpAHaEK&pid=Api&P=0&h=180',
-      file: music4,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790324/VietsubLyrics_Until_I_Found_You_Juliet_to_your_Romeo_-_Stephen_Sanchez_ft._Em_Beihold_fdtscv.mp3',
     },
     {
       title: 'We dont talk anymore',
       artist: 'Charlie Puth',
       image: 'https://tse1.mm.bing.net/th?id=OIP.wHq7pPQU9qx5utiVbIajSQHaHa&pid=Api&P=0&h=180',
-      file: music5,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790351/we_dont_talk_anymore_fycc97.mp3',
     },
     {
       title: 'Enchanted',
       artist: 'Taylor Swift',
       image: 'https://tse1.mm.bing.net/th?id=OIP.FI3k8VCKwUZ_aU0P1TL2_gHaDt&pid=Api&P=0&h=180',
-      file: music6,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790366/Taylor_Swift_-_Enchanted_p4vzr8.mp3',
     },
     {
       title: 'Unstoppable',
       artist: 'Sia',
       image: 'https://tse4.mm.bing.net/th?id=OIP.GXwD1V-Iu4Gyf1-vgaqBrwHaEK&pid=Api&P=0&h=180',
-      file: music7,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790359/Unstoppable_-_Sia_Lyrics_Vietsub_u2km0k.mp3',
     },
     {
       title: 'Shape of You',
       artist: 'Ed Sheeran',
       image: 'https://tse1.mm.bing.net/th?id=OIP.vKdrt3iDSMBmyHZnlFgVswAAAA&pid=Api&P=0&h=180',
-      file: music8,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790351/Ed_Sheeran_-_Shape_Of_You_LyricsVietsub_ykcgqk.mp3',
     },
     {
       title: 'Closer',
       artist: 'The Chainsmokers',
       image: 'https://tse3.mm.bing.net/th?id=OIP.L1XSugG-T_CMJYFem9rvBwHaHa&pid=Api&P=0&h=180',
-      file: music9,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790360/The_Chainsmokers_-_Closer_Lyrics_ft._Halsey_o0nulr.mp3',
     },
     {
       title: 'Into Your Arms',
       artist: 'Ava Max',
       image: 'https://tse4.mm.bing.net/th?id=OIP.95ex0rS7HUQrj_h7QKYoDgHaEK&pid=Api&P=0&h=180',
-      file: music10,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790322/Ava_Max_-_Into_Your_Arms_NO_RAP_LyricsVietsub_TikTok_Hits_jfunvw.mp3',
     },
     {
       title: 'Trap Queen',
       artist: 'Adriana Gomez',
       image: 'https://tse3.mm.bing.net/th?id=OIP.V-LjLrOAAOt0VP_zL8VvAgHaHa&pid=Api&P=0&h=180',
-      file: music11,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790371/Trap_Queen_-_Adriana_Gomez_Eightfold_X_MKJ_Remix_Lyrics_Vietsub_gfpasr.mp3',
     },
     {
       title: 'The one that got away',
       artist: 'Katy Perry',
       image: 'https://tse4.mm.bing.net/th?id=OIP.ByrciggbiGDD204bBzCQ8QHaEK&pid=Api&P=0&h=180',
-      file: music12,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790352/THE_ONE_THAT_GOT_AWAY_KATY_PERRY_LYRICS_lipo8k.mp3',
     },
     {
       title: 'Why Not Me',
       artist: 'Enrique Iglesias',
       image: 'https://tse4.mm.bing.net/th?id=OIP.G3vMvcHv38ctVo9PIU0K6QHaEK&pid=Api&P=0&h=180',
-      file: music13,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790350/Why_Not_Me_-_Enrique_Iglesias_Lyrics_Vietsub_xhaieo.mp3',
     },
     {
       title: 'I Do',
       artist: '911',
       image: 'https://tse1.mm.bing.net/th?id=OIP.tHdlo1DMg4eiiZ9RomjpLAHaEK&pid=Api&P=0&h=180',
-      file: music14,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790335/I_Do_-_911_Lyrics_Vietsub_qkxaio.mp3',
     },
     {
       title: 'Shadow of the sun',
       artist: 'Max Elto',
       image: 'https://tse1.mm.bing.net/th?id=OIP.ZzCvQjEaEAgdC9IzdVRAOwHaEK&pid=Api&P=0&h=180',
-      file: music15,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790356/Shadow_Of_The_Sun_-_Professor_Green_Lyrics_Vietsub_h3nc6j.mp3',
     },
     {
       title: 'Head in the clouds',
       artist: 'Hayd',
       image: 'https://tse1.mm.bing.net/th?id=OIP.TSGT_Lgb6KRCwhueHoCJKwHaEK&pid=Api&P=0&h=180',
-      file: music16,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790341/Hayd_-_Head_In_The_Clouds_Official_Video_apyd1n.mp3',
     },
     {
       title: 'A thousand years',
       artist: 'Christina Perri',
       image: 'https://musicaroo.com/wp-content/uploads/2023/03/A-Thousand-Years-Lyrics-Meaning.png',
-      file: music17,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790364/VietsubLyrics_A_Thousand_Years_-_Christina_Perri_wb88qt.mp3',
     },
     {
       title: 'Double Take',
       artist: 'dhruv',
       image: 'https://tse3.mm.bing.net/th?id=OIP.HIrxMOJQux2dkC8CI6EAOAHaEK&pid=Api&P=0&h=180',
-      file: music18,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790328/Lyrics_Vietsub_double_take_-_dhruv_slowed_r65j2s.mp3',
     },
     {
       title: 'I miss you',
       artist: 'Czarina',
       image: 'https://tse1.mm.bing.net/th?id=OIP.k3oa9Px5MlMMqsrOgFgSYgHaFj&pid=Api&P=0&h=180',
-      file: music19,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790348/I_Miss_You_-_Czarina_Lyrics_Vietsub_l9chwt.mp3',
     },
     {
       title: 'Send my love',
       artist: 'Sit Still, Look Pretty ',
       image: 'https://tse4.mm.bing.net/th?id=OIP.Vs1tJpR_kfKVH8sSWEQuJgHaEK&pid=Api&P=0&h=180',
-      file: music20,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790322/Send_My_Love_Sit_Still_Look_Pretty_Acoustic_Mashup_Nightcore_Version_lm9uqf.mp3',
     },
     {
       title: 'Baby angle',
       artist: 'Troye Sivan',
       image: 'https://tse2.mm.bing.net/th?id=OIP.Z7YYNbFWagbvLdsxswKFMQHaEK&pid=Api&P=0&h=180',
-      file: music21,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790344/Troye_Sivan_-_Angel_Baby_Lyrics_ackjlj.mp3',
     },
     {
       title: 'The Way I Still Love You',
       artist: 'Hattie Cover',
       image: 'https://tse1.mm.bing.net/th?id=OIP.CdaONPxXGnk5QvOhQlZeFgHaEK&pid=Api&P=0&h=180',
-      file: music22,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790346/The_Way_I_Still_Love_You_-_Hattie_Cover_Lyrics_Vietsub_hl2ezp.mp3',
     },
     {
       title: 'People',
       artist: 'Libianca ft. Becky G',
       image: 'https://tse1.mm.bing.net/th?id=OIP.LbI7h9-_Opw91Hp4mCLSxwHaEK&pid=Api&P=0&h=180',
-      file: music23,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790328/People_-_Libianca_ft._Becky_G_Sped_Up_Reverb_Lyrics_Vietsub_d39g8c.mp3',
     },
     {
       title: 'Landslide',
       artist: 'Oh Wonder',
       image: 'https://tse2.mm.bing.net/th?id=OIP.lUabQxmlr5EI2O1dIP6fcQHaEK&pid=Api&P=0&h=180',
-      file: music24,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790327/Landslide_-_Oh_Wonder_Sped_Up_Lyrics_Vietsub_ep0r8i.mp3',
     },
     {
       title: 'All For Love',
       artist: 'Tungevaag, Raaban',
       image: 'https://tse1.mm.bing.net/th?id=OIP.p7B9pLKEZxqFW4HP7ogiwQHaHa&pid=Api&P=0&h=180',
-      file: music25,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790327/All_For_Love_-_Tungevaag_Raaban_Lyrics_Vietsub_mgr4mg.mp3',
     },
     {
       title: 'echo',
       artist: 'Alexander Stewart',
       image: 'https://tse3.mm.bing.net/th?id=OIP.XzLI1080ln0RJLQ5IMqR1gHaEK&pid=Api&P=0&h=180',
-      file: music26,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790325/Alexander_Stewart_-_echo_acoustic_pxsc5u.mp3',
     },
     {
       title: 'Daydreamer',
       artist: 'KarlK ft. GuitK',
       image: 'https://tse2.mm.bing.net/th?id=OIP.8B9tJ4tYgyxDyJMrCxS9pQHaEo&pid=Api&P=0&h=180',
-      file: music27,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790329/Daydreamer_-_KarlK_ft._GuitK_Lyrics_Vietsub_rp7asi.mp3',
     },
     {
       title: 'End of time',
       artist: 'K-391, Alan Walker & Ahrix',
       image: 'https://tse2.mm.bing.net/th?id=OIP.yOuqAcxHXwaBAcR8CDTw_AHaEK&pid=Api&P=0&h=180',
-      file: music28,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790328/End_of_Time_-_K-391_Alan_Walker_Ahrix_Lyrics_Vietsub_mmistt.mp3',
     },
     {
       title: 'Flowers',
       artist: 'Dirty Palm & Conor Ross ft. Chandler Blasé',
       image: 'https://tse3.mm.bing.net/th?id=OIP.iao8ectfbKPyEI8iyl7XYQAAAA&pid=Api&P=0&h=180',
-      file: music29,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790338/Flowers_-_Dirty_Palm_Conor_Ross_ft._Chandler_Blas%C3%A9_Lyrics_Vietsub_vcpur9.mp3',
     },
     {
       title: 'Dream with you',
       artist: 'Blvmenkind ft. Sam Darton',
       image: 'https://tse2.mm.bing.net/th?id=OIP._NvTWNT1ErzmhNsVXsYHUQHaEK&pid=Api&P=0&h=180',
-      file: music30,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790360/Dream_With_You_-_Blvmenkind_ft._Sam_Darton_Lyrics_Vietsub_su6kes.mp3',
     },
     {
       title: 'Kill Em With Kindness',
       artist: 'Selena Gomez',
       image: 'https://tse2.mm.bing.net/th?id=OIP.HreHFR4fJpt6AYGKNLewkQHaHa&pid=Api&P=0&h=180',
-      file: music31,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790337/Kill_Em_With_Kindness_-_Selena_Gomez_Robby_Burke_Bootleg_Remix_Lyrics_Vietsub_s85wjt.mp3',
     },
     {
       title: 'All I Got',
       artist: 'Said The Sky ft. Kwesi',
       image: 'https://tse1.mm.bing.net/th?id=OIP.5WqgGkKvk1mT1tvyuDzLqQHaEK&pid=Api&P=0&h=180',
-      file: music32,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790368/All_I_Got_-_Said_The_Sky_ft._Kwesi_Lyrics_Vietsub_rx9v8p.mp3',
     },
     {
       title: 'Pretty Girl',
       artist: 'Maggie Lindemann',
       image: 'https://i.ytimg.com/vi/eTTeUjR4f1k/maxresdefault.jpg',
-      file: music33,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790330/Pretty_Girl_-_Maggie_Lindemann_Cheat_Codes_Cade_Remix_Lyrics_Vietsub_d7ehoc.mp3',
     },
     {
       title: 'Hear Me Now',
       artist: 'Alok, Bruno Martini ft. Zeeba',
       image: 'https://tse1.mm.bing.net/th?id=OIP.nIehskoBWco1iMdTU3m2dAHaEK&pid=Api&P=0&h=180',
-      file: music34,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790331/Hear_Me_Now_-_Alok_Bruno_Martini_ft._Zeeba_Lyrics_Vietsub_uim615.mp3',
     },
     {
       title: 'Mine',
       artist: 'Phoebe Ryan',
       image: 'https://tse2.mm.bing.net/th?id=OIP.iwksmMAIVvLc6JfYXhFmRAHaEK&pid=Api&P=0&h=180',
-      file: music35,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790359/Mine_-_Phoebe_Ryan_Illenium_Remix_Lyrics_Vietsub_c6oico.mp3',
     },
     {
       title: 'Creep',
       artist: 'Gamper & Dadoni ft. Ember Island',
       image: 'https://tse2.mm.bing.net/th?id=OIP.YoGZCSAghO93muP4D5esWAHaHa&pid=Api&P=0&h=180',
-      file: music36,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790320/Creep_-_Gamper_Dadoni_ft._Ember_Island_Lyrics_Vietsub_ecbwfr.mp3',
     },
     {
       title: 'End Of The Night',
       artist: 'Danny Avila',
       image: 'https://tse4.mm.bing.net/th?id=OIP.nfN4j1iox3H1GXwJhgtspgHaEK&pid=Api&P=0&h=180',
-      file: music37,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790345/End_Of_The_Night_-_Danny_Avila_Lyrics_Vietsub_p5dumv.mp3',
     },
     {
       title: 'Hero',
       artist: 'Cash Cash ft. Christina Perri',
       image: 'https://tse1.mm.bing.net/th?id=OIP.L-Iug_ZnjQShXiDuBxl9hAHaEK&pid=Api&P=0&h=180',
-      file: music38,
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790319/Hero_-_Cash_Cash_ft._Christina_ayolc5.mp3',
     },
     // Thêm bài hát vào đây
   ];
