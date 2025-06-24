@@ -51,8 +51,64 @@ import music50 from '../audio/NhacViet/Đảo Không Người (Lofi Ver.) - Ngô
 import music51 from '../audio/NhacViet/SEAN  SAU ĐÊM NAY ft. TWENY x SSHINE  OFFICIAL MUSIC VIDEO.mp3';
 import music52 from '../audio/NhacViet/Kay Châu Anh - Think About U (prod. Terra Minor x Peakrozes).mp3';
 import music53 from '../audio/NhacViet/Ước Nguyện - Kha ( Official MV ).mp3';
+import music54 from '../audio/NhacViet/EM CƯỚI RỒI À - THANH HƯNG  Em cuoi roi a, khong doi anh nua a  Official MV  Valentine 2025.mp3';
+import music55 from '../audio/NhacViet/Chuyến Xe Cuộc Đời - Khắc Việt  Cover Phiên Bản Tác Giả Thanh Hưng.mp3';
+import music56 from '../audio/NhacViet/Lao Tâm Khổ Tứ  Thanh Hưng (Official MV).mp3';
+import music57 from '../audio/NhacViet/Vạn Sự Tùy Duyên - Thanh Hưng  Official Animation Music Video.mp3';
+import music58 from '../audio/NhacViet/Như Một Người Dưng - Thanh Hưng  Official Music Video.mp3';
+import music59 from '../audio/NhacViet/Tệ Thật, Anh Nhớ Em  Thanh Hưng  Official Lyric Video.mp3';
+import music60 from '../audio/NhacViet/Ai Đợi Mình Được Mãi - Thanh Hưng (Lyric Video).mp3';
+import music61 from '../audio/NhacViet/Em Muốn Ta Là Gì - Thanh Hưng  Official MV.mp3';
 
 const songs = [
+   {
+      title: 'Em Muốn Ta Là Gì',
+      artist: 'Thanh Hưng',
+      image: 'https://i.ytimg.com/vi/IGNwV4RJNeo/maxresdefault.jpg',
+      file: music61,
+    },  
+  {
+      title: 'Ai Đợi Mình Được Mãi',
+      artist: 'Thanh Hưng',
+      image: 'https://zmp3-photo-fbcrawler.zadn.vn/thumb_video/1/8/e/6/18e638b01a202d757a7f0326e093313d.jpg',
+      file: music60,
+    },
+  {
+      title: 'Tệ Thật, Anh Nhớ Em',
+      artist: 'Thanh Hưng',
+      image: 'https://tse2.mm.bing.net/th?id=OIP._VXWCyJlGBg-ReEXKrxdewHaEK&pid=Api&P=0&h=180',
+      file: music59,
+    },
+  {
+      title: 'Như Một Người Dưng',
+      artist: 'Thanh Hưng',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.sa_piuJfsJbP_NfESP_99AHaEK&pid=Api&P=0&h=180',
+      file: music58,
+    },
+  {
+      title: 'Vạn Sự Tùy Duyên',
+      artist: 'Thanh Hưng',
+      image: 'https://i.ytimg.com/vi/jfpQHBsPzkU/maxresdefault.jpg',
+      file: music57,
+    },
+   {
+      title: 'Lao Tâm Khổ Tứ',
+      artist: 'Thanh Hưng',
+      image: 'https://avatar-ex-swe.nixcdn.com/song/share/2023/02/27/4/f/e/5/1677479339168.jpg',
+      file: music56,
+    },
+   {
+      title: 'Chuyến Xe Cuộc Đời',
+      artist: 'Khắc Việt',
+      image: 'https://tse3.mm.bing.net/th?id=OIP.Iu3puqaQ6Hz1UFTduBkHcQHaGa&pid=Api&P=0&h=180',
+      file: music55,
+    },
+  {
+      title: 'EM CƯỚI RỒI À',
+      artist: 'THANH HƯNG',
+      image: 'https://i.ytimg.com/vi/fgCxSjrNvGA/maxresdefault.jpg',
+      file: music54,
+    },
   {
       title: 'Ước Nguyện',
       artist: 'Kha',
