@@ -7,14 +7,16 @@ import china from "../../img/musics-thumbnail/china.png";
 import edm from "../../img/musics-thumbnail/edm.png";
 import mood from "../../img/musics-thumbnail/mood.png";
 import phonk from "../../img/musics-thumbnail/phonk.png";
+import nhactreremix from "../../img/musics-thumbnail/nhactreremix.png";
 import 'animate.css';
 const musicData = [
     {title: "nhactre", image: nhactre, path: "nhac-tre"},
     {title: "usuk", image: usuk, path: "usuk"},
     {title: "china", image: china, path: "trung-quoc"},
+    {title: "nhactreremix", image: nhactreremix, path: "nhactre-remix"},
     {title: "edm", image: edm, path: "edm"},
-    {title: "mood", image: mood, path: "mood"},
     {title: "phonk", image: phonk, path: "phonk"},
+    {title: "mood", image: mood, path: "mood"},
 ];
 
 function HomeMusic() {

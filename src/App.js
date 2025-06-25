@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from './pages/layout';
 import './App.css';
+import { Analytics } from '@vercel/analytics/react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/index';
 import About from './pages/About/index';
@@ -17,7 +18,7 @@ import NhacTrungQuoc from './pages/Music/NhacTrung/index';
 import NhacEDM from './pages/Music/Nhac Edm/index';
 import NhacTamTrang from './pages/Music/NhacTamTrang/index';
 import NhacPhonk from './pages/Music/Nhac Phonk/index';
-
+import NhacTreRemix from './pages/Music/NhacTreRemix/index';
 
 
 function App() {
@@ -49,10 +50,12 @@ function App() {
               <Route path="music/edm" element={<NhacEDM />} />
               <Route path="music/mood" element={<NhacTamTrang />} />
               <Route path="music/phonk" element={<NhacPhonk />} />
+              <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
             </Route>
           </Routes>
         </>
       )}
+      <Analytics />
     </>
   );
 }
