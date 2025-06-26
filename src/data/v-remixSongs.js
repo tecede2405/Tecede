@@ -130,7 +130,7 @@ const songs = [
      {
       title: 'Yêu Thương Là Bão Tố',
       artist: 'Huy PT Remix',
-      image: 'https://i.ytimg.com/vi/j2Y5cTslQVk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGH8gPCg_MA8=&rs=AOn4CLDtp22XBaHMZvzXRg3i7-7FoGyLbQ',
+      image: 'https://i.ytimg.com/vi/Tckx8BmTE0s/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGH8gEygnMA8=&rs=AOn4CLBQyokfSSDATIvKbrySQ0re4pC_6w',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934213/Y%C3%AAu_Th%C6%B0%C6%A1ng_L%C3%A0_B%C3%A3o_T%E1%BB%91_Huy_PT_Remix_-_H%C3%B9ng_Qu%C3%A2n_L%E1%BB%9Di_Y%C3%AAu_Th%C6%B0%C6%A1ng_T%E1%BB%B1a_Nh%C6%B0_B%C3%A3o_T%E1%BB%91_Remix_Hot_TikTok_hwfujq.mp3',
     },
      {

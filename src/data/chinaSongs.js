@@ -1,6 +1,12 @@
 
 const songs = [
    {
+      title: 'Trong Nháy Mắt', 
+      artist: 'Trịnh Nhuận Trạch',
+      image: 'https://i.ytimg.com/vi/lFeQdR16uQ8/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGBggXShyMA8=&amp;rs=AOn4CLAH2Ifq4BPf7zEtwlRvEnRKs7Qk3A',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750950963/VietsubTrong_Nh%C3%A1y_M%E1%BA%AFt_-_Tr%E1%BB%8Bnh_Nhu%E1%BA%ADn_Tr%E1%BA%A1ch_%E7%9E%AC_-_%E9%83%91%E6%B6%A6%E6%B3%BD_zx9u0y.mp3',
+    },
+   {
       title: 'Không có lý do', 
       artist: 'Ryan B &Chu Diên Anh',
       image: 'https://i.ytimg.com/vi/gNRquyByuro/maxresdefault.jpg',

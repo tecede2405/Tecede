@@ -201,6 +201,24 @@ footer{
             object-fit:cover;
         }
     }
+    &__note{
+        margin : 50px auto;
+        width: 90%;
+        padding: 10px 0;
+        color: #ddd;
+        ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            li{
+                margin: 5px 0;
+            }
+        }
+        &-text{
+            font-size: 25px;
+            font-weight: 500; 
+        }
+    }
     
 }
 

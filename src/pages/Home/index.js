@@ -70,9 +70,14 @@ function Home() {
               <div className="Home__music"> 
                 <HomeMusic />
               </div>
+              <div className="Home__note">
+                <p className="Home__note-text">Lưu ý nhỏ: Có 2 đường dẫn vào web này :</p>
+                <ul>
+                  <li className="Home__note-path">- tecede-blog.vercel.app ( đường dẫn này có thể bị delay phải cần proxy như 1.1.1.1 mới vào được )</li>
+                  <li className="Home__note-path">- tecede.netlify.app</li>
+                </ul>
+              </div>
             </div>
-  
-
         </div>
       </>
     )
