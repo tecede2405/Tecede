@@ -39,7 +39,7 @@ const songs = [
     {
       title: 'Chỉ Muốn Bên Em Lúc Này',
       artist: 'Ness Remix',
-      image: 'https://tse1.mm.bing.net/th?id=OIP.aJqS0TGtmIudtaYoG6P7AwHaHa&pid=Api&P=0&h=180',
+      image: 'https://i.ytimg.com/vi/bQAh6v634Bk/maxresdefault.jpg',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750873823/Ch%E1%BB%89_Mu%E1%BB%91n_B%C3%AAn_Em_L%C3%BAc_N%C3%A0y_Ness_Remix_-_Jiki_X_ft_Huy_V%E1%BA%A1c_Th%E1%BA%BF_Gian_%C4%90%E1%BB%95i_Thay_Nh%C6%B0ng_C%C3%B2n_%C4%90%C3%A2y_Remix_xvceyy.mp3',
     },
      {

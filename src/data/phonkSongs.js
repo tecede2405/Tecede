@@ -27,7 +27,7 @@ const songs = [
 {
       title: 'MANASHA',
       artist: 'Ashreveal',
-      image: 'https://i.scdn.co/image/ab67616d0000b273b15c0c5096e99e248d8d8853',
+      image: 'https://i.ytimg.com/vi/CNOhQOJFoAo/hqdefault.jpg',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750863774/MANASHA_-_Ashreveal_v5z05j.mp3',
     },
 {
