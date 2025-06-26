@@ -114,6 +114,73 @@ const songs = [
       image: 'https://tse1.mm.bing.net/th?id=OIP.rqu3eXjnjZkWi_MQPjbs3wHaEK&pid=Api&P=0&h=180',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750873803/Sai_Ng%C6%B0%E1%BB%9Di_Sai_Th%E1%BB%9Di_%C4%90i%E1%BB%83m_OXI_Remix_-_Thanh_H%C6%B0ng_x_H2O_Nh%E1%BA%A1c_Tr%E1%BA%BB_Remix_2024_Hay_Nh%E1%BA%A5t_Hi%E1%BB%87n_Nay_zc2xtx.mp3',
     },
+     {
+      title: 'Tình Đầu Quá Chén',
+      artist: 'Duzme Remix',
+      image: 'https://i.ytimg.com/vi/e1z0n2Tpesw/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750873796/T%C3%ACnh_%C4%90%E1%BA%A7u_Qu%C3%A1_Ch%C3%A9n_-_Quang_H%C3%B9ng_MasterD_Duzme_Remix_Audio_Lyrics_hwdhq1.mp3',
+    },
+    //sửa link cdn từ chỗ này
+     {
+      title: 'Thuyền Quyên',
+      artist: 'AM Remix',
+      image: 'https://i.ytimg.com/vi/j2Y5cTslQVk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGH8gPCg_MA8=&rs=AOn4CLDtp22XBaHMZvzXRg3i7-7FoGyLbQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934211/Thuy%E1%BB%81n_Quy%C3%AAn_AM_Remix_-_Di%E1%BB%87u_Ki%C3%AAn_%C3%81o_M%E1%BB%9Di_Em_C%C3%A0i_M%C3%A0u_Hoa_C%C6%B0%E1%BB%9Bi_Remix_Hot_TikTok_o41gfg.mp3',
+    },
+     {
+      title: 'Yêu Thương Là Bão Tố',
+      artist: 'Huy PT Remix',
+      image: 'https://i.ytimg.com/vi/j2Y5cTslQVk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGH8gPCg_MA8=&rs=AOn4CLDtp22XBaHMZvzXRg3i7-7FoGyLbQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934213/Y%C3%AAu_Th%C6%B0%C6%A1ng_L%C3%A0_B%C3%A3o_T%E1%BB%91_Huy_PT_Remix_-_H%C3%B9ng_Qu%C3%A2n_L%E1%BB%9Di_Y%C3%AAu_Th%C6%B0%C6%A1ng_T%E1%BB%B1a_Nh%C6%B0_B%C3%A3o_T%E1%BB%91_Remix_Hot_TikTok_hwfujq.mp3',
+    },
+     {
+      title: 'Hẹn Kiếp Sau',
+      artist: 'Nam Con Remix',
+      image: 'https://i.ytimg.com/vi/Dkepktx4QXQ/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgZCg1MA8=&amp;rs=AOn4CLBvz4AJk1-FZHfLWuXQORwQXqqVIg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750935269/H%E1%BA%B9n_Ki%E1%BA%BFp_Sau_ft_Tuy_H%C3%B4ng_Nhan_-_Nam_Con_remix_Hot_Tiktok_N%E1%BB%97i_Bu%E1%BB%93n_N%C3%A0y_Em_Xin_D%E1%BA%A5u_K%C3%ADn_remix_uqa8mm.mp3',
+    },
+      {
+      title: 'Kém Duyên',
+      artist: 'Duzme Remix',
+      image: 'https://tse1.mm.bing.net/th?id=OIP.3axDtsQiIDdnksbEaUcoWQHaEK&pid=Api&P=0&h=180',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934212/K%C3%A9m_Duy%C3%AAn_-_Rum_x_Nit_Duzme_Remix_Gi%E1%BB%9D_L%C3%B2ng_Mang_Theo_Nh%E1%BB%AFng_V%E1%BA%A5n_V%C6%B0%C6%A1ng...Nh%E1%BA%A1c_HOT_Tik_Tok_2025_orpf7c.mp3',
+    },
+      {
+      title: 'Tri Kỷ',
+      artist: 'Công Thành & LouB Remix',
+      image: 'https://i.ytimg.com/vi/gvF4xT3Cjt4/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934209/Tri_K%E1%BB%B7_-_H%C3%A0_Tr%E1%BA%A7n_C%C3%B4ng_Th%C3%A0nh_LouB_Remix___M%C3%ACnh_Thi%E1%BA%BFu_M%E1%BB%99t_Ch%C3%BAt_B%E1%BB%91i_R%E1%BB%91i_%C4%90%E1%BB%83_Th%C3%A0nh_Ng%C6%B0%E1%BB%9Di_Y%C3%AAu_C%E1%BB%A7a_Nhau_oeyev4.mp3',
+    },
+       {
+      title: 'GHÉ QUA',
+      artist: 'QTRUNG REMIX',
+      image: 'https://tse2.mm.bing.net/th?id=OIP.AyYDwSp8OhX5QTt5FuD1fAHaEK&pid=Api&P=0&h=180',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934210/GH%C3%89_QUA_-_QTRUNG_REMIX_NH%E1%BA%A0C_REMIX_HOT_TIKTOK_M%E1%BB%9AI_NH%E1%BA%A4T_2024_erv61c.mp3',
+    },
+      {
+      title: 'Lý Do Nào Để Quay Lại Với Nhau',
+      artist: 'KZuy Ft Phuc Ahn Remix',
+      image: 'https://i.ytimg.com/vi/hXGHA_sL8lM/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934215/L%C3%BD_Do_N%C3%A0o_%C4%90%E1%BB%83_Quay_L%E1%BA%A1i_V%E1%BB%9Bi_Nhau_-_PAR_SG_x_New_oulZ_KZuy_Ft_Phuc_Ahn_Remix_Nh%E1%BA%A1c_Hot_TikTok_2024_mfswyj.mp3',
+    },
+      {
+      title: 'Có Duyên Không Nợ',
+      artist: 'TVT Remix',
+      image: 'https://lh3.googleusercontent.com/RpjbbVBMDVf2oejVhbqzRafG21xisuAXTUQ2mbToPANr9OSaKaMJOnq-EM-xC-OemZBQdxQkqFYS_M7S',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934212/C%C3%B3_Duy%C3%AAn_Kh%C3%B4ng_N%E1%BB%A3_Remix_-_VENUS_Cover_x_TVT_M%E1%BB%99t_Ng%C6%B0%E1%BB%9Di_%C4%90%E1%BB%A9ng_T%E1%BB%AB_Xa_Ch%E1%BB%9D_Anh_V%E1%BB%81_Remix_Tiktok_crdtf7.mp3',
+    },
+      {
+      title: 'Một Bước Yêu Vạn Dặm Đau',
+      artist: 'Theron Remix',
+      image: 'https://i.ytimg.com/vi/Z8NI6EbsVnc/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934213/M%E1%BB%99t_B%C6%B0%E1%BB%9Bc_Y%C3%AAu_V%E1%BA%A1n_D%E1%BA%B7m_%C4%90au_Theron_Remix_-_Mr._Siro_T%E1%BB%AB_Nay_Duy%C3%AAn_Ki%E1%BA%BFp_B%E1%BB%8F_L%E1%BA%A1i_Ph%C3%ADa_Sau_Remix_kj9afj.mp3',
+    },
+      {
+      title: 'Tự lau nước mắt',
+      artist: 'Mr Siro ft Karik',
+      image: 'https://i.ytimg.com/vi/Y6i3tOuK-oM/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgTihPMA8=&amp;rs=AOn4CLCSEPK8rQhCIt0Zkl33OQ3h9DJWWQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934211/H%C3%B3a_ra_b%C3%AAn_nhau_l%C3%A2u_ng%C3%A0y_T%E1%BB%B1_lau_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFt_Ft_T%E1%BA%A5t_c%E1%BA%A3_t%E1%BA%A1i_anh_remix_Mr_Siro_Karik_nnykfg.mp3',
+    },
   ];
 
   export default songs;
