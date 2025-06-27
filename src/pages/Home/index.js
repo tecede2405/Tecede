@@ -71,10 +71,11 @@ function Home() {
                 <HomeMusic />
               </div>
               <div className="Home__note">
-                <p className="Home__note-text">Lưu ý nhỏ: Có 2 đường dẫn vào web này :</p>
+                <p className="Home__note-text">Lưu ý nhỏ: "Có 2 đường dẫn vào web này."</p>
                 <ul>
-                  <li className="Home__note-path">- tecede-blog.vercel.app ( đường dẫn này có thể bị delay phải cần proxy như 1.1.1.1 mới vào được )</li>
-                  <li className="Home__note-path">- tecede.netlify.app</li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt">1. tecede.netlify.app</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt">2. tecede-blog.vercel.app ( đường dẫn này có thể bị delay phải cần proxy như 1.1.1.1 mới vào được )</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt">3. Nếu bạn đang sử dụng 4G thì nên cân nhắc trước khi nghe nhạc để tiết kiệm dữ liệu.</i></li>
                 </ul>
               </div>
             </div>

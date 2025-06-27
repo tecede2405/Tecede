@@ -44,7 +44,6 @@
                         <ul>
                             <li>Số điện thoại: 0384577121</li>
                             <li>Email: thoaixd123@gmail.com</li>
-                            <li>Địa chỉ: Tp.Quảng Ngãi</li>
                             <li>Hashtag: #tecede, #tecede blog</li>
                         </ul>
                     </div>

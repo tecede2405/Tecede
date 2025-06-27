@@ -1,5 +1,110 @@
 
 const songs = [
+    
+    {
+      title: 'NHẠT',
+      artist: 'VANXI REMIX',
+      image: 'https://i.ytimg.com/vi/3RR9u7hJId0/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGH8gOCg_MA8=&rs=AOn4CLCoGvXxr8nU3_Ww6xELsAptJYpR6Q',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045576/NH%E1%BA%A0T_-_VANXI_REMIX_-_HOT_TIK_TOK_2024_ll_%C4%90%E1%BB%ABng_Nghe_Ng%C6%B0%E1%BB%9Di_Kh%C3%A1c_N%C3%B3i_G%C3%AC_V%E1%BB%81_Anh..._jqn9ew.mp3',
+    },
+{
+      title: 'Call Of Silence x Akuma No Ko',
+      artist: 'JAPANDEE x MIT REMIX',
+      image: 'https://i.ytimg.com/vi/powjNgNxCqA/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGHIgPShGMA8=&rs=AOn4CLCZv8xeQcH2wQmGWHLWz-AityT6DA',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045544/CALL_OF_SILENCE_x_AKUMA_NO_KO_REMIX_AOT_-_JAPANDEE_x_MIT_REMIX_usmoin.mp3',
+    },
+{
+      title: 'Người Theo Đuổi Ánh Sáng',
+      artist: 'Lahm Remix',
+      image: 'https://i1.sndcdn.com/artworks-FI4FMXCyJ74b4FFP-EbIDzw-large.png',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045519/Ng%C6%B0%E1%BB%9Di_Theo_%C4%90u%E1%BB%95i_%C3%81nh_S%C3%A1ng_-_Lahm_Remix_dh7dfq.mp3',
+    },
+{
+      title: 'LẤY CHỒNG SỚM LÀM GÌ',
+      artist: 'TVT REMIX',
+      image: 'https://i.ytimg.com/vi/QvUZjEtiWGk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGFAgMih_MA8=&rs=AOn4CLBHdssu_nyofOY_rg6OQI0vsUh3rg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045518/L%E1%BA%A4Y_CH%E1%BB%92NG_S%E1%BB%9AM_L%C3%80M_G%C3%8C_REMIX_HOT_TIK_TOK_2023_-_TVT_REMIX_-_%C4%90%C3%81_TH%E1%BB%A6_LAK_VOL.4_xsu8g2.mp3',
+    },
+{
+      title: 'Tháp Rơi Tự Do',
+      artist: 'THAZH x DONG Remix',
+      image: 'https://avatar-ex-swe.nixcdn.com/song/2025/01/15/f/5/f/a/1736936325485_640.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045519/Th%C3%A1p_R%C6%A1i_T%E1%BB%B1_Do_Remix_Chu%E1%BA%A9n_Hot_TikTok_-_LBI_L%E1%BB%A3i_B%E1%BB%89_x_THAZH_x_DONG_Remix_Nh%E1%BA%A1c_Trung_Hot_TikTok_ixfrtf.mp3',
+    },
+{
+      title: 'Cô Gái Vàng x Thích Hôn 9277',
+      artist: 'VH Remix',
+      image: 'https://i.ytimg.com/vi/TpsStY4EtsI/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045570/C%C3%B4_G%C3%A1i_V%C3%A0ng_x_Th%C3%ADch_H%C3%B4n_9277_-_VH_Remix_Nh%E1%BA%A1c_Hot_Trend_TikTok_2024_MP_MUSIC_jduqkw.mp3',
+    },
+{
+      title: 'Một triệu khả năng',
+      artist: 'PBQA Remix',
+      image: 'https://i.ytimg.com/vi/6cDvyQG9o1Y/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGEogKCh_MA8=&rs=AOn4CLBkw5QEmOzuKp6spbNdfY_H7OltGA',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751046714/M%E1%BB%99t_tri%E1%BB%87u_kh%E1%BA%A3_n%C4%83ng_PBQA_Remix_-_M%E1%BB%99t_tri%E1%BB%87u_kh%E1%BA%A3_n%C4%83ng_Remix_Tiktok_lidpoj.mp3',
+    },
+{
+      title: 'Bóng Phù Hoa',
+      artist: 'MinhAK Remix',
+      image: 'https://i.ytimg.com/vi/NT_VzEIAVJc/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH2CYAC0AWKAgwIABABGGEgQChlMA8=&rs=AOn4CLBTYcTdKCJC3znXJ_yBBn9JdE0Yrw',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045541/B%C3%B3ng_Ph%C3%B9_Hoa_-MinhAK_Remix_Nh%E1%BA%A1c_remix_tiktok_wuvl1p.mp3',
+    },
+
+{
+      title: 'Là Anh',
+      artist: 'Đăng Long Remix',
+      image: 'https://i.ytimg.com/vi/mMrkkT4gf_g/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGH8gNSg4MA8=&amp;rs=AOn4CLCkTbxnczdBovZxtUN2BEwHXJ2kGA',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045520/L%C3%A0_Anh_-_%C4%90%C4%83ng_Long_Remix_-_M%E1%BB%99ng_Nhi%C3%AAn_Nh%E1%BA%A1c_N%E1%BB%81n_Hot_TikTok_Remix_M%E1%BB%9Bi_Nh%E1%BA%A5t_2023_-_Hot_Music_2023_z9lx4d.mp3',
+    },
+{
+      title: 'THIS LOVE x ONCE AGAIN',
+      artist: 'JAPANDEE x THEREON REMIX',
+      image: 'https://i.ytimg.com/vi/RJpqvTtK9JY/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgQChfMA8=&rs=AOn4CLDCw6YZ_uqAqCczbW9IqnMnSa_WnQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045563/THIS_LOVE_x_ONCE_AGAIN_-_JAPANDEE_x_THEREON_REMIX_b7ccbx.mp3',
+    },
+{
+      title: 'Túy Hồng Nhan x 4 Bể Ước Thề',
+      artist: 'Trí Thức Remix',
+      image: 'https://tse4.mm.bing.net/th?id=OIP.wU4P1gxGUsDmy4zF7ltTCQHaEK&pid=Api&P=0&h=180',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045572/B%E1%BB%90N_B%E1%BB%82_%C6%AF%E1%BB%9AC_TH%E1%BB%80_REMIX_ft_T%C3%9AY_H%E1%BB%92NG_NHAN_REMIX_NH%E1%BA%A0C_TRUNG_HOT_TIKTOK_2023_kxbyza.mp3',
+    },
+{
+      title: 'TRAP QUEEN',
+      artist: 'TIEN DAT REMIX',
+      image: 'https://i.ytimg.com/vi/K-l-Alow9kc/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045538/TRAP_QUEEN_REMIX_TIEN_DAT_REMIX_NH%E1%BA%A0C_HOT_TREND_TIK_TOK_2023_HAI_MUSIC_dqewyb.mp3',
+    },
+{
+      title: 'TÂY LÂU BIỆT TỰ',
+      artist: 'VQ REMIX',
+      image: 'https://i.ytimg.com/vi/2sTgkrmiSWo/hqdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045521/T%C3%82Y_L%C3%82U_BI%E1%BB%86T_T%E1%BB%B0_VQ_REMIX_NH%E1%BA%A0C_T%E1%BA%A8M_%C4%90%C3%81_HOT_TIK_TOK_2022_G%C3%82Y_NGHI%E1%BB%86N_g3mvmq.mp3',
+    },
+{
+      title: 'THĂM CỐ TRI',
+      artist: 'VIETZ x WIRARWR REMIX',
+      image: 'https://i.ytimg.com/vi/Uictkv2F7bU/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGE8gWyhlMA8=&rs=AOn4CLAJwrcp8h0Skoukm1ggONmtEjK_Nw',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045546/TH%C4%82M_C%E1%BB%90_TRI_%E6%B5%85%E5%BD%B1%E9%98%BF_-_VIETZ_x_WIRARWR_REMIX_NH%E1%BA%A0C_TRUNG_BLACK_MYTH_WUKONG_HOT_TIKTOK_2024_npc9h3.mp3',
+    },
+{
+      title: 'Copines x De Yang Gatal Sa',
+      artist: 'Thereon Remix',
+      image: 'https://avatar-ex-swe.nixcdn.com/song/2023/08/08/e/8/a/a/1691464920570_640.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045537/COPINES_x_DE_YANG_GATAL_SA_-_THEREON_REMIX_h4prbv.mp3',
+    },
+{
+      title: 'THE BOX ft NÀNG',
+      artist: 'SILVER SMOKE REMIX',
+      image: 'https://i.ytimg.com/vi/yKc6l9J0XvE/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGBYgWCh_MA8=&rs=AOn4CLArFeS0sq_VlV7TDM8gSV1yrTBOpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045545/THE_BOX_ft_N%C3%80NG_-_KAY_CH%C3%82U_ANH_COVER_SILVER_SMOKE_REMIX_frmxuh.mp3',
+    },
+{
+      title: 'WDTAM x CTKTVN',
+      artist: 'Đông x Thazh Remix',
+      image: 'https://i.ytimg.com/vi/bvHqQPYISyY/hqdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045565/We_Don_t_Talk_Anymore_X_Ch%C3%BAng_Ta_Kh%C3%B4ng_Thu%E1%BB%99c_V%E1%BB%81_Nhau_-_%C4%90%C3%B4ng_x_Thazh_Remix_B%E1%BA%A3n_Remix_Chu%E1%BA%A9n_TikTok_uf8etd.mp3',
+    },
+      //End sửa link cdn
     {
       title: '10 Ngàn Năm',
       artist: 'Anh Vu Remix ft PC',
@@ -120,7 +225,7 @@ const songs = [
       image: 'https://i.ytimg.com/vi/e1z0n2Tpesw/maxresdefault.jpg',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750873796/T%C3%ACnh_%C4%90%E1%BA%A7u_Qu%C3%A1_Ch%C3%A9n_-_Quang_H%C3%B9ng_MasterD_Duzme_Remix_Audio_Lyrics_hwdhq1.mp3',
     },
-    //sửa link cdn từ chỗ này
+
      {
       title: 'Thuyền Quyên',
       artist: 'AM Remix',
@@ -181,6 +286,7 @@ const songs = [
       image: 'https://i.ytimg.com/vi/Y6i3tOuK-oM/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgTihPMA8=&amp;rs=AOn4CLCSEPK8rQhCIt0Zkl33OQ3h9DJWWQ',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750934211/H%C3%B3a_ra_b%C3%AAn_nhau_l%C3%A2u_ng%C3%A0y_T%E1%BB%B1_lau_n%C6%B0%E1%BB%9Bc_m%E1%BA%AFt_Ft_T%E1%BA%A5t_c%E1%BA%A3_t%E1%BA%A1i_anh_remix_Mr_Siro_Karik_nnykfg.mp3',
     },
+
   ];
 
   export default songs;
