@@ -1,7 +1,10 @@
+
 .form-control{
     background: #303030;
     border:0;
     color: #ddd!important;
+    width: 85%!important;
+    margin: 0 auto;
 }
 .form-control::placeholder{
     color: #ddd;
@@ -24,4 +27,21 @@
 }
 .suggestions-list:hover{
     background: #303030;
+}
+
+.search-song {
+    width: 85%;
+    color: #ddd;
+    margin: 0 auto;
+    text-align: start;
+    margin-bottom :10px;
+}
+
+@media (max-width: 768px){
+    .form-control{
+    width: 100%!important;
+    }
+    .search-song{
+        width: 100%;
+    }
 }

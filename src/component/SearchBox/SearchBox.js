@@ -30,7 +30,9 @@ export default function SearchBar({ songs, onSelectSong }) {
   };
 
   return (
-    <div className="mb-3 position-relative">
+    <>
+      <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
+      <div className="search-box mb-3 position-relative">
       <input
         type="text"
         placeholder="Tìm bài hát hoặc nghệ sĩ..."
@@ -69,5 +71,7 @@ export default function SearchBar({ songs, onSelectSong }) {
         </ul>
       )}
     </div>
+    </>
+
   );
 }

@@ -1,6 +1,115 @@
 
 const songs = [
-    
+      
+  //End sửa link cdn
+  {
+      title: 'Khi Phải Quên Đi',
+      artist: 'T.Bynz Remix',
+      image: 'https://i.ytimg.com/vi/7Vq3mujCrBY/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgWChMMA8=&rs=AOn4CLD7ErNDQ-df49dIKCMsnROGZpMo0A',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128001/Khi_Ph%E1%BA%A3i_Qu%C3%AAn_%C4%90i_-_Phan_M%E1%BA%A1nh_Qu%E1%BB%B3nh_T.bynz_Remix_-_Xi_M%C4%83ng_Ph%E1%BB%91_Vol_4_lu7tjc.mp3',
+    },
+  {
+      title: 'Họ Yêu Ai Mất Rồi',
+      artist: 'Tuấn Smile Remix',
+      image: 'https://i.ytimg.com/vi/6jz5-4Fv510/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGH8gFSgTMA8=&rs=AOn4CLCWvKbb2IfO1VvWDCpBFYDvRF7p1Q',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128024/H%E1%BB%8D_Y%C3%AAu_Ai_M%E1%BA%A5t_R%E1%BB%93i_Remix_-_Tu%E1%BA%A5n_Smile_Mix_Dex_Music_Group_Nh%E1%BA%A1c_Hot_Trend_Xu_H%C6%B0%E1%BB%9Bng_Tiktok_1_hyu8kc.mp3',
+    },
+      {
+      title: 'Bánh Mì Không',
+      artist: 'Đại Mèo Remix',
+      image: 'https://anhquanbakery.com/uploads/photos/full_1591062735_2222_2ee842994400ea3e884b402d21282572.png',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751127997/kubet_-_B%C3%A1nh_M%C3%AC_Kh%C3%B4ng_%C4%90%E1%BA%A1i_M%C3%A8o_Remix_-_Nh%E1%BA%A1c_Hot_Tik_Tok_2020_HV_Music_lxn2q9.mp3',
+    },
+      {
+      title: 'BẤT CÔNG',
+      artist: 'Thazh x Đông Remix',
+      image: 'https://i.ytimg.com/vi/ND7QxA4yoYQ/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGEwgVChlMA8=&rs=AOn4CLBko7-BOtHUbajhSlhY6KG0DpT-PQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128009/B%E1%BA%A4T_C%C3%94NG_%E5%81%8F%E5%90%91_-_THAZH_X_DONG_REMIX_-_NH%E1%BA%A0C_N%E1%BB%80N_HOT_TIK_TOK_2025_ucssle.mp3',
+    },
+       {
+      title: 'Bầu Trời Mới ft Tada Koe Hitotsu',
+      artist: 'Qtrung Remix',
+      image: 'https://i.ytimg.com/vi/u050IdUd8JY/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGBQgcig4MA8=&amp;rs=AOn4CLAnxJvdRAgQt3d_P9B6ZuVP0Kq1vA',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128014/B%E1%BA%A7u_Tr%E1%BB%9Di_M%E1%BB%9Bi_ft_Tada_Koe_Hitotsu_Remix_Qtrung_Remix_Nh%E1%BA%A1c_Hot_TikTok_2024_Nh%E1%BA%A1c_G%C3%A2y_Nghi%E1%BB%87n_2024_uy4hin.mp3',
+    },
+       {
+      title: 'Lệ Cay 3',
+      artist: 'Nguyễn Thạc Bảo Ngọc x ACV Remix',
+      image: 'https://i.ytimg.com/vi/zuPVOxPGqCc/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128011/%E1%BB%AA_Th%C3%AC_Em_Ch%E1%BB%8Dn_Y%C3%AAu_Th%C6%B0%C6%A1ng_Anh_%C4%90%E1%BA%A5y_L%E1%BB%86_CAY_3_-_NGUY%E1%BB%84N_TH%E1%BA%A0C_B%E1%BA%A2O_NG%E1%BB%8CC_x_ACV_REMIX_yzqllb.mp3',
+    },
+       {
+      title: 'Có Thể Hay Không',
+      artist: 'Thazh Remix',
+      image: 'https://i.ytimg.com/vi/Lqx-c3TJAbY/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH2CYAC0AWKAgwIABABGFAgFSh_MA8=&rs=AOn4CLAyg2rNzn3cQRL89l6UCLrkPx6F_A',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128010/C%C3%B3_Th%E1%BB%83_Hay_Kh%C3%B4ng_-_Thazh_Remix_Nh%E1%BA%A1c_Hot_Tik_Tok_Remix_M%E1%BB%9Bi_Nh%E1%BA%A5t_2024_ra3ywq.mp3',
+    },
+       {
+      title: 'Lỡ Duyên',
+      artist: 'TVT Remix',
+      image: 'https://i.ytimg.com/vi/Z-LCZ0jSBdU/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgWihRMA8=&rs=AOn4CLD_hgfG78Ld_ph6MtRV8gDGTUTpCw',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128014/L%E1%BB%A0_DUY%C3%8AN_H%C6%B0%C6%A1ng_T%C3%BA_Cher_Lloyd_-_TVT_REMIX_Nh%E1%BA%A1c_Hot_TikTok_2024_-_NTS_Musiccc_mse6ka.mp3',
+    },
+      {
+      title: 'Umbrella',
+      artist: 'Thazh Remix',
+      image: 'https://i.ytimg.com/vi/JrPSbB0UIp4/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGCAgPih_MA8=&rs=AOn4CLDy6oiMQcdZ4JEtGttGhLaCIrkWKA',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128263/Umbrella_-_Thazh_Remix_Nh%E1%BA%A1c_Remix_Hot_Trend_Tik_Tok_2023_e3kw42.mp3',
+    },
+       {
+      title: 'Vết Mưa',
+      artist: 'Đình Sơn x Nguyễn Hoàng Remix',
+      image: 'https://i1.sndcdn.com/artworks-o78cW3zMjM8aNzOO-AdlBSQ-t500x500.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128013/V%E1%BA%BET_M%C6%AFA_%C4%90%C3%8CNH_S%C6%A0N_X_NGUY%E1%BB%84N_HO%C3%80NG_REMIX_NH%E1%BA%A0C_NGHE_C%E1%BB%B0C_SUY_NH%C6%AFNG_D%E1%BB%84_NGHI%E1%BB%86N_GNORT_MUSIC_twlmry.mp3',
+    },
+       {
+      title: 'Không Biết Phải Làm Sao',
+      artist: 'Quyền Hp Remix',
+      image: 'https://i.ytimg.com/vi/7ssQ7Ki_Zag/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751127995/KH%C3%94NG_BI%E1%BA%BET_PH%E1%BA%A2I_L%C3%80M_SAO_%E4%B8%8D%E7%9F%A5%E6%89%80%E6%8E%AA_-_QUY%E1%BB%80N_HP_REMIX_NH%E1%BA%A0C_TRUNG_QU%E1%BB%90C_REMIX_HOT_TIKTOK_2022_uhpbkn.mp3',
+    },
+       {
+      title: 'Yêu Thương Chẳng Là Mãi Mãi',
+      artist: 'Thazh Remix',
+      image: 'https://i.ytimg.com/vi/0cROAMV0P10/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGD0gTCh_MA8=&rs=AOn4CLDIUzog5p7VVVVWXz2AdINUIt2zVw',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751127990/Y%C3%AAu_Th%C6%B0%C6%A1ng_Ch%E1%BA%B3ng_L%C3%A0_M%C3%A3i_M%C3%A3i_Thazh_Remix_-_DC_T%C3%A2m_Bu%C3%B4ng_%C4%90%C3%B4i_Tay_Nhau_R%E1%BB%93i_Kh%C3%B4ng_Ph%E1%BA%A3i_V%C3%AC_%C4%90%C3%A3_H%E1%BA%BFt_Y%C3%AAu_wcll99.mp3',
+    },
+        {
+      title: 'Mashup Siêu Cô Đơn',
+      artist: 'Yan Nguyễn Remix',
+      image: 'https://i.ytimg.com/vi/SNkdLikc1NU/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128016/C%E1%BB%B0C_PH%E1%BA%A8M_R%E1%BB%93i_M%C3%B9a_Y%C3%AAu_Th%C6%B0%C6%A1ng_D%E1%BA%A7n_%C4%90ang_%C4%90%E1%BA%BFn_Remix_-_Sao_M%C3%ACnh_Ch%C6%B0a_N%E1%BA%AFm_Tay_Nhau_x_Si%C3%AAu_C%C3%B4_%C4%90%C6%A1n_Remix_m9o18s.mp3',
+    },
+        {
+      title: 'Yêu Là Tha Thứ',
+      artist: 'LouB Remix',
+      image: 'https://i.ytimg.com/vi/lEBGiTdu79w/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgXChRMA8=&amp;rs=AOn4CLDAcpJHUineaikk59UOim327m-EAQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751127988/Y%C3%AAu_L%C3%A0_Tha_Th%E1%BB%A9_-_LouB_Remix_Exclusive_Remix_dbghjw.mp3',
+    },
+        {
+      title: 'Quên Anh Trong Từng Cơn Đau',
+      artist: 'Đăng Long Remix',
+      image: 'https://i.ytimg.com/vi/SGpz5iT4Rdo/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGHogEyh_MA8=&rs=AOn4CLAloX8reQr0SPEk4BvAPNUazO1xNA',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128015/Qu%C3%AAn_Em_Trong_T%E1%BB%ABng_C%C6%A1n_%C4%90au_%C4%90%C4%83ng_Long_Remix_-_Nh%E1%BA%A1c_HOT_TikTok_2023_moy0yx.mp3',
+    },
+        {
+      title: 'Why Not Me',
+      artist: 'BT Remix',
+      image: 'https://i.ytimg.com/vi/j80chIFL1_8/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128011/Why_Not_Me_2022_-_BT_Remix_Nh%E1%BA%A1c_Hot_TikTok_2022_cjqaka.mp3',
+    },
+        {
+      title: 'Sợ Phải Kết Thúc',
+      artist: 'Thazh x Đông Remix',
+      image: 'https://i.ytimg.com/vi/UhaBWlOedJo/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128000/S%E1%BB%A3_Ph%E1%BA%A3i_K%E1%BA%BFt_Th%C3%BAc_Thazh_x_%C4%90%C3%B4ng_Remix_-_Nh%E1%BA%ADt_Phong_Nh%E1%BB%AFng_C%C3%A1nh_Hoa_H%E1%BB%93ng_Nay_C%C5%A9ng_T%C3%A0n_Phai_Remix_ii0q90.mp3',
+    },
+        {
+      title: 'I DO',
+      artist: 'Loub x Hai Nam Remix',
+      image: 'https://i.ytimg.com/vi/UhaBWlOedJo/maxresdefault.jpg',
+      file: 'https://i.ytimg.com/vi/d9AC6w-CEZg/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgUChFMA8=&amp;rs=AOn4CLCvFEYIUjyGwCm8Q6TONOmbUMMNxg',
+    },
     {
       title: 'NHẠT',
       artist: 'VANXI REMIX',
@@ -16,7 +125,7 @@ const songs = [
 {
       title: 'Người Theo Đuổi Ánh Sáng',
       artist: 'Lahm Remix',
-      image: 'https://i1.sndcdn.com/artworks-FI4FMXCyJ74b4FFP-EbIDzw-large.png',
+      image: 'https://i.ytimg.com/vi/pg9-W-Oh9i8/maxresdefault.jpg',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045519/Ng%C6%B0%E1%BB%9Di_Theo_%C4%90u%E1%BB%95i_%C3%81nh_S%C3%A1ng_-_Lahm_Remix_dh7dfq.mp3',
     },
 {
@@ -104,7 +213,6 @@ const songs = [
       image: 'https://i.ytimg.com/vi/bvHqQPYISyY/hqdefault.jpg',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751045565/We_Don_t_Talk_Anymore_X_Ch%C3%BAng_Ta_Kh%C3%B4ng_Thu%E1%BB%99c_V%E1%BB%81_Nhau_-_%C4%90%C3%B4ng_x_Thazh_Remix_B%E1%BA%A3n_Remix_Chu%E1%BA%A9n_TikTok_uf8etd.mp3',
     },
-      //End sửa link cdn
     {
       title: '10 Ngàn Năm',
       artist: 'Anh Vu Remix ft PC',

@@ -33,7 +33,7 @@ function NhacTreRemix() {
         <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
               <img src={nhactreremix} alt="" className="profile-image" />
               <div className="profile-info text-center text-md-start">
-                <h4 className="profile-title">Nhạc Trẻ Remix 🎵</h4>
+                <h4 className="profile-title">Nhạc Remix 🎵</h4>
                 <p className="profile-desc">Nhạc bay như tiên cảnh .</p>
                 <button
                   onClick={handleShufflePlaylist}
@@ -44,7 +44,6 @@ function NhacTreRemix() {
             </div>
         </div>
         <div className="container mt-4">
-          <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
           <SearchBar songs={playlist} onSelectSong={handlePlay} />
 
           <SongList songs={playlist || []} currentIndex={currentIndex} onPlay={handlePlay} />

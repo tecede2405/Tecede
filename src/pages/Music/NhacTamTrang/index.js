@@ -45,7 +45,6 @@ function NhacMood() {
                   </div>
                 </div>
         <div className="container mt-4">
-          <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
           <SearchBar songs={playlist} onSelectSong={handlePlay} />
 
           <SongList songs={playlist || []} currentIndex={currentIndex} onPlay={handlePlay} />
