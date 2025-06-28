@@ -4,9 +4,9 @@ const songs = [
   //End sửa link cdn
   {
       title: 'Khi Phải Quên Đi',
-      artist: 'T.Bynz Remix',
+      artist: 'Tbynz Remix',
       image: 'https://i.ytimg.com/vi/7Vq3mujCrBY/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgWChMMA8=&rs=AOn4CLD7ErNDQ-df49dIKCMsnROGZpMo0A',
-      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128001/Khi_Ph%E1%BA%A3i_Qu%C3%AAn_%C4%90i_-_Phan_M%E1%BA%A1nh_Qu%E1%BB%B3nh_T.bynz_Remix_-_Xi_M%C4%83ng_Ph%E1%BB%91_Vol_4_lu7tjc.mp3',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751137406/Khi_Ph%E1%BA%A3i_Qu%C3%AAn_%C4%90i_Remix_mjcgpn.mp3',
     },
   {
       title: 'Họ Yêu Ai Mất Rồi',
@@ -63,6 +63,12 @@ const songs = [
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128013/V%E1%BA%BET_M%C6%AFA_%C4%90%C3%8CNH_S%C6%A0N_X_NGUY%E1%BB%84N_HO%C3%80NG_REMIX_NH%E1%BA%A0C_NGHE_C%E1%BB%B0C_SUY_NH%C6%AFNG_D%E1%BB%84_NGHI%E1%BB%86N_GNORT_MUSIC_twlmry.mp3',
     },
        {
+      title: 'Có Chàng Trai Viết Lên Cây',
+      artist: 'Phan Mạnh Quỳnh',
+      image: 'https://i.ytimg.com/vi/0VC6euBtKkk/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751137967/C%C3%B3_Ch%C3%A0ng_Trai_Vi%E1%BA%BFt_L%C3%AAn_C%C3%A2y_Remix_gwyhlu.mp3',
+    },
+       {
       title: 'Không Biết Phải Làm Sao',
       artist: 'Quyền Hp Remix',
       image: 'https://i.ytimg.com/vi/7ssQ7Ki_Zag/maxresdefault.jpg',
@@ -93,12 +99,6 @@ const songs = [
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128015/Qu%C3%AAn_Em_Trong_T%E1%BB%ABng_C%C6%A1n_%C4%90au_%C4%90%C4%83ng_Long_Remix_-_Nh%E1%BA%A1c_HOT_TikTok_2023_moy0yx.mp3',
     },
         {
-      title: 'Why Not Me',
-      artist: 'BT Remix',
-      image: 'https://i.ytimg.com/vi/j80chIFL1_8/maxresdefault.jpg',
-      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128011/Why_Not_Me_2022_-_BT_Remix_Nh%E1%BA%A1c_Hot_TikTok_2022_cjqaka.mp3',
-    },
-        {
       title: 'Sợ Phải Kết Thúc',
       artist: 'Thazh x Đông Remix',
       image: 'https://i.ytimg.com/vi/UhaBWlOedJo/maxresdefault.jpg',
@@ -107,8 +107,68 @@ const songs = [
         {
       title: 'I DO',
       artist: 'Loub x Hai Nam Remix',
-      image: 'https://i.ytimg.com/vi/UhaBWlOedJo/maxresdefault.jpg',
-      file: 'https://i.ytimg.com/vi/d9AC6w-CEZg/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgUChFMA8=&amp;rs=AOn4CLCvFEYIUjyGwCm8Q6TONOmbUMMNxg',
+      image: 'https://i.ytimg.com/vi/d9AC6w-CEZg/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH0CYAC0AWKAgwIABABGGUgUChFMA8=&amp;rs=AOn4CLCvFEYIUjyGwCm8Q6TONOmbUMMNxg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751128010/I_DO_-_EM_%C4%90%E1%BB%92NG_%C3%9D_REMIX_Loub_x_Hai_Nam_Nh%E1%BA%A1c_Hot_Tik_Tok_2023_vul9qw.mp3',
+    },
+    {
+      title: 'Love Me Like You Do',
+      artist: 'Rith Guess Remix',
+      image: 'https://i.ytimg.com/vi/YupqPUFH39s/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AHOBYAC0gWKAgwIABABGEsgXihlMA8=&rs=AOn4CLA76xU5Z8xzhQV4_c2Sgtl7ZXGAcw',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751138662/Love_Me_Like_You_Do_x_Driver_To_Church_2022_VIP_-_Rith_Guess_Remix_qdhffz.mp3',
+    },
+    {
+      title: 'CTCTL Ft Nâng Chén Tiêu Sầu',
+      artist: 'SS X AM Remix',
+      image: 'https://i1.sndcdn.com/artworks-jB5UByKTvpdyJP1p-gvfBBg-t500x500.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751138296/Ch%C3%BAng_Ta_C%E1%BB%A7a_T%C6%B0%C6%A1ng_Lai_Ft_N%C3%A2ng_Ch%C3%A9n_Ti%C3%AAu_S%E1%BA%A7u_-_SS_X_AM_Remix_Ch%C3%ADnh_Ch%E1%BB%A7_Up_v5y98n.mp3',
+    },
+    {
+      title: 'Đường Một Chiều',
+      artist: 'Namnam X Haozi X Denver',
+      image: 'https://i.ytimg.com/vi/34J5JKJu7PA/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141119/%C4%90%C6%B0%E1%BB%9Dng_M%E1%BB%99t_Chi%E1%BB%81u_-_Avin_Lu_-_Namnam_X_Haozi_X_Denver_Remix_wdq7gr.mp3',
+    },
+     {
+      title: 'Cô Độc Vương',
+      artist: 'SoundClound',
+      image: 'https://logosmarcas.net/wp-content/uploads/2020/11/SoundCloud-Logo.png',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141128/C%C3%B4_%C4%90%E1%BB%99c_V%C6%B0%C6%A1ng_REMIX_ptnx0x.mp3',
+    },
+     {
+      title: 'Rồi Ta Sẽ Ngắm PH Together',
+      artist: 'Tùng Trây ft. LouB Remix',
+      image: 'https://i.ytimg.com/vi/IF5eyl38B8k/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141121/R%E1%BB%93i_Ta_S%E1%BA%BD_Ng%E1%BA%AFm_Ph%C3%A1o_Hoa_C%C3%B9ng_Nhau_-_O.lewT%C3%B9ng_Tr%C3%A2y_ft._LouB_Remix_Audio_Lyrics_Video_-_Hot_TikTok_ipqgvb.mp3',
+    },
+    {
+      title: 'No More Goodbye',
+      artist: 'LouB Remix',
+      image: 'https://i.ytimg.com/vi/l1jPR8Bi2t8/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGCkgEyh_MA8=&amp;rs=AOn4CLCiTiuseDaTpknL9N0bzvlyDbMbBQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141186/No_More_Goodbye_-_LouB_Remix_Nh%E1%BA%A1c_Hot_Trend_TikTok_2023_-_Exclusive_Music_rieoko.mp3',
+    },
+    {
+      title: 'Duyên Mình Lỡ',
+      artist: 'Tùng Trây Remix',
+      image: 'https://i.ytimg.com/vi/aTE2Ba8x0JI/maxresdefault.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141123/Duy%C3%AAn_M%C3%ACnh_L%E1%BB%A1_-_T%C3%B9ng_Tr%C3%A2y_%C4%90%E1%BB%ABng_o%C3%A1n_tr%C3%A1ch_n%E1%BB%AFa_nh%C3%A9_xin_ng%C6%B0%E1%BB%9Di_h%C3%A3y_%C4%91%E1%BB%ABng_than_v%C3%A3n_nh%E1%BA%A1c_hot_tiktok2022_nlktfr.mp3',
+    },
+     {
+      title: 'Một Năm Mới Bình An',
+      artist: 'Vinz Remix',
+      image: 'https://i.ytimg.com/vi/wOZigOUlnA0/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGH8gEygmMA8=&rs=AOn4CLD7HmDsEkYcVPwzuAz_Wyo_wDH9oQ',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141128/M%E1%BB%99t_N%C4%83m_M%E1%BB%9Bi_B%C3%ACnh_An_-_Vinz_Remix_Nh%E1%BA%A1c_T%E1%BA%BFt_Hot_TikTok_2025_-_Audio_Lyrics_Video_o4dbeb.mp3',
+    },
+      {
+      title: 'Exit Sign x Ghé Qua',
+      artist: 'QTrung Remix',
+      image: 'https://i.ytimg.com/vi/1pK5Fdk_djQ/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGDUgZShSMA8=&amp;rs=AOn4CLCJ2Dalq-0dryU7xsl8k_XMoQQkmw',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141124/EXIT_SIGN_x_GH%C3%89_QUA_QTRUNG_REMIX_NH%E1%BA%A0C_REMIX_HOT_TREND_TIK_TOK_2025_gba7dk.mp3',
+    },
+      {
+      title: 'Wrong Times',
+      artist: 'TomTom ft Thanh Phong Remix',
+      image: 'https://avatar-ex-swe.nixcdn.com/song/2024/12/30/d/6/6/8/1735527029682_640.jpg',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1751141129/Wrong_Times_-_Puppy_DangrangtoTomTom_ft._Thanh_Phong_Remix_Hot_TikTok_2024_-_Audio_Lyrics_Video_gzsrcc.mp3',
     },
     {
       title: 'NHẠT',
