@@ -1,6 +1,5 @@
-import React from "react";
+import {useEffect} from "react";
 import Tabbar from '../../../component/tabar/index';
-import songs from '../../../data/usukSongs';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
@@ -10,17 +9,27 @@ import useAudioManager from "../../../hooks/useAudioManager";
 
 function Nhacusuk() {
   const {
-    playlist,      // <-- dùng playlist (đã có thể bị xáo trộn)
-    currentIndex,
-    audioRef,
-    handleEnded,
-    handlePlay,
-    handlePrev,
-    handleNext,
-    handleShufflePlaylist, // Nút xáo trộn
-  } = useMusicPlayer(songs);
-
-  useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
+        playlist,
+        currentIndex,
+        audioRef,
+        handleEnded,
+        handlePlay,
+        handlePrev,
+        handleNext,
+        handleShufflePlaylist,
+        setPlaylist
+      } = useMusicPlayer([]);
+    
+    
+      useEffect(() => {
+      fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhacusuk`)
+        .then(res => res.json())
+        .then(data => {
+          setPlaylist(data);
+        });
+      }, [setPlaylist]);
+    
+      useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
 
   return (

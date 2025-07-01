@@ -142,7 +142,7 @@ const songs = [
       title: 'Bại tướng', 
       artist: 'Nhậm Nhiên',
       image: 'https://tse4.mm.bing.net/th?id=OIP.mO1o7cH2_Ui7L3C0cvZqUAHaEK&pid=Api&P=0&h=180',
-      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790291/Ng%C6%B0%E1%BB%9Di_t%E1%BB%ABng_y%C3%AAu_zwdehb.mp3',
+      file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790302/B%E1%BA%A1i_t%C6%B0%E1%BB%9Bng_q7afsm.mp3',
     },
    {
       title: 'Một Bước Xa Xôi', 

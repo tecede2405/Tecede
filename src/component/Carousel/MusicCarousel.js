@@ -34,7 +34,7 @@ const AutoSlideInfinite = ({ items }) => {
         }} 
       >
         {items.map((items ) => (
-          <SwiperSlide key={items.id} className="card-music">
+          <SwiperSlide key={items.image} className="card-music">
             <img
               src={items.image}
               alt={items.title}

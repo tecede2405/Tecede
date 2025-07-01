@@ -4,7 +4,7 @@ export default function SongList({ songs, currentIndex, onPlay }) {
   return (
     <div className="row">
       {songs.map((song, index) => (
-        <div className="col-md-5 mb-4" key={index}>
+        <div className="col-md-5 mb-4" key={song._id || index}>
           <div
             className={`music-card d-flex align-items-center p-3 song-item ${
               currentIndex === index ? "active" : ""

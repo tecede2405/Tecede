@@ -1,0 +1,35 @@
+.song-item-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+ 
+  
+  &.active {
+    background-color: #303030;
+    border: 1px solid #1890ff;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+.ant-list-item-meta{
+  border-radius : 5px;
+  background:#303030;
+  
+}
+.ant-list-item-meta-title strong{
+  color: #ddd;
+}
+.ant-list-item-meta-description{
+  color: #ddd!important;
+}
+
+.ant-tabs-tab-btn{
+  color: #ddd;
+}
+.ant-tabs-tab {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,7 +1,8 @@
 import "./nhactre.scss";
+import{ useEffect } from "react";
 import React from "react";
 import Tabbar from "../../../component/tabar/index";
-import songs from "../../../data/vpopSongs";
+// import songs from "../../../data/vpopSongs";
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
@@ -10,18 +11,32 @@ import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 
 function NhacTre() {
-   const {
-    playlist,      
-    currentIndex,
-    audioRef,
-    handleEnded,
-    handlePlay,
-    handlePrev,
-    handleNext,
-    handleShufflePlaylist,
-  } = useMusicPlayer(songs);
-
-  useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
+ 
+     const {
+       playlist,
+       currentIndex,
+       audioRef,
+       handleEnded,
+       handlePlay,
+       handlePrev,
+       handleNext,
+       handleShufflePlaylist,
+       setPlaylist
+     } = useMusicPlayer([]);
+   
+     // Fetch nhạc thể loại "nhacphonk"
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+     useEffect(() => {
+     fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhactre`)
+       .then(res => res.json())
+       .then(data => {
+         setPlaylist(data);
+       });
+     }, [setPlaylist]);
+   
+   
+   
+     useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
   return (
     <>

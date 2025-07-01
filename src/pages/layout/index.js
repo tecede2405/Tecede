@@ -2,14 +2,57 @@
     import {NavLink, Outlet } from 'react-router-dom';
     import './layout.scss';
     import BackgroundMusic from '../../component/Music/index';
+    import { useState,useEffect } from "react";
+    import LoginForm from "../../component/ShowForm/showForm.js";
+    import { useNavigate } from "react-router-dom";
+
     function Layout(){
+        const [showForm, setShowForm] = useState(false);
+          
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+        setIsLoggedIn(loggedIn);
+    }, []);
+
+    const handleLogoClick = () => {
+        if (isLoggedIn) {
+        setShowDropdown(!showDropdown); // Toggle dropdown nếu đã đăng nhập
+        } else {
+        setShowForm(true); // Mở form nếu chưa đăng nhập
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        setIsLoggedIn(false);
+        setShowDropdown(false);
+        navigate("/"); // Quay về trang chủ sau khi logout
+    };
         return (
             <>
                 <header className="header">
-                    <div className="header__logo">
-                        <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank"  rel="noopener noreferrer">
-                        <img src={logo} alt="logo-Page" className="header__image"/>
-                        </a> 
+                    <div className="header__logo">                        
+                        <img
+                        src={logo}
+                        alt="logo-Page"
+                        className="header__image"
+                        onClick={handleLogoClick}
+                        />
+
+                        {showForm && <LoginForm onClose={() => {
+                        setShowForm(false);
+                        setIsLoggedIn(true); // ✅ Cập nhật trạng thái sau đăng nhập
+                        }} />}
+
+                        {showDropdown && (
+                        <div className="dropdown-logout">
+                            <button onClick={handleLogout}>Đăng xuất</button>
+                        </div>
+                        )}
                     <BackgroundMusic />
                     </div>
                     
@@ -37,7 +80,6 @@
                     <Outlet />
                 </div>
                 
-            
 
                 <footer>
                     <div className="footer-contact">

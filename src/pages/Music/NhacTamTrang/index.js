@@ -1,54 +1,56 @@
-import React from "react";
+import React, {useEffect } from "react";
 import Tabbar from '../../../component/tabar/index';
-import songs from '../../../data/moodSongs';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
+import useAudioManager from "../../../hooks/useAudioManager";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
 import sad from '../../../img/music-thumnail/sad.png';
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
-import useAudioManager from "../../../hooks/useAudioManager";
-
 
 function NhacMood() {
-
- const {
-    playlist,     
+  const {
+    playlist,
     currentIndex,
     audioRef,
     handleEnded,
     handlePlay,
     handlePrev,
     handleNext,
-    handleShufflePlaylist, 
-  } = useMusicPlayer(songs);
+    handleShufflePlaylist,
+    setPlaylist
+  } = useMusicPlayer([]);
+
+  // Fetch nhạc thể loại "nhacphonk"
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+  fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhackhongloi`)
+    .then(res => res.json())
+    .then(data => {
+      setPlaylist(data);
+    });
+  }, [setPlaylist]);
 
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
-  
   return (
-    <>
     <div className="music-container-box">
       <Tabbar />
       <div className="music-container">
         <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                  <img src={sad} alt="" className="profile-image" />
-                  <div className="profile-info text-center text-md-start">
-                    <h4 className="profile-title">Nhạc Không Lời 🎵</h4>
-                    <p className="profile-desc">Hãy nghe hết bài nếu bạn muốn biết thật sự nó hay ở đâu.</p>
-                    <button
-                      onClick={handleShufflePlaylist}
-                      className="shuffle"
-                    >
-                      Phát Ngẫu Nhiên
-                    </button>
-                  </div>
-                </div>
+          <img src={sad} alt="" className="profile-image" />
+          <div className="profile-info text-center text-md-start">
+            <h4 className="profile-title">Nhạc Phonk 🎵</h4>
+            <p className="profile-desc">Hãy nghe hết bài nếu bạn muốn biết thật sự nó hay ở đâu.</p>
+            <button onClick={handleShufflePlaylist} className="shuffle">
+              Phát Ngẫu Nhiên
+            </button>
+          </div>
+        </div>
+
         <div className="container mt-4">
           <SearchBar songs={playlist} onSelectSong={handlePlay} />
-
-          <SongList songs={playlist || []} currentIndex={currentIndex} onPlay={handlePlay} />
-
+          <SongList songs={playlist} currentIndex={currentIndex} onPlay={handlePlay} />
         </div>
 
         {currentIndex !== null && (
@@ -75,8 +77,8 @@ function NhacMood() {
                 <FaStepForward />
               </button>
             </div>
-
             <audio
+
               ref={audioRef}
               controls
               className="custom-audio"
@@ -89,7 +91,7 @@ function NhacMood() {
         )}
       </div>
     </div>
-    </>
   );
 }
+
 export default NhacMood;

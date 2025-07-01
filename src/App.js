@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/index';
 import About from './pages/About/index';
 import Contact from './pages/contact/index';
+import Admin from './pages/Admin/index';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import CustomCursor from "./component/HoverEffect/index";
@@ -19,7 +20,9 @@ import NhacEDM from './pages/Music/Nhac Edm/index';
 import NhacTamTrang from './pages/Music/NhacTamTrang/index';
 import NhacPhonk from './pages/Music/Nhac Phonk/index';
 import NhacTreRemix from './pages/Music/NhacTreRemix/index';
-
+import AddSongs from "./component/AddSongs/index";
+import ManageSongs from "./component/ManageSongs/index";
+import RequireAuth from "./component/RequireAuth/index";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -43,6 +46,15 @@ function App() {
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="admin"
+              element={
+                <RequireAuth>
+                  <Admin />
+                </RequireAuth>
+              }>
+                <Route path="add" element={<AddSongs />} />
+                <Route path="manage" element={<ManageSongs />} />
+              </Route>
               {/* Các route cho các trang chi tiết nhạc */}
               <Route path="music/nhac-tre" element={<NhacTre />} />
               <Route path="music/usuk" element={<NhacUSUK />} />

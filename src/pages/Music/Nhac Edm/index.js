@@ -1,6 +1,6 @@
-import React from "react";
+
 import Tabbar from '../../../component/tabar/index';
-import songs from '../../../data/edmSongs';
+import {useEffect} from "react";
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
@@ -10,20 +10,28 @@ import useAudioManager from "../../../hooks/useAudioManager";
 
 
 function NhacEdm() {
-  const {
-    playlist,     
-    currentIndex,
-    audioRef,
-    handleEnded,
-    handlePlay,
-    handlePrev,
-    handleNext,
-    handleShufflePlaylist, 
-  } = useMusicPlayer(songs);
-
-
-  useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
-
+   const {
+      playlist,
+      currentIndex,
+      audioRef,
+      handleEnded,
+      handlePlay,
+      handlePrev,
+      handleNext,
+      handleShufflePlaylist,
+      setPlaylist
+    } = useMusicPlayer([]);
+  
+  
+    useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhacedm`)
+      .then(res => res.json())
+      .then(data => {
+        setPlaylist(data);
+      });
+    }, [setPlaylist]);
+  
+    useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
   return (
     <>

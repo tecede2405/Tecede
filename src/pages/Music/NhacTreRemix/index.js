@@ -1,6 +1,5 @@
-
+import { useEffect } from "react";
 import Tabbar from '../../../component/tabar/index';
-import songs from '../../../data/v-remixSongs';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
@@ -11,18 +10,27 @@ import useAudioManager from "../../../hooks/useAudioManager";
 
 function NhacTreRemix() {
   const {
-    playlist,     
-    currentIndex,
-    audioRef,
-    handleEnded,
-    handlePlay,
-    handlePrev,
-    handleNext,
-    handleShufflePlaylist, 
-  } = useMusicPlayer(songs);
-
-
-  useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
+      playlist,
+      currentIndex,
+      audioRef,
+      handleEnded,
+      handlePlay,
+      handlePrev,
+      handleNext,
+      handleShufflePlaylist,
+      setPlaylist
+    } = useMusicPlayer([]);
+  
+  
+    useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhactreremix`)
+      .then(res => res.json())
+      .then(data => {
+        setPlaylist(data);
+      });
+    }, [setPlaylist]);
+  
+    useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
 
   return (

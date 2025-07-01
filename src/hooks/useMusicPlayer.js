@@ -62,16 +62,19 @@ export default function useMusicPlayer(initialSongs) {
 
   // Khi currentIndex hoặc playlist thay đổi, tự động load và phát nhạc
   useEffect(() => {
-    if (currentIndex !== null && audioRef.current) {
-      audioRef.current.load();
-      audioRef.current
-        .play()
-        .catch((err) => console.log("Không thể phát tự động:", err));
-    }
-  }, [currentIndex, playlist]);
+  if (currentIndex !== null && audioRef.current) {
+    const audio = audioRef.current;
+
+    // Đặt src trực tiếp vào <source> đã thay đổi nên không cần .load()
+    audio.play().catch((err) => {
+      console.log("Không thể phát tự động:", err);
+    });
+  }
+}, [currentIndex]);
 
   return {
     playlist,
+    setPlaylist,   
     currentIndex,
     audioRef,
     isShuffle,
