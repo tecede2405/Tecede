@@ -65,12 +65,20 @@ export default function useMusicPlayer(initialSongs) {
   if (currentIndex !== null && audioRef.current) {
     const audio = audioRef.current;
 
-    // Đặt src trực tiếp vào <source> đã thay đổi nên không cần .load()
-    audio.play().catch((err) => {
-      console.log("Không thể phát tự động:", err);
-    });
+    // Thêm timeout nhẹ để đảm bảo DOM cập nhật xong src
+    const playTimeout = setTimeout(() => {
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn("⚠️ Không thể phát tự động:", err);
+        });
+      }
+    }, 100); // delay nhẹ 100ms để đảm bảo audio src ổn định
+
+    return () => clearTimeout(playTimeout); // dọn dẹp nếu unmount
   }
-}, [currentIndex]);
+}, [currentIndex, playlist]);
 
   return {
     playlist,
