@@ -1,0 +1,43 @@
+    .overview-title {
+      margin-bottom: 10px;
+      color: #ddd;
+    }
+
+    table.dashboard {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #303030;
+      color: #ddd;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    table.dashboard th,
+    table.dashboard td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    table.dashboard th {
+    border-top: 1px solid #ddd;
+    background-color: #212121;
+    color: white;
+    font-weight: normal;
+    }
+
+    table.dashboard td:first-child {
+      width: 40%;
+      font-weight: 500;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 600px) {
+      table.dashboard th, table.dashboard td {
+        padding: 12px;
+        font-size: 14px;
+      }
+    }

@@ -7,7 +7,7 @@ export default function useAudioManager({
   handleNext,
   handlePrev,
 }) {
-  // ✅ MEDIA SESSION API
+  // ✅ MEDIA SESSION
   useEffect(() => {
     if (
       currentIndex !== null &&
@@ -22,7 +22,7 @@ export default function useAudioManager({
         album: "EDM Playlist",
         artwork: [
           {
-            src: song.image, 
+            src: song.image,
             sizes: "512x512",
             type: "image/png",
           },
@@ -40,37 +40,39 @@ export default function useAudioManager({
     }
   }, [currentIndex, playlist, audioRef, handleNext, handlePrev]);
 
-  // ✅ PHÁT NHẠC CHỈ KHI ĐÃ LOAD ĐỦ
+  // ✅ PHÁT CHUẨN BÀI HIỆN TẠI
   useEffect(() => {
-    if (
-      currentIndex !== null &&
-      playlist?.[currentIndex] &&
-      audioRef.current
-    ) {
-      const audio = audioRef.current;
-      const song = playlist[currentIndex];
+  const song = playlist?.[currentIndex];
+  const audio = audioRef?.current;
+  if (!song || !audio) return;
 
-      audio.src = song.file;
-      audio.load();
+  // 🛡️ Tránh spam: chỉ xử lý nếu file khác
+  if (!audio.src.endsWith(song.file)) {
+    audio.pause();
+    audio.src = song.file;
+    audio.load();
 
-      const handleCanPlay = () => {
-        audio
-          .play()
-          .catch((err) => {
-            console.warn("Không thể phát:", err);
-            handleNext();
-          });
-      };
+    const handleCanPlay = () => {
+      audio.play()
+        .then(() => {
+          console.log("🎵 Đang phát:", song.title);
+        })
+        .catch((err) => {
+          console.warn("🚫 Không thể phát:", err.message || err);
+        });
+    };
 
-      audio.addEventListener("canplaythrough", handleCanPlay);
+    audio.addEventListener("canplaythrough", handleCanPlay);
 
-      return () => {
-        audio.removeEventListener("canplaythrough", handleCanPlay);
-      };
-    }
-  }, [currentIndex, playlist, audioRef, handleNext]);
+    return () => {
+      audio.removeEventListener("canplaythrough", handleCanPlay);
+    };
+  }
+}, [currentIndex, playlist, audioRef]);
 
-  // ✅ PRELOAD BÀI HÁT TIẾP THEO
+
+
+  // ✅ PRELOAD bài kế tiếp
   useEffect(() => {
     if (currentIndex !== null && playlist?.length > 1) {
       const nextIndex = (currentIndex + 1) % playlist.length;

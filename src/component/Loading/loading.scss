@@ -21,16 +21,16 @@
 
 /* Full screen loader */
 .loading-screen {
-  position: fixed;
+  position: absolute; /* ✅ KHÔNG dùng fixed */
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9); /* Tối hơn để nhìn đẹp hơn */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85); /* vẫn có nền tối */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Đảm bảo luôn ở trên cùng */
+  z-index: 10; /* cao hơn nội dung nhưng thấp hơn header/footer */
 }
 
 .terminal-loader {
@@ -102,4 +102,20 @@
     typeAndDelete 4s steps(11) infinite,
     blinkCursor 0.5s step-end infinite alternate;
   margin-top: 1.5em;
+}
+
+.main-content-area {
+  position: relative;
+  flex-grow: 1;
+}
+
+@media (max-width: 540px) {
+  .music-container-box {
+  min-height: calc(100vh - 20px);
+  display: flex;
+  flex-direction: column;
+}
+  .layout-main {
+  min-height: calc(100vh - 200px); // trừ header và footer
+}
 }

@@ -4,11 +4,11 @@
     import BackgroundMusic from '../../component/Music/index';
     import { useState,useEffect } from "react";
     import LoginForm from "../../component/ShowForm/showForm.js";
-    import { useNavigate } from "react-router-dom";
+    import { useNavigate, useLocation } from "react-router-dom";
 
     function Layout(){
-        const [showForm, setShowForm] = useState(false);
-          
+    const [showForm, setShowForm] = useState(false);
+    const location = useLocation();
     const [showDropdown, setShowDropdown] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
@@ -19,11 +19,11 @@
     }, []);
 
     const handleLogoClick = () => {
-        if (isLoggedIn) {
-        setShowDropdown(!showDropdown); // Toggle dropdown nếu đã đăng nhập
-        } else {
-        setShowForm(true); // Mở form nếu chưa đăng nhập
-        }
+    if (isLoggedIn) {
+        setShowDropdown(!showDropdown); // chỉ toggle dropdown thôi
+    } else {
+        setShowForm(true); // mở form đăng nhập nếu chưa đăng nhập
+    }
     };
 
     const handleLogout = () => {
@@ -43,13 +43,21 @@
                         onClick={handleLogoClick}
                         />
 
-                        {showForm && <LoginForm onClose={() => {
-                        setShowForm(false);
-                        setIsLoggedIn(true); // ✅ Cập nhật trạng thái sau đăng nhập
-                        }} />}
+                        {showForm && (
+                        <LoginForm
+                            onClose={() => setShowForm(false)}
+                            onLoginSuccess={() => {
+                            setIsLoggedIn(true);
+                            }}
+                        />
+                        )}
 
                         {showDropdown && (
                         <div className="dropdown-logout">
+                            {/* Nếu KHÔNG ở trang /admin thì hiện thêm nút quay lại */}
+                            {!location.pathname.startsWith("/admin") && (
+                            <button onClick={() => navigate("/admin")}>Trang Admin</button>
+                            )}
                             <button onClick={handleLogout}>Đăng xuất</button>
                         </div>
                         )}

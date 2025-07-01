@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
+// 🎲 Hàm xáo trộn mảng
 function shuffleArray(arr) {
   const newArr = [...arr];
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -10,79 +11,77 @@ function shuffleArray(arr) {
 }
 
 export default function useMusicPlayer(initialSongs) {
-  const [originalPlaylist] = useState(initialSongs); // playlist gốc giữ nguyên
-  const [playlist, setPlaylist] = useState(initialSongs); // playlist hiện tại có thể bị shuffle
+  const [originalPlaylist, setOriginalPlaylist] = useState(initialSongs); // ✅ giữ nguyên bản gốc
+  const [currentPlaylist, setCurrentPlaylist] = useState(initialSongs);   // ✅ dùng để phát
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isShuffle, setIsShuffle] = useState(false);
   const audioRef = useRef(null);
 
-  // Phát bài theo index trong playlist hiện tại
+  // ✅ Cập nhật playlist khi fetch từ API
+  const updatePlaylist = useCallback((songs) => {
+  setOriginalPlaylist(songs);
+  setCurrentPlaylist(songs);
+  setCurrentIndex(null);
+  setIsShuffle(false);
+}, []);
+
+  // ✅ Phát bài theo index
   const handlePlay = (index) => {
     setCurrentIndex(index);
   };
 
-  // Bật / tắt shuffle
+  // ✅ Xáo trộn hoặc trở lại danh sách gốc
   const handleShufflePlaylist = () => {
     if (!isShuffle) {
-      // bật shuffle
       const shuffled = shuffleArray(originalPlaylist);
-      setPlaylist(shuffled);
+      setCurrentPlaylist(shuffled);
       setCurrentIndex(0);
     } else {
-      // tắt shuffle, trả về playlist gốc
-      setPlaylist(originalPlaylist);
+      setCurrentPlaylist(originalPlaylist);
       setCurrentIndex(0);
     }
     setIsShuffle(!isShuffle);
   };
 
-  // Next bài
+  // ✅ Phát bài tiếp theo
   const handleNext = () => {
-    if (playlist.length === 0) return;
-    setCurrentIndex((prev) => (prev === null ? 0 : (prev + 1) % playlist.length));
-  };
-
-  // Prev bài
-  const handlePrev = () => {
-    if (playlist.length === 0) return;
+    if (currentPlaylist.length === 0) return;
     setCurrentIndex((prev) =>
-      prev === null ? 0 : (prev - 1 + playlist.length) % playlist.length
+      prev === null ? 0 : (prev + 1) % currentPlaylist.length
     );
   };
 
-  // Khi bài hát kết thúc, tự động chuyển bài
+  // ✅ Quay lại bài trước
+  const handlePrev = () => {
+    if (currentPlaylist.length === 0) return;
+    setCurrentIndex((prev) =>
+      prev === null ? 0 : (prev - 1 + currentPlaylist.length) % currentPlaylist.length
+    );
+  };
+
+  // ✅ Tự động phát bài tiếp khi bài hiện tại kết thúc
   const handleEnded = () => {
     if (currentIndex === null) return;
-    if (currentIndex + 1 < playlist.length) {
+    if (currentIndex + 1 < currentPlaylist.length) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(null); // hoặc set về 0 nếu muốn phát lại từ đầu
+      setCurrentIndex(null); // hoặc về 0 nếu muốn phát lại
     }
   };
 
-  // Khi currentIndex hoặc playlist thay đổi, tự động load và phát nhạc
+  // ✅ Auto phát khi đổi bài
   useEffect(() => {
-  if (currentIndex !== null && audioRef.current) {
-    const audio = audioRef.current;
-
-    // Thêm timeout nhẹ để đảm bảo DOM cập nhật xong src
-    const playTimeout = setTimeout(() => {
-      const playPromise = audio.play();
-
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn("⚠️ Không thể phát tự động:", err);
-        });
-      }
-    }, 100); // delay nhẹ 100ms để đảm bảo audio src ổn định
-
-    return () => clearTimeout(playTimeout); // dọn dẹp nếu unmount
-  }
-}, [currentIndex, playlist]);
+    if (currentIndex !== null && audioRef.current) {
+      const audio = audioRef.current;
+      audio.load();
+      audio.play().catch((err) => {
+        console.warn("Không thể phát:", err.message || err);
+      });
+    }
+  }, [currentIndex, currentPlaylist]);
 
   return {
-    playlist,
-    setPlaylist,   
+    playlist: currentPlaylist,
     currentIndex,
     audioRef,
     isShuffle,
@@ -91,5 +90,6 @@ export default function useMusicPlayer(initialSongs) {
     handlePrev,
     handleNext,
     handleEnded,
+    updatePlaylist,
   };
 }

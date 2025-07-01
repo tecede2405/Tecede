@@ -1,12 +1,16 @@
 .admin-nav{
     border-bottom: 1px solid #ddd;
+    height: 60px;
+    display: flex;
+    align-items: center;
 }
 .nav-item{
     text-decoration: none;
-    padding: 10px;
+    padding: 5px;
     color: #ddd;
-    background:#303030;
-    border-right: 1px solid #ddd;
+    background: #dddddd24;
+    border-radius: 5px;
+    margin: 10px;
 }
 .form-add-song{
     background: #ddd;
