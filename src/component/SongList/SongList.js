@@ -21,6 +21,9 @@ export default function SongList({ songs, currentIndex, onPlay }) {
               <h5 className="card-title mb-1">{song.title}</h5>
               <p className="card-text mb-2">{song.artist}</p>
             </div>
+            <p className="card-render-text mb-0 ">
+               {song.listens || 0} lượt nghe
+            </p>
           </div>
         </div>
       ))}

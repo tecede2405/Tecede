@@ -1,7 +1,8 @@
 .add-song {
-  max-width: 500px;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
+  
 
   input, select {
     display: block;
@@ -26,9 +27,11 @@
 }
 
 .form-add-song{
+  width: 80%;
   background: #212121;
   border : 1px solid #ddd;
   padding: 20px;
+  margin: 0 auto;
 }
 .form-add-song input,.form-add-song option,.form-add-song select{
   border-radius: 50px;

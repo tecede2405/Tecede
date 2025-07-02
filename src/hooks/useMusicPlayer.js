@@ -27,8 +27,24 @@ export default function useMusicPlayer(initialSongs) {
 
   // ✅ Phát bài theo index
   const handlePlay = (index) => {
-    setCurrentIndex(index);
-  };
+  const song = currentPlaylist[index];
+  if (song?._id) {
+    fetch(`${process.env.REACT_APP_API_URL}/api/songs/${song._id}/listen`, {
+      method: "PUT",
+    }).catch((err) => console.error("Lỗi tăng lượt nghe:", err));
+  }
+  setCurrentIndex(index);
+  setCurrentPlaylist((prev) => {
+  const updated = [...prev];
+  if (updated[index]) {
+    updated[index] = {
+      ...updated[index],
+      listens: (updated[index].listens || 0) + 1,
+    };
+  }
+  return updated;
+});
+};
 
   // ✅ Xáo trộn hoặc trở lại danh sách gốc
   const handleShufflePlaylist = () => {
@@ -36,38 +52,42 @@ export default function useMusicPlayer(initialSongs) {
       const shuffled = shuffleArray(originalPlaylist);
       setCurrentPlaylist(shuffled);
       setCurrentIndex(0);
+      handlePlay(0); 
     } else {
       setCurrentPlaylist(originalPlaylist);
       setCurrentIndex(0);
+      handlePlay(0);
     }
     setIsShuffle(!isShuffle);
   };
 
   // ✅ Phát bài tiếp theo
   const handleNext = () => {
-    if (currentPlaylist.length === 0) return;
-    setCurrentIndex((prev) =>
-      prev === null ? 0 : (prev + 1) % currentPlaylist.length
-    );
-  };
+  if (currentPlaylist.length === 0) return;
+  const nextIndex =
+    currentIndex === null ? 0 : (currentIndex + 1) % currentPlaylist.length;
+  handlePlay(nextIndex); // ✅ dùng handlePlay
+};
 
   // ✅ Quay lại bài trước
-  const handlePrev = () => {
-    if (currentPlaylist.length === 0) return;
-    setCurrentIndex((prev) =>
-      prev === null ? 0 : (prev - 1 + currentPlaylist.length) % currentPlaylist.length
-    );
+ const handlePrev = () => {
+  if (currentPlaylist.length === 0) return;
+  const prevIndex =
+    currentIndex === null
+      ? 0
+      : (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+  handlePlay(prevIndex); // ✅ dùng handlePlay
   };
 
   // ✅ Tự động phát bài tiếp khi bài hiện tại kết thúc
   const handleEnded = () => {
-    if (currentIndex === null) return;
-    if (currentIndex + 1 < currentPlaylist.length) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentIndex(null); // hoặc về 0 nếu muốn phát lại
-    }
-  };
+  if (currentIndex === null) return;
+  if (currentIndex + 1 < currentPlaylist.length) {
+    handlePlay(currentIndex + 1); // ✅ dùng handlePlay
+  } else {
+    setCurrentIndex(null); // hoặc phát lại
+  }
+};
 
   // ✅ Auto phát khi đổi bài
   useEffect(() => {
