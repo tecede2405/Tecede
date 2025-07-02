@@ -3,6 +3,8 @@ import Tabbar from '../../component/tabar';
 import React, { useState, useEffect } from "react";
 import Collapsed from "../../component/Collapse/index";
 import HomeMusic from '../../component/HomeMusic';
+import { useNavigate } from "react-router-dom";
+
 
 function Home() {
   const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
@@ -24,6 +26,12 @@ function Home() {
 
     return () => clearInterval(interval);
   }, []);
+
+    const navigate = useNavigate();
+
+  const handleAdminClick = () => {
+    navigate("/admin-post");
+  };
     return (
         <>
         <div className="Home">
@@ -76,7 +84,15 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt">1. tecede.netlify.app</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt">2. tecede-blog.vercel.app ( đường dẫn này có thể bị delay phải cần proxy như 1.1.1.1 mới vào được )</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt">3. Nếu bạn đang sử dụng 4G thì nên cân nhắc trước khi nghe nhạc để tiết kiệm dữ liệu.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt">4. Nếu bạn không vào bằng link thì nên reload lại trang mỗi khi vào để nhận dữ liệu mới nhất.</i></li>
                 </ul>
+              </div>
+              <div className="admin-post" onClick={handleAdminClick}>
+                      <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751473418/412cf700-0b7a-4d14-b998-8ba88d1cf8d9.png" alt="" />
+                      <div className="admin-post-text">
+                        <h2 className="admin-post-title">Tính năng trang admin (2/7/2025)</h2>
+                        <p className="admin-post-desc">"click vào để xem nội dung, video demo và source code"</p>
+                      </div> 
               </div>
             </div>
         </div>

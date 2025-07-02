@@ -23,7 +23,7 @@ import NhacTreRemix from './pages/Music/NhacTreRemix/index';
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
 import RequireAuth from "./component/RequireAuth/index";
-
+import AdminFeature from "./pages/admin-feature/index"
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +46,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="/admin-post" element={<AdminFeature />} />
               <Route path="admin"
               element={
                 <RequireAuth>

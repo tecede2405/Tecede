@@ -1,0 +1,109 @@
+.admin__feature{
+    display:flex;
+    width: 100%;
+    background: #212121;
+    &-abc{
+        flex:1;
+        min-height: 0;        // ⛑ Cho phép flex item co lại nếu nội dung lớn
+        overflow-y: auto;    //thanh kéo 
+    }
+    &-parent{
+        width: 95%;
+        margin: 0 auto;
+        padding:0;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &-video{
+     width: 80%;
+     margin: 0 auto;
+     height: auto;
+    }
+    &-title{
+        font-weight: 600;
+        color: #ddd;
+        text-align:center;
+        margin-bottom: 20px;
+    }
+    &-desc{
+        color: #ddd;
+        margin-left: 20px;
+    }
+    &-box{
+        margin-top: 10px;
+        width: 80%;
+        margin-bottom: 10px;
+    }
+}
+
+.my-code{
+    font-size: 13px;
+    padding: 5px;
+}
+
+.admin-post{
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border-top: 1px solid #ddd;
+    border-bottom : 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.admin-post img{
+    width: 80%;
+    height: auto;
+    margin-top: 20px;
+    object-fit: cover;
+}
+.admin-post-title,.admin-post-desc{
+    text-align: center;
+}
+
+@media (max-width: 768px){
+    .admin__feature{
+        
+        &-video{
+            width: 80%;
+        }
+        &-title{
+            font-size: 18px;
+        }
+    }
+    .my-code{
+    font-size: 10px;
+    }
+}
+
+
+@media (max-width: 540px) {
+    
+    
+    .admin__feature{
+        flex-direction: column;
+
+        &--parent{
+        width: 100%;
+        }
+        &-box{
+        width: 100%;
+        }
+
+        &-video{
+            width: 100%;
+        }
+        &-title{
+            font-size: 14px;
+        }
+        &-desc{
+        font-size: 10px;
+        }
+    }
+    .my-code{
+    font-size: 8px;
+    }
+}
