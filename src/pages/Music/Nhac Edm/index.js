@@ -102,6 +102,7 @@ function NhacEDM() {
                   <audio
                     ref={audioRef}
                     controls
+                    controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}
                   >

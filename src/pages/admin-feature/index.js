@@ -14,8 +14,8 @@ const AdminFeature = () => {
                 <div className="admin__feature-abc">
                     <div className="admin__feature-parent">
                         <h3 className="admin__feature-title">Video và source code tính năng trang admin</h3> 
-                        <video className="admin__feature-video" controls
-                        src="https://res.cloudinary.com/djzeqinsn/video/upload/v1751470591/lv_0_20250702222657_dhju9g.mp4"
+                        <video className="admin__feature-video" controls controlsList="nodownload"
+                        src="https://res.cloudinary.com/djzeqinsn/video/upload/v1751481260/lv_0_20250702222657_hk9vge.mp4"
                         poster="https://res.cloudinary.com/djzeqinsn/image/upload/v1751473418/412cf700-0b7a-4d14-b998-8ba88d1cf8d9.png"
                         ></video>
 
@@ -26,10 +26,10 @@ const AdminFeature = () => {
                                 Đây là source code file đăng nhập Admin.
                                 Mình khởi tạo các State như userName, passWord, Message.
                                 Đó là các biến tên đăng nhập, mật khẩu và thông báo "đăng nhập thành công/thất bại."
-                                mình có tạo 1 form HTMl cho phép admin nhập tài khoản mật khẩu và khi ấn đăng nhập sẽ thực hiện chạy vào fuction
-                                handleSubmit. khi submit lên sẽ khởi chạy fetch api, đây là cách xác thực vì tài khoản này mình đã tạo trong api,
+                                mình có tạo 1 form HTML cho phép admin nhập tài khoản mật khẩu và khi ấn đăng nhập sẽ thực hiện chạy vào fuction
+                                handleSubmit. Khi submit lên sẽ khởi chạy fetch api, đây là cách xác thực vì tài khoản này mình đã tạo trong api,
                                 nếu thông tin mình nhập là đúng thì nó sẽ so sánh với dữ liệu api và in ra đăng nhập thành công và ngược lại.
-                                Ở đây mình dùng thương thức là POST là để đẩy thông tin mình nhập lên và chuyển nó thành chuối json.
+                                Ở đây mình dùng thương thức là POST là để đẩy thông tin mình nhập lên và chuyển nó thành chuỗi json.
                             </i>
                         </div>
                         <div className="admin__feature-box">
@@ -45,7 +45,7 @@ const AdminFeature = () => {
                         <div className="admin__feature-box">
                             <ManageSong/>
                             <i className="admin__feature-desc">
-                                Đây là source code file quản lì bài hát.
+                                Đây là source code file quản lí bài hát.
                                 Mục đích là để show là danh sách các bài hát của từng thể loại, ý tưởng ở đây là mình dùng tab để dễ quản lý hơn.
                                 Khi chọn Tab của thể loại nào thì sẽ fetch api của thể loại đó và innerHTML để tạo ra danh sách. Hiện tại thì nó để
                                 dùng quản lý danh sách sau khi thêm bài hát và trong tương lai mình sẽ có thể phát triển thêm tính năng xóa hoặc chỉnh
