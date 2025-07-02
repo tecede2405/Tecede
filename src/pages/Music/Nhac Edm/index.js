@@ -3,12 +3,12 @@ import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
-import phonk from '../../../img/music-thumnail/phonk.png';
+import edm from '../../../img/music-thumnail/edm.png';
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
 
-function NhacPhonk() {
+function NhacEDM() {
   const {
     playlist,
     currentIndex,
@@ -25,7 +25,7 @@ function NhacPhonk() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhacphonk`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/nhacedm`)
       .then((res) => res.json())
       .then((data) => {
         updatePlaylist(data);
@@ -52,10 +52,10 @@ function NhacPhonk() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src={phonk} alt="" className="profile-image" />
+                <img src={edm} alt="" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
-                  <h4 className="profile-title">Nhạc Phonk 🎵</h4>
-                  <p className="profile-desc">Nhạc cháy như FreeFire.</p>
+                  <h4 className="profile-title">Nhạc EDM 🎧</h4>
+                  <p className="profile-desc">Dành cho dân bay, cảm hứng bốc lên từng nhịp beat.</p>
                   <button
                     onClick={handleShufflePlaylist}
                     className="shuffle"
@@ -118,4 +118,4 @@ function NhacPhonk() {
   );
 }
 
-export default NhacPhonk;
+export default NhacEDM;
