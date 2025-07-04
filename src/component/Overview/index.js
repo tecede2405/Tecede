@@ -1,63 +1,73 @@
 import "./index.scss"; 
-import {useState, useEffect} from "react";
-const OverView = () => {
+import { useState, useEffect } from "react";
 
+const OverView = () => {
     const [counts, setCounts] = useState({});
     const [totalListens, setTotalListens] = useState(0);
-
+    const [userCount, setUserCount] = useState(0); // 👈 thêm state mới
 
     useEffect(() => {
-    const categories = ['nhactre', 'nhacphonk', 'nhacusuk', 'nhactrungquoc', 'nhacedm', 'nhackhongloi','nhactreremix'];
+        const categories = ['nhactre', 'nhacphonk', 'nhacusuk', 'nhactrungquoc', 'nhacedm', 'nhackhongloi', 'nhactreremix'];
 
-    Promise.all(
-        categories.map(cat =>
-        fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/${cat}`)
+        Promise.all(
+            categories.map(cat =>
+                fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/${cat}`)
+                    .then(res => res.json())
+                    .then(data => ({ [cat]: data.length }))
+            )
+        ).then(results => {
+            const merged = Object.assign({}, ...results);
+            setCounts(merged);
+        });
+
+        // ✅ Gọi API đếm lượt nghe
+        fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/total-listens`)
             .then(res => res.json())
-            .then(data => ({ [cat]: data.length }))
-        )
-    ).then(results => {
-        const merged = Object.assign({}, ...results);
-        setCounts(merged);
-    });
+            .then(data => setTotalListens(data.total || 0))
+            .catch(() => setTotalListens(0));
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/total-listens`)
-    .then(res => res.json())
-    .then(data => setTotalListens(data.total || 0))
-    .catch(() => setTotalListens(0));
+        // ✅ Gọi API đếm IP truy cập
+        fetch(`${process.env.REACT_APP_API_URL}/api/stats/visitors`)
+            .then(res => res.json())
+            .then(data => setUserCount(data.total || 0))
+            .catch(() => setUserCount(0));
 
     }, []);
+
     const totalSongs = Object.values(counts).reduce((sum, val) => sum + val, 0);
     const avgListen = totalSongs > 0 ? Math.round(totalListens / totalSongs) : 0;
-    
-    return(
+
+    return (
         <>
             <h2 className="overview-title">📊 Tổng quan hệ thống</h2>
 
             <table className="dashboard">
-                <tr>
-                    <th>Thông số</th>
-                    <th>Nội dung hiển thị</th>
-                </tr>
-                <tr>
-                    <td>🎵 Số bài hát hiện có</td>
-                    <td>{totalSongs}</td>
-                </tr>
-                <tr>
-                    <td>👥 Tổng người dùng</td>
-                    <td>35</td>
-                </tr>
-                <tr>
-                    <td>💽 Playlist được tạo</td>
-                    <td>7 playlist</td>
-                </tr>
-                <tr>
-                    <td>🚀 Tổng số lượt nghe</td>
-                    <td>{totalListens}</td>
-                </tr>
-                <tr>
-                    <td>📊 Trung bình lượt nghe/bài</td>
-                    <td>{avgListen}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <th>Thông số</th>
+                        <th>Nội dung hiển thị</th>
+                    </tr>
+                    <tr>
+                        <td>🎵 Số bài hát hiện có</td>
+                        <td>{totalSongs}</td>
+                    </tr>
+                    <tr>
+                        <td>👥 Tổng người dùng</td>
+                        <td>{userCount}</td>
+                    </tr>
+                    <tr>
+                        <td>💽 Playlist được tạo</td>
+                        <td>7 playlist</td>
+                    </tr>
+                    <tr>
+                        <td>🚀 Tổng số lượt nghe</td>
+                        <td>{totalListens}</td>
+                    </tr>
+                    <tr>
+                        <td>📊 Trung bình lượt nghe/bài</td>
+                        <td>{avgListen}</td>
+                    </tr>
+                </tbody>
             </table>
         </>
     );

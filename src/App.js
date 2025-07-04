@@ -24,6 +24,10 @@ import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
 import RequireAuth from "./component/RequireAuth/index";
 import AdminFeature from "./pages/admin-feature/index"
+import ChatWidget from "./component/ChatWidget/ChatWidget";
+
+
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -69,6 +73,7 @@ function App() {
         </>
       )}
       <Analytics />
+      <ChatWidget />
     </>
   );
 }
