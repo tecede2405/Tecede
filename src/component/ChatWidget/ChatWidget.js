@@ -85,7 +85,7 @@ const ChatWidget = () => {
       {isOpen && (
         <div className="chat-box">
           <div className="chat-box-header">
-            Trợ lý hỗ trợ{" "}
+            Trợ lý AI hỗ trợ (phản hồi có thể chậm) {" "}
             <span style={{ fontWeight: "normal", fontSize: 13 }}></span>
             <button
               onClick={toggleChat}
