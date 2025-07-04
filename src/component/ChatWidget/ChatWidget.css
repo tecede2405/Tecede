@@ -2,7 +2,7 @@
 
 .chat-toggle-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 130px;
   right: 20px;
   border-radius: 50%;
   width: 60px;
@@ -13,11 +13,50 @@
   font-size: 24px;
   cursor: pointer;
   z-index: 1000;
+  
 }
+@import url("https://fonts.googleapis.com/css?family=Lato:300");
+
+
+.gradient-border {
+  --border-width: 1px;
+
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(-1 * var(--border-width));
+    left: calc(-1 * var(--border-width));
+    z-index: -1;
+    width: calc(100% + var(--border-width) * 2);
+    height: calc(100% + var(--border-width) * 2);
+    background: linear-gradient(
+      60deg,
+      hsl(224, 85%, 66%),
+      hsl(269, 85%, 66%),
+      hsl(314, 85%, 66%),
+      hsl(359, 85%, 66%),
+      hsl(44, 85%, 66%),
+      hsl(89, 85%, 66%),
+      hsl(134, 85%, 66%),
+      hsl(179, 85%, 66%)
+    );
+    background-size: 300% 300%;
+    background-position: 0 50%;
+    border-radius: 50%;
+    animation: moveGradient 4s alternate infinite;
+  }
+}
+
+@keyframes moveGradient {
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 
 .chat-box {
   position: fixed;
-  bottom: 90px;
+  bottom: 200px;
   right: 20px;
   width: 350px;
   height: 450px;
@@ -26,7 +65,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -74,17 +113,16 @@
 /* Responsive cho tablet và điện thoại */
 @media (max-width: 768px) {
   .chat-box {
-    width: 90vw;
+    width: 80vw;
     height: 70vh;
-    right: 5vw;
-    bottom: 80px;
+    right: 70px;
+    bottom: 130px;
   }
 
   .chat-toggle-button {
     width: 50px;
     height: 50px;
     font-size: 20px;
-    bottom: 15px;
     right: 15px;
   }
 
@@ -108,7 +146,7 @@
     width: 90vw;
     height: 65vh;
     right: 2.5vw;
-    bottom: 75px;
+    bottom: 180px;
     margin: 0 auto;
   }
 
@@ -116,7 +154,6 @@
     width: 45px;
     height: 45px;
     font-size: 18px;
-    bottom: 10px;
     right: 10px;
   }
 

@@ -78,7 +78,7 @@ const ChatWidget = () => {
 
   return (
     <>
-      <button className="chat-toggle-button" onClick={toggleChat}>
+      <button className="chat-toggle-button gradient-border" onClick={toggleChat}>
         💬
       </button>
 
