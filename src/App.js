@@ -25,7 +25,7 @@ import ManageSongs from "./component/ManageSongs/index";
 import RequireAuth from "./component/RequireAuth/index";
 import AdminFeature from "./pages/admin-feature/index"
 import ChatWidget from "./component/ChatWidget/ChatWidget";
-
+import UsingApp from "./pages/using-app/index";
 
 
 function App() {
@@ -51,6 +51,7 @@ function App() {
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="/admin-post" element={<AdminFeature />} />
+              <Route path="/using-app" element={<UsingApp />} />
               <Route path="admin"
               element={
                 <RequireAuth>

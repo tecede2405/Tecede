@@ -233,6 +233,11 @@ footer{
             font-size: 25px;
             font-weight: 500; 
         }
+        span {
+            cursor : pointer;
+            color: blue;
+            text-decoration:underline;
+        }
     }
     
 }

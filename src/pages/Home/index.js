@@ -32,6 +32,9 @@ function Home() {
   const handleAdminClick = () => {
     navigate("/admin-post");
   };
+  const handleAppClick = () => {
+    navigate("/using-app");
+  };
     return (
         <>
         <div className="Home">
@@ -85,6 +88,7 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt">2. tecede-blog.vercel.app ( đường dẫn này có thể bị delay phải cần proxy như 1.1.1.1 mới vào được )</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt">3. Nếu bạn đang sử dụng 4G thì nên cân nhắc trước khi nghe nhạc để tiết kiệm dữ liệu.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt">4. Nếu bạn không vào bằng link thì nên reload lại trang mỗi khi vào để nhận dữ liệu mới nhất.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt">5. Có thể sử dụng dạng app (không cần reload và tiện). Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
                 </ul>
               </div>
               <div className="admin-post" onClick={handleAdminClick}>
