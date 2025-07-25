@@ -5,6 +5,7 @@
     import { useState,useEffect } from "react";
     import LoginForm from "../../component/ShowForm/showForm.js";
     import { useNavigate, useLocation } from "react-router-dom";
+    import { FaPhoneVolume, FaEnvelope, FaHashtag } from 'react-icons/fa';
 
     function Layout(){
     const [showForm, setShowForm] = useState(false);
@@ -54,9 +55,10 @@
 
                         {showDropdown && (
                         <div className="dropdown-logout">
+                            <i>Lối tắt :</i>
                             {/* Nếu KHÔNG ở trang /admin thì hiện thêm nút quay lại */}
                             {!location.pathname.startsWith("/admin") && (
-                            <button onClick={() => navigate("/admin")}>Trang Admin</button>
+                            <button onClick={() => navigate("/admin")}>Trang admin</button>
                             )}
                             <button onClick={handleLogout}>Đăng xuất</button>
                         </div>
@@ -92,9 +94,9 @@
                 <footer>
                     <div className="footer-contact">
                         <ul>
-                            <li>Số điện thoại: 0384577121</li>
-                            <li>Email: thoaixd123@gmail.com</li>
-                            <li>Hashtag: #tecede, #tecede blog</li>
+                            <li><FaPhoneVolume className="icon"/> Số điện thoại: 0384577121</li>
+                            <li><FaEnvelope className="icon"/> Email: thoaixd123@gmail.com</li>
+                            <li><FaHashtag className="icon"/> Hashtag: #tecede, #tecede blog</li>
                         </ul>
                     </div>
                     <p>Copyright &copy; 2024 by Tecede. All right reserved.</p>

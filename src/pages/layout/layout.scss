@@ -113,19 +113,32 @@ footer{
 }
 .dropdown-logout {
   position: absolute;
-  top: 60px;
-  right:10px;
+  width: 130px;
+  top: 50px;
+  left:5px;
   z-index: 999;
+  background : #bdbbbb;
+  display: flex;
+  flex-direction: column;
+  border-radius:5px;
+  
+}
+.dropdown-logout i{
+    font-weight: 800;
+    margin-left: 10px;
 }
 .dropdown-logout button {
-    padding: 5px;
-    background : red;
+    width: 100%;
+    background : #bdbbbb;
     color: #000;
     border: none;
     border-radius: 5px;
+    font-size: 14px;
     font-weight: 600;
-    margin-right: 10px;
     text-decoration:underline;
+}
+.dropdown-logout button:hover{
+    color: blue;
 }
 .tabbar{
     height: 100vh;
@@ -330,6 +343,23 @@ footer{
             padding: 0 30px;
         }
     }
+    &__skill{
+        margin: 0 auto;
+        width: 50%;
+        border-bottom: 1px solid #333333;
+    }
+    &__skill-img{
+        img{
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            object-fit : contain;
+        }
+        img:hover{
+            transform: scale(1.25);
+            transition: transform 0.3s ease;
+        }
+    }
   }
 
 
@@ -402,16 +432,19 @@ footer{
 
     .about{
         &__produce{
-            width: 80%!important;
+            width: 80%;
             img{
                 width: 50%;
             }
         }
         &__project{
-            width: 80%!important;
+            width: 80%;
             img{
                 width: 50%;
             }
+        }
+        &__skill{
+            width: 80%;
         }
     }
   }

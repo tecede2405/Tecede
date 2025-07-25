@@ -17,6 +17,26 @@ function About() {
                     <img src={zhongli} alt="" />
                     <p>"Blog này là nơi tôi chia sẻ hành trình học lập trình."</p>
                 </div>
+                <div className="about__skill text-center">
+                    <h1>Skill cơ bản</h1>
+                    <div className="row">
+                         <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 about__skill-img">
+                            <img src="https://logospng.org/download/html-5/logo-html-5-768.png" alt="HTML" />
+                        </div>
+                        <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 about__skill-img">
+                            <img src="https://logospng.org/download/css-3/logo-css-3-1536.png" alt="CSS" />
+                        </div>
+                        <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 about__skill-img">
+                            <img src="https://static.vecteezy.com/system/resources/previews/027/127/463/original/javascript-logo-javascript-icon-transparent-free-png.png" alt="JavaScript" />
+                        </div>
+                        <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 about__skill-img">
+                            <img src="https://pluspng.com/img-png/react-logo-png-img-react-logo-png-react-js-logo-png-transparent-png-1142x1027.png" alt="React" />
+                        </div>
+                        <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 about__skill-img">
+                            <img src="https://cdn3.iconfinder.com/data/icons/social-media-2169/24/social_media_social_media_logo_git-512.png" alt="Git" />
+                        </div>
+                    </div>
+                </div>
                 <div className="about__project">
                     <img src={project1} alt="" />
                     <p>Ngoài ra tôi cũng có 1 số project nhỏ khác bạn có thể xem trên mọi thiết bị <a href="https://complete-xsk.vercel.app/" target="_blank" rel="noopener noreferrer">Tại đây</a>.</p>
