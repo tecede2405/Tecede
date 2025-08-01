@@ -25,7 +25,7 @@ function AddSongs() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("https://api-music-production-1ad8.up.railway.app/api/songs/upload", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/songs/upload`, {
         method: "POST",
         body: formData,
       });
