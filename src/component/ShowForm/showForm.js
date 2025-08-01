@@ -16,7 +16,7 @@ export default function LoginForm({ onClose, onLoginSuccess }) {
   setLoading(true);
 
   try {
-    const res = await fetch("https://api-music-production-1ad8.up.railway.app/api/auth/login", {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
