@@ -26,7 +26,7 @@ import RequireAuth from "./component/RequireAuth/index";
 import AdminFeature from "./pages/admin-feature/index"
 import ChatWidget from "./component/ChatWidget/ChatWidget";
 import UsingApp from "./pages/using-app/index";
-
+import Anime from "./pages/Amine/index";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -69,6 +69,7 @@ function App() {
               <Route path="music/mood" element={<NhacTamTrang />} />
               <Route path="music/phonk" element={<NhacPhonk />} />
               <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
+              <Route path="/anime" element={<Anime />} />
             </Route>
           </Routes>
         </>

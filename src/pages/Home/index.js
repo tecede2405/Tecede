@@ -32,6 +32,9 @@ function Home() {
   const handleAdminClick = () => {
     navigate("/admin-post");
   };
+  const handleAnimeClick = () => {
+    navigate("/anime");
+  };
   const handleAppClick = () => {
     navigate("/using-app");
   };
@@ -97,6 +100,11 @@ function Home() {
                         <h2 className="admin-post-title">Tính năng trang admin (2/7/2025)</h2>
                         <p className="admin-post-desc">"click vào để xem nội dung, video demo và source code"</p>
                       </div> 
+              </div>
+              <div className="admin-post" onClick={handleAnimeClick}>
+                      <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1754931345/2fdd6074-e842-43b1-8351-8cee247ec7af.png" alt="" />
+                      <h2 className="admin-post-title">Trang Demo Anime (11/8/2025)</h2>
+                      <p className="admin-post-desc">"click vào để xem demo"</p>
               </div>
             </div>
         </div>

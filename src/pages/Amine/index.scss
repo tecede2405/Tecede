@@ -1,0 +1,187 @@
+/* ==============================
+   Biến màu & theme
+============================== */
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #9aa4b2;
+  --accent: #60a5fa;
+}
+
+/* ==============================
+   Reset & Cấu hình chung
+// ============================== */
+// html,
+// body {
+//   height: 100%;
+//   margin: 0;
+//   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+// }
+
+// body {
+//   background: linear-gradient(180deg, #071126 0%, #081028 100%);
+//   color: #e6eef8;
+//   padding: 24px;
+//   box-sizing: border-box;
+// }
+
+/* ==============================
+   Styles scoped cho component
+============================== */
+.anime-page {
+  background: linear-gradient(180deg, #071126 0%, #081028 100%);
+  color: #e6eef8;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  padding: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+
+  /* header */
+  .anime__header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .anime__title {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .anime__controls {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* form controls (scoped) */
+  input[type="text"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+    background: rgba(255, 255, 255, 0.03);
+    color: inherit;
+    width: 260px;
+  }
+
+  button {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 0;
+    background: var(--accent);
+    color: #08203a;
+    cursor: pointer;
+  }
+
+  .anime__meta {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* grid & cards */
+  .anime__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); // rộng hơn 1 chút
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .anime__card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+  }
+
+  .anime__poster {
+    width: 84px;
+    height: 120px;
+    flex: 0 0 84px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: #091229;
+  }
+
+  .anime__info {
+    flex: 1;
+    min-width: 0; /* để text-truncate hoạt động */
+  }
+
+  .anime__card-title {
+    font-weight: 600;
+    margin: 0 0 6px 0;
+    font-size: 15px;
+  }
+
+  .anime__sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .anime__syn {
+    font-size: 13px;
+    color: #cfe6ff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  /* pager, small, error */
+  .anime__pager {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 18px;
+  }
+
+  .anime__small {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .anime__loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .anime__error {
+    color: #ffb4b4;
+    background: rgba(255, 180, 180, 0.06);
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .anime__footer {
+    margin-top: 26px;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* responsive */
+  @media (max-width: 600px) {
+    .anime__controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+    }
+    .anime__grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+
+    input[type="text"] {
+      width: 100%;
+    }
+  }
+}
