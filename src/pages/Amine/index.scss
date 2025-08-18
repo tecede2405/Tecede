@@ -1,187 +1,134 @@
-/* ==============================
-   Biến màu & theme
-============================== */
-:root {
-  --bg: #0f1724;
-  --card: #0b1220;
-  --muted: #9aa4b2;
-  --accent: #60a5fa;
+/* ====== Layout chung ====== */
+.kitsu-anime {
+  padding: 24px clamp(16px, 3vw, 32px);
+  color: #e5e7eb;              /* text-gray-200 */
+  background: #0f172a;         /* slate-900 */
+  min-height: 100vh;
+
+  &__title {
+    margin: 0 0 16px;
+    font-size: 40px;
+    font-weight: 700;
+    color: #0f6ff6;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 16px;
+
+    /* >=640px: 2 cột */
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* >=1024px: 4 cột */
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    /* >=1280px: 5 cột */
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  &__pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  &__btn {
+    width: 100px;
+    height: 36px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: #facc15; /* yellow-400 */
+    color: #111;
+    border: none;
+    cursor: pointer;
+    transition: all .2s ease;
+
+    &:hover {
+      background-color: #eab308; /* yellow-500 */
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+  
+  }
 }
 
-/* ==============================
-   Reset & Cấu hình chung
-// ============================== */
-// html,
-// body {
-//   height: 100%;
-//   margin: 0;
-//   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-// }
+/* ====== Card ====== */
+.anime-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #111827; /* gray-900 */
+  border: 1px solid #1f2937; /* gray-800 */
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
 
-// body {
-//   background: linear-gradient(180deg, #071126 0%, #081028 100%);
-//   color: #e6eef8;
-//   padding: 24px;
-//   box-sizing: border-box;
-// }
-
-/* ==============================
-   Styles scoped cho component
-============================== */
-.anime-page {
-  background: linear-gradient(180deg, #071126 0%, #081028 100%);
-  color: #e6eef8;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  padding: 24px;
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0 auto;
-
-  /* header */
-  .anime__header {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 18px;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    border-color: #374151; /* gray-700 */
   }
 
-  .anime__title {
-    margin: 0;
-    font-size: 20px;
-  }
-
-  .anime__controls {
-    margin-left: auto;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  /* form controls (scoped) */
-  input[type="text"] {
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #1f2937;
-    background: rgba(255, 255, 255, 0.03);
-    color: inherit;
-    width: 260px;
-  }
-
-  button {
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 0;
-    background: var(--accent);
-    color: #08203a;
-    cursor: pointer;
-  }
-
-  .anime__meta {
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  /* grid & cards */
-  .anime__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); // rộng hơn 1 chút
-    gap: 14px;
-    margin-top: 18px;
-  }
-
-  .anime__card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    align-items: flex-start;
-    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
-  }
-
-  .anime__poster {
-    width: 84px;
-    height: 120px;
-    flex: 0 0 84px;
-    border-radius: 6px;
-    object-fit: cover;
-    background: #091229;
-  }
-
-  .anime__info {
-    flex: 1;
-    min-width: 0; /* để text-truncate hoạt động */
-  }
-
-  .anime__card-title {
-    font-weight: 600;
-    margin: 0 0 6px 0;
-    font-size: 15px;
-  }
-
-  .anime__sub {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .anime__syn {
-    font-size: 13px;
-    color: #cfe6ff;
+  &__thumb {
+    width: 96px;
+    height: 136px;
+    border-radius: 10px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    background: #0b1220;
+    object-fit: cover;
+  }
+
+  &__content {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+  }
+
+  &__name {
+    margin: 2px 0 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3f4f6;
+    line-height: 1.25;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  /* pager, small, error */
-  .anime__pager {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 18px;
+  &__synopsis {
+    margin: 0;
+    font-size: 14px;
+    color: #9ca3af; /* gray-400 */
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
+}
 
-  .anime__small {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .anime__loading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .anime__error {
-    color: #ffb4b4;
-    background: rgba(255, 180, 180, 0.06);
-    padding: 10px;
-    border-radius: 8px;
-  }
-
-  .anime__footer {
-    margin-top: 26px;
-    color: var(--muted);
-    font-size: 13px;
-    text-align: center;
-  }
-
-  /* responsive */
-  @media (max-width: 600px) {
-    .anime__controls {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 6px;
-    }
-    .anime__grid {
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    }
-
-    input[type="text"] {
-      width: 100%;
+/* ====== Error ====== */
+.error {
+  color: #fecaca; /* red-200 */
+}
+@media (max-width: 640px){
+  .kitsu-anime {
+    &__title{
+      font-size: 30px;
     }
   }
 }

@@ -1,0 +1,153 @@
+.banner {
+  position: relative;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+
+  &__overlay {
+    width: 100%;
+    padding: 3rem;
+    // overlay nhẹ hơn, từ dưới lên
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.2) 80%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__content {
+    width: 100%;
+    max-width: 900px; // giữ text không quá dài, vẫn đọc dễ
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+     -webkit-text-stroke: 1px #000;
+    paint-order: stroke fill;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000;
+  }
+
+  &__meta {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #ffd369;
+    font-weight: 600;
+  }
+
+  &__btn {
+    width: 200px;
+    height: 50px;
+    margin-top: 1.5rem;
+    background: #007bff;
+    border: none;
+    border-radius: 8px; 
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
+
+  &__thumbs {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1.5rem;
+  }
+
+  &__thumb {
+    width: 110px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s;
+
+    &.active {
+      border: 2px solid #fff;
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.trending-title{
+  font-size: 27px;
+}
+
+@media (max-width: 1023px) {
+  .banner {
+    text-align: center;
+    padding: 20px;
+    background-size: cover;
+    background-position: center;
+    min-height: 60vh;
+    &__content{
+      margin-bottom:0;
+    }
+    &__overlay {
+      // background: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+    }
+
+    &__title {
+      font-size: 2rem;
+      -webkit-text-stroke: 1px #000;
+    }
+
+    &__meta {
+      font-size: 1rem;
+      margin: 8px 0;
+    }
+
+    &__btn {
+      margin-top: 10px;
+      width: 150px;
+      font-size: 16px;
+      height: 40px;
+    }
+
+    &__thumbs {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 12px;
+      justify-items: center;
+    }
+
+    &__thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%; /* thành tròn */
+      object-fit: cover;
+      opacity: 0.8;
+      transition: 0.3s;
+
+      &.active {
+        border: 2px solid #fff;
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+  }
+  .trending-title{
+    font-size: 20px;
+  }
+}

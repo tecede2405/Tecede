@@ -21,16 +21,16 @@
 
 /* Full screen loader */
 .loading-screen {
-  position: absolute; /* ✅ KHÔNG dùng fixed */
+  position: sticky; /* ✅ KHÔNG dùng fixed */
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.85); /* vẫn có nền tối */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10; /* cao hơn nội dung nhưng thấp hơn header/footer */
+  z-index: 10000; /* cao hơn nội dung nhưng thấp hơn header/footer */
 }
 
 .terminal-loader {

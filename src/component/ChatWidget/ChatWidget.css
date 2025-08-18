@@ -12,7 +12,7 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 10000;
   
 }
 @import url("https://fonts.googleapis.com/css?family=Lato:300");

@@ -27,6 +27,8 @@ import AdminFeature from "./pages/admin-feature/index"
 import ChatWidget from "./component/ChatWidget/ChatWidget";
 import UsingApp from "./pages/using-app/index";
 import Anime from "./pages/Amine/index";
+import AnimeDetail from"./pages/AnimeDetail/index";
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -36,6 +38,7 @@ function App() {
       setLoading(false);
     }, 3000); // Giả lập thời gian tải trang
   }, []);
+
 
   return (
     <>
@@ -53,13 +56,13 @@ function App() {
               <Route path="/admin-post" element={<AdminFeature />} />
               <Route path="/using-app" element={<UsingApp />} />
               <Route path="admin"
-              element={
-                <RequireAuth>
-                  <Admin />
-                </RequireAuth>
-              }>
-                <Route path="add" element={<AddSongs />} />
-                <Route path="manage" element={<ManageSongs />} />
+                element={
+                  <RequireAuth>
+                    <Admin />
+                  </RequireAuth>
+                }>
+                  <Route path="add" element={<AddSongs />} />
+                  <Route path="manage" element={<ManageSongs />} />
               </Route>
               {/* Các route cho các trang chi tiết nhạc */}
               <Route path="music/nhac-tre" element={<NhacTre />} />
@@ -70,6 +73,7 @@ function App() {
               <Route path="music/phonk" element={<NhacPhonk />} />
               <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
               <Route path="/anime" element={<Anime />} />
+              <Route path="/anime/:id" element={<AnimeDetail />} />
             </Route>
           </Routes>
         </>
