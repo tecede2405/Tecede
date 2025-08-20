@@ -1,0 +1,76 @@
+.dragonball-wrapper {
+  padding-top:20px;
+  color: #fff;
+}
+
+.dragonball-slider {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 20px 10px;
+  cursor: grab;
+  user-select: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-x;
+  border-bottom: 1px solid #ddd;
+}
+
+.dragonball-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.dragonball-card {
+  flex: 0 0 auto;
+  width: 180px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dragonball-img{
+  border-radius: 10px;
+  overflow: hidden;
+}
+.dragonball-img img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  border-radius: 10px;
+}
+.dragonball-img img:hover {
+  transform: scale(1.1);
+    
+}
+
+/* .dragonball-slider > a:nth-child(even) .dragonball-img img {
+  clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Card lẻ: méo top từ phải sang trái */
+/* .dragonball-slider > a:nth-child(odd) .dragonball-img img {
+  clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 100%);
+} */ */
+
+
+/* Hover: zoom + border vàng sáng */
+.dragonball-card:hover img {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px gold;
+  filter: brightness(1.1);
+}
+
+.dragonball-title {
+  color: #ddd;
+  text-decoration: none;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.3;
+}
+@media (max-width: 1023px) {
+  .dragonball-slider{
+    padding-top: 0;
+  }
+}

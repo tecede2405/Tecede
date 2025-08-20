@@ -28,7 +28,7 @@ import ChatWidget from "./component/ChatWidget/ChatWidget";
 import UsingApp from "./pages/using-app/index";
 import Anime from "./pages/Amine/index";
 import AnimeDetail from"./pages/AnimeDetail/index";
-
+import AnimeSearch from "./pages/AnimeSearch/index";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -74,6 +74,8 @@ function App() {
               <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
               <Route path="/anime" element={<Anime />} />
               <Route path="/anime/:id" element={<AnimeDetail />} />
+              <Route path="/search" element={<AnimeSearch />} />
+
             </Route>
           </Routes>
         </>

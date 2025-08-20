@@ -6,10 +6,17 @@
   min-height: 100vh;
 
   &__title {
-    margin: 0 0 16px;
-    font-size: 40px;
+    margin: 0 0  16px 16px;
+    font-size: 30px;
     font-weight: 700;
-    color: #0f6ff6;
+    color: #79aaee;
+     -webkit-text-stroke: 1px #000;
+    paint-order: stroke fill;
+    text-shadow: 
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000;
   }
 
   &__grid {
@@ -125,10 +132,38 @@
 .error {
   color: #fecaca; /* red-200 */
 }
-@media (max-width: 640px){
+
+
+.anime-header{
+  width: 100%;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right:30px;
+  padding-top: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom:20px;
+  position: sticky;
+  top: 50px;
+  z-index: 999;
+}
+.link-anime{
+  text-decoration: none;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  &__image{
+    width: 60px;
+  height: 60px;
+  object-fit: cover;
+  }
+}
+@media (max-width: 1018px){
   .kitsu-anime {
     &__title{
-      font-size: 30px;
+      display: none;
     }
   }
 }

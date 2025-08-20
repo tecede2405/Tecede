@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./style.scss";
 import Loading from "../../component/Loading/index";
+import AnimeHeader from "../../component/AnimeHeader/index";
 
 export default function AnimeDetail() {
   const { id } = useParams();
@@ -41,12 +42,14 @@ export default function AnimeDetail() {
   const isReady = anime && a;
 
   return (
+    <>
     <div className={`detail ${loading ? "loading-mode" : ""}`}>
       {loading || !isReady ? (
         <Loading />
       ) : (
-        <>
-          {/* HERO */}
+        <> 
+          <div className="detail-anime">
+          <AnimeHeader />
           <div
             className="detail-hero"
             style={{
@@ -91,8 +94,7 @@ export default function AnimeDetail() {
               </div>
             </div>
           </div>
-
-          {/* BODY */}
+          </div>
           <div className="container detail-body">
             <section className="detail-section">
               <h2 className="section-title">Giới thiệu</h2>
@@ -120,9 +122,11 @@ export default function AnimeDetail() {
                 </div>
               </section>
             )}
-          </div>
+          </div>     
         </>
       )}
     </div>
+    </>
+    
   );
 }

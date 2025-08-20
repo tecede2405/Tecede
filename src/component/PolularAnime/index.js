@@ -24,7 +24,7 @@ function TrendingAnime() {
   const attr = selected.attributes;
   return (
     <>
-    <h1 className="trending-title">Anime Treding hiện nay</h1>
+    <h1 className="trending-title">Anime phổ biến hiện nay</h1>
     <div
       className="banner"
       style={{

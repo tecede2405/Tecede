@@ -1,5 +1,5 @@
 /* palette */
-$bg: #0f1218;
+$bg: #0f172a;
 $card: #171b22;
 $text: #e8eaee;
 $muted: #aeb4c0;
@@ -11,8 +11,11 @@ $warning: #f59e0b;
   background: $bg;
   color: $text;
   position: sticky;
-  z-index: 2000;
+  z-index: 999;
   .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+}
+.detail-anime{
+  padding: 10px 15px;
 }
 .detail.loading-mode {
   height: 100vh;
