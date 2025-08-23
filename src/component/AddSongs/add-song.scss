@@ -42,7 +42,10 @@
 .form-add-song button {
   border-radius: 50px;
 }
-
+.form-add-song .upload-btn:hover {
+  background : #fff;
+  color:blue;
+}
 .custom-upload-btn {
   display: inline-block;
   padding: 8px 16px;
@@ -60,3 +63,26 @@
   background-color: #0056b3;
 }
 
+.progress-bar {
+  width: 100%;
+  background: #eee;
+  height: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  position: relative;
+}
+
+.progress-fill {
+  background: #4caf50;
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.progress-bar span {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  font-size: 12px;
+  color: #4caf50;
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import "./add-song.scss";
 
 function AddSongs() {
@@ -8,6 +9,8 @@ function AddSongs() {
   const [file, setFile] = useState(null);
   const [category, setCategory] = useState("nhactre");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,27 +28,40 @@ function AddSongs() {
     formData.append("file", file);
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/songs/upload`, {
-        method: "POST",
-        body: formData,
-      });
+      setLoading(true);
+      setMessage("⏳ Đang tải lên...");
+      setProgress(0);
 
-      const data = await res.json();
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/songs/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (event) => {
+            const percent = Math.round((event.loaded * 100) / event.total);
+            setProgress(percent);
+          },
+        }
+      );
 
-      if (res.ok) {
+      if (res.status === 201) {
         setMessage("✅ Thêm bài hát thành công!");
         setTitle("");
         setArtist("");
         setImage("");
         setFile(null);
         setCategory("nhactre");
-
+        setProgress(0);
+        document.getElementById("file-upload").value = "";
         setTimeout(() => setMessage(""), 3000);
       } else {
-        setMessage("❌ " + (data.error || "Thêm bài hát thất bại"));
+        setMessage("❌ " + (res.data?.error || "Thêm bài hát thất bại"));
       }
     } catch (err) {
+      console.error("❌ Lỗi upload:", err);
       setMessage("❌ Lỗi kết nối server!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,7 +104,11 @@ function AddSongs() {
           onChange={(e) => setFile(e.target.files[0])}
           style={{ display: "none" }}
         />
-        {file && <small style={{ marginTop: "5px", color: "#ddd", fontSize: "13px"}}>📁 {file.name}</small>}
+        {file && (
+          <small style={{ marginTop: "5px", color: "#ddd", fontSize: "13px" }}>
+            📁 {file.name}
+          </small>
+        )}
 
         <select
           value={category}
@@ -104,11 +124,20 @@ function AddSongs() {
           <option value="nhackhongloi">Nhạc Không lời</option>
         </select>
 
-        <button type="submit">Thêm bài hát</button>
+        {progress > 0 && progress < 100 && (
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${progress}%` }} />
+            <span>{progress}%</span>
+          </div>
+        )}
+
+        <button type="submit" className="upload-btn" disabled={loading}>
+          {loading ? "⏳ Đang xử lý..." : "Thêm bài hát"}
+        </button>
       </form>
 
       {message && (
-        <p style={{ color: message.includes("✅") ? "green" : "red" }}>
+        <p style={{ color: message.includes("✅") ? "green" : "blue" }}>
           {message}
         </p>
       )}
