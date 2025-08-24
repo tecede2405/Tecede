@@ -15,10 +15,10 @@ function About() {
                 </div>
                 <div className="about__produce">
                     <img src={zhongli} alt="" />
-                    <p>"Blog này là nơi tôi chia sẻ hành trình học lập trình."</p>
+                    <p>"Skill và project nằm ở phía dưới. Nếu bạn quan tâm có thể xem."</p>
                 </div>
-                <div className="about__skill text-center">
-                    <h1>Skill cơ bản</h1>
+                 
+                <div className="about__skill">
                     <div className="row">
                          <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 about__skill-img">
                             <img src="https://logospng.org/download/html-5/logo-html-5-768.png" alt="HTML" />

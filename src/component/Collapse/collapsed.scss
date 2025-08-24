@@ -3,7 +3,9 @@
     margin: 0 auto; 
     background: #212121;
     color: #fff;
+    border : 1px solid #fff;
 }
+
 .ant-collapse-header svg{
     color: #fff;
 }
@@ -13,4 +15,11 @@
 .ant-collapse-content-box {
     background: #212121;
     color: #fff;
+    border-radius: none;
+}
+
+
+.collapsed__header{
+    padding-top: 20px;
+    border-radius: 8px; 
 }

@@ -197,7 +197,7 @@ footer{
     display:flex;
     width: 100%;
     height: 100%;
-    background: #212121;
+    // background: #212121;
     color: #ddd;
     &__main{
         flex:1;
@@ -212,17 +212,23 @@ footer{
 
     &__feature{
         width: 30%;
-        height:440px;
+        height:400px;
         display: flex;
         flex-direction : column;
         justify-content:start;
         align-items:center;
+        background: rgba(15, 23, 42, 0.7); /* màu xanh đen trong suốt */
+        backdrop-filter: blur(6px);         /* làm mờ background phía sau */
+        border-radius: 8px;                /* bo góc mềm mại */
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* đổ bóng */ 
+        opacity: 0.9;
         margin-bottom: 50px;
         margin-left: 10px;
         overflow: hidden;
         border-bottom: 1px solid #333333;
         h2{
             text-align: center;
+            padding-top: 12px;
         }
         p{
             text-align:center;
@@ -230,7 +236,7 @@ footer{
         }
         img{
             width: 100%;
-            height:50%;
+            height:55%;
             object-fit:cover;
         }
     }
@@ -298,7 +304,7 @@ footer{
   //About 
   .about{
     display: flex;
-    background: #212121;
+    // background: #212121;
     color: #ddd;
     // background-attachment: fixed;
     // background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
@@ -334,7 +340,7 @@ footer{
         align-items: center;
         margin: 0 auto;
         margin-top: 30px;
-        padding-bottom: 50px;
+        padding-bottom: 30px;
         border-bottom: 1px solid #333333;
         img{
             width: 70%;
@@ -349,6 +355,7 @@ footer{
         }
     }
     &__skill{
+        padding-top:30px;
         margin: 0 auto;
         width: 50%;
         border-bottom: 1px solid #333333;
@@ -388,7 +395,7 @@ footer{
 
 
   .contact{
-    background: #212121;
+    // background: #212121;
     display:flex;
     width: 100%;
     height: 100%;
@@ -537,6 +544,7 @@ footer{
             padding: 0 20px;
             margin: 20px 0;
             border-top: 1px solid #333333;
+            border-radius: 0;
             img{
                 width: 100px;
                 height :auto;
@@ -593,10 +601,10 @@ footer{
   @media (max-width: 540px){
     .header{
         height:50px;
-        background-image: url(https://i.pinimg.com/736x/cb/67/93/cb679304622649df8e3182eca85b2c04.jpg);
-        background-size: cover;
-        background-position: cover;
-        object-fit: cover;
+        // background-image: url(https://i.pinimg.com/736x/cb/67/93/cb679304622649df8e3182eca85b2c04.jpg);
+        // background-size: cover;
+        // background-position: cover;
+        // object-fit: cover;
         background-repeat: no-repeat;
         &__logo{
             width:25%;

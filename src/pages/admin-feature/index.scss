@@ -53,9 +53,21 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: rgba(15, 23, 42, 0.7); /* màu xanh đen trong suốt */
+    backdrop-filter: blur(6px);         /* làm mờ background phía sau */
+    border-radius: 12px;                /* bo góc mềm mại */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* đổ bóng */ 
+    opacity: 0.9;
 }
+.admin-post:hover {
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  background : #136bb854;
+}
+
 .admin-post img{
-    width: 80%;
+    width: 60%;
     height: auto;
     margin-top: 20px;
     object-fit: cover;

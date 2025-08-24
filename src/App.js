@@ -29,7 +29,7 @@ import UsingApp from "./pages/using-app/index";
 import Anime from "./pages/Amine/index";
 import AnimeDetail from"./pages/AnimeDetail/index";
 import AnimeSearch from "./pages/AnimeSearch/index";
-
+import Squares from './component/SquaresBackgound/index';
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -46,38 +46,50 @@ function App() {
         <Loading />
       ) : (
         <>
-          {/* <CustomCursor /> */}
-          <ScrollToTop />
-          <Routes>
-            <Route path='/' element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="about" element={<About />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="/admin-post" element={<AdminFeature />} />
-              <Route path="/using-app" element={<UsingApp />} />
-              <Route path="admin"
-                element={
-                  <RequireAuth>
-                    <Admin />
-                  </RequireAuth>
-                }>
-                  <Route path="add" element={<AddSongs />} />
-                  <Route path="manage" element={<ManageSongs />} />
-              </Route>
-              {/* Các route cho các trang chi tiết nhạc */}
-              <Route path="music/nhac-tre" element={<NhacTre />} />
-              <Route path="music/usuk" element={<NhacUSUK />} />
-              <Route path="music/trung-quoc" element={<NhacTrungQuoc />} />
-              <Route path="music/edm" element={<NhacEDM />} />
-              <Route path="music/mood" element={<NhacTamTrang />} />
-              <Route path="music/phonk" element={<NhacPhonk />} />
-              <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
-              <Route path="/anime" element={<Anime />} />
-              <Route path="/anime/:id" element={<AnimeDetail />} />
-              <Route path="/search" element={<AnimeSearch />} />
+          <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+          {/* Background luôn dưới cùng */}
+          <Squares 
+            speed={0.5} 
+            squareSize={40} 
+            direction="diagonal"
+            borderColor="#444"
+            hoverFillColor="#222"
+            className="bg-layer"
+          />
 
-            </Route>
-          </Routes>
+          {/* Nội dung chính luôn nổi lên trên */}
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <ScrollToTop />
+            <Routes>
+              <Route path='/' element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="/admin-post" element={<AdminFeature />} />
+                <Route path="/using-app" element={<UsingApp />} />
+                <Route path="admin"
+                  element={
+                    <RequireAuth>
+                      <Admin />
+                    </RequireAuth>
+                  }>
+                    <Route path="add" element={<AddSongs />} />
+                    <Route path="manage" element={<ManageSongs />} />
+                </Route>
+                <Route path="music/nhac-tre" element={<NhacTre />} />
+                <Route path="music/usuk" element={<NhacUSUK />} />
+                <Route path="music/trung-quoc" element={<NhacTrungQuoc />} />
+                <Route path="music/edm" element={<NhacEDM />} />
+                <Route path="music/mood" element={<NhacTamTrang />} />
+                <Route path="music/phonk" element={<NhacPhonk />} />
+                <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
+                <Route path="/anime" element={<Anime />} />
+                <Route path="/anime/:id" element={<AnimeDetail />} />
+                <Route path="/search" element={<AnimeSearch />} />
+              </Route>
+            </Routes>
+          </div>
+        </div>
         </>
       )}
       <Analytics />

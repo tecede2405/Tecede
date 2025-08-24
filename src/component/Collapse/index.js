@@ -23,6 +23,9 @@ function Collapsed(){
     return(
         <>
         <div className="collapsed">
+          <div className="collapsed__header">
+            <h2 className="mb-3 text-center">Tiêu đề chính</h2>
+          </div>
             <Collapse items={items} defaultActiveKey={['1']} size={"middle"} accordion />
         </div>
               
