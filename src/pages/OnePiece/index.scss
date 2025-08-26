@@ -1,0 +1,17 @@
+.movie-page {
+    background: #212121;
+    &__title{
+        color: #ddd;
+    }
+    &__subtitle{
+        color: #ddd;
+    }
+    &__player {
+    max-width: 1600px;
+    margin: 0 auto; // căn giữa
+    }
+
+    &__iframe {
+        border: none;
+    }
+}

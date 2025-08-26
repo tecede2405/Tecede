@@ -30,6 +30,7 @@ import Anime from "./pages/Amine/index";
 import AnimeDetail from"./pages/AnimeDetail/index";
 import AnimeSearch from "./pages/AnimeSearch/index";
 import Squares from './component/SquaresBackgound/index';
+import OnePiece from "./pages/OnePiece/index";
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -67,6 +68,7 @@ function App() {
                 <Route path="contact" element={<Contact />} />
                 <Route path="/admin-post" element={<AdminFeature />} />
                 <Route path="/using-app" element={<UsingApp />} />
+                <Route path="/onepiece" element={<OnePiece />} />
                 <Route path="admin"
                   element={
                     <RequireAuth>
