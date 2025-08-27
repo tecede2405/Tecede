@@ -23,7 +23,7 @@ export default function MoviePage() {
   };
 
   return (
-    <div className="movie-page pb-3 pt-4">
+    <div className="movie-page pb-3 pt-3">
       <div className="container">
         <h3 className="movie-page__title mb-4">
           <i>Bạn đang xem One Piece tập : {currentVideo.episode}</i>
