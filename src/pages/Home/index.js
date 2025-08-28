@@ -60,7 +60,7 @@ function Home() {
               
               <div className="container">
                     <div className="Home__feature">
-                      <img src="https://s3-alpha.figma.com/hub/file/2756242010/25c6912f-5dd2-4801-8f94-b752e9930134-cover.png" alt="" />
+                      <img src="https://www.unsell.design/wp-content/uploads/2023/08/633617353_Template-Featured-image.jpg" alt="" />
                       <div className="Home__feature-text">
                         <i><h2 className="Home__title">Blog này là gì</h2></i>
                         <p className="Home__desc">"Blog này là nơi lưu giữ kiến thức và kinh nghiệm lập trình thông qua các đoạn video ngắn và các project nhỏ."</p>
