@@ -31,13 +31,21 @@ import AnimeDetail from"./pages/AnimeDetail/index";
 import AnimeSearch from "./pages/AnimeSearch/index";
 import Squares from './component/SquaresBackgound/index';
 import OnePiece from "./pages/OnePiece/index";
+import NhacDouyin from "./pages/Music/Nhac Douyin";
+import { subscribeUser } from "./utils/pushNotification";
+
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000); // Giả lập thời gian tải trang
+    setLoading(true);
+
+  const timer = setTimeout(() => {
+    setLoading(false);
+    subscribeUser(); // đăng ký push ngay khi trang load xong
+  }, 3000);
+
+  return () => clearTimeout(timer);
   }, []);
 
 
@@ -85,9 +93,10 @@ function App() {
                 <Route path="music/mood" element={<NhacTamTrang />} />
                 <Route path="music/phonk" element={<NhacPhonk />} />
                 <Route path="music/nhactre-remix" element={<NhacTreRemix />} />
-                <Route path="/anime" element={<Anime />} />
-                <Route path="/anime/:id" element={<AnimeDetail />} />
-                <Route path="/search" element={<AnimeSearch />} />
+                <Route path="music/nhac-douyin" element={<NhacDouyin />} />
+                <Route path="anime" element={<Anime />} />
+                <Route path="anime/:id" element={<AnimeDetail />} />
+                <Route path="search" element={<AnimeSearch />} />
               </Route>
             </Routes>
           </div>

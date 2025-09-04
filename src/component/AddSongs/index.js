@@ -118,6 +118,7 @@ function AddSongs() {
           <option value="nhactre">Nhạc Trẻ</option>
           <option value="nhacusuk">Nhạc Âu Mỹ</option>
           <option value="nhactrungquoc">Nhạc Trung Quốc</option>
+          <option value="nhacdouyin">Nhạc Douyin</option>
           <option value="nhactreremix">Nhạc Remix</option>
           <option value="nhacedm">Nhạc EDM</option>
           <option value="nhacphonk">Nhạc Phonk</option>

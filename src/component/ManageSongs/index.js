@@ -7,6 +7,7 @@ const categories = [
   { label: "Nhạc Âu Mỹ", value: "nhacusuk" },
   { label: "Nhạc Remix", value: "nhactreremix" },
   { label: "Nhạc Trung Quốc", value: "nhactrungquoc" },
+  { label: "Nhạc Douyin", value: "nhacdouyin" },
   { label: "Nhạc EDM", value: "nhacedm" },
   { label: "Nhạc Phonk", value: "nhacphonk" },
   { label: "Nhạc Không Lời", value: "nhackhongloi" },

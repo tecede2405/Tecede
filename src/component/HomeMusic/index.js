@@ -14,6 +14,7 @@ const musicData = [
     {title: "usuk", image: usuk, path: "usuk"},
     {title: "china", image: china, path: "trung-quoc"},
     {title: "nhactreremix", image: nhactreremix, path: "nhactre-remix"},
+    {title: "nhacdouyin", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1756970021/Picsart_25-09-04_14-09-56-125_qy6tua.jpg", path: "nhac-douyin"},
     {title: "edm", image: edm, path: "edm"},
     {title: "phonk", image: phonk, path: "phonk"},
     {title: "mood", image: mood, path: "mood"},
