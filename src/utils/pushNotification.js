@@ -1,16 +1,21 @@
 export async function subscribeUser() {
   if ("serviceWorker" in navigator) {
     try {
-      // Đăng ký service worker
       const register = await navigator.serviceWorker.register("/worker.js", { scope: "/" });
 
-      // Đăng ký push
+      // kiểm tra nếu đã có subscription rồi thì không đăng ký lại
+      const existing = await register.pushManager.getSubscription();
+      if (existing) {
+        console.log("🔔 User đã đăng ký rồi, không cần đăng ký lại");
+        return;
+      }
+
+      // nếu chưa có mới đăng ký
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY)
       });
 
-      // Gửi subscription về server
       await fetch(`${process.env.REACT_APP_API_URL}/api/songs/subscribe`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -23,6 +28,7 @@ export async function subscribeUser() {
     }
   }
 }
+
 
 // helper để convert VAPID key
 function urlBase64ToUint8Array(base64String) {
