@@ -1,33 +1,32 @@
 export async function subscribeUser() {
-  if ("serviceWorker" in navigator) {
-    try {
-      const register = await navigator.serviceWorker.register("/worker.js", { scope: "/" });
+  if (!("serviceWorker" in navigator)) return;
 
-      // kiểm tra nếu đã có subscription rồi thì không đăng ký lại
-      const existing = await register.pushManager.getSubscription();
-      if (existing) {
-        console.log("🔔 User đã đăng ký rồi, không cần đăng ký lại");
-        return;
-      }
+  try {
+    const registration = await navigator.serviceWorker.ready; // lấy registration đã register trước đó
+    const existing = await registration.pushManager.getSubscription();
 
-      // nếu chưa có mới đăng ký
-      const subscription = await register.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY)
-      });
-
-      await fetch(`${process.env.REACT_APP_API_URL}/api/songs/subscribe`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(subscription)
-      });
-
-      alert("✅ Đã đăng ký nhận thông báo!");
-    } catch (err) {
-      console.error("❌ Lỗi khi đăng ký push:", err);
+    if (existing) {
+      console.log("🔔 User đã đăng ký rồi");
+      return;
     }
+
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY),
+    });
+
+    await fetch(`${process.env.REACT_APP_API_URL}/api/songs/subscribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(subscription),
+    });
+
+    alert("✅ Đã đăng ký nhận thông báo!");
+  } catch (err) {
+    console.error("❌ Lỗi khi đăng ký push:", err);
   }
 }
+
 
 
 // helper để convert VAPID key
