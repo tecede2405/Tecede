@@ -25,9 +25,9 @@ export default function MoviePage() {
   return (
     <div className="movie-page pb-3 pt-3">
       <div className="container">
-        <h3 className="movie-page__title mb-4">
+        <h5 className="movie-page__title mb-4">
           <i>Bạn đang xem One Piece tập : {currentVideo.episode}</i>
-        </h3>
+        </h5>
 
         {/* Video player */}
         <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
