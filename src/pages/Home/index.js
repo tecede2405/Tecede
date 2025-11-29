@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 // import Collapsed from "../../component/Collapse/index";
 import HomeMusic from '../../component/HomeMusic';
 import { useNavigate } from "react-router-dom";
+import HomeFilm from '../../component/HomeFilm/index';
+import CinematicFilm from '../../component/HomeFilm/cinematic';
 
 
 function Home() {
@@ -29,18 +31,9 @@ function Home() {
 
     const navigate = useNavigate();
 
-  const handleAdminClick = () => {
-    navigate("/admin-post");
-  };
-  const handleAnimeClick = () => {
-    navigate("/anime");
-  };
   const handleAppClick = () => {
     navigate("/using-app");
   };
-  const handleOpClick = () => {
-    navigate("/onepiece");
-  }
 
     return (
         <>
@@ -88,6 +81,12 @@ function Home() {
               <div className="Home__music"> 
                 <HomeMusic />
               </div>
+              <div className="Home__music"> 
+                <HomeFilm />
+              </div>
+              <div className="Home__music"> 
+                <CinematicFilm />
+              </div>
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>
@@ -95,21 +94,9 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu bạn đang sử dụng 4G thì nên cân nhắc trước khi nghe nhạc để tiết kiệm dữ liệu.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không vào bằng link thì nên reload lại trang mỗi khi vào để nhận dữ liệu mới nhất.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app (không cần reload và tiện). Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Trang xem one piece lồng tiếng<span onClick={handleOpClick}> ở đây</span>.</i></li>
                 </ul>
               </div>
-              <div className="admin-post" onClick={handleAdminClick}>
-                      <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751473418/412cf700-0b7a-4d14-b998-8ba88d1cf8d9.png" alt="admin post" />
-                      <div className="admin-post-text">
-                        <h2 className="admin-post-title">Tính năng trang admin (2/7/2025)</h2>
-                        <p className="admin-post-desc">"click vào để xem nội dung, video demo và source code"</p>
-                      </div> 
-              </div>
-              <div className="admin-post" onClick={handleAnimeClick}>
-                      <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1754931345/2fdd6074-e842-43b1-8351-8cee247ec7af.png" alt="admin post" />
-                      <h2 className="admin-post-title">Trang Demo Anime (11/8/2025)</h2>
-                      <p className="admin-post-desc">"click vào để xem demo"</p>
-              </div>
+              
             </div>
         </div>
       </>

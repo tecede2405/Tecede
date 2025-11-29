@@ -1,4 +1,3 @@
-
 import MusicCarousel from "../Carousel/MusicCarousel";
 import "./homemusic.scss";
 import nhactre from "../../img/musics-thumbnail/nhactre.png";

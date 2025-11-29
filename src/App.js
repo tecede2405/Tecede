@@ -33,6 +33,8 @@ import Squares from './component/SquaresBackgound/index';
 import OnePiece from "./pages/OnePiece/index";
 import NhacDouyin from "./pages/Music/Nhac Douyin";
 import { subscribeUser } from "./utils/pushNotification";
+import FilmDetail from "./pages/FilmDetail/index";
+import FilmListBySlug from "./pages/Film/index";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -76,7 +78,9 @@ function App() {
                 <Route path="contact" element={<Contact />} />
                 <Route path="/admin-post" element={<AdminFeature />} />
                 <Route path="/using-app" element={<UsingApp />} />
-                <Route path="/onepiece" element={<OnePiece />} />
+                <Route path="/film/one-piece" element={<OnePiece />} />
+                <Route path="/film/:slug" element={<FilmDetail />} />
+                <Route path="/:filmSlug" element={<FilmListBySlug />} />
                 <Route path="admin"
                   element={
                     <RequireAuth>
