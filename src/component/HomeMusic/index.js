@@ -30,7 +30,7 @@ function HomeMusic() {
                 <br />Click vào để xem chi tiết"
             </p>
         </div>
-        <div className="container mt-4 mb-5">
+        <div className="container mt-4 mb-2">
             <MusicCarousel items={musicData} />
         </div>  
     </>

@@ -6,7 +6,7 @@ import HomeMusic from '../../component/HomeMusic';
 import { useNavigate } from "react-router-dom";
 import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
-
+import Film from '../../component/HomeFilm/film';
 
 function Home() {
   const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
@@ -82,6 +82,9 @@ function Home() {
                 <HomeMusic />
               </div>
               <div className="Home__music"> 
+                <Film />
+              </div>
+              <div className="Home__music"> 
                 <HomeFilm />
               </div>
               <div className="Home__music"> 
@@ -90,10 +93,10 @@ function Home() {
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 1. Có 2 đường dẫn vào web này: tecede.netlify.app và tecede-blog.vercel.app</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu bạn đang sử dụng 4G thì nên cân nhắc trước khi nghe nhạc để tiết kiệm dữ liệu.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không vào bằng link thì nên reload lại trang mỗi khi vào để nhận dữ liệu mới nhất.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app (không cần reload và tiện). Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 1. Có 2 đường dẫn: tecede.netlify.app và tecede-blog.vercel.app</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu bạn đang sử dụng 4G thì nên cân nhắc để tiết kiệm dữ liệu.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Hãy bật thông báo để nhận thông báo mới nhất nha.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app. Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
                 </ul>
               </div>
               

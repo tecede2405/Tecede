@@ -72,6 +72,7 @@ export default function FilmDetail() {
             allowFullScreen
             allow="autoplay; encrypted-media; clipboard-write; web-share; accelerometer; gyroscope"
             className="movie-page__iframe rounded shadow"
+            frameBorder="0"
           />
         </div>
 
