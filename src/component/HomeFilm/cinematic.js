@@ -1,6 +1,7 @@
 import MusicCarousel from "../Carousel/FilmCarousel";
 import 'animate.css';
 const filmData = [
+    {title: "Mai", image: "https://ik.imagekit.io/yuki/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg", path: "mai-2024"},
     {title: "Cám", image: "https://ik.imagekit.io/yuki/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg", path: "cam"},
     {title: "Ma Da", image: "https://ik.imagekit.io/yuki/20241116-1/e851bfbfc2dc5b2f9463571e5fba6734.jpg", path: "ma-da"},
     {title: "Làm Giàu Với Ma", image: "https://ik.imagekit.io/yuki/20250323-1/1b5a22c27996cde1f32b19c449853063.jpg", path: "lam-giau-voi-ma"},

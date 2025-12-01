@@ -1,57 +1,54 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./style.scss";
+
 export default function FilmDetail() {
-  const { slug } = useParams();   // slug từ URL: /phim/:slug
+  const { slug } = useParams();
 
   const [movie, setMovie] = useState(null);
-  const [episodes, setEpisodes] = useState([]);
+  const [servers, setServers] = useState([]);      // chứa toàn bộ server
+  const [currentServer, setCurrentServer] = useState(0); // index server đang chọn
+  const [episodes, setEpisodes] = useState([]);    // các tập theo server
   const [currentVideo, setCurrentVideo] = useState(null);
 
-  // lấy dữ liệu phim từ slug
+  // Fetch dữ liệu phim
   useEffect(() => {
     async function fetchFilm() {
       try {
         const res = await fetch(`https://phimapi.com/phim/${slug}`);
         const data = await res.json();
 
-        // lưu thông tin phim + danh sách tập
         setMovie(data.movie);
-        setEpisodes(data.episodes[0].server_data);
+        setServers(data.episodes);
 
-        // tập đầu tiên
-        setCurrentVideo(data.episodes[0].server_data[0]);
+        // Mặc định lấy server đầu tiên
+        const defaultServer = data.episodes[0];
+        setEpisodes(defaultServer.server_data);
+        setCurrentVideo(defaultServer.server_data[0]);
 
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
       }
     }
 
     fetchFilm();
   }, [slug]);
 
-  if (!movie || !currentVideo) {
+  // Khi đổi server → đổi danh sách tập + chọn tập đầu
+  const handleChangeServer = (serverIndex) => {
+    setCurrentServer(serverIndex);
+    const newList = servers[serverIndex].server_data;
+    setEpisodes(newList);
+    setCurrentVideo(newList[0]);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (!movie || !currentVideo || servers.length === 0) {
     return <div className="container"><p>Đang tải...</p></div>;
   }
 
-  // tìm index tập hiện tại
   const currentIndex = episodes.findIndex(v => v.slug === currentVideo.slug);
-
-  // lùi tập
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentVideo(episodes[currentIndex - 1]);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  // kế tiếp tập
-  const handleNext = () => {
-    if (currentIndex < episodes.length - 1) {
-      setCurrentVideo(episodes[currentIndex + 1]);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="movie-page pb-5 pt-3">
@@ -59,9 +56,7 @@ export default function FilmDetail() {
 
         {/* Title */}
         <h5 className="movie-page__title mb-4">
-          <i>
-            Bạn đang xem {movie.name} tập: {currentVideo.name}
-          </i>
+          <i>{movie.name} – {servers[currentServer].server_name} – {currentVideo.name}</i>
         </h5>
 
         {/* Player */}
@@ -76,11 +71,25 @@ export default function FilmDetail() {
           />
         </div>
 
+        {/* Server selector */}
+        <h5 className="mb-3">Chọn server</h5>
+        <div className="d-flex gap-2 mb-4 flex-wrap">
+          {servers.map((s, idx) => (
+            <button
+              key={idx}
+              className={`btn ${idx === currentServer ? "btn-primary" : "btn-outline-primary"}`}
+              onClick={() => handleChangeServer(idx)}
+            >
+              {s.server_name}
+            </button>
+          ))}
+        </div>
+
         {/* Navigation buttons */}
         <div className="movie-page__nav d-flex justify-content-between mb-4">
           <button
             className="btn btn-outline-secondary"
-            onClick={handlePrev}
+            onClick={() => currentIndex > 0 && setCurrentVideo(episodes[currentIndex - 1])}
             disabled={currentIndex === 0}
           >
             Tập trước
@@ -88,7 +97,7 @@ export default function FilmDetail() {
 
           <button
             className="btn btn-outline-secondary"
-            onClick={handleNext}
+            onClick={() => currentIndex < episodes.length - 1 && setCurrentVideo(episodes[currentIndex + 1])}
             disabled={currentIndex === episodes.length - 1}
           >
             Tập sau
@@ -96,7 +105,9 @@ export default function FilmDetail() {
         </div>
 
         {/* Episode List */}
-        <h2 className="movie-page__subtitle h5 mb-3">Danh sách tập</h2>
+        <h2 className="movie-page__subtitle h5 mb-3">
+          Danh sách tập – {servers[currentServer].server_name}
+        </h2>
 
         <div className="movie-page__episodes d-flex flex-wrap gap-2">
           {episodes.map((video) => (
@@ -107,15 +118,14 @@ export default function FilmDetail() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               className={`movie-page__episode btn ${
-                currentVideo.slug === video.slug
-                  ? "btn-primary"
-                  : "btn-outline-secondary"
+                currentVideo.slug === video.slug ? "btn-primary" : "btn-outline-secondary"
               }`}
             >
               {video.name}
             </button>
           ))}
         </div>
+
       </div>
     </div>
   );
