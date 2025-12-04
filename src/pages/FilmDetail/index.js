@@ -15,7 +15,7 @@ export default function FilmDetail() {
   useEffect(() => {
     async function fetchFilm() {
       try {
-        const res = await fetch(`https://phimapi.com/phim/${slug}`);
+        const res = await fetch(`${process.env.REACT_APP_FILM_API_URL}/phim/${slug}`);
         const data = await res.json();
 
         setMovie(data.movie);
@@ -72,7 +72,7 @@ export default function FilmDetail() {
         </div>
 
         {/* Server selector */}
-        <h5 className="mb-3">Chọn server</h5>
+        <h5 className="mb-3 text-info">Chọn server</h5>
         <div className="d-flex gap-2 mb-4 flex-wrap">
           {servers.map((s, idx) => (
             <button
@@ -109,7 +109,7 @@ export default function FilmDetail() {
           Danh sách tập – {servers[currentServer].server_name}
         </h2>
 
-        <div className="movie-page__episodes d-flex flex-wrap gap-2">
+        <div className="movie-page__episodes d-flex flex-wrap gap-2 mb-3">
           {episodes.map((video) => (
             <button
               key={video.slug}
@@ -125,7 +125,11 @@ export default function FilmDetail() {
             </button>
           ))}
         </div>
-
+        <p className="text-info border-top pt-3 mt-5">Lưu ý: Chúng tôi từ chối mọi trách nhiệm liên quan đến nội dung hiển thị/tồn tại trên trang. Tất cả video và dữ liệu tại đây đều được tổng hợp từ các nguồn phổ biến trên Internet,
+          và không thuộc quyền sở hữu hay kiểm soát của chúng tôi. Chúng tôi không cung cấp dịch vụ phát trực tuyến chính thức. 
+          Nếu bạn cho rằng quyền lợi của mình bị ảnh hưởng, vui lòng liên hệ ngay cho chúng tôi sẽ xử lý và gỡ bỏ nội dung vi phạm kịp thời.
+          Xin cảm ơn sự thông cảm và hợp tác của bạn.
+        </p>
       </div>
     </div>
   );

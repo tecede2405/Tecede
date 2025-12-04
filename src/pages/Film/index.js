@@ -15,7 +15,7 @@ export default function FilmListBySlug() {
       try {
         setLoading(true);
 
-        const url = `https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(
+        const url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(
           keyword
         )}&limit=50`;
 
@@ -50,12 +50,14 @@ export default function FilmListBySlug() {
         {results.map((film) => (
           <div className="col-6 col-md-3 col-lg-2" key={film.slug}>
             <Link
-              to={`/phim/${film.slug}`}
+              to={`/film/${film.slug}`}
               className="text-decoration-none text-dark"
             >
               <div className="card h-100 shadow-sm">
                 <img
-                  src={film.poster_url}
+                  src={
+                     `https://phimapi.com${film.poster_url}`
+                  }
                   className="card-img-top"
                   alt={film.name}
                 />
