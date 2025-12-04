@@ -355,24 +355,20 @@ footer{
         }
     }
     &__skill{
-        padding-top:30px;
+        width: 80%;
         margin: 0 auto;
-        width: 50%;
-        border-bottom: 1px solid #333333;
+        overflow: hidden;
     }
-    &__skill-img{
-        img{
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 10px;
-            object-fit : contain;
+    &__skill-img {
+        margin: 0 10px;
+        img {
+            height: 80px;
+            width: auto;
+
         }
-        img:hover{
-            transform: scale(1.25);
-            transition: transform 0.3s ease;
-        }
+
     }
-  }
+}
 
 
   .hidden-audio { 

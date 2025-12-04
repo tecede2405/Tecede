@@ -1,0 +1,77 @@
+.film-container {
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.result-title {
+  color: #d35400;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.loading-text {
+  color: #27ae60;
+  font-size: 1.2rem;
+}
+
+.no-result {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.film-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+
+  @media (max-width: 360px) {
+    grid-template-columns: repeat(2, 1fr); // ép 2 cột
+  }
+}
+
+
+.film-card {
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.film-card:hover {
+  transform: scale(1.05);
+}
+
+.film-poster-wrapper {
+  position: relative;
+}
+
+.film-poster {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.film-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.film-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.film-year {
+  font-size: 0.8rem;
+  color: #f1c40f;
+}

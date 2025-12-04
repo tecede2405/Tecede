@@ -1,0 +1,42 @@
+.input-search-film {
+  display: flex;
+  align-items: center;
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto 1rem;
+  @media (max-width: 430px) {
+    max-width: 300px;
+  }
+
+  .input-film {
+    flex: 1;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem; // chừa khoảng trống bên phải cho icon
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #27ae60;
+      box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+    }
+  }
+
+  svg {
+    position: absolute;
+    right: 0.75rem;
+    color: #888;
+    font-size: 1.2rem;
+    pointer-events: none; // không chặn click vào input
+  }
+  .search-film-icon{
+    pointer-events: auto;
+    cursor: pointer;
+    height: 100%;
+    width: 40px;
+    padding-left: 10px;
+    border-left: 1px solid #ccc;
+  }
+
+}
