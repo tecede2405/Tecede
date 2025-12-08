@@ -3,6 +3,9 @@
 }
 .header {
     background-color:#000;
+    background-image: url(https://i.pinimg.com/originals/a9/c2/77/a9c27736aad047a8a7bbc6d20cefb13b.gif);
+    background-position: center;
+    background-repeat : no-repeat;
     position: sticky;
     top:0;
     display :flex;
@@ -84,7 +87,7 @@ footer{
     justify-content:center;
     z-index: 1000;
     background: #000;
-    // background-image : url(https://i.pinimg.com/originals/b9/3d/49/b93d49cfb9653b743ef2692cb9d3f205.gif);
+    background-image : url(https://i.pinimg.com/originals/50/1f/72/501f72c7cd86f1e36c453551e864a814.gif);
     background-position: center; 
     .footer-contact{
         text-align : center;
@@ -198,6 +201,8 @@ footer{
     width: 100%;
     height: 100%;
     // background: #212121;
+    background: url(https://i.pinimg.com/originals/85/db/65/85db65f9ed60ca19626c4d8fc2c74e9a.gif) repeat;
+    mix-blend-mode: screen;
     color: #ddd;
     &__main{
         flex:1;
@@ -305,6 +310,8 @@ footer{
   .about{
     display: flex;
     // background: #212121;
+    background: url(https://i.pinimg.com/originals/85/db/65/85db65f9ed60ca19626c4d8fc2c74e9a.gif) repeat;
+    mix-blend-mode: screen;
     color: #ddd;
     // background-attachment: fixed;
     // background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
@@ -355,7 +362,7 @@ footer{
         }
     }
     &__skill{
-        width: 80%;
+        width: 50%;
         margin: 0 auto;
         overflow: hidden;
     }
@@ -392,6 +399,8 @@ footer{
 
   .contact{
     // background: #212121;
+    background: url(https://i.pinimg.com/originals/85/db/65/85db65f9ed60ca19626c4d8fc2c74e9a.gif) repeat;
+    mix-blend-mode: screen;
     display:flex;
     width: 100%;
     height: 100%;
@@ -797,14 +806,18 @@ footer{
           }
       
           &__project {
+            height: auto;
             p {
               padding: 0;
               margin-bottom: 5px;
             }
+            img {
+              width: 100%;
+              height: auto;
           }
         }
       }
-      
+    } 
 
 
 

@@ -59,6 +59,8 @@ export default function FilmListBySlug() {
     if (search.trim() !== "") {
       const slug = search.trim().toLowerCase().replace(/\s+/g, "-");
       navigate(`/${slug}`);
+      setSearch("");
+      inputRef.current.focus();
     }
   }
 

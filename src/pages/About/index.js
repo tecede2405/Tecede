@@ -63,17 +63,21 @@ function About() {
                     <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1764407944/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-11-29_161827_krnxnn.png" alt="shop-mobile" />
                     <p>Đây là dự án web thương mại điện tử bán thiết bị di động đã bao gồm back-end và responsive. Xem <a href="https://uthmobileshop.vercel.app/" target="_blank" rel="noopener noreferrer">Tại đây</a>.</p>
                 </div>
-                <div className="admin-post" onClick={handleAdminClick}>
-                      <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751473418/412cf700-0b7a-4d14-b998-8ba88d1cf8d9.png" alt="admin post" />
-                      <div className="admin-post-text">
+                <div className="about__project" onClick={handleAdminClick}>
+                    <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751473418/412cf700-0b7a-4d14-b998-8ba88d1cf8d9.png" alt="admin post" />
+                    <div className="admin-post-text">
                         <h2 className="admin-post-title">Tính năng trang admin (2/7/2025)</h2>
-                        <p className="admin-post-desc">"click vào để xem nội dung, video demo và source code"</p>
+                        <p className="admin-post-desc">"Click vào để xem nội dung, video demo và source code"</p>
                       </div> 
-              </div>
-              <div className="admin-post" onClick={handleAnimeClick}>
+                </div>
+              
+                      
+              <div className="about__project" onClick={handleAnimeClick}>
                       <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1754931345/2fdd6074-e842-43b1-8351-8cee247ec7af.png" alt="admin post" />
-                      <h2 className="admin-post-title">Trang Demo Anime (11/8/2025)</h2>
-                      <p className="admin-post-desc">"click vào để xem demo"</p>
+                      <div className="admin-post-text">
+                        <h2 className="admin-post-title">Trang Demo Anime (11/8/2025)</h2>
+                        <p className="admin-post-desc">"Click vào để xem demo"</p>
+                      </div>
               </div>
             </div>
            </div>
