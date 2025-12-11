@@ -1,5 +1,30 @@
+.movie-page{
+  min-height: 100vh;
+  position: relative;
+  color: #fff;
+  background-image: var(--bg-url);
+  background-size: cover;      
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  z-index: 0;
+}
+.movie-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);   
+  backdrop-filter: blur(6px);    
+  z-index: -1;                 
+}
+.movie-page__episode{
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.film-policy{
+    color: #fff;
+}
  @media (max-width: 768px){
     .movie-page{
-        padding-bottom: 130px!important;
+        padding-bottom: 50px!important;
     }
  }

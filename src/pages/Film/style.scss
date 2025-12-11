@@ -5,9 +5,8 @@
 }
 
 .result-title {
-  color: #d35400;
   margin-bottom: 1.5rem;
-  font-weight: bold;
+  color: #1895e9;
 }
 
 .loading-text {
@@ -69,9 +68,22 @@
   margin: 0;
   font-size: 0.9rem;
   font-weight: bold;
+  -webkit-text-stroke: 0.5px #000000;
+  text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
 }
 
 .film-year {
   font-size: 0.8rem;
   color: #f1c40f;
+}
+.film-episodes {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.7);
+  color: #f1c40f;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 6px;
 }

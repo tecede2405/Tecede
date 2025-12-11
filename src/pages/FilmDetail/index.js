@@ -51,12 +51,12 @@ export default function FilmDetail() {
   const currentIndex = episodes.findIndex(v => v.slug === currentVideo.slug);
 
   return (
-    <div className="movie-page pb-5 pt-3">
+    <div className="movie-page pb-5 pt-3" style={{ "--bg-url": `url(${movie.poster_url})`}}>
       <div className="container">
 
         {/* Title */}
         <h5 className="movie-page__title mb-4">
-          <i>{movie.name} – {servers[currentServer].server_name} – {currentVideo.name}</i>
+          <i>Bạn đang xem : {movie.name} – {currentVideo.name}</i>
         </h5>
 
         {/* Player */}
@@ -72,12 +72,12 @@ export default function FilmDetail() {
         </div>
 
         {/* Server selector */}
-        <h5 className="mb-3 text-info">Chọn server</h5>
+        <h5 className="mb-3 text-info fst-italic">Chọn server</h5>
         <div className="d-flex gap-2 mb-4 flex-wrap">
           {servers.map((s, idx) => (
             <button
               key={idx}
-              className={`btn ${idx === currentServer ? "btn-primary" : "btn-outline-primary"}`}
+              className={`btn fst-italic ${idx === currentServer ? "btn-info" : "btn-outline-light"}`}
               onClick={() => handleChangeServer(idx)}
             >
               {s.server_name}
@@ -88,7 +88,7 @@ export default function FilmDetail() {
         {/* Navigation buttons */}
         <div className="movie-page__nav d-flex justify-content-between mb-4">
           <button
-            className="btn btn-outline-secondary"
+            className="btn btn-outline-info"
             onClick={() => currentIndex > 0 && setCurrentVideo(episodes[currentIndex - 1])}
             disabled={currentIndex === 0}
           >
@@ -96,7 +96,7 @@ export default function FilmDetail() {
           </button>
 
           <button
-            className="btn btn-outline-secondary"
+            className="btn btn-outline-info"
             onClick={() => currentIndex < episodes.length - 1 && setCurrentVideo(episodes[currentIndex + 1])}
             disabled={currentIndex === episodes.length - 1}
           >
@@ -125,7 +125,7 @@ export default function FilmDetail() {
             </button>
           ))}
         </div>
-        <p className="text-secondary border-top pt-3 mt-5">Lưu ý: Chúng tôi từ chối mọi trách nhiệm liên quan đến nội dung hiển thị/tồn tại trên trang. Tất cả video và dữ liệu tại đây đều được tổng hợp từ các nguồn phổ biến trên Internet,
+        <p className="film-policy border-top pt-3 mt-5 fst-italic">Lưu ý: Chúng tôi từ chối mọi trách nhiệm liên quan đến nội dung hiển thị/tồn tại trên trang. Tất cả video và dữ liệu tại đây đều được tổng hợp từ các nguồn phổ biến trên Internet,
           và không thuộc quyền sở hữu hay kiểm soát của chúng tôi. Chúng tôi không cung cấp dịch vụ phát trực tuyến chính thức. 
           Nếu bạn cho rằng quyền lợi của mình bị ảnh hưởng, vui lòng liên hệ ngay cho chúng tôi sẽ xử lý và gỡ bỏ nội dung vi phạm kịp thời.
           Xin cảm ơn sự thông cảm và hợp tác của bạn.

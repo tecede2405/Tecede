@@ -9,18 +9,17 @@ import phonk from "../../img/musics-thumbnail/phonk.png";
 import nhactreremix from "../../img/musics-thumbnail/nhactreremix.png";
 import 'animate.css';
 const musicData = [
+    {title: "mood", image: mood, path: "mood"},
+    {title: "nhacdouyin", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1756970021/Picsart_25-09-04_14-09-56-125_qy6tua.jpg", path: "nhac-douyin"},
     {title: "nhactre", image: nhactre, path: "nhac-tre"},
     {title: "usuk", image: usuk, path: "usuk"},
     {title: "china", image: china, path: "trung-quoc"},
     {title: "nhactreremix", image: nhactreremix, path: "nhactre-remix"},
-    {title: "nhacdouyin", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1756970021/Picsart_25-09-04_14-09-56-125_qy6tua.jpg", path: "nhac-douyin"},
     {title: "edm", image: edm, path: "edm"},
     {title: "phonk", image: phonk, path: "phonk"},
-    {title: "mood", image: mood, path: "mood"},
 ];
 
 function HomeMusic() {
-
 
   return (
     <>

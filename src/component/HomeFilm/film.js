@@ -45,7 +45,7 @@ function Film() {
             <input
               type="text"
               ref={inputRef} 
-              className="input-film"
+              className="input-film fst-italic"
               placeholder="Tìm kiếm phim..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}

@@ -150,13 +150,14 @@ footer{
     position: sticky;
     top: 50px;
     z-index: 999;
-    width: 16%;
+    width: 15%;
     background: #181818;
     backdrop-filter: blur(10px);
     box-shadow: 5px 0 10px rgba(0, 0, 0, 0.5);
     margin: 0;
     padding:0;
     color: #ddd;
+    flex-shrink: 0;
     p{
         width: 100%;
         height: 50px ;
@@ -201,6 +202,7 @@ footer{
     color: #ddd;
     &__main{
         flex:1;
+        min-width: 0;
     }
     .container{
         width:100%;
@@ -306,14 +308,10 @@ footer{
     display: flex;
     // background: #212121;
     color: #ddd;
-    // background-attachment: fixed;
-    // background-image: url(https://i.pinimg.com/736x/fe/29/a1/fe29a1f829b3c6e752e941efa0c8b767.jpg);
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // background-position: center;
     &__content{
         flex: 1;
     }
+
     &__produce{
         margin: 0 auto;
         margin-top: 20px;
@@ -348,10 +346,14 @@ footer{
             margin-right: 10px;
             border: 1px solid #333333;
         }
+        h2{
+            cursor: pointer;
+        }
         p{  
             font-size: 14px;
             font-weight: 500;
             padding: 0 30px;
+            cursor: pointer;
         }
     }
     &__skill{
@@ -437,16 +439,19 @@ footer{
     .animated-text{
         font-size: 27px;
     } 
-
     .about{
+        &__content{
+            flex: 1!important;
+            min-width: 0;
+        }
         &__produce{
-            width: 80%;
+            width: 70%;
             img{
                 width: 50%;
             }
         }
         &__project{
-            width: 80%;
+            width: 70%!important;
             img{
                 width: 50%;
             }
@@ -459,12 +464,7 @@ footer{
 
 
   @media (max-width: 960px){
-    .tabbar {
-        p{
-            height: 40px;
-            padding-bottom: 35px;
-        }
-    }
+   
     //home 
     .Home{
         // flex-direction: column;
@@ -479,12 +479,18 @@ footer{
         }
 
     }
+     .tabbar {
+        width: 18%;
+        p{
+            height: 40px;
+            padding-bottom: 35px;
+        }
+    }
     //about 
     .about{
-        flex: none;
         &__produce{
             height: 400px;
-            width: 70%!important;
+            width: 60%!important;
             flex-direction : column;
             margin: 20px auto;;
             p{
@@ -513,6 +519,9 @@ footer{
                 width: 100%;
                 height: 70%;
             }
+        }
+        &__skill{
+            width: 70%!important;
         }
     }
 
@@ -561,7 +570,7 @@ footer{
     }
      .about {
         &__produce {
-          height: 400px;
+          height: 300px;
           width: 90%;
           margin-top: 30px;
       
@@ -570,13 +579,13 @@ footer{
           }
       
           img {
-            width: 90%;
-            height: 70%;
+            width: 60%;
+            height: auto;
           }
         }
       
         &__project {
-          height: 400px;
+          height: 230px;
           width: 90%;
           margin-top: 30px;
       
@@ -585,7 +594,8 @@ footer{
           }
       
           img {
-            height: 70%;
+            width: 80%;
+            height: auto;
           }
         }
       }
@@ -664,7 +674,7 @@ footer{
     }
 
     .tabbar{
-    width: 100%;
+    width: 100%!important;
     display:flex;
     height:40px;
     p{
@@ -721,7 +731,7 @@ footer{
         }
       
         &__project {
-          height: 400px;
+          height: 230px;
           width: 90%;
           margin-top: 30px;
       
@@ -730,7 +740,7 @@ footer{
           }
       
           img {
-            height: 70%;
+            height: auto;
           }
         }
       }
