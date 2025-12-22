@@ -64,6 +64,7 @@ export default function FilmDetail() {
           <iframe
             src={currentVideo.link_embed}
             title="Movie Player"
+            loading="lazy"
             allowFullScreen
             allow="autoplay; encrypted-media; clipboard-write; web-share; accelerometer; gyroscope"
             className="movie-page__iframe rounded shadow"

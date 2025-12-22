@@ -2,12 +2,13 @@ import MusicCarousel from "../Carousel/FilmCarousel";
 import 'animate.css';
 const filmData = [
     {title: "Dragon Ball Daima", image: "https://ik.imagekit.io/yuki/20241013-1/0fae7296f2e1a31e55deb61fe6db7a03.jpg", path: "dragon-ball-daima"},
-    {title: "onepiece", image: "https://ik.imagekit.io/yuki/20240310-1/31e6c244a0673838a46732d3b4f0b190.jpg", path: "one-piece"},
-    {title: "onepiece", image: "https://ik.imagekit.io/yuki1/20231015-1/2ade79773796bd12b5980b9a0d94e71d.jpg?tr=w-300,h-450,c-at_max,q-80,f-auto", path: "dao-hai-tac"},
+    {title: "onepiece", image: "https://ik.imagekit.io/yuki/20240310-1/31e6c244a0673838a46732d3b4f0b190.jpg", path: "dao-hai-tac"},
     {title: "conan", image: "https://ik.imagekit.io/yuki/20240310-1/025424cf62248b9a7b54279ef5416e26.jpg", path: "tham-tu-lung-danh-conan"},
+    {title: "Yugioh", image: "https://phimimg.com/upload/vod/20241124-1/39cae382ef85b1fb744f95ecd2f898e7.jpg", path: "vua-tro-choi-2000"},
     {title: "dragonball", image: "https://ik.imagekit.io/yuki/20240718-1/6bba5797d9c0e92a2984f07933dc151b.jpg", path: "bay-vien-ngoc-rong-sieu-cap"},
+    {title: "Pokemon", image: "https://phimimg.com/upload/vod/20250526-1/44fcb1476d32e4a89e0dd97ea405b100.jpg", path: "pokemon"},
     {title: "Bảy Viên Ngọc Rồng Siêu Cấp: Huyền Thoại Broly", image: "https://ik.imagekit.io/yuki/20240827-1/f3c5b869a3fb9334ebf92f4e2a1c1540.jpg", path: "bay-vien-ngoc-rong-sieu-cap-huyen-thoai-broly"},
-    {title: "naruto", image: "https://ik.imagekit.io/yuki1/20250604-1/4d040231dadbce1a312340480c69cfb2.jpg?tr=w-300,h-450,c-at_max,q-80,f-auto", path: "naruto-shippuden"},
+    {title: "Naruto", image: "https://phimimg.com/upload/vod/20240902-1/7eed050b63a25cdde46ac7d4ca1383b7.jpg", path: "naruto-shippuden"},
     {title: "Thăng Cấp Một Mình", image: "https://ik.imagekit.io/yuki/20240109-1/7cd20bfff7d6ad42644017bc731a0377.jpg", path: "thang-cap-mot-minh"},
     {title: "thanh gươm diệt quỷ phần 1", image: "https://ik.imagekit.io/yuki1/20250427-1/a9d8a556f8cb1873f1a40e1d97db255e.jpg?tr=w-450,h-675,c-at_max,q-80,f-auto", path: "thanh-guom-diet-quy-phan-1-kamado-tanjiro-lap-chi"},
     {title: "thanh gươm diệt quỷ phần 2", image: "https://ik.imagekit.io/yuki/20250427-1/d58646e693f31b0775f0fec0b3ea9461.jpg", path: "thanh-guom-diet-quy-phan-2-chuyen-tau-vo-tan"},
@@ -33,6 +34,8 @@ const filmData = [
     {title: "Đứa Con Của Thời Tiết", image: "https://ik.imagekit.io/yuki/20250526-1/00b744219355b28bd08540de7433e696.jpg", path: "dua-con-cua-thoi-tiet"},
     {title: "Tên Cậu Là Gì?", image: "https://ik.imagekit.io/yuki/20241103-1/ee4e49dba0d9f22d984267d4c5bde014.jpg", path: "ten-cau-la-gi"},
     {title: "Hunter X Hunter", image: "https://ik.imagekit.io/yuki/20240118-1/90a9ac11c3f3f63fecc4fcf380950da1.jpg", path: "tho-san-ti-hon"},
+    {title: "Dororo", image: "https://phimimg.com/upload/vod/20251221-1/7afb59bd358d9322305de001ba090964.jpg", path: "dororo-di-tim-48-phan-co-the"},
+
 ];
 
 function HomeFilm() {

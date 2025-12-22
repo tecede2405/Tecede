@@ -38,6 +38,7 @@ const AutoSlideInfinite = ({ items }) => {
             <img
               src={items.image}
               alt={items.title}
+              loading="lazy"
               style={{
                 width: "100%",
                 aspectRatio: "1 / 1",

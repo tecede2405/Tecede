@@ -30,7 +30,6 @@ import Anime from "./pages/Amine/index";
 import AnimeDetail from"./pages/AnimeDetail/index";
 import AnimeSearch from "./pages/AnimeSearch/index";
 import Squares from './component/SquaresBackgound/index';
-import OnePiece from "./pages/OnePiece/index";
 import NhacDouyin from "./pages/Music/Nhac Douyin";
 import { subscribeUser } from "./utils/pushNotification";
 import FilmDetail from "./pages/FilmDetail/index";
@@ -78,9 +77,8 @@ function App() {
                 <Route path="contact" element={<Contact />} />
                 <Route path="/admin-post" element={<AdminFeature />} />
                 <Route path="/using-app" element={<UsingApp />} />
-                <Route path="/film/one-piece" element={<OnePiece />} />
                 <Route path="/film/:slug" element={<FilmDetail />} />
-                <Route path="/:filmSlug" element={<FilmListBySlug />} />
+                <Route path="/search/:filmSlug" element={<FilmListBySlug />} />
                 <Route path="admin"
                   element={
                     <RequireAuth>

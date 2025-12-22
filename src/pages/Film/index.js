@@ -49,7 +49,7 @@ export default function FilmListBySlug() {
   function handleKeyPress(e) {
     if (e.key === "Enter") {
       const slug = search.trim().toLowerCase().replace(/\s+/g, "-");  
-      navigate(`/${slug}`);
+      navigate(`/search/${slug}`);
       setSearch("");
       inputRef.current.focus();
     }
@@ -58,7 +58,7 @@ export default function FilmListBySlug() {
   const handleSearch = () => {
     if (search.trim() !== "") {
       const slug = search.trim().toLowerCase().replace(/\s+/g, "-");
-      navigate(`/${slug}`);
+      navigate(`/search/${slug}`);
       setSearch("");
       inputRef.current.focus();
     }

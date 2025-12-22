@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 const OverView = () => {
     const [counts, setCounts] = useState({});
     const [totalListens, setTotalListens] = useState(0);
-    const [userCount, setUserCount] = useState(0); // 👈 thêm state mới
+
 
     useEffect(() => {
         const categories = ['nhactre', 'nhacphonk', 'nhacusuk', 'nhactrungquoc', 'nhacedm', 'nhackhongloi', 'nhactreremix'];
@@ -25,13 +25,6 @@ const OverView = () => {
             .then(res => res.json())
             .then(data => setTotalListens(data.total || 0))
             .catch(() => setTotalListens(0));
-
-        // ✅ Gọi API đếm IP truy cập
-        fetch(`${process.env.REACT_APP_API_URL}/api/stats/visitors`)
-            .then(res => res.json())
-            .then(data => setUserCount(data.total || 0))
-            .catch(() => setUserCount(0));
-
     }, []);
 
     const totalSongs = Object.values(counts).reduce((sum, val) => sum + val, 0);
@@ -39,7 +32,7 @@ const OverView = () => {
 
     return (
         <>
-            <h2 className="overview-title">📊 Tổng quan hệ thống</h2>
+            <h2 className="overview-title">Tổng quan hệ thống</h2>
 
             <table className="dashboard">
                 <tbody>
@@ -48,23 +41,19 @@ const OverView = () => {
                         <th>Nội dung hiển thị</th>
                     </tr>
                     <tr>
-                        <td>🎵 Số bài hát hiện có</td>
+                        <td>Số bài hát hiện có</td>
                         <td>{totalSongs}</td>
                     </tr>
                     <tr>
-                        <td>👥 Tổng người dùng</td>
-                        <td>{userCount}</td>
-                    </tr>
-                    <tr>
-                        <td>💽 Playlist được tạo</td>
+                        <td>Playlist được tạo</td>
                         <td>7 playlist</td>
                     </tr>
                     <tr>
-                        <td>🚀 Tổng số lượt nghe</td>
+                        <td>Tổng số lượt nghe</td>
                         <td>{totalListens}</td>
                     </tr>
                     <tr>
-                        <td>📊 Trung bình lượt nghe/bài</td>
+                        <td>Trung bình lượt nghe/bài</td>
                         <td>{avgListen}</td>
                     </tr>
                 </tbody>
