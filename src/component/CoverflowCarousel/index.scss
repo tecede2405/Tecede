@@ -1,0 +1,20 @@
+.film-carousel {
+  width: 100%;
+  overflow: hidden;
+  padding: 0 12px;
+}
+
+.swiper {
+  padding: 12px 0 32px;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+.film-carousel {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
+  }
+}

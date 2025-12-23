@@ -15,7 +15,7 @@ const AutoSlideInfinite = ({ items }) => {
      paddingLeft: '30px', paddingRight: '30px' }}>
       <Swiper
         modules={[Autoplay]}
-        spaceBetween={15}
+        spaceBetween={10}
         slidesPerView={8}
         loop={true}               // Vô tận
         autoplay={{
@@ -33,22 +33,27 @@ const AutoSlideInfinite = ({ items }) => {
           0: { slidesPerView: 2.5 },
         }} 
       >
-        {items.map((items ) => (
-          <SwiperSlide key={items.image} className="card-music">
-            <img
-              src={items.image}
-              alt={items.title}
-              loading="lazy"
-              style={{
-                width: "100%",
-                aspectRatio: "1 / 1",
-                objectFit: "cover",
-              }}
-              className="card-img animate__animated animate__fadeIn"
-              onClick={() => navigate(`/film/${items.path}`)}
-            />
+        {items.map((item) => (
+          <SwiperSlide key={item.image} className="card-music">
+            <div
+              className="card-item"
+              onClick={() => navigate(`/film/${item.path}`)}
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                loading="lazy"
+                style={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",   
+                  objectFit: "cover",
+                }}
+                className="card-img animate__animated animate__fadeIn"
+              />
+            </div>
           </SwiperSlide>
         ))}
+
       </Swiper>
     </div>
   );

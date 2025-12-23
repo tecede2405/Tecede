@@ -20,6 +20,7 @@
     "react-syntax-highlighter": "^15.6.1",
     "sass": "^1.83.0",
     "swiper": "^11.2.8",
+    "wavesurfer.js": "^7.12.1",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
