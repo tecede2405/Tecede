@@ -40,6 +40,10 @@
   }
 
 }
+
+.film-category{
+  font-size: 24px;
+}
 .film-card {
   width: 100%;
   aspect-ratio: 2 / 3; /* chuẩn poster phim */
@@ -88,4 +92,8 @@
   margin-bottom: 0;
   font-size: 12px;
   opacity: 0.85;
+}
+
+.swiper{
+  padding-bottom: 12px;
 }

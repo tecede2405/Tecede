@@ -3,60 +3,60 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "animate.css";
+import "./style.scss";
 
-
-
-const AutoSlideInfinite = ({ items }) => {
+const CinemaHeroCarousel = ({ items = [] }) => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ maxWidth: '100vw', overflow: 'hidden', margin: 'auto',
-     paddingLeft: '30px', paddingRight: '30px' }}>
+    <div className="hero-carousel">
       <Swiper
         modules={[Autoplay]}
-        spaceBetween={10}
-        slidesPerView={8}
-        loop={true}               // Vô tận
-        autoplay={{
-          delay: 2000,            // 2 giây tự chuyển slide
-          disableOnInteraction: false, // Tương tác vẫn chạy tiếp
-          pauseOnMouseEnter: true,      // Hover tạm dừng
-        }}
-        speed={800}               // Tốc độ chuyển slide mượt
+        loop
+        autoplay={{ delay: 3500, pauseOnMouseEnter: true }}
+        speed={900}
+        spaceBetween={16}
         breakpoints={{
-          1170: { slidesPerView: 4.5 },
-          960: { slidesPerView: 4.5 },
-          768: { slidesPerView: 4.5 },
-          540: { slidesPerView: 3.5 },
-          430: { slidesPerView: 3.5 },
-          0: { slidesPerView: 2.5 },
-        }} 
+          0: { slidesPerView: 2.2 },
+          768: { slidesPerView: 4 },
+          1024: { slidesPerView: 5 },
+        }}
       >
-        {items.map((item) => (
-          <SwiperSlide key={item.image} className="card-music">
+        {items.map((item, idx) => (
+          <SwiperSlide key={idx}>
             <div
-              className="card-item"
+              className="hero-card"
               onClick={() => navigate(`/film/${item.path}`)}
             >
+              {/* THUMB 3:4 */}
+              <div className="hero-card__thumb-wrap">
+                <img
+                  src={item.thumb || item.image}
+                  alt={item.title}
+                  className="hero-card__thumb"
+                />
+              </div>
+
+              {/* POSTER 2:3 ĐÈ */}
               <img
-                src={item.image}
+                src={item.poster || item.image}
                 alt={item.title}
-                loading="lazy"
-                style={{
-                  width: "100%",
-                  aspectRatio: "1 / 1",   
-                  objectFit: "cover",
-                }}
-                className="card-img animate__animated animate__fadeIn"
+                className="hero-card__poster"
               />
+
+              {/* TITLE */}
+              <div className="hero-card__detail">
+                <h6 className="film-card__title">{item.title}</h6>
+                <p className="film-card__episode">
+                {item.time || "?"}
+                </p>
+              </div>
             </div>
           </SwiperSlide>
         ))}
-
       </Swiper>
     </div>
   );
 };
 
-export default AutoSlideInfinite;
+export default CinemaHeroCarousel;

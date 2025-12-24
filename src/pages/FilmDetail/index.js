@@ -66,8 +66,11 @@ export default function FilmDetail() {
             title="Movie Player"
             loading="lazy"
             allowFullScreen
-            allow="autoplay; encrypted-media; clipboard-write; web-share; accelerometer; gyroscope"
+            allow="autoplay; encrypted-media; clipboard-write; web-share; accelerometer; gyroscope; picture-in-picture"
             className="movie-page__iframe rounded shadow"
+            referrerPolicy="strict-origin-when-cross-origin"
+            webkitallowfullscreen="true"
+            mozallowfullscreen="true"
             frameBorder="0"
           />
         </div>

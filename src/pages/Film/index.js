@@ -229,7 +229,7 @@ export default function FilmListBySlug() {
                   <span className="detail-year me-2 mt-2">Chất lượng: {hoverFilm.quality}</span>
                   <span className="detail-year me-2 mt-2">Số tập: {hoverFilm.episode_current}</span>
                   <span className="detail-year me-2 mt-2">Thời lượng : {hoverFilm.time}</span>
-                  <p className="detail-year mt-2" style={{width: "50%"}}>Ngôn ngữ phụ đề: {hoverFilm.lang}</p>
+                  <p className="detail-year mt-2" style={{display: "inline-block", maxWidth: "70%"}}>Ngôn ngữ phụ đề: {hoverFilm.lang}</p>
               </div>
             </div>
           </div>

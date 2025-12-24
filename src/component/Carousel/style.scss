@@ -1,0 +1,121 @@
+.hero-carousel {
+  width: 100%;
+  padding: 0 24px;
+}
+
+/* CARD */
+.hero-card {
+  position: relative;
+  height: 200px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.1);
+  background:#107dd023;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* THUMB (ẢNH TO) */
+.hero-card__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9);
+}
+
+/* GRADIENT */
+.hero-card__mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,.85) 0%,
+    rgba(0,0,0,.55) 40%,
+    transparent 75%
+  );
+}
+
+/* CONTENT */
+.hero-card__content {
+  position: absolute;
+  left: 24px;
+  bottom: 20px;
+  display: flex;
+  gap: 16px;
+  z-index: 2;
+}
+
+/* POSTER (ẢNH NHỎ) */
+.hero-card__poster {
+  position : absolute;
+  top:70px;
+  left: 10px;
+  width: 70px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.6);
+}
+.hero-card__detail{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #fff;
+}
+/* TEXT */
+.hero-card__meta {
+  color: #fff;
+  max-width: 420px;
+}
+
+.hero-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.hero-card__sub {
+  display: flex;
+  gap: 12px;
+  font-size: .85rem;
+  opacity: .85;
+}
+
+.hero-card__badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: #22c55e;
+  color: #000;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero-card {
+    height: 170px;
+  }
+
+  .hero-card__poster {
+    width: 50px;
+  }
+
+  .hero-card__title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 450px){
+    .hero-card{
+        height: auto;
+    }
+    .hero-card__poster {
+        display: none;
+    }
+    .hero-card__detail{
+        padding: 0 10px;
+        position: static;
+        margin-top: 10px;
+    }
+}

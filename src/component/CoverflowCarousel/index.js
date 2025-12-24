@@ -10,7 +10,7 @@ export default function FilmCarousel({ items = [], renderItem }) {
   return (
     <div className="film-carousel">
       <Swiper
-        slidesPerView={2.2}
+        slidesPerView={3.2}
         spaceBetween={12}
         navigation
         grabCursor

@@ -10,7 +10,7 @@ const filmData = [
     {title: "Tiệm Ăn Của Quỷ", image: "https://ik.imagekit.io/yuki/20250126-1/8da0fb28e2333a5602112cbcc04e8c14.jpg", path: "tiem-an-cua-quy", episode_current: "Hoàn Tất (6/6)"},
     {title: "Khó Dỗ Dành", image: "https://phimimg.com/upload/vod/20250218-1/7812aa97a4c6bfdd29e1bc33386b72e1.jpg", path: "kho-do-danh", episode_current: "Hoàn Tất (32/32)"},
     {title: "Lighter and Princess", image: "https://phimimg.com/upload/vod/20240331-1/38e0c5c60e6b48d51a71a59429d12ecb.jpg", path: "chiec-bat-lua-va-vay-cong-chua",episode_current: "Hoàn Tất (36/36)"},
-    {title: "Thập Tam Muội", image: "https://ik.imagekit.io/yuki/20231209-1/948cc6116cc96d5f9e0b3fb89789275b.jpg", path: "thap-tam-muoi",episode_current: "Hoàn Tất (3/3"},
+    {title: "Thập Tam Muội", image: "https://ik.imagekit.io/yuki/20231209-1/948cc6116cc96d5f9e0b3fb89789275b.jpg", path: "thap-tam-muoi",episode_current: "Hoàn Tất (3/3)"},
     {title: "Yêu Nhầm Bạn Thân", image: "https://ik.imagekit.io/yuki/20250523-1/9e90d5e45abb30f79b340985a2b16f14.jpg", path: "yeu-nham-ban-than",episode_current: "Full"},
     {title: "Lật Mặt 6: Tấm Vé Định Mệnh", image: "https://ik.imagekit.io/yuki/20240919-1/5c666eeb1ce5b80a0140906109da9d2a.jpg", path: "lat-mat-6-tam-ve-dinh-menh",episode_current: "Full"},
 ];
@@ -44,6 +44,7 @@ function Film() {
       <div className="text-center">
           <div className="mb-1">
             <h2 className="music-box-title">Kho Phim </h2>
+            <p className="music-box-desc">"Kho phim có đa dạng thể loại, bạn có thể tìm kiếm phim bạn muốn xem bằng cách nhập tên phim ở thanh bên dưới."</p>
           </div>
           <div className="input-search-film">
             <input
@@ -59,6 +60,9 @@ function Film() {
           </div>
           
       </div>
+      <div className="mb-1">
+            <h2 className="film-category ms-3">Phim Nổi Bật</h2>
+        </div>
       <div className="container mt-1 mb-1">
         <FilmCarousel
           items={filmData}

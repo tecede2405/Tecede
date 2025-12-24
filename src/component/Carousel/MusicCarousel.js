@@ -25,7 +25,7 @@ const AutoSlideInfinite = ({ items }) => {
         }}
         speed={800}               // Tốc độ chuyển slide mượt
         breakpoints={{
-          1170: { slidesPerView: 4.5 },
+          1170: { slidesPerView: 5.5 },
           960: { slidesPerView: 4.5 },
           768: { slidesPerView: 4.5 },
           540: { slidesPerView: 3.5 },
@@ -43,6 +43,7 @@ const AutoSlideInfinite = ({ items }) => {
                 width: "100%",
                 aspectRatio: "1 / 1",
                 objectFit: "cover",
+                cursor: "pointer",
               }}
               className="card-img animate__animated animate__fadeIn"
               onClick={() => navigate(`/music/${items.path}`)}

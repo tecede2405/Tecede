@@ -23,7 +23,7 @@ function About() {
             <Tabbar />
             <div className="about__content">
                 <div className="about__produce">
-                    <p>"Xin chào! Tôi là một sinh viên yêu thích lập trình, game và âm nhạc. Đây là 1 project nho nhỏ ngẫu hứng của tôi trong quá trình học lập trình."</p>
+                    <p>"Xin chào! Tôi là một sinh viên yêu thích lập trình, game và âm nhạc. Đây là 1 project nho nhỏ ngẫu hứng của tôi trong quá trình học của mình."</p>
                     <img src={ Image } alt="" />
                 </div>
                 <div className="about__produce">

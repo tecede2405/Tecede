@@ -84,7 +84,6 @@ footer{
     justify-content:center;
     z-index: 1000;
     background: #000;
-    background-image : url(https://i.pinimg.com/originals/50/1f/72/501f72c7cd86f1e36c453551e864a814.gif);
     background-position: center; 
     .footer-contact{
         text-align : center;
@@ -213,26 +212,28 @@ footer{
     }
 
     &__feature{
-        width: 30%;
-        height:400px;
+        width: 28%;
+        height:300px;
         display: flex;
         flex-direction : column;
         justify-content:start;
         align-items:center;
-        background: rgba(15, 23, 42, 0.7); /* màu xanh đen trong suốt */
-        backdrop-filter: blur(6px);         /* làm mờ background phía sau */
-        border-radius: 8px;                /* bo góc mềm mại */
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* đổ bóng */ 
+        background: rgba(13, 74, 217, 0.114); 
+        backdrop-filter: blur(6px);        
+        border-radius: 8px;               
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         opacity: 0.9;
         margin-bottom: 50px;
         margin-left: 10px;
         overflow: hidden;
         border-bottom: 1px solid #333333;
         h2{
+            font-size: 20px;
             text-align: center;
             padding-top: 12px;
         }
         p{
+            font-size: 12px;
             text-align:center;
             margin:0;
         }
@@ -243,7 +244,7 @@ footer{
         }
     }
     &__note{
-        margin : 50px auto;
+        margin : 20px auto;
         width: 90%;
         padding: 10px 0;
         color: #ddd;
@@ -253,6 +254,9 @@ footer{
             margin: 0;
             li{
                 margin: 5px 0;
+                i{
+                    font-size: 14px;
+                }
             }
         }
         &-text{
@@ -429,7 +433,16 @@ footer{
     
     .Home{
         &__feature{
-            height: 470px;
+            height: 290px;
+            img{
+                height: 50%;
+            }
+            h2{
+                font-size: 15px;
+            }
+            p{
+                font-size: 11px;
+            }
         }
     }
 
@@ -469,15 +482,10 @@ footer{
     .Home{
         // flex-direction: column;
         &__feature{
-            height: 430px;
-            margin-left:20px;
-          
+            img{
+                height: 40%;
+            }
         }
-        &__desc{
-            font-size: 13px;
-            padding: 0 20px;;
-        }
-
     }
      .tabbar {
         width: 18%;
