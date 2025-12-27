@@ -49,8 +49,8 @@ function NhacTreRemix() {
             </div>
           ) : (
             <>
-              <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src={nhactreremix} alt="" className="profile-image" />
+              <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
+                <img src={nhactreremix} alt="nhạc remix" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Remix 🎵</h4>
                   <p className="profile-desc">Nhạc bay như tiên cảnh.</p>

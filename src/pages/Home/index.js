@@ -19,7 +19,7 @@ function Home() {
         // Đổi chữ sau khi ẩn
         setText((prevText) =>
           prevText === "Cảm ơn bạn đã ghé vào trang web này..."
-            ? "Đây là website do Thoại Xayda coding!"
+            ? "Đây là website do Thoại Xayda lập trình!"
             : "Cảm ơn bạn đã ghé vào trang web này..."
         );
         setIsVisible(true); // Hiện lại chữ mới

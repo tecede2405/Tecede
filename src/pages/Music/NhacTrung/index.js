@@ -49,8 +49,8 @@ function NhacTrung() {
             </div>
           ) : (
             <>
-              <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src={china} alt="" className="profile-image" />
+              <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
+                <img src={china} alt="nhạc trung quốc" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Trung Quốc 🎵</h4>
                   <p className="profile-desc">Nghe bao hay bao suy.</p>

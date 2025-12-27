@@ -51,11 +51,11 @@ function NhacEDM() {
             </div>
           ) : (
             <>
-              <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src={edm} alt="" className="profile-image" />
+              <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
+                <img src={edm} alt="nhạc edm" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc EDM 🎧</h4>
-                  <p className="profile-desc">Dành cho dân bay, cảm hứng bốc lên từng nhịp beat.</p>
+                  <p className="profile-desc">Dành cho game thủ và gymer.</p>
                   <button
                     onClick={handleShufflePlaylist}
                     className="shuffle"

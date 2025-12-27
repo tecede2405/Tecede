@@ -18,8 +18,8 @@ const CinemaHeroCarousel = ({ items = [] }) => {
         spaceBetween={16}
         breakpoints={{
           0: { slidesPerView: 2.2 },
-          768: { slidesPerView: 4 },
-          1024: { slidesPerView: 5 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
         }}
       >
         {items.map((item, idx) => (

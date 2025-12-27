@@ -51,12 +51,12 @@ function NhacDouyin() {
             </div>
           ) : (
             <>
-              <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1756971462/picture_1756969434987_h7vykv.png" alt="" className="profile-image" />
+              <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
+                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1756971462/picture_1756969434987_h7vykv.png" alt="nhạc douyin" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Douyin 🎵</h4>
                   <p className="profile-desc">
-                    Nhạc Douyin Nhẹ Nhàng .
+                    Nhạc douyin lúc nhẹ lúc mạnh.
                   </p>
                   <button
                     onClick={handleShufflePlaylist}

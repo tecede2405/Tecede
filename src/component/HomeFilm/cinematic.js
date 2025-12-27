@@ -1,10 +1,12 @@
-import MusicCarousel from "../Carousel/FilmCarousel";
+import FilmCarousel from "../Carousel/FilmCarousel";
+import { GoChevronRight } from "react-icons/go";
 import 'animate.css';
 const filmData = [
     {title: "Mai", image: "https://ik.imagekit.io/yuki/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
     {title: "Cám", image: "https://ik.imagekit.io/yuki/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
     {title: "Ma Da", image: "https://ik.imagekit.io/yuki/20241116-1/e851bfbfc2dc5b2f9463571e5fba6734.jpg", thumb:"https://phimimg.com/upload/vod/20241116-1/3747ec0cb2bbc3679512ef163621eefc.jpg", path: "ma-da",time: "195 phút"},
     {title: "Zootopia 2", image: "https://phimimg.com/upload/vod/20251223-1/6bc1d549b86e490274d93bab66a3654d.jpg",thumb:"https://phimimg.com/upload/vod/20251223-1/7154384c306c73664e46942f2477e574.jpg", path: "phi-vu-dong-troi-2",time: "107 phút"},
+    {title: "Năm Đêm Kinh Hoàng 2", image: "https://phimimg.com/upload/vod/20251224-1/19bd1d17add0685b3a437160f5406c46.jpg", thumb:"https://phimimg.com/upload/vod/20251224-1/4e07f16d1802064c5170b4ec4d55432d.jpg", path: "nam-dem-kinh-hoang-2",time: "104 phút"},
     {title: "Doraemon Movie 44", image: "https://phimimg.com/upload/vod/20250827-1/f4c07090d886ae98ebfb1f9222ace35f.jpg", thumb:"https://phimimg.com/upload/vod/20250827-1/94183f061625e5155a274c0394d5cafb.jpg", path: "doraemon-nobita-va-cuoc-phieu-luu-vao-the-gioi-trong-tranh",time: "131 phút"},
     {title: "Avatar: Lửa và Tro Tàn", image: "https://phimimg.com/upload/vod/20251221-1/687373bb9894616507f27c74c0eaa598.jpg", thumb:"https://phimimg.com/upload/vod/20251221-1/6ac9fcafbe963ce8fbae6aaffb3d642e.jpg", path: "avatar-lua-va-tro-tan",time: "198 phút"},
     {title: "Làm Giàu Với Ma", image: "https://ik.imagekit.io/yuki/20250323-1/1b5a22c27996cde1f32b19c449853063.jpg", thumb:"https://phimimg.com/upload/vod/20250323-1/5c8b4a2c724d8cbee887c0b90767633d.jpg", path: "lam-giau-voi-ma",time: "105 phút"},
@@ -13,6 +15,7 @@ const filmData = [
     {title: "Kẻ Ăn Hồn", image: "https://ik.imagekit.io/yuki/20240315-1/ae6b750d852646a5c94eb3873d5e7c78.jpg", thumb:"https://phimimg.com/upload/vod/20240315-1/2c151504adb279ed692b550c7b7bb94b.jpg", path: "ke-an-hon",time: "109 phút"},
     {title: "Doraemon Movie 43", image: "https://phimimg.com/upload/vod/20250521-1/3b5ed51c3fb1dca303cfedbbfd59c904.jpg", thumb:"https://phimimg.com/upload/vod/20250521-1/0514f6f2eef84b1340afd31c42574a2d.jpg", path: "doraemon-nobita-va-ban-giao-huong-dia-cau",time: "115 phút"},
     {title: "Bộ Tứ Báo Thủ", image: "https://ik.imagekit.io/yuki/20250901-1/4094cc857ac6a13df6eef22ad8b1ae1d.jpg", thumb:"https://phimimg.com/upload/vod/20250901-1/40e4f404d92151d8d44fc878fd20cf64.jpg", path: "bo-tu-bao-thu",time: "133 phút"},
+    {title: "Chainsaw Man: Reze", image: "https://phimimg.com/upload/vod/20251209-1/69d2d97349877280293f7c1ccc9efdb4.jpg", thumb:"https://phimimg.com/upload/vod/20251209-1/c3096886a37e19947c1b6758f7b8829f.jpg", path: "chainsaw-man-the-movie-chuong-reze",time: "100 phút"},
     {title: "Âm Dương Lộ", image: "https://ik.imagekit.io/yuki/20250627-1/8db220cf033fde5a5929b285fe3789ba.jpg", thumb:"https://phimimg.com/upload/vod/20250627-1/2cb1650856ea766b21df3d6f86ccdd07.jpg", path: "am-duong-lo",time: "119 phút"},
     {title: "Na Tra 2", image: "https://phimimg.com/upload/vod/20250206-1/064c6f42c1fccb7ef286ec367ff95212.jpg", thumb:"https://phimimg.com/upload/vod/20250206-1/51d98f9d8a4bdc053173b0925924c616.jpg", path: "na-tra-2-ma-dong-nao-hai",time: "144 phút"},
     {title: "Thám Tử Kiên", image: "https://ik.imagekit.io/yuki/20251010-1/d5236005ee6df744aa5417cf5231f167.jpg", thumb:"https://phimimg.com/upload/vod/20251010-1/3c95bc59bc3c37fc3fb76e27b156d1bf.jpg", path: "tham-tu-kien-ky-an-khong-dau",time: "131 phút"},
@@ -29,10 +32,10 @@ function CinematicFilm() {
   return (
     <>
         <div className="mb-1">
-            <h2 className="film-category ms-3">Phim Chiếu Rạp</h2>
+            <h2 className="film-category ms-3">Phim Chiếu Rạp <GoChevronRight /></h2>
         </div>
-        <div className="container mt-1 mb-5">
-            <MusicCarousel items={filmData} />
+        <div className="container mt-1 mb-1">
+            <FilmCarousel items={filmData} />
         </div>  
     </>
    )

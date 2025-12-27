@@ -1,17 +1,22 @@
 .hero-carousel {
   width: 100%;
-  padding: 0 24px;
+  padding: 0 15px;
 }
 
 /* CARD */
 .hero-card {
   position: relative;
-  height: 200px;
+  height: 220px;
   border-radius: 18px;
   border: 1px solid rgba(255,255,255,.1);
   background:#107dd023;
   overflow: hidden;
+  transition : transform 0.3s ease;
   cursor: pointer;
+}
+
+.hero-card:hover {
+  transform: scale(1.05);
 }
 
 /* THUMB (ẢNH TO) */
@@ -47,8 +52,8 @@
 /* POSTER (ẢNH NHỎ) */
 .hero-card__poster {
   position : absolute;
-  top:70px;
-  left: 10px;
+  top:100px;
+  left: 20px;
   width: 70px;
   aspect-ratio: 2 / 3;
   object-fit: cover;
@@ -57,48 +62,31 @@
 }
 .hero-card__detail{
     position: absolute;
-    bottom: 10px;
+    bottom: 5px;
     right: 10px;
     color: #fff;
 }
-/* TEXT */
-.hero-card__meta {
-  color: #fff;
-  max-width: 420px;
-}
-
-.hero-card__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.hero-card__sub {
-  display: flex;
-  gap: 12px;
-  font-size: .85rem;
-  opacity: .85;
-}
-
-.hero-card__badge {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: .75rem;
-  font-weight: 600;
-  background: #22c55e;
-  color: #000;
-}
 
 /* MOBILE */
+@media (max-width: 1240px){
+  .hero-card {
+    height: 190px;
+  }
+  .hero-card__poster {
+    width: 60px;
+    top: 70px;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-card {
-    height: 170px;
+    height: 150px;
   }
 
   .hero-card__poster {
     width: 50px;
+    left: 10px;
+    top: 60px;
   }
 
   .hero-card__title {

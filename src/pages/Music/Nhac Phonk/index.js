@@ -51,8 +51,8 @@ function NhacPhonk() {
             </div>
           ) : (
             <>
-              <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src={phonk} alt="phonk" className="profile-image" />
+              <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
+                <img src={phonk} alt="nhạc phonk" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Phonk 🎵</h4>
                   <p className="profile-desc">Nhạc cháy như FreeFire.</p>

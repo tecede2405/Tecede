@@ -51,12 +51,12 @@ function Nhacusuk() {
             </div>
           ) : (
             <>
-              <div className="profile d-flex flex-wrap flex-column flex-md-row align-items-center gap-3">
-                <img src={usuk} alt="usuk" className="profile-image" />
+              <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
+                <img src={usuk} alt="nhạc âu mỹ" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Âu Mỹ 🎵</h4>
                   <p className="profile-desc">
-                    Những bài này mình tự chọn lọc theo sở thích.
+                    Những bài hát âu mỹ hay nhất.
                   </p>
                   <button
                     onClick={handleShufflePlaylist}
