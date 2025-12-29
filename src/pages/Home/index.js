@@ -90,6 +90,7 @@ function Home() {
               <div className="Home__music"> 
                 <CinematicFilm />
               </div>
+              
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>

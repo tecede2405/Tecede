@@ -1,0 +1,107 @@
+.movie-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.movie-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  color: #eee;
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #222;
+    white-space: nowrap;
+  }
+
+  th {
+    background: #111111c9;
+    font-size: 14px;
+    color: #aaa;
+  }
+  tr{
+    background:#0dcaf036;
+  }
+}
+
+/* ===== TÊN ===== */
+.col-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .title {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      color: #0dcaf0;
+    }
+  }
+
+  .origin {
+    font-size: 12px;
+    color: #999;
+  }
+}
+
+/* ===== TÌNH TRẠNG ===== */
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+
+  &.full {
+    background: #198754;
+  }
+
+  &.updating {
+    background: #ffc107;
+    color: #000;
+  }
+}
+
+/* ===== NGÀY ===== */
+.date {
+  font-size: 13px;
+  color: #ccc;
+}
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 768px) {
+  .movie-table {
+    min-width: 100%;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .col-name img {
+    width: 40px;
+    height: 56px;
+  }
+
+  .origin {
+    display: none; // ẨN TÊN GỐC
+  }
+
+  .date {
+    font-size: 12px;
+    white-space: normal;
+  }
+}

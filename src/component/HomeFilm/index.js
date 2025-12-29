@@ -4,13 +4,16 @@ import { GoChevronRight } from "react-icons/go";
 
 const filmData = [
     {title: "DragonBall Daima", image: "https://ik.imagekit.io/yuki/20241013-1/0fae7296f2e1a31e55deb61fe6db7a03.jpg", path: "dragon-ball-daima", episode_current: "Hoàn Tất (20/20)"},
-    {title: "One Piece", image: "https://ik.imagekit.io/yuki/20240310-1/31e6c244a0673838a46732d3b4f0b190.jpg", path: "dao-hai-tac",episode_current: "Tập 1154"},
-    {title: "Conan", image: "https://ik.imagekit.io/yuki/20240310-1/025424cf62248b9a7b54279ef5416e26.jpg", path: "tham-tu-lung-danh-conan",episode_current: "Tập 1186"},
+    {title: "One Piece", image: "https://ik.imagekit.io/yuki/20240310-1/31e6c244a0673838a46732d3b4f0b190.jpg", path: "dao-hai-tac",episode_current: "Luôn Cập Nhật"},
+    {title: "Conan", image: "https://ik.imagekit.io/yuki/20240310-1/025424cf62248b9a7b54279ef5416e26.jpg", path: "tham-tu-lung-danh-conan",episode_current: "Luôn Cập Nhật"},
     {title: "Yugioh", image: "https://phimimg.com/upload/vod/20241124-1/39cae382ef85b1fb744f95ecd2f898e7.jpg", path: "vua-tro-choi-2000",episode_current: "Hoàn Tất (224/224)"},
     {title: "DragonBall Super", image: "https://ik.imagekit.io/yuki/20240718-1/6bba5797d9c0e92a2984f07933dc151b.jpg", path: "bay-vien-ngoc-rong-sieu-cap",episode_current: "Hoàn Tất (131/131)"},
     {title: "Pokemon", image: "https://phimimg.com/upload/vod/20250526-1/44fcb1476d32e4a89e0dd97ea405b100.jpg", path: "pokemon",episode_current: "Hoàn Tất (1237/1237)"},
     {title: "Huyền Thoại Broly", image: "https://ik.imagekit.io/yuki/20240827-1/f3c5b869a3fb9334ebf92f4e2a1c1540.jpg", path: "bay-vien-ngoc-rong-sieu-cap-huyen-thoai-broly",episode_current: "Full"},
     {title: "Thợ Săn Quỷ", image: "https://phimimg.com/upload/vod/20250106-1/cdd0f20f79311a101e87a0ec0edb3d3f.jpg", path: "tho-san-quy-2022",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Đại Chiến Người Và Thần 1", image: "https://phimimg.com/upload/vod/20251212-1/4d4cd441e2384ce7da04bb599d001d09.jpg", path: "dai-chien-nguoi-va-than-phan-1",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Đại Chiến Người Và Thần 2", image: "https://phimimg.com/upload/vod/20251212-1/f7e1bb3c9a084c4754c42f4758a68f65.jpg", path: "dai-chien-nguoi-va-than-phan-2",episode_current: "Hoàn Tất (15/15)"},
+    {title: "Đại Chiến Người Và Thần 3", image: "https://phimimg.com/upload/vod/20251212-1/200f7ae86aa9473780bf77e559f94846.jpg", path: "dai-chien-nguoi-va-than-phan-3",episode_current: "Hoàn Tất (15/15)"},
     {title: "Naruto Shippuden", image: "https://phimimg.com/upload/vod/20240902-1/7eed050b63a25cdde46ac7d4ca1383b7.jpg", path: "naruto-shippuden",episode_current: "Hoàn Tất (500/500)"},
     {title: "Solo Leveling", image: "https://ik.imagekit.io/yuki/20240109-1/7cd20bfff7d6ad42644017bc731a0377.jpg", path: "thang-cap-mot-minh",episode_current: "Hoàn Tất (25/25)"},
     {title: "Thanh Gươm Diệt Quỷ 1", image: "https://ik.imagekit.io/yuki1/20250427-1/a9d8a556f8cb1873f1a40e1d97db255e.jpg?tr=w-450,h-675,c-at_max,q-80,f-auto", path: "thanh-guom-diet-quy-phan-1-kamado-tanjiro-lap-chi",episode_current: "Hoàn Tất (26/26)"},

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import HlsPlayer from "../../component/HlsPlayer/index";
+import LatestMovies from "../../component/LatestMovies.js/index";
 import "./style.scss";
 
 export default function FilmDetail() {
@@ -50,6 +52,14 @@ export default function FilmDetail() {
 
   const currentIndex = episodes.findIndex(v => v.slug === currentVideo.slug);
 
+  const handleAutoNext = () => {
+  if (currentIndex < episodes.length - 1) {
+    setCurrentVideo(episodes[currentIndex + 1]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
+
+
   return (
     <div className="movie-page pb-5 pt-3" style={{ "--bg-url": `url(${movie.poster_url})`}}>
       <div className="container">
@@ -60,19 +70,27 @@ export default function FilmDetail() {
         </h5>
 
         {/* Player */}
-        <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
-          <iframe
-            src={currentVideo.link_embed}
-            title="Movie Player"
-            loading="lazy"
-            allowFullScreen
-            allow="autoplay; encrypted-media; clipboard-write; web-share; accelerometer; gyroscope; picture-in-picture"
-            className="movie-page__iframe rounded shadow"
-            referrerPolicy="strict-origin-when-cross-origin"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
-            frameBorder="0"
-          />
+        <div className="movie-page__player mb-4 mx-auto">
+          {currentVideo?.link_m3u8 ? (
+            <HlsPlayer
+            src={currentVideo.link_m3u8}
+            onEnded={handleAutoNext}
+            title={movie.name}
+            episode={currentVideo.name}
+            thumbnail={movie.poster_url}
+
+            />
+          ) : currentVideo?.link_embed ? (
+            <iframe
+              src={currentVideo.link_embed}
+              title="Movie Player"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+              frameBorder="0"
+              className="w-100 h-100 rounded shadow"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          ) : null}
         </div>
 
         {/* Server selector */}
@@ -134,6 +152,9 @@ export default function FilmDetail() {
           Nếu bạn cho rằng quyền lợi của mình bị ảnh hưởng, vui lòng liên hệ ngay cho chúng tôi sẽ xử lý và gỡ bỏ nội dung vi phạm kịp thời.
           Xin cảm ơn sự thông cảm và hợp tác của bạn.
         </p>
+        <div className="Home__music">
+                <LatestMovies />
+        </div>
       </div>
     </div>
   );

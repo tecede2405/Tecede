@@ -1,0 +1,25 @@
+.plyr__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; 
+  .plyr__progress {
+    flex: 1; // chiếm phần lớn chiều ngang
+  }
+
+  .plyr__volume {
+    max-width: 80px; // desktop giới hạn
+    margin-right: 12px;
+
+  }
+}
+
+@media (max-width: 768px) {
+  .plyr__controls {
+    .plyr__progress {
+      flex: 2; // mobile cho progress bar rộng hơn
+    }
+    .plyr__volume {
+      display: none; // ẩn thanh volume trên mobile
+    }
+  }
+}
