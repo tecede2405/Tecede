@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Layout from './pages/layout';
 import './App.css';
 import { Analytics } from '@vercel/analytics/react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes,useLocation } from 'react-router-dom';
 import Home from './pages/Home/index';
 import About from './pages/About/index';
 import Contact from './pages/contact/index';
@@ -34,9 +34,13 @@ import NhacDouyin from "./pages/Music/Nhac Douyin";
 import { subscribeUser } from "./utils/pushNotification";
 import FilmDetail from "./pages/FilmDetail/index";
 import FilmListBySlug from "./pages/Film/index";
+import { trackVisit } from "./utils/trackVisitor";
+import  socket  from "./utils/socket";
+import { getVisitorId } from "./utils/visitor";
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     setLoading(true);
@@ -48,6 +52,29 @@ function App() {
 
   return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+  trackVisit(location.pathname);
+
+  const interval = setInterval(() => {
+    trackVisit(location.pathname);
+  }, 30000);
+
+  return () => clearInterval(interval);
+}, [location.pathname]);
+
+  useEffect(() => {
+  const visitorId = getVisitorId();
+
+  socket.emit("join", {
+    visitorId,
+    page: window.location.pathname,
+  });
+
+  return () => {
+    socket.disconnect();
+  };
+}, []);
 
 
   return (
