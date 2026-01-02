@@ -8,10 +8,20 @@
     text-decoration: none;
     padding: 5px;
     color: #ddd;
+    font-size: 14px;
     background: #dddddd24;
     border-radius: 5px;
     margin: 10px;
 }
 .form-add-song{
     background: #ddd;
+}
+.dashboard-visitor{
+    background: #212121;
+    color: #fff;
+}
+.dashboard-visitor th, .dashboard-visitor td{
+    font-size: 13px;
+    padding: 2px!important;
+    text-align: left;
 }

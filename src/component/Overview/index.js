@@ -7,12 +7,10 @@ const OverView = () => {
   const [totalListens, setTotalListens] = useState(0);
 
   // analytics
-  const [totalVisits, setTotalVisits] = useState(0);
-  const [todayVisits, setTodayVisits] = useState(0);
 
   // socket
-  const [onlineCount, setOnlineCount] = useState(0);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [onlineCount, setOnlineCount] = useState(0);
 
   /* ================= FETCH STATS ================= */
   useEffect(() => {
@@ -39,26 +37,18 @@ const OverView = () => {
     fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/total-listens`)
       .then((res) => res.json())
       .then((data) => setTotalListens(data.total || 0));
-
-    fetch(`${process.env.REACT_APP_API_URL}/api/stats/visits-total`)
-      .then((res) => res.json())
-      .then((data) => setTotalVisits(data.total || 0));
-
-    fetch(`${process.env.REACT_APP_API_URL}/api/stats/visits-today`)
-      .then((res) => res.json())
-      .then((data) => setTodayVisits(data.total || 0));
   }, []);
 
-  /* ================= SOCKET: ONLINE COUNT ================= */
+  /* ================= SOCKET: ONLINE USERS ================= */
   useEffect(() => {
-    socket.on("online-count", setOnlineCount);
-    return () => socket.off("online-count");
-  }, []);
+    socket.on("online:list", (users) => {
+      setOnlineUsers(users);
+      setOnlineCount(users.length);
+    });
 
-  /* ================= SOCKET: ONLINE LIST ================= */
-  useEffect(() => {
-    socket.on("online:list", setOnlineUsers);
-    return () => socket.off("online:list");
+    return () => {
+      socket.off("online:list");
+    };
   }, []);
 
   const totalSongs = Object.values(counts).reduce((s, v) => s + v, 0);
@@ -80,27 +70,23 @@ const OverView = () => {
             <td>Số bài hát hiện có</td>
             <td>{totalSongs}</td>
           </tr>
+
           <tr>
             <td>Playlist được tạo</td>
             <td>9 playlist</td>
           </tr>
+
           <tr>
             <td>Tổng số lượt nghe</td>
             <td>{totalListens}</td>
           </tr>
+
           <tr>
             <td>Trung bình lượt nghe / bài</td>
             <td>{avgListen}</td>
           </tr>
 
-          <tr>
-            <td>Tổng lượt truy cập website</td>
-            <td>{totalVisits}</td>
-          </tr>
-          <tr>
-            <td>Lượt truy cập hôm nay</td>
-            <td>{todayVisits}</td>
-          </tr>
+
           <tr>
             <td>Người đang online</td>
             <td>{onlineCount}</td>
@@ -117,7 +103,7 @@ const OverView = () => {
           <tr>
             <th>IP</th>
             <th>Trang</th>
-            <th>Kết nối lúc</th>
+            <th>Hoạt động lúc</th>
           </tr>
         </thead>
         <tbody>
@@ -131,7 +117,9 @@ const OverView = () => {
             <tr key={u.visitorId}>
               <td>{u.ip}</td>
               <td>{u.page}</td>
-              <td>{new Date(u.connectedAt).toLocaleTimeString()}</td>
+              <td>
+                {new Date(u.lastActive).toLocaleTimeString("vi-VN")}
+              </td>
             </tr>
           ))}
         </tbody>

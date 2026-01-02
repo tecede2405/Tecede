@@ -7,8 +7,6 @@ export const trackVisit = (page) => {
     body: JSON.stringify({
       visitorId: getVisitorId(),
       page,
-      userAgent: navigator.userAgent,
-      referrer: document.referrer || "direct",
     }),
-  }).catch(() => {});
+  });
 };

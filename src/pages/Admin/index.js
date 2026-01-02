@@ -14,6 +14,7 @@ function Admin() {
                     <nav className="admin-nav">
                         <NavLink to="/admin/add" className="nav-item">Thêm bài hát</NavLink>
                         <NavLink to="/admin/manage" className="nav-item">Quản lý bài hát</NavLink>
+                        <NavLink to="/admin/visits" className="nav-item">Lịch sử truy cập</NavLink>
                     </nav>
                     <main>
                         <Outlet />

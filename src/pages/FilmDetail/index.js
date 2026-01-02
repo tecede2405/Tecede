@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import LatestMovies from "../../component/LatestMovies.js/index";
+import { GoChevronLeft } from "react-icons/go";
 import "./style.scss";
 
 export default function FilmDetail() {
   const { slug } = useParams();
-
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [servers, setServers] = useState([]);      // chứa toàn bộ server
   const [currentServer, setCurrentServer] = useState(0); // index server đang chọn
@@ -49,7 +50,12 @@ export default function FilmDetail() {
     return <div className="container"><p>Đang tải...</p></div>;
   }
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   const currentIndex = episodes.findIndex(v => v.slug === currentVideo.slug);
+ 
 
   return (
     <div className="movie-page pb-5 pt-3" style={{ "--bg-url": `url(${movie.poster_url})`}}>
@@ -57,7 +63,11 @@ export default function FilmDetail() {
 
         {/* Title */}
         <h5 className="movie-page__title mb-4">
-          <i>Bạn đang xem : {movie.name} – {currentVideo.name}</i>
+          <GoChevronLeft 
+          onClick={handleBack} 
+          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }} 
+          />
+          <i className="ms-2">Bạn đang xem : {movie.name} – {currentVideo.name}</i>
         </h5>
 
         {/* Player */}
