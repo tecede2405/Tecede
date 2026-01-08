@@ -578,6 +578,10 @@ footer{
         width: 25%;
     }
      .about {
+        &__feature{
+            flex-direction: column;;
+        }
+        
         &__produce {
           height: 300px;
           width: 90%;

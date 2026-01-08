@@ -22,6 +22,33 @@ function About() {
            <div className="about">
             <Tabbar />
             <div className="about__content">
+                {/* Features section */}
+              <div className="container about__feature d-flex justify-content-center align-items-center pt-4">
+                    <div className="Home__feature">
+                      <img src="https://www.unsell.design/wp-content/uploads/2023/08/633617353_Template-Featured-image.jpg" alt="admin features" />
+                      <div className="Home__feature-text">
+                        <i><h2 className="Home__title">Blog này là gì</h2></i>
+                        <p className="Home__desc">"Blog này là nơi lưu giữ kiến thức và kinh nghiệm lập trình thông qua các đoạn video ngắn và các project nhỏ."</p>
+                      </div>
+                      
+                    </div>
+                    <div className="Home__feature">
+                      <img src="https://i.pinimg.com/1200x/b4/07/3a/b4073ae822c46bc169e18a42f49bba08.jpg" alt="admin features" />
+                      <div className="Home__feature-text">
+                        <i><h2 className="Home__title">Mục đích</h2></i>
+                        <p className="Home__desc">"Mình muốn chia sẻ những bài viết về hành trình học của bản thân mình. Hành trình của mình bắt đầu với những dòng code đầu tiên trên giao diện front-end, từng bước khám phá HTML, CSS, JS, rồi đến React!"</p>
+                      </div>
+                      
+                    </div>
+                    <div className="Home__feature">
+                      <img src="https://i.pinimg.com/originals/9d/1f/82/9d1f82cc324e498dd5127a6ed0296dac.gif" alt="admin features" />
+                      <div className="Home__feature-text">
+                        <i><h2 className="Home__title">Mục tiêu</h2></i>
+                        <p className="Home__desc">"Khi đã tự tin với front-end, mình tiếp tục học thêm back-end với Node.js, Express và MongoDB. Mục tiêu cuối cùng? Trở thành một fullstack developer thực thụ, làm chủ cả giao diện lẫn hệ thống phía server."</p>
+                      </div> 
+                    </div>
+              </div>
+              {/* produce section */}
                 <div className="about__produce">
                     <p>"Xin chào! Tôi là một sinh viên yêu thích lập trình, game và âm nhạc. Đây là 1 project nho nhỏ ngẫu hứng của tôi trong quá trình học của mình."</p>
                     <img src={ Image } alt="" />
@@ -30,7 +57,7 @@ function About() {
                     <img src={zhongli} alt="" />
                     <p>"Skill và project nằm ở phía dưới. Nếu bạn quan tâm có thể xem."</p>
                 </div>
-                 
+          
                 <div className="about__skill">
                     <Marquee speed={50} gradient={false}>
                         <div className="about__skill-img">

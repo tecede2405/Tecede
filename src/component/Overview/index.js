@@ -73,7 +73,7 @@ const OverView = () => {
 
           <tr>
             <td>Playlist được tạo</td>
-            <td>9 playlist</td>
+            <td>9</td>
           </tr>
 
           <tr>
