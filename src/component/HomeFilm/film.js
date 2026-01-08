@@ -5,7 +5,9 @@ import { CiSearch } from "react-icons/ci";
 import { GoChevronRight } from "react-icons/go";
 import "./style.scss";
 const filmData = [
-    {title: "Tôi Như Ánh Dương Rực Rỡ", image: "https://image-cdn.motchilltv.me/images/20251201/toi-nhu-anh-duong-ruc-ro.webp", path: "toi-nhu-anh-duong-ruc-ro",episode_current: "Tập ?/36"},
+    {title: "Đại Chiến Người Và Thần 1", image: "https://phimimg.com/upload/vod/20251212-1/4d4cd441e2384ce7da04bb599d001d09.jpg", path: "dai-chien-nguoi-va-than-phan-1",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Đại Chiến Người Và Thần 2", image: "https://phimimg.com/upload/vod/20251212-1/f7e1bb3c9a084c4754c42f4758a68f65.jpg", path: "dai-chien-nguoi-va-than-phan-2",episode_current: "Hoàn Tất (15/15)"},
+    {title: "Đại Chiến Người Và Thần 3", image: "https://phimimg.com/upload/vod/20251212-1/200f7ae86aa9473780bf77e559f94846.jpg", path: "dai-chien-nguoi-va-than-phan-3",episode_current: "Hoàn Tất (15/15)"},
     {title: "Song Quỹ", image: "https://phimimg.com/upload/vod/20251214-1/ce49bd08edb91c937516a7d27bb08ccd.jpg", path: "song-quy", episode_current: "Hoàn Tất (29/29)"},
     {title: "Tết Ở Làng Địa Ngục", image: "https://ik.imagekit.io/yuki/20240113-1/bde8e52f94a9e35d8f993104d5bb86e2.jpg", path: "tet-o-lang-dia-nguc", episode_current: "Hoàn Tất (12/12)"},
     {title: "Anh Hùng Tiền Mặt", image: "https://phimimg.com/upload/vod/20251226-1/2c8f6e0fff520fbe77bbdb731cf81f46.jpg", path: "anh-hung-tien-mat", episode_current: "Hoàn Tất (8/8)"},
@@ -16,7 +18,6 @@ const filmData = [
     {title: "Hôn Lễ Của Em", image: "https://phimimg.com/upload/vod/20231209-1/ff4ebc9bc993697a594d5c1cc0a47793.jpg", path: "hon-le-cua-em",episode_current: "Full"},  
     {title: "Nụ Hôn Bùng Nổ", image: "https://phimimg.com/upload/vod/20251113-1/e1f3ffbc9759bc3bfaa1add317a477ce.jpg", path: "nu-hon-bung-no",episode_current: "Hoàn Tất (14/14)"},
     {title: "Khi Anh Chạy Về Phía Em", image: "https://phimimg.com/upload/vod/20230929-1/a6110983f8de490e116383020adc4662.jpg", path: "khi-anh-chay-ve-phia-em",episode_current: "Hoàn Tất (24/24)"},
-    {title: "Thập Tam Muội", image: "https://ik.imagekit.io/yuki/20231209-1/948cc6116cc96d5f9e0b3fb89789275b.jpg", path: "thap-tam-muoi",episode_current: "Hoàn Tất (3/3)"},
     {title: "Yêu Nhầm Bạn Thân", image: "https://ik.imagekit.io/yuki/20250523-1/9e90d5e45abb30f79b340985a2b16f14.jpg", path: "yeu-nham-ban-than",episode_current: "Full"},
     {title: "Lật Mặt 6: Tấm Vé Định Mệnh", image: "https://ik.imagekit.io/yuki/20240919-1/5c666eeb1ce5b80a0140906109da9d2a.jpg", path: "lat-mat-6-tam-ve-dinh-menh",episode_current: "Full"},
 ];
