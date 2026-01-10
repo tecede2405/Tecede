@@ -6,6 +6,7 @@ import {
   cinematicFilm,
   Films,
   AnimeFilm,
+  NewFilm
 } from "../../data/dataFilm";
 import "./style.scss";
 export default function FilmListByType() {
@@ -30,6 +31,7 @@ export default function FilmListByType() {
     if (type === "cinematic") data = cinematicFilm;
     if (type === "films") data = Films;
     if (type === "anime") data = AnimeFilm;
+    if (type === "new-film") data = NewFilm;
 
     setResults(data);
   }, [type]);
@@ -102,7 +104,18 @@ export default function FilmListByType() {
           onClick={() => navigate(-1)}
           style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%", color: "#fff" }} 
           />
-        <h4 className="text-light ms-2 mb-0">{type === "cinematic" ? "Phim Chiếu Rạp" : type === "films" ? "Phim Nổi Bật" : "Anime + Tokusatsu"}</h4>
+        <h4 className="text-light ms-2 mb-0">
+          {type === "cinematic"
+            ? "Phim Chiếu Rạp"
+            : type === "films"
+            ? "Phim Nổi Bật"
+            : type === "anime"
+            ? "Anime + Tokusatsu"
+            : type === "new-film"
+            ? "Phim Mới"
+            : "Danh sách phim"}
+        </h4>
+
       </div>
       {/* GRID */}
       <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
@@ -144,10 +157,10 @@ export default function FilmListByType() {
               backgroundImage: `url(${hoverFilm.thumb || hoverFilm.image})`,
             }}
           >
-            <div className="preview-info">
-              <h5 className="preview-name">{hoverFilm.title}</h5>
+            <div className="previews-info">
+              <h5 className="previews-name">{hoverFilm.title}</h5>
 
-              <div className="preview-action mt-2">
+              <div className="previews-action mt-2">
                 <Link
                   to={`/film/${hoverFilm.path}`}
                   className="btn-watch btn btn-info me-2"

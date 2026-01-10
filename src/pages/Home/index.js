@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
+import NewFilm from '../../component/HomeFilm/newfilm';
 
 function Home() {
   const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
@@ -55,6 +56,9 @@ function Home() {
               </div>
               <div className="Home__music"> 
                 <Film />
+              </div>
+              <div className="Home__music"> 
+                <NewFilm />
               </div>
               <div className="Home__music"> 
                 <HomeFilm />
