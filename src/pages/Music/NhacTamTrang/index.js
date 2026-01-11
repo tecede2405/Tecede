@@ -4,7 +4,6 @@ import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import useAudioManager from "../../../hooks/useAudioManager";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
-import sad from "../../../img/music-thumnail/sad.png";
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import Loading from "../../../component/Loading";
 
@@ -52,7 +51,7 @@ function NhacMood() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src={sad} alt="nhạc tâm trạng" className="profile-image" />
+                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119883/sad_bml9ma.png" alt="nhạc tâm trạng" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Mood 🎵</h4>
                   <p className="profile-desc">

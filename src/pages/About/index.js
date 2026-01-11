@@ -1,8 +1,4 @@
-import Image from '../../img/AboutIamge.png';
 import Tabbar from '../../component/tabar';
-import zhongli from '../../img/zhongli.png';
-import project1 from '../../img/project1.png';
-import project2 from '../../img/project2.png';
 import { useNavigate } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 
@@ -51,10 +47,10 @@ function About() {
               {/* produce section */}
                 <div className="about__produce">
                     <p>"Xin chào! Tôi là một sinh viên yêu thích lập trình, game và âm nhạc. Đây là 1 project nho nhỏ ngẫu hứng của tôi trong quá trình học của mình."</p>
-                    <img src={ Image } alt="" />
+                    <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125677/AboutIamge_gc1of5.png" alt="Thoại Xayda" />
                 </div>
                 <div className="about__produce">
-                    <img src={zhongli} alt="" />
+                    <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125678/zhongli_qv1m8l.png" alt="Zhongli" />
                     <p>"Skill và project nằm ở phía dưới. Nếu bạn quan tâm có thể xem."</p>
                 </div>
           
@@ -79,11 +75,11 @@ function About() {
                     </Marquee>
                 </div>
                 <div className="about__project">
-                    <img src={project1} alt="project1" />
+                    <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125757/project1_hnifkb.png" alt="project1" />
                     <p>Trang web code thuần đầu tiên của mình lúc mới bắt đầu học lập trình. Xem<a href="https://complete-xsk.vercel.app/" target="_blank" rel="noopener noreferrer">Tại đây</a>.</p>
                 </div>
                 <div className="about__project">
-                    <img src={project2} alt="project2" />
+                    <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125761/project2_fpi1hx.png" alt="project2" />
                     <p>Đây cũng là project code thuần trong quá trình học, chỉ có thể xem được ở màn hình laptop. Bạn cũng thể xem <a href="https://project-mini2-tecede.vercel.app/" target="_blank" rel="noopener noreferrer">Tại đây</a>.</p>
                 </div>
                 <div className="about__project">

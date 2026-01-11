@@ -72,7 +72,7 @@ function Home() {
                 <ul>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 1. Có 2 đường dẫn: tecede.netlify.app và tecede-blog.vercel.app, bạn có thể truy cập nếu 1 trong 2 bị lỗi.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu bạn đang sử dụng 4G thì nên cân nhắc để tiết kiệm dữ liệu.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Hãy bật thông báo để nhận thông báo mới nhất nha. Phim và nhạc luôn được cập nhật thường xuyên.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Hãy bật 1.1.1.1 (Trên CH play) hoặc VPN nếu bạn không truy cập được vào web.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app. Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
                 </ul>
               </div>

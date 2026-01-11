@@ -3,7 +3,6 @@ import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
-import usuk from '../../../img/music-thumnail/usuk.png';
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
@@ -52,7 +51,7 @@ function Nhacusuk() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src={usuk} alt="nhạc âu mỹ" className="profile-image" />
+                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119882/usuk_sg8vyg.png" alt="nhạc âu mỹ" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Âu Mỹ 🎵</h4>
                   <p className="profile-desc">

@@ -3,7 +3,6 @@ import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
-import edm from '../../../img/music-thumnail/edm.png';
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
@@ -52,7 +51,7 @@ function NhacEDM() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src={edm} alt="nhạc edm" className="profile-image" />
+                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119882/edm_ll18cp.png" alt="nhạc edm" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc EDM 🎧</h4>
                   <p className="profile-desc">Dành cho game thủ và gymer.</p>

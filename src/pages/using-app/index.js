@@ -35,7 +35,7 @@ const AdminFeature = () => {
                         <h3 className="using-app-title">Bước 4</h3>
                         <div className="using-app__main-content">
                             <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751795780/1751739073073_un9yhr.jpg" alt="hướng dẫn" />
-                            <i className="using-app-desc">1 ô như này sẽ xuát hiện trên màn hình. Cuối cùng chỉ cần click "Cài đặt"</i>
+                            <i className="using-app-desc">1 ô như này sẽ xuất hiện trên màn hình. Cuối cùng chỉ cần click "Cài đặt"</i>
                         </div>
                     </div>
                 </div> 

@@ -3,7 +3,6 @@ import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
-import nhactreremix from '../../../img/music-thumnail/nhactreremix.png';
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
@@ -50,7 +49,7 @@ function NhacTreRemix() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src={nhactreremix} alt="nhạc remix" className="profile-image" />
+                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119881/nhactreremix_djmsfi.png" alt="nhạc remix" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Remix 🎵</h4>
                   <p className="profile-desc">Nhạc bay như tiên cảnh.</p>
