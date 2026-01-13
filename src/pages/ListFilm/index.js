@@ -6,7 +6,8 @@ import {
   cinematicFilm,
   Films,
   AnimeFilm,
-  NewFilm
+  NewFilm,
+  NewAnime,
 } from "../../data/dataFilm";
 import "./style.scss";
 export default function FilmListByType() {
@@ -32,6 +33,7 @@ export default function FilmListByType() {
     if (type === "films") data = Films;
     if (type === "anime") data = AnimeFilm;
     if (type === "new-film") data = NewFilm;
+    if (type === "new-anime") data = NewAnime;
 
     setResults(data);
   }, [type]);
@@ -113,7 +115,10 @@ export default function FilmListByType() {
             ? "Anime + Tokusatsu"
             : type === "new-film"
             ? "Phim Mới"
-            : "Danh sách phim"}
+            : type === "new-anime"
+            ? "Anime Mới"
+            : "Danh sách phim"
+            }
         </h4>
 
       </div>

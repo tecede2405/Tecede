@@ -94,7 +94,7 @@
                 <footer>
                     <div className="footer-contact">
                         <ul>
-                            <li><FaPhoneVolume className="icon"/> Số điện thoại: 0384577121</li>
+                            <li><FaPhoneVolume className="icon"/> Số điện thoại: +84 384577121</li>
                             <li><FaEnvelope className="icon"/> Email: thoaixd123@gmail.com</li>
                             <li><FaHashtag className="icon"/> Hashtag: #tecede, #tecede blog</li>
                         </ul>

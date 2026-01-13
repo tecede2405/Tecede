@@ -8,6 +8,8 @@ import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
 import NewFilm from '../../component/HomeFilm/newfilm';
+import NewAnimes from '../../component/HomeFilm/newAnime';
+
 
 function Home() {
   const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
@@ -58,6 +60,9 @@ function Home() {
                 <Film />
               </div>
               <div className="Home__music"> 
+                <NewAnimes />
+              </div>
+              <div className="Home__music"> 
                 <NewFilm />
               </div>
               <div className="Home__music"> 
@@ -70,9 +75,9 @@ function Home() {
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 1. Có 2 đường dẫn: tecede.netlify.app và tecede-blog.vercel.app, bạn có thể truy cập nếu 1 trong 2 bị lỗi.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 1. Có 2 đường dẫn truy cập: tecede.netlify.app và tecede-blog.vercel.app, bạn có thể truy cập nếu 1 trong 2 bị lỗi.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu bạn đang sử dụng 4G thì nên cân nhắc để tiết kiệm dữ liệu.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Hãy bật 1.1.1.1 (Trên CH play) hoặc VPN nếu bạn không truy cập được vào web.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không truy cập được vào web hãy bật 1.1.1.1 (Tải ở CH play, App store) và thử lại.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app. Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
                 </ul>
               </div>

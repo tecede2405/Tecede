@@ -48,7 +48,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
               <div className="hero-card__detail">
                 <h6 className="film-card__title">{item.title}</h6>
                 <p className="film-card__episode">
-                {item.time || "?"}
+                {item.time || item.episode_current}
                 </p>
               </div>
             </div>

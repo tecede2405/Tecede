@@ -152,7 +152,9 @@ export default function FilmListBySlug() {
       </h3>
 
       {results.length === 0 && (
-        <p className="no-result">Không tìm thấy phim nào.</p>
+        <p className="no-result">Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên, lưu ý không viết tắt và không nhập các từ như 
+        mùa, phần, season, ss,... vào từ khóa tìm kiếm nhé.
+        </p>
       )}
 
       {/* GRID */}

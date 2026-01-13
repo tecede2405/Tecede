@@ -12,6 +12,7 @@ export default function FilmCarousel({ items = [], renderItem }) {
       <Swiper
         slidesPerView={3.2}
         spaceBetween={12}
+        loop
         navigation
         grabCursor
         breakpoints={{

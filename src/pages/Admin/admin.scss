@@ -25,3 +25,11 @@
     padding: 2px!important;
     text-align: left;
 }
+
+@media (max-width: 540px){
+    .nav-item{
+        font-size: 13px;
+        padding: 6px;
+        margin: 5px;
+    }
+}
