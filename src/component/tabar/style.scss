@@ -1,0 +1,157 @@
+/* ===== BASE ===== */
+.tabbar {
+  background: #181818;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 12px;
+  color: #c9d1d9;
+  width: 200px;
+}
+
+.tab-parent {
+  margin-bottom: 8px;
+}
+
+.tab-parent button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #c9d1d9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.tab-parent button:hover {
+  background: #161b22;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+}
+
+.tab-parent.open .arrow {
+  transform: rotate(180deg);
+}
+
+/* ===== TAB CON ===== */
+.tab-child {
+  list-style: none;
+  padding-left: 10px;
+  margin-top: 6px;
+  display: none;
+}
+
+.tab-parent.open .tab-child {
+  display: block;
+}
+
+.tab-label {
+    font-size: 12px;
+}
+.tab-child li a,
+.genre-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 6px;
+  color: #8b949e;
+  text-decoration: none;
+  font-size: 12px!important;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tab-child li a:hover,
+.genre-btn:hover {
+  background: #21262d;
+  color: #58a6ff;
+}
+
+/* ===== DESKTOP (>=1170px) ===== */
+@media (min-width: 1170px) {
+  .tabbar {
+    width: 200px;
+    position: sticky;
+    top: 20px;
+  }
+
+  .tab-parent button {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .tab-child li a,
+  .genre-btn {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+.tabbar-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #1f6feb;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  display: none;
+  z-index: 2000;
+  cursor: pointer;
+}
+/* ===== TABLET (768px – 1169px) ===== */
+@media (min-width: 768px) and (max-width: 1169px) {
+  .tabbar {
+    max-width: 370px;
+  }
+}
+/* ===== MOBILE (<768px) ===== */
+@media (max-width: 767px) {
+  .tabbar {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 30% !important; /* 🔥 FIX CHÍNH */
+    height: calc(100vh - 70px);
+    transform: translateY(100%);
+    opacity: 0;
+
+    border-radius: 16px 16px 0 0;
+    overflow-y: auto;
+    z-index: 1500;
+  }
+
+  .tabbar.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .tabbar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .tabbar{
+    width: 70% !important; 
+  }
+}

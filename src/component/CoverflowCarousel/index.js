@@ -17,11 +17,11 @@ export default function FilmCarousel({ items = [], renderItem }) {
         grabCursor
         breakpoints={{
           480: {
-            slidesPerView: 2.5,
+            slidesPerView: 3.5,
             spaceBetween: 14
           },
           640: {
-            slidesPerView: 3.2,
+            slidesPerView: 4.2,
             spaceBetween: 16
           },
           768: {

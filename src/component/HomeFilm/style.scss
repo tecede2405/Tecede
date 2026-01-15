@@ -101,6 +101,14 @@
 .swiper{
   padding-bottom: 12px;
 }
+
+@media (max-width: 768px){
+  .container-film{
+    max-width: 100%!important;
+    margin: 0!important;
+  }
+}
+
 @media (max-width: 540px){
   .film-card__title {
     font-size: 10px;

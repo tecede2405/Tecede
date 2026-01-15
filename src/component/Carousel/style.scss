@@ -70,30 +70,41 @@
 /* MOBILE */
 @media (max-width: 1240px){
   .hero-card {
-    height: 190px;
+    height: 160px;
   }
   .hero-card__poster {
     width: 60px;
-    top: 70px;
+    top: 50px;
+    left: 10px;
   }
 }
 
 @media (max-width: 768px) {
+
   .hero-card {
-    height: 150px;
+    height: 200px;
   }
 
   .hero-card__poster {
-    width: 50px;
+    width: 60px;
     left: 10px;
-    top: 60px;
+    top: 80px;
   }
 
   .hero-card__title {
     font-size: 1rem;
   }
 }
-
+@media (max-width: 560px) {
+  .hero-card {
+    height: 150px;
+  }
+  .hero-card__poster {
+    width: 50px;
+    left: 10px;
+    top: 50px;
+  }
+}
 @media (max-width: 450px){
     .hero-card{
         height: auto;

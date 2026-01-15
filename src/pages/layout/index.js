@@ -1,108 +1,162 @@
-    import logo from '../../img/home-image.png';
-    import {NavLink, Outlet } from 'react-router-dom';
-    import './layout.scss';
-    import BackgroundMusic from '../../component/Music/index';
-    import { useState,useEffect } from "react";
-    import LoginForm from "../../component/ShowForm/showForm.js";
-    import { useNavigate, useLocation } from "react-router-dom";
-    import { FaPhoneVolume, FaEnvelope, FaHashtag } from 'react-icons/fa';
+import logo from "../../img/home-image.png";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
+import "./layout.scss";
+import Tabbar from "../../component/tabar/index";
+import LoginForm from "../../component/ShowForm/showForm";
 
-    function Layout(){
-    const [showForm, setShowForm] = useState(false);
-    const location = useLocation();
-    const [showDropdown, setShowDropdown] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigate = useNavigate();
+import { useState, useEffect } from "react";
+import {
+  FaPhoneVolume,
+  FaEnvelope,
+  FaHashtag,
+  FaBars,
+  FaTimes
+} from "react-icons/fa";
 
-    useEffect(() => {
-        const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-        setIsLoggedIn(loggedIn);
-    }, []);
+function Layout() {
+  const [showForm, setShowForm] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showTabbar, setShowTabbar] = useState(false);
 
-    const handleLogoClick = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+  }, []);
+
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+
+  const handleLoginClick = () => {
     if (isLoggedIn) {
-        setShowDropdown(!showDropdown); // chỉ toggle dropdown thôi
+      setShowDropdown(!showDropdown);
     } else {
-        setShowForm(true); // mở form đăng nhập nếu chưa đăng nhập
+      setShowForm(true);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    setShowDropdown(false);
+    navigate("/");
+  };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setShowTabbar(false); // 🔥 RESET MOBILE STATE
+      }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem("isLoggedIn");
-        setIsLoggedIn(false);
-        setShowDropdown(false);
-        navigate("/"); // Quay về trang chủ sau khi logout
-    };
-        return (
-            <>
-                <header className="header">
-                    <div className="header__logo">                        
-                        <img
-                        src={logo}
-                        alt="logo-Page"
-                        className="header__image"
-                        onClick={handleLogoClick}
-                        />
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-                        {showForm && (
-                        <LoginForm
-                            onClose={() => setShowForm(false)}
-                            onLoginSuccess={() => {
-                            setIsLoggedIn(true);
-                            }}
-                        />
-                        )}
+  return (
+    <>
+      {/* ===== HEADER ===== */}
+      <header className="header">
+        <div className="header__left">
+          {/* HAMBURGER (bên trái logo, chỉ mobile) */}
+          <button
+          className="hamburger-btn"
+          onClick={() => setShowTabbar(!showTabbar)}
+          aria-label="Toggle menu"
+        >
+          {showTabbar ? <FaTimes /> : <FaBars />}
+        </button>
 
-                        {showDropdown && (
-                        <div className="dropdown-logout">
-                            <i>Lối tắt :</i>
-                            {/* Nếu KHÔNG ở trang /admin thì hiện thêm nút quay lại */}
-                            {!location.pathname.startsWith("/admin") && (
-                            <button onClick={() => navigate("/admin")}>Trang admin</button>
-                            )}
-                            <button onClick={handleLogout}>Đăng xuất</button>
-                        </div>
-                        )}
-                    <BackgroundMusic />
-                    </div>
-                    
-                    <div className="header__menu">
-                        <ul>
-                            <li>
-                                <NavLink to="/" className="menu__page">
-                                    Trang Chủ 
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/about" className="menu__page">
-                                    Về chúng tôi 
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/contact" className="menu__page">
-                                    Liên hệ 
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </div>
-                </header>
-                <div className="layout-main">
-                    <Outlet />
+          {/* LOGO */}
+          <img
+            src={logo}
+            alt="logo-Page"
+            className="header__image"
+            onClick={handleHomeClick}
+          />
+        </div>
+
+        {/* MENU DESKTOP */}
+        <div className="header__menu">
+          <ul>
+            <li>
+              <NavLink to="/" className="menu__page">
+                Trang Chủ
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/about" className="menu__page">
+                Về chúng tôi
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className="menu__page" onClick={handleLoginClick}>
+                {isLoggedIn ? "Tài khoản" : "Đăng nhập"}
+              </NavLink>
+
+              {showForm && (
+                <LoginForm
+                  onClose={() => setShowForm(false)}
+                  onLoginSuccess={() => setIsLoggedIn(true)}
+                />
+              )}
+
+              {showDropdown && (
+                <div className="dropdown-logout">
+                  <i>Lối tắt :</i>
+
+                  {!location.pathname.startsWith("/admin") && (
+                    <button onClick={() => navigate("/admin")}>
+                      Trang admin
+                    </button>
+                  )}
+
+                  <button onClick={handleLogout}>Đăng xuất</button>
                 </div>
-                
+              )}
+            </li>
+          </ul>
+        </div>
+      </header>
 
-                <footer>
-                    <div className="footer-contact">
-                        <ul>
-                            <li><FaPhoneVolume className="icon"/> Số điện thoại: +84 384577121</li>
-                            <li><FaEnvelope className="icon"/> Email: thoaixd123@gmail.com</li>
-                            <li><FaHashtag className="icon"/> Hashtag: #tecede, #tecede blog</li>
-                        </ul>
-                    </div>
-                    <p>Copyright &copy; 2024 by Tecede. All right reserved.</p>
-                </footer>
-            </>
-        )
-    }
+      {/* ===== TABBAR DRAWER (MOBILE) ===== */}
+      {showTabbar && (
+        <>
+          <div
+            className="tabbar-overlay"
+            onClick={() => setShowTabbar(false)}
+          />
+          <Tabbar isOpen={showTabbar} onClose={() => setShowTabbar(false)} />
+        </>
+      )}
 
-    export default Layout;
+      {/* ===== MAIN ===== */}
+      <div className="layout-main">
+        <Outlet />
+      </div>
+
+      {/* ===== FOOTER ===== */}
+      <footer>
+        <div className="footer-contact">
+          <ul>
+            <li>
+              <FaPhoneVolume className="icon" /> Số điện thoại: +84 384577121
+            </li>
+            <li>
+              <FaEnvelope className="icon" /> Email: thoaixd123@gmail.com
+            </li>
+            <li>
+              <FaHashtag className="icon" /> Hashtag: #tecede, #tecede blog
+            </li>
+          </ul>
+        </div>
+        <p>Copyright © 2024 by Tecede. All right reserved.</p>
+      </footer>
+    </>
+  );
+}
+
+export default Layout;

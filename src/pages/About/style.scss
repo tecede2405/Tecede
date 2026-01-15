@@ -1,0 +1,192 @@
+// ===== ABOUT PAGE WITH SIDEBAR TABBAR =====
+.about-page {
+  display: flex;
+  min-height: 100vh;
+  color: #ddd;
+}
+
+.about__content {
+  flex: 1;
+  padding: 40px 100px;
+  max-width: 1000px;
+
+  @media (max-width: 767px) {
+    margin-left: 0;
+    padding: 20px 15px 80px;
+  }
+}
+
+// Intro Section (giữ nguyên, chỉ tinh chỉnh nhỏ)
+.about__intro {
+  text-align: center;
+  margin-bottom: 60px;
+
+  .about__profile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+
+    .about__avatar {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #1e90ff;
+      box-shadow: 0 0 30px rgba(30, 144, 255, 0.3);
+    }
+
+    .about__bio {
+      max-width: 600px;
+    }
+  }
+}
+
+// Section Title
+.section-title {
+  text-align: center;
+  font-size: 2.5rem !important;
+  font-weight: 700;
+  margin-top: 50px;
+  margin-bottom: 60px;
+  color: #fff;
+  position: relative;
+
+  &::after {
+    content: '';
+    width: 80px;
+    height: 4px;
+    background: #1e90ff;
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+// Grid cho Features & Projects
+.features-grid,
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  justify-content: center; // căn giữa grid
+}
+
+// Card chung - GIẢM KÍCH THƯỚC cho features gọn hơn
+.feature-card,
+.project-card {
+  background: #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 380px; // giới hạn max width card để nhỏ gọn hơn
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(30, 144, 255, 0.2);
+  }
+
+  img {
+    width: 100%;
+    height: 200px; // giảm từ 220px xuống 200px cho gọn
+    object-fit: cover;
+  }
+
+  .feature-title,
+    .project-title {
+    font-size: 1rem;          // Giảm mạnh từ 1.5rem → gọn gàng
+    font-weight: 600;
+    margin: 14px 20px 6px;       // margin nhỏ hơn
+    color: #ffffff;
+    line-height: 1.3;
+    }
+
+    .feature-desc,
+    .project-desc {
+    margin: 0 20px 20px;
+    color: #bbbbbb;
+    font-size: 0.8rem;          // Giảm từ 1rem → nhẹ nhàng, dễ đọc
+    line-height: 1.55;
+    letter-spacing: 0.3px;
+
+    a {
+        color: #1e90ff;
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+        text-decoration: underline;
+        }
+    }
+    }
+
+    .project-card.clickable {
+    cursor: pointer;
+    }
+}
+@media (max-width: 893px){
+    .feature-card,  .project-card {
+    margin: 0 auto; // căn giữa
+   
+  }
+}
+// Trên mobile: features chỉ chiếm ~80% width, căn giữa
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    max-width: 80%; // chỉ chiếm 80% màn hình
+    margin: 0 auto; // căn giữa
+    gap: 25px;
+  }
+
+  .feature-card,
+  .project-card {
+    max-width: none; // bỏ giới hạn max-width trên mobile để fit
+  }
+
+  .about__intro .about__profile {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .projects-grid {
+    max-width: 90%; // projects giữ rộng hơn một chút
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .features-grid {
+    max-width: 85%; // tăng nhẹ nếu màn quá nhỏ
+  }
+
+  .about__content {
+    padding: 20px 10px 60px;
+  }
+
+  .about__avatar {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+// Skills Marquee (giữ nguyên như gốc)
+.about__skills {
+  margin: 60px 0;
+
+  .about__skill-img {
+    margin: 0 10px;
+
+    img {
+      height: 80px;
+      width: auto;
+    }
+  }
+}

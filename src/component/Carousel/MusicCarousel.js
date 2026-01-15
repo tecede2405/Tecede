@@ -28,8 +28,8 @@ const AutoSlideInfinite = ({ items }) => {
           1170: { slidesPerView: 5.5 },
           960: { slidesPerView: 4.5 },
           768: { slidesPerView: 3.5 },
-          540: { slidesPerView: 2.5 },
-          430: { slidesPerView: 2.5 },
+          540: { slidesPerView: 3.5 },
+          430: { slidesPerView: 3.5 },
           0: { slidesPerView: 2.5 },
         }} 
       >

@@ -59,7 +59,7 @@ export default function FilmDetail() {
 
   return (
     <div className="movie-page pb-5 pt-3" style={{ "--bg-url": `url(${movie.poster_url})`}}>
-      <div className="container">
+      <div className="container container-film">
 
         {/* Title */}
         <h5 className="movie-page__title mb-4">
@@ -98,6 +98,9 @@ export default function FilmDetail() {
           ))}
         </div>
 
+        <p className="film-policy border-top pt-2 mt-3 fst-italic">
+          Nếu bạn không load được phim hãy thử bật 1.1.1.1 tải ở CH play hoặc App store rồi thử lại nha.
+        </p>
         {/* Navigation buttons */}
         <div className="movie-page__nav d-flex justify-content-between mb-4">
           <button

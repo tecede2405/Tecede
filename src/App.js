@@ -37,6 +37,8 @@ import AnimeSearch from "./pages/AnimeSearch/index";
 import FilmDetail from "./pages/FilmDetail/index";
 import FilmListBySlug from "./pages/Film/index";
 import ListFilm from "./pages/ListFilm/index";
+import GenrePage from "./pages/genresFilm/index";
+
 // UI
 import Squares from "./component/SquaresBackgound/index";
 import ChatWidget from "./component/ChatWidget/ChatWidget";
@@ -120,6 +122,7 @@ function App() {
                   <Route path="film/:slug" element={<FilmDetail />} />
                   <Route path="search/:filmSlug" element={<FilmListBySlug />} />
                   <Route path="/detail/:type" element={<ListFilm />} />
+                  <Route path="/the-loai/:slug" element={<GenrePage />} />
                   {/* Music */}
                   <Route path="music/nhac-tre" element={<NhacTre />} />
                   <Route path="music/usuk" element={<NhacUSUK />} />

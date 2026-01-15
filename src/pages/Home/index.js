@@ -9,7 +9,7 @@ import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
 import NewFilm from '../../component/HomeFilm/newfilm';
 import NewAnimes from '../../component/HomeFilm/newAnime';
-
+import "./style.scss";
 
 function Home() {
   const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");

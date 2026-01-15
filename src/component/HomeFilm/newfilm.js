@@ -19,7 +19,7 @@ const navigate = useNavigate();
 
             </h2>
         </div>
-        <div className="container mt-1 mb-1">
+        <div className="container container-film mt-1 mb-1">
         <FilmCarousel
           items={filmData}
           renderItem={(item) => (
