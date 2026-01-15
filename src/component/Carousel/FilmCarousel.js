@@ -17,7 +17,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
         speed={900}
         spaceBetween={16}
         breakpoints={{
-          0: { slidesPerView: 2.1 },
+          0: { slidesPerView: 2 },
           768: { slidesPerView: 3.2 },
           1024: { slidesPerView: 4 },
         }}

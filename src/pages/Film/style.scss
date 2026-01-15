@@ -21,6 +21,7 @@
 
 .film-grid {
   display: grid;
+  padding: 10px;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 1rem;
 
@@ -49,6 +50,7 @@
 
 .film-poster {
   width: 100%;
+  margin: 0 auto;
   height: auto;
   display: block;
   border-radius: 12px;

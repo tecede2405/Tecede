@@ -100,7 +100,7 @@ export default function FilmListByType() {
         />
         <CiSearch className="search-film-icon" onClick={handleSearch} />
       </div>
-      <div className="d-flex align-items-center mb-3">
+      <div className="d-flex align-items-center mb-3 ms-2">
          <GoChevronLeft 
           size={25} 
           onClick={() => navigate(-1)}

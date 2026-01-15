@@ -85,7 +85,8 @@
   background: none;
   border: none;
   color: #ddd;
-  font-size: 28px;
+  font-size: 25px;
+  font-weight: 400;
   cursor: pointer;
   padding: 0 10px;
 }
@@ -402,6 +403,7 @@ footer {
 @media (max-width: 540px) {
     .header {
         height: 50px;
+        padding: 5px 0;
         background-repeat: no-repeat;
 
         &__logo {

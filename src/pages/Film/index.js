@@ -1,14 +1,36 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
+import Swal from "sweetalert2";
 import "./style.scss";
+
+/* ====== BLOCK KEYWORDS :)) ====== */
+const BLOCKED_KEYWORDS = [
+  "18",
+  "18+",
+  "phim sex",
+  "sex",
+  "sexy",
+  "adult",
+  "xxx",
+  "erotic",
+  "porn",
+  "hentai"
+];
+
+const isBlockedKeyword = (text) => {
+  if (!text) return false;
+  return BLOCKED_KEYWORDS.some((k) =>
+    text.toLowerCase().includes(k)
+  );
+};
 
 export default function FilmListBySlug() {
   const { filmSlug } = useParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [hoverFilm, setHoverFilm] = useState(null); // ⭐ THÊM
+  const [hoverFilm, setHoverFilm] = useState(null);
   const [enablePreview, setEnablePreview] = useState(
     window.innerWidth >= 775
   );
@@ -20,7 +42,22 @@ export default function FilmListBySlug() {
 
   const keyword = filmSlug.replace(/-/g, " ");
 
+
   useEffect(() => {
+    if (isBlockedKeyword(keyword)) {
+      setResults([]);
+      setLoading(false);
+
+      Swal.fire({
+        icon: "warning",
+        title: "Từ khóa không được hỗ trợ",
+        text: "Vui lòng tìm kiếm nội dung phù hợp.",
+        confirmButtonText: "OK"
+      });
+
+      return; 
+    }
+
     async function fetchData() {
       try {
         setLoading(true);
@@ -36,8 +73,10 @@ export default function FilmListBySlug() {
         setLoading(false);
       }
     }
+
     fetchData();
   }, [keyword]);
+
 
   useEffect(() => {
     if (!hoverFilm) return;
@@ -52,28 +91,20 @@ export default function FilmListBySlug() {
     }
 
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
+    return () =>
       document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [hoverFilm]);
 
   useEffect(() => {
     const handleResize = () => {
       const enabled = window.innerWidth >= 775;
       setEnablePreview(enabled);
-
-      // nếu đang mở preview mà resize xuống mobile → đóng ngay
-      if (!enabled && hoverFilm) {
-        setHoverFilm(null);
-      }
+      if (!enabled && hoverFilm) setHoverFilm(null);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [hoverFilm]);
-
-
 
   function getPoster(url) {
     if (!url) return "";
@@ -82,8 +113,20 @@ export default function FilmListBySlug() {
     return `https://phimimg.com${url}`;
   }
 
+  /* ====== SEARCH (CHỈ THÊM CHẶN) ====== */
   function handleKeyPress(e) {
     if (e.key === "Enter") {
+      if (isBlockedKeyword(search)) {
+        Swal.fire({
+          icon: "warning",
+          title: "Từ khóa không hợp lệ",
+          text: "Không hỗ trợ tìm kiếm nội dung 18+.",
+          confirmButtonText: "OK"
+        });
+        setSearch("");
+        return;
+      }
+
       const slug = search.trim().toLowerCase().replace(/\s+/g, "-");
       navigate(`/search/${slug}`);
       setSearch("");
@@ -93,23 +136,34 @@ export default function FilmListBySlug() {
 
   const handleSearch = () => {
     if (search.trim() !== "") {
+      if (isBlockedKeyword(search)) {
+        Swal.fire({
+          icon: "warning",
+          title: "Từ khóa không hợp lệ",
+          text: "Không hỗ trợ tìm kiếm nội dung 18+.",
+          confirmButtonText: "OK"
+        });
+        setSearch("");
+        return;
+      }
+
       const slug = search.trim().toLowerCase().replace(/\s+/g, "-");
       navigate(`/search/${slug}`);
       setSearch("");
       inputRef.current.focus();
     }
   };
+  /* ================================== */
 
   const handleMouseEnter = (film) => {
     if (!enablePreview) return;
     hoverTimerRef.current = setTimeout(() => {
       setHoverFilm(film);
-    }, 500); //  1 giây
+    }, 500);
   };
 
   const handleMouseLeave = () => {
-     if (!enablePreview) return;
-
+    if (!enablePreview) return;
     if (hoverTimerRef.current) {
       clearTimeout(hoverTimerRef.current);
       hoverTimerRef.current = null;
@@ -117,11 +171,11 @@ export default function FilmListBySlug() {
   };
 
   useEffect(() => {
-  if (hoverFilm && hoverTimerRef.current) {
-    clearTimeout(hoverTimerRef.current);
-    hoverTimerRef.current = null;
-  }
-}, [hoverFilm]);
+    if (hoverFilm && hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }, [hoverFilm]);
 
   if (loading)
     return (
@@ -132,6 +186,7 @@ export default function FilmListBySlug() {
       </div>
     );
 
+ 
   return (
     <div className="film-container">
       <div className="input-search-film">
@@ -147,13 +202,14 @@ export default function FilmListBySlug() {
         <CiSearch className="search-film-icon" onClick={handleSearch} />
       </div>
 
-      <h3 className="result-title fst-italic">
+      <h3 className="result-title fst-italic ms-3">
         Kết quả cho: {keyword}
       </h3>
 
       {results.length === 0 && (
-        <p className="no-result">Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên, lưu ý không viết tắt và không nhập các từ như 
-        mùa, phần, season, ss,... vào từ khóa tìm kiếm nhé.
+        <p className="no-result">
+          Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên,
+           lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim , tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
         </p>
       )}
 
@@ -196,18 +252,18 @@ export default function FilmListBySlug() {
         ))}
       </div>
 
-      {/* ⭐ PREVIEW CARD TO Ở GIỮA */}
-      {enablePreview && hoverFilm &&  (
-        <div
-          className="hover-preview-backdrop"
-        >
-          <div className="hover-preview-card" 
-            onMouseLeave={() => setHoverFilm(null)} ref={previewRef}
+      {/* PREVIEW */}
+      {enablePreview && hoverFilm && (
+        <div className="hover-preview-backdrop">
+          <div
+            className="hover-preview-card"
+            onMouseLeave={() => setHoverFilm(null)}
+            ref={previewRef}
             style={{
-                backgroundImage: `url(${getPoster(
-                  hoverFilm.thumb_url || hoverFilm.poster_url
-                )})`
-              }}
+              backgroundImage: `url(${getPoster(
+                hoverFilm.thumb_url || hoverFilm.poster_url
+              )})`
+            }}
           >
             <div className="preview-info">
               <h5 className="preview-name">{hoverFilm.name}</h5>
@@ -227,11 +283,23 @@ export default function FilmListBySlug() {
                   Chi tiết
                 </Link>
               </div>
-               <div className="film-detail-info mt-2">
-                  <span className="detail-year me-2 mt-2">Chất lượng: {hoverFilm.quality}</span>
-                  <span className="detail-year me-2 mt-2">Số tập: {hoverFilm.episode_current}</span>
-                  <span className="detail-year me-2 mt-2">Thời lượng : {hoverFilm.time}</span>
-                  <p className="detail-year mt-2" style={{display: "inline-block", maxWidth: "70%"}}>Ngôn ngữ phụ đề: {hoverFilm.lang}</p>
+
+              <div className="film-detail-info mt-2">
+                <span className="detail-year me-2 mt-2">
+                  Chất lượng: {hoverFilm.quality}
+                </span>
+                <span className="detail-year me-2 mt-2">
+                  Số tập: {hoverFilm.episode_current}
+                </span>
+                <span className="detail-year me-2 mt-2">
+                  Thời lượng : {hoverFilm.time}
+                </span>
+                <p
+                  className="detail-year mt-2"
+                  style={{ display: "inline-block", maxWidth: "70%" }}
+                >
+                  Ngôn ngữ phụ đề: {hoverFilm.lang}
+                </p>
               </div>
             </div>
           </div>

@@ -22,11 +22,33 @@ function Tabbar({ isOpen, onClose }) {
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_FILM_API_URL}/the-loai`)
-      .then((res) => res.json())
-      .then((data) => setGenres(data))
-      .catch(console.error);
-  }, []);
+  const BLOCKED_KEYWORDS = [
+    "18",
+    "18+",
+    "adult",
+    "sex",
+    "sexy",
+    "erotic",
+    "xxx"
+  ];
+
+  const isBlockedGenre = (genre) => {
+    const text = `${genre.slug} ${genre.name}`.toLowerCase();
+    return BLOCKED_KEYWORDS.some((k) => text.includes(k));
+  };
+
+  fetch(`${process.env.REACT_APP_FILM_API_URL}/the-loai`)
+    .then((res) => res.json())
+    .then((data) => {
+      const safeGenres = data.filter(
+        (genre) => !isBlockedGenre(genre)
+      );
+      setGenres(safeGenres);
+    })
+    .catch(console.error);
+}, []);
+
+
 
   const handleLinkClick = () => {
     onClose?.(); // Đóng drawer khi click link
