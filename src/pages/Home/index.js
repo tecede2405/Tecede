@@ -1,7 +1,5 @@
-// import hOme from "../../img/hOme.png";
+
 import Tabbar from '../../component/tabar';
-import { useState, useEffect } from "react";
-// import Collapsed from "../../component/Collapse/index";
 import HomeMusic from '../../component/HomeMusic';
 import { useNavigate } from "react-router-dom";
 import HomeFilm from '../../component/HomeFilm/index';
@@ -9,28 +7,14 @@ import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
 import NewFilm from '../../component/HomeFilm/newfilm';
 import NewAnimes from '../../component/HomeFilm/newAnime';
+import SieuNhan from '../../component/HomeFilm/tokusatsu';
+import PopularFilm from '../../component/HeroCarousel/index';
 import "./style.scss";
 
 function Home() {
-  const [text, setText] = useState("Cảm ơn bạn đã ghé vào trang web này...");
-  const [isVisible, setIsVisible] = useState(true);
+  
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsVisible(false); // Ẩn chữ hiện tại
-      setTimeout(() => {
-        // Đổi chữ sau khi ẩn
-        setText((prevText) =>
-          prevText === "Cảm ơn bạn đã ghé vào trang web này..."
-            ? "Đây là website do Thoại Xayda lập trình!"
-            : "Cảm ơn bạn đã ghé vào trang web này..."
-        );
-        setIsVisible(true); // Hiện lại chữ mới
-      }, 500); // Thời gian chờ ẩn chữ hoàn toàn (khớp với CSS animation)
-    }, 3000); // Lặp lại mỗi 3 giây
-
-    return () => clearInterval(interval);
-  }, []);
+  
 
     const navigate = useNavigate();
 
@@ -45,20 +29,15 @@ function Home() {
             <Tabbar />
             {/* main */}
             <div className="Home__main">
-              <div className="text-container">
-                  <p className={`animated-text ${isVisible ? "visible" : "hidden"}`}>
-                      {text}
-                  </p>
-              </div>
-            
-              {/* Container */}
+             
 
               <div className="Home__music"> 
-                <HomeMusic />
+                <PopularFilm />
               </div>
               <div className="Home__music"> 
                 <Film />
               </div>
+              
               <div className="Home__music"> 
                 <NewAnimes />
               </div>
@@ -70,6 +49,12 @@ function Home() {
               </div>
               <div className="Home__music"> 
                 <CinematicFilm />
+              </div>
+              <div className="Home__music"> 
+                <SieuNhan />
+              </div>
+              <div className="Home__music"> 
+                <HomeMusic />
               </div>
               
               <div className="Home__note">

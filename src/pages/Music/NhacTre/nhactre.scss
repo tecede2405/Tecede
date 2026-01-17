@@ -34,13 +34,13 @@
   }
   
   .music-card .card-title {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
   }
   
   .music-card .card-text {
     text-align: center;
-    font-size: 14px;
+    font-size: 11px;
     color: #fff;
   }
 
@@ -129,7 +129,7 @@
   }
 
   .card-render-title{
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 650;
     text-align:center;
   }
@@ -138,6 +138,7 @@
     font-size: 10px;
     text-align: center;
     color: #fff;
+    text-align:center;
   }
 
   .suggestions-list {
@@ -182,9 +183,19 @@
 .shuffle:hover{
   background: #fff;
 }
-
+  @media (max-width: 880px){
+    .profile {
+      padding: 30px 100px;
+    }
+    .profile .profile-title {
+    font-size: 15px;
+  }
+  
+  }
    @media (max-width: 768px) {
   .profile {
+    justify-content: start;
+    margin-left: 80px;
     padding: 10px; 
   }
   .profile .profile-image {
@@ -192,7 +203,7 @@
     height: 80px;
   }
   .profile .profile-title {
-    font-size: 18px;
+    font-size: 15px;
   }
   .profile .profile-desc {
     font-size: 12px;
@@ -203,9 +214,9 @@
 }
 
  @media (max-width: 540px){
-    .profile{
-      justify-content: center;
-    }
+  .profile {
+    margin-left: 20px;
+  }
     .music-container-box{
       flex-direction: column;
     }

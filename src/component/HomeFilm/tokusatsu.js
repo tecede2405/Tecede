@@ -1,19 +1,19 @@
 import FilmCarousel from "../CoverflowCarousel/index";
 import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
-import {AnimeFilm} from "../../data/dataFilm";
+import {Tokusatsu} from "../../data/dataFilm";
 
-const filmData = AnimeFilm;
+const filmData = Tokusatsu;
 
-function HomeFilm() {
+function SieuNhan() {
 const navigate = useNavigate();
 
   return (
     <>
         <div className="mb-1">
-            <h2 className="film-category ms-3">Anime
+            <h2 className="film-category ms-3">Siêu Nhân
               <GoChevronRight 
-                onClick={() => navigate("/detail/anime")}
+                onClick={() => navigate("/detail/sieu-nhan")}
                 style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%", marginLeft: '7px' }}
               />
 
@@ -45,4 +45,4 @@ const navigate = useNavigate();
    )
 }
 
-export default HomeFilm;
+export default SieuNhan;

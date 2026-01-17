@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
+import { GoChevronLeft } from "react-icons/go";
 import "./style.scss";
 export default function FilmListBySlug() {
   const { slug } = useParams();
@@ -21,6 +22,10 @@ export default function FilmListBySlug() {
   const hoverTimerRef = useRef(null);
 
   const title = slug.replace(/-/g, " ");
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   /* ================= FETCH DATA ================= */
   useEffect(() => {
@@ -184,7 +189,11 @@ export default function FilmListBySlug() {
       </div>
 
       <h3 className="result-title fst-italic">
-        Thể loại: {title} {totalItems > 0 ? `(${totalItems} phim)` : ""}
+        <GoChevronLeft 
+          onClick={handleBack} 
+          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }} 
+          />
+        <i className="ms-2">Thể loại: {title} {totalItems > 0 ? `(${totalItems} phim)` : ""}</i>
       </h3>
 
       {/* GRID */}

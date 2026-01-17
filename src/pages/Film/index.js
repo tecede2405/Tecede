@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import Swal from "sweetalert2";
+import { GoChevronLeft } from "react-icons/go";
 import "./style.scss";
 
 /* ====== BLOCK KEYWORDS :)) ====== */
@@ -39,6 +40,10 @@ export default function FilmListBySlug() {
   const hoverTimerRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   const keyword = filmSlug.replace(/-/g, " ");
 
@@ -203,7 +208,11 @@ export default function FilmListBySlug() {
       </div>
 
       <h3 className="result-title fst-italic ms-3">
-        Kết quả cho: {keyword}
+        <GoChevronLeft 
+          onClick={handleBack} 
+          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }} 
+          />
+        <i className="ms-2">Kết quả cho: {keyword}</i>
       </h3>
 
       {results.length === 0 && (

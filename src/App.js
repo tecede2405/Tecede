@@ -5,7 +5,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home/index";
 import About from "./pages/About/index";
-import Contact from "./pages/contact/index";
 import Admin from "./pages/Admin/index";
 import "font-awesome/css/font-awesome.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -41,7 +40,6 @@ import GenrePage from "./pages/genresFilm/index";
 
 // UI
 import Squares from "./component/SquaresBackgound/index";
-import ChatWidget from "./component/ChatWidget/ChatWidget";
 
 // Utils
 import socket from "./utils/socket";
@@ -115,7 +113,6 @@ function App() {
                 <Route path="/" element={<Layout />}>
                   <Route index element={<Home />} />
                   <Route path="about" element={<About />} />
-                  <Route path="contact" element={<Contact />} />
                   <Route path="using-app" element={<UsingApp />} />
 
                   {/* Film */}
@@ -168,7 +165,6 @@ function App() {
       )}
 
       <Analytics />
-      <ChatWidget />
     </>
   );
 }

@@ -14,7 +14,7 @@ export default function SongList({ songs, currentIndex, onPlay }) {
   return (
     <div className="row">
       {songs.map((song, index) => (
-        <div className="col-md-5 mb-4" key={song._id || index}>
+        <div className="col-xl-5 col-lg-5 col-md-10 mb-4" key={song._id || index}>
           {isNew(song.createdAt) ? (
             <Badge.Ribbon text="Mới" color="#ea169c8c" placement="start">
               <div

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto 1rem;
   @media (max-width: 430px) {
     max-width: 340px;
@@ -11,6 +11,8 @@
   .input-film {
     flex: 1;
     padding: 0.5rem 2.5rem 0.5rem 0.75rem; // chừa khoảng trống bên phải cho icon
+    background: #1212124c;
+    color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
@@ -91,6 +93,14 @@
   font-weight: 600;
   margin-bottom: 4px;
 }
+.film-card__title2 {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;      /* Không xuống dòng */
+  overflow: hidden;         /* Ẩn phần dư */
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
 
 .film-card__episode {
   margin-bottom: 0;
@@ -111,6 +121,10 @@
 
 @media (max-width: 540px){
   .film-card__title {
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+  .film-card__title2 {
     font-size: 10px;
     margin-bottom: 2px;
   }
