@@ -12,10 +12,6 @@ import PopularFilm from '../../component/HeroCarousel/index';
 import "./style.scss";
 
 function Home() {
-  
-
-  
-
     const navigate = useNavigate();
 
   const handleAppClick = () => {

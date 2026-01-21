@@ -114,7 +114,7 @@ export default function FilmListByType() {
             : type === "films"
             ? "Phim Nổi Bật"
             : type === "anime"
-            ? "Anime + Tokusatsu"
+            ? "Anime"
             : type === "new-film"
             ? "Phim Mới"
             : type === "new-anime"

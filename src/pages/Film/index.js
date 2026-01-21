@@ -113,10 +113,20 @@ export default function FilmListBySlug() {
 
   function getPoster(url) {
     if (!url) return "";
-    if (url.startsWith("http")) return url;
-    if (!url.startsWith("/")) url = "/" + url;
-    return `https://phimimg.com${url}`;
+
+    // Chuẩn hóa URL gốc
+    let originalUrl = url;
+    if (!originalUrl.startsWith("http")) {
+      if (!originalUrl.startsWith("/")) originalUrl = "/" + originalUrl;
+      originalUrl = `https://phimimg.com${originalUrl}`;
+    }
+
+    // Convert sang WEBP qua phimapi
+    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
+      originalUrl
+    )}`;
   }
+
 
   /* ====== SEARCH (CHỈ THÊM CHẶN) ====== */
   function handleKeyPress(e) {
@@ -234,9 +244,10 @@ export default function FilmListBySlug() {
           >
             <div className="film-poster-wrapper">
               <img
-                src={getPoster(film.poster_url)}
+                src={film.poster_url ? getPoster(film.poster_url) : ""}
                 alt={film.name}
                 className="film-poster"
+                loading="lazy"
               />
 
               <span className="film-episodes">

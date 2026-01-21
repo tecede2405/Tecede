@@ -1,6 +1,7 @@
 import MusicCarousel from "../Carousel/MusicCarousel";
+import { MdLibraryMusic } from "react-icons/md";
 import "./homemusic.scss";
-import 'animate.css';
+
 const musicData = [
     {title: "mood", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1768119861/mood_flxfii.png", path: "mood"},
     {title: "nhacdouyin", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1756970021/Picsart_25-09-04_14-09-56-125_qy6tua.jpg", path: "nhac-douyin"},
@@ -16,12 +17,11 @@ function HomeMusic() {
 
   return (
     <>
-        <div>
-            <h2 className="music-box-title">Trạm phát nhạc</h2>
-            <p className="music-box-desc">"Nhạc sẽ luôn được cập nhật thường xuyên.
-                <br />Click vào để xem chi tiết"
-            </p>
-        </div>
+        <div className="mb-1">
+        <h2 className="film-category ms-3">
+          Trạm Phát Nhạc <MdLibraryMusic />
+        </h2>
+      </div>
         <div className="container container-film mt-4 mb-2">
             <MusicCarousel items={musicData} />
         </div>  

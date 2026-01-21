@@ -1,5 +1,7 @@
 export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
+    {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
+    {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "114 phút"},
     {title: "Cám", image: "https://phimimg.com/upload/vod/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
     {title: "Ma Da", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigrj8EUtW2ioLrOd0HXt6DvtxRN5F61k03A&s", thumb:"https://phimimg.com/upload/vod/20241116-1/3747ec0cb2bbc3679512ef163621eefc.jpg", path: "ma-da",time: "195 phút"},
     {title: "Zootopia 2", image: "https://phimimg.com/upload/vod/20251223-1/6bc1d549b86e490274d93bab66a3654d.jpg",thumb:"https://phimimg.com/upload/vod/20251223-1/7154384c306c73664e46942f2477e574.jpg", path: "phi-vu-dong-troi-2",time: "107 phút"},
@@ -78,9 +80,9 @@ export const AnimeFilm = [
 ];
 
 export const NewFilm = [
+    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang",episode_current: "Phim rạp mới"},
     {title: "Yết Hí", image: "https://phimimg.com/upload/vod/20260109-1/d6d82c20c56d61f31894bd979c3eda4a.jpg", path: "yet-hi",episode_current: "Luôn cập nhật"},
-    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Cơn Say Mùa Xuân", image: "https://phimimg.com/upload/vod/20260106-1/deeaf96194e9eb72cc990cb4747536e6.jpg", path: "con-say-mua-xuan",episode_current: "Luôn cập nhật"},
     {title: "Song Quỹ", image: "https://phimimg.com/upload/vod/20251214-1/ce49bd08edb91c937516a7d27bb08ccd.jpg", path: "song-quy", episode_current: "Hoàn Tất (29/29)"},
     {title: "Trò Chơi Thao Túng", image: "https://phimimg.com/upload/vod/20251106-1/f3e2f2a3e1ccb10144eb3242121e1076.jpg", path: "tro-choi-thao-tung", episode_current: "Hoàn Tất (12/12)"},
@@ -93,11 +95,11 @@ export const NewFilm = [
 ]
 
 export const NewAnime = [
-    {title: "Vị Vua Mạnh Nhất Làm Gì Ở Kiếp Thứ 2", image: "https://phimimg.com/upload/vod/20250403-1/736408533a11ba88d6424c5846a1f4dd.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/1c54bc61de7a358e6d2699fae8f6f929.jpg", path: "vi-vua-manh-nhat-lam-gi-o-kiep-thu-hai",episode_current: "Hoàn Tất (12/12)"}, 
+    {title: "Ánh Sáng Cuối Con Đường", image: "https://phimimg.com/upload/vod/20250403-1/736408533a11ba88d6424c5846a1f4dd.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/1c54bc61de7a358e6d2699fae8f6f929.jpg", path: "vi-vua-manh-nhat-lam-gi-o-kiep-thu-hai",episode_current: "Hoàn Tất (12/12)"}, 
     {title: "Chú Thuật Hồi Chiến 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",episode_current: "Luôn cập nhật"},
     {title: "Gia Đình Điệp Viên 3", image: "https://phimimg.com/upload/vod/20251005-1/ff02db3344d1a1e4a83abd6dbe17a364.jpg",thumb:"https://phimimg.com/upload/vod/20251005-1/58a42c65a7da54822e388a95d04788f0.jpg", path: "gia-dinh-diep-vien-phan-3",episode_current: "Hoàn Tất (13/13)"},
-    {title: "Solo Leveling 1", image: "https://phimimg.com/upload/vod/20251228-1/1ea9e68e59a1061cdadaa768314b7b49.jpg",thumb:"https://i.ytimg.com/vi/sTRt2o9sbDQ/maxresdefault.jpg", path: "thang-cap-mot-minh",episode_current: "Hoàn Tất (12/12)"},
-    {title: "Solo Leveling 2", image: "https://phimimg.com/upload/vod/20251228-1/f42bcd85e02bd6b2cffe33930eead142.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/ad7aa3c8aec61387fb89e61a7b957ba1.jpg", path: "thang-cap-mot-minh-phan-2",episode_current: "Hoàn Tất (13/13)"},
+    {title: "Solo Leveling Mùa 1", image: "https://phimimg.com/upload/vod/20251228-1/1ea9e68e59a1061cdadaa768314b7b49.jpg",thumb:"https://i.ytimg.com/vi/sTRt2o9sbDQ/maxresdefault.jpg", path: "thang-cap-mot-minh",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Solo Leveling Mùa 2", image: "https://phimimg.com/upload/vod/20251228-1/f42bcd85e02bd6b2cffe33930eead142.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/ad7aa3c8aec61387fb89e61a7b957ba1.jpg", path: "thang-cap-mot-minh-phan-2",episode_current: "Hoàn Tất (13/13)"},
     {title: "Huyết Quỷ Hỗn Chiến", image: "https://phimimg.com/upload/vod/20250713-1/2c3c7db71c2ff172083e8e0c77768f8a.jpg",thumb:"https://phimimg.com/upload/vod/20250713-1/a079fb1c44f1bfb42f7eb0a01a2acb15.jpg", path: "huyet-quy-hon-chien",episode_current: "Hoàn Tất (24/24)"},
     {title: "Sát Thủ Về Vườn", image: "https://phimimg.com/upload/vod/20250112-1/19e480c57fc804cdcebfb39f409ffa31.jpg",thumb:"https://phimimg.com/upload/vod/20250112-1/fbf0edd755fb8be213f1d59ab1497202.jpg", path: "sat-thu-ve-vuon",episode_current: "Hoàn Tất (22/22)"},
     {title: "Gachiakuta", image: "https://phimimg.com/upload/vod/20250707-1/0bd08744cae0baf83bb99ba9eb07decc.jpg",thumb:"https://phimimg.com/upload/vod/20250707-1/8844c6722ca85a76e726dad012fc567e.jpg", path: "gachiakuta",episode_current: "Hoàn Tất (24/24)"},
@@ -123,12 +125,12 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-   {title: "Đại Chiến Người Và Thần Phần 3", image: "https://phimimg.com/upload/vod/20251212-1/200f7ae86aa9473780bf77e559f94846.jpg",thumb:"https://phimimg.com/upload/vod/20251212-1/ba20a9d54fecbe9d1690267b4f05dc10.jpg", path: "dai-chien-nguoi-va-than-phan-3",
-    episode_current: "Hoàn Tất (15/15)", lang: "Vietsub + Lồng Tiếng",
-    content: "Trước khi xóa sổ loài người khỏi thế giới, các vị thần cho họ cơ hội cuối cùng để chứng minh họ đáng được sống. Đã đến lúc Đại chiến người và thần bắt đầu!",
+    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
+     episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
+    content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
     },
 
-   {title: "Chú Thuật Hồi Chiến 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
+   {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
     },
@@ -137,12 +139,10 @@ export const HotFilm = [
     episode_current: "Full",lang: "Vietsub + Thuyết Minh",
     content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
     },
-
-   {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
-     episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
-    content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
+    {title: "Đại Chiến Người Và Thần Phần 3", image: "https://phimimg.com/upload/vod/20251212-1/200f7ae86aa9473780bf77e559f94846.jpg",thumb:"https://phimimg.com/upload/vod/20251212-1/ba20a9d54fecbe9d1690267b4f05dc10.jpg", path: "dai-chien-nguoi-va-than-phan-3",
+    episode_current: "Hoàn Tất (15/15)", lang: "Vietsub + Lồng Tiếng",
+    content: "Trước khi xóa sổ loài người khỏi thế giới, các vị thần cho họ cơ hội cuối cùng để chứng minh họ đáng được sống. Đã đến lúc Đại chiến người và thần bắt đầu!",
     },
-
    {title: "One Piece", image: "https://phimimg.com/upload/vod/20240310-1/31e6c244a0673838a46732d3b4f0b190.jpg",thumb:"https://phimimg.com/upload/vod/20240310-1/d61250d0c1670917fd783a1b48cbb29c.jpg", path: "dao-hai-tac",
      episode_current: "1155", lang: "Vietsub + Lồng Tiếng",
      content: "Phim Đảo Hải Tặc - One Piece là chuyện về cậu bé Monkey D. Luffy do ăn nhầm Trái Ác Quỷ, bị biến thành người cao su và sẽ không bao giờ biết bơi. 10 năm sau sự việc đó, cậu rời quê mình và kiếm đủ 10 thành viên để thành một băng hải tặc, biệt hiệu Hải tặc Mũ Rơm.\r\n\r\nKhi đó của phiêu lưu tìm kiếm kho báu One Piece bắt đầu. Trong cuộc phiêu lưu tìm kiếm One Piece, băng Hải tặc mũ rơm phải chiến đấu với nhiều băng hải tặc xấu khác cũng muốn độc chiếm One Piece và Hải quân của Chính phủ muốn diệt trừ hải tặc. Băng Hải tặc Mũ Rơm phải trải qua biết bao nhiêu khó khăn, không lùi bước với ước mơ &quot;Trở thành Vua Hải Tặc và chiếm được kho báu One Piece&quot;.",
@@ -157,4 +157,12 @@ export const HotFilm = [
      episode_current: "Full", lang: "Vietsub + Thuyết Minh",
      content: "Tiếp nối series anime chuyển thể đình đám, Chainsaw Man lần đầu tiên oanh tạc màn ảnh rộng trong một cuộc phiêu lưu hoành tráng, ngập tràn các phân cảnh hành động. Ở phần trước, ta đã biết Denji từng làm Thợ Săn Quỷ cho yakuza để trả món nợ của cha mẹ nhưng bị họ phản bội và trừ khử. Trong khoảnh khắc hấp hối, chú chó quỷ cưa máy Pochita (người bạn đồng hành trung thành của Denji) đã đưa ra một khế ước, cứu sống cậu và hợp thể cùng cậu. Từ đó, một Quỷ Cưa bất khả chiến bại ra đời. Giờ đây ở Chainsaw Man – The Movie: Chương Reze, trong cuộc chiến tàn khốc giữa quỷ dữ, thợ săn quỷ và những kẻ thù trong bóng tối, một cô gái bí ẩn tên Reze xuất hiện trong thế giới của Denji. Denji buộc phải đối mặt với trận chiến sinh tử khốc liệt nhất của mình, một trận chiến được tiếp sức bởi tình yêu trong một thế giới nơi mọi người phải sinh tồn mà không biết bất kỳ luật lệ nào.",
     },
+    
+]
+
+
+export const Conan = [
+    {title: "Conan Movie 1", image: "https://phimimg.com/upload/vod/20231019-1/d2e2c4cd6d19ccc793cf1cfb004aa894.jpg",thumb:"https://phimimg.com/upload/vod/20231019-1/10ba75b718b27fded8f14430aee7ac0a.jpg", path: "tham-tu-lung-danh-conan-1-qua-bom-choc-troi",time: "95 phút"}, 
+    {title: "Conan Movie 2", image: "https://phimimg.com/upload/vod/20231019-1/137937bbae1d27ab2f4f593d7e6d89de.jpg",thumb:"https://phimimg.com/upload/vod/20231019-1/c6c174d97ceb703f2ac4cb9106ab2bc4.jpg", path: "tham-tu-lung-danh-conan-2-muc-tieu-thu-14",time: "100 phút"},
+    {title: "Conan Movie 3", image: "https://phimimg.com/upload/vod/20231019-1/e954d2ab54b9a3b1fff45dcaad386105.jpg",thumb:"https://phimimg.com/upload/vod/20231019-1/e954d2ab54b9a3b1fff45dcaad386105.jpg", path: "tham-tu-lung-danh-conan-3-ao-thuat-gia-cuoi-cung-cua-the-ky",time: "100 phút"},
 ]

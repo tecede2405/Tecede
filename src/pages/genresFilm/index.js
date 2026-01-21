@@ -113,8 +113,18 @@ export default function FilmListBySlug() {
   /* ================= UTILS ================= */
   function getPoster(url) {
     if (!url) return "";
-    if (url.startsWith("http")) return url;
-    return `https://phimimg.com${url.startsWith("/") ? url : "/" + url}`;
+
+    // Chuẩn hóa URL gốc
+    let originalUrl = url;
+    if (!originalUrl.startsWith("http")) {
+      if (!originalUrl.startsWith("/")) originalUrl = "/" + originalUrl;
+      originalUrl = `https://phimimg.com${originalUrl}`;
+    }
+
+    // Convert sang WEBP qua phimapi
+    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
+      originalUrl
+    )}`;
   }
 
   const handleSearch = () => {
@@ -211,7 +221,7 @@ export default function FilmListBySlug() {
             >
               <div className="film-poster-wrapper">
                 <img
-                  src={getPoster(film.poster_url)}
+                  src={film.poster_url ? getPoster(film.poster_url) : ""}
                   alt={film.name}
                   className="film-poster"
                 />

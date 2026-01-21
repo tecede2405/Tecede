@@ -5,11 +5,17 @@ import { HotFilm } from "../../data/dataFilm";
 import FilmSearch from "../HomeFilm/FilmSearch";
 import { FaPlay } from "react-icons/fa";
 import "swiper/css";
+import "./style.scss";
 
 export default function NewAnimeHero() {
   const navigate = useNavigate();
   const [active, setActive] = useState(HotFilm[0]);
   const [width, setWidth] = useState(window.innerWidth);
+  const [animKey, setAnimKey] = useState(0);
+
+  useEffect(() => {
+    setAnimKey((k) => k + 1);
+  }, [active]);
 
   useEffect(() => {
     const onResize = () => setWidth(window.innerWidth);
@@ -24,18 +30,44 @@ export default function NewAnimeHero() {
     <>
       {/* ================= HERO ================= */}
       <div
-        style={{
-          height: isMobile ? "380px" : isTablet ? "480px" : "600px",
-          position: "relative",
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
-            url(${active.thumb})
-          `,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          overflow: "hidden",
-        }}
-      >
+  style={{
+    height: isMobile ? "380px" : isTablet ? "480px" : "600px",
+    position: "relative",
+    overflow: "hidden",
+  }}
+>
+  {/* BACKGROUND */}
+  <div
+    key={animKey}
+    style={{
+      position: "absolute",
+      inset: 0,
+      backgroundImage: `
+        linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
+        url(${active.thumb})
+      `,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+
+      /* 🔥 MƯỢT */
+      transform: "translateX(60px)",
+      opacity: 0,
+      transition: "transform .55s cubic-bezier(.22,.61,.36,1), opacity .45s ease",
+      willChange: "transform, opacity",
+    }}
+    ref={(el) => {
+      if (el) {
+        requestAnimationFrame(() => {
+          el.style.transform = "translateX(0)";
+          el.style.opacity = "1";
+        });
+      }
+    }}
+  />
+
+  {/* ===== GIỮ NGUYÊN TOÀN BỘ JSX CŨ CỦA BẠN DƯỚI ĐÂY ===== */}
+
+
         {/* ===== BOTTOM OVERLAY ===== */}
         <div
           style={{

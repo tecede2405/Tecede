@@ -207,22 +207,6 @@ footer {
 
 
 
-.contact {
-    display: flex;
-    width: 100%;
-    height: 100%;
-
-    &__content {
-        height: 75vh;
-    }
-
-    &__title {
-        color: #ddd;
-        font-size: 30px;
-        font-weight: 600;
-        text-align: center;
-    }
-}
 
 .admin {
     display: flex;
@@ -253,23 +237,7 @@ footer {
 }
 
 @media (max-width: 1170px) {
-    .Home {
-        &__feature {
-            height: 290px;
 
-            img {
-                height: 50%;
-            }
-
-            h2 {
-                font-size: 15px;
-            }
-
-            p {
-                font-size: 11px;
-            }
-        }
-    }
 
     .text-container {
         height: 60px;
@@ -308,13 +276,6 @@ footer {
 }
 
 @media (max-width: 960px) {
-    .Home {
-        &__feature {
-            img {
-                height: 40%;
-            }
-        }
-    }
 
     .text-container {
         height: 50px;
@@ -326,34 +287,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .Home {
-        &__feature {
-            flex-direction: row;
-            width: 100%;
-            height: auto;
-            margin-left: 0;
-            padding: 0 20px;
-            margin: 20px 0;
-            border-top: 1px solid #333333;
-            border-radius: 0;
-
-            img {
-                width: 100px;
-                height: auto;
-                object-fit: cover;
-                aspect-ratio: 1/1;
-            }
-
-            &__feature-text {
-                flex: 1;
-                height: auto;
-            }
-        }
-
-        &__desc {
-            font-size: 14px;
-        }
-    }
 
     .about {
         &__produce {
@@ -453,17 +386,6 @@ footer {
             font-size: 12px;
         }
 
-        &__feature {
-            margin: 0 auto;
-            margin-bottom: 30px;
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-
-            img {
-                width: 100px;
-                height: auto;
-                aspect-ratio: 1/1;
-            }
-        }
 
         &__main {
             flex: 1;
@@ -523,16 +445,6 @@ footer {
         }
     }
 
-    .Home {
-        &__desc {
-            padding: 0 10px;
-            font-size: 12px;
-        }
-
-        &__title {
-            font-size: 19px;
-        }
-    }
 
     .text-container {
         height: 30px;

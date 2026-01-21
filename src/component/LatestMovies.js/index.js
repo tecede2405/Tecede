@@ -53,7 +53,7 @@ export default function LatestMoviesTable() {
                   {/* TÊN */}
                   <td className="col-name">
                     <img
-                      src={movie.thumb_url}
+                      src={movie.poster_url}
                       alt={movie.name}
                       loading="lazy"
                     />

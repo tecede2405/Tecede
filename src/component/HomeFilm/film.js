@@ -2,6 +2,8 @@ import FilmCarousel from "../CoverflowCarousel/index";
 import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { Films } from "../../data/dataFilm";
+import "animate.css/animate.min.css";
+
 import "./style.scss";
 
 const filmData = Films;
@@ -32,7 +34,7 @@ function Film() {
           items={filmData}
           renderItem={(film) => (
             <div
-              className="film-card"
+              className="film-card animate__animated animate__fadeIn"
               onClick={() => navigate(`/film/${film.path}`)}
               style={{ backgroundImage: `url(${film.image})` }}
             >

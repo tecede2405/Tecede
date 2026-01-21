@@ -1,4 +1,3 @@
-import logo from "../../img/home-image.png";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import "./layout.scss";
 import Tabbar from "../../component/tabar/index";
@@ -72,7 +71,7 @@ function Layout() {
 
           {/* LOGO */}
           <img
-            src={logo}
+            src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768991840/home-image_t70nm7.png"
             alt="logo-Page"
             className="header__image"
             onClick={handleHomeClick}

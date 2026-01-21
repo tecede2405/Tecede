@@ -10,7 +10,6 @@
     "bootstrap": "^5.3.5",
     "cra-template": "1.2.0",
     "font-awesome": "^4.7.0",
-    "framer-motion": "^12.6.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-fast-marquee": "^1.6.5",

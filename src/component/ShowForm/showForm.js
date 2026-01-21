@@ -1,7 +1,6 @@
 import "./LoginForm.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logoPage from '../../img/home-image.png';
 import Loading from '../../component/Loading/index';
 
 export default function LoginForm({ onClose, onLoginSuccess }) {
@@ -56,7 +55,7 @@ export default function LoginForm({ onClose, onLoginSuccess }) {
           <button className="close-btn" onClick={onClose}>×</button>
           <form onSubmit={handleSubmit}>
             <div className="login-title">
-              <img src={logoPage} alt="logo-page" className="logo-login" />
+              <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768991840/home-image_t70nm7.png" alt="logo-page" className="logo-login" />
               <h3>Đăng nhập Admin</h3>
             </div>
 
