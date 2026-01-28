@@ -11,17 +11,16 @@ export default function NewAnimeHero() {
   const navigate = useNavigate();
   const [active, setActive] = useState(HotFilm[0]);
   const [width, setWidth] = useState(window.innerWidth);
-  const [animKey, setAnimKey] = useState(0);
 
-  useEffect(() => {
-    setAnimKey((k) => k + 1);
-  }, [active]);
+
 
   useEffect(() => {
     const onResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+
 
   const isMobile = width < 525;
   const isTablet = width >= 525 && width < 1024;
@@ -30,40 +29,23 @@ export default function NewAnimeHero() {
     <>
       {/* ================= HERO ================= */}
       <div
-  style={{
-    height: isMobile ? "380px" : isTablet ? "480px" : "600px",
-    position: "relative",
-    overflow: "hidden",
-  }}
->
+        style={{
+          height: isMobile ? "380px" : isTablet ? "480px" : "600px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+        >
   {/* BACKGROUND */}
-  <div
-    key={animKey}
-    style={{
-      position: "absolute",
-      inset: 0,
-      backgroundImage: `
-        linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
-        url(${active.thumb})
-      `,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-
-      /* 🔥 MƯỢT */
-      transform: "translateX(60px)",
-      opacity: 0,
-      transition: "transform .55s cubic-bezier(.22,.61,.36,1), opacity .45s ease",
-      willChange: "transform, opacity",
-    }}
-    ref={(el) => {
-      if (el) {
-        requestAnimationFrame(() => {
-          el.style.transform = "translateX(0)";
-          el.style.opacity = "1";
-        });
-      }
-    }}
-  />
+ <div
+  key={active.thumb} // đổi ảnh → remount → animation chạy
+  className="hero-bg"
+  style={{
+    backgroundImage: `
+      linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
+      url(${active.thumb})
+    `,
+  }}
+/>
 
   {/* ===== GIỮ NGUYÊN TOÀN BỘ JSX CŨ CỦA BẠN DƯỚI ĐÂY ===== */}
 
@@ -111,7 +93,7 @@ export default function NewAnimeHero() {
           <h1
             style={{
               fontSize: isMobile ? "25px" : isTablet ? "30px" : "50px",
-              marginBottom: "6px",
+              marginBottom: "20px",
               fontWeight: 900,
               lineHeight: 1.2,
               WebkitTextStroke: "0.5px #000",

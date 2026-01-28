@@ -1,3 +1,12 @@
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+
+  animation: heroSlideIn .6s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
 @keyframes heroSlideIn {
   from {
     opacity: 0;

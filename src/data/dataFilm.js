@@ -1,7 +1,7 @@
 export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
     {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
-    {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "114 phút"},
+    {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "120 phút"},
     {title: "Cám", image: "https://phimimg.com/upload/vod/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
     {title: "Ma Da", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigrj8EUtW2ioLrOd0HXt6DvtxRN5F61k03A&s", thumb:"https://phimimg.com/upload/vod/20241116-1/3747ec0cb2bbc3679512ef163621eefc.jpg", path: "ma-da",time: "195 phút"},
     {title: "Zootopia 2", image: "https://phimimg.com/upload/vod/20251223-1/6bc1d549b86e490274d93bab66a3654d.jpg",thumb:"https://phimimg.com/upload/vod/20251223-1/7154384c306c73664e46942f2477e574.jpg", path: "phi-vu-dong-troi-2",time: "107 phút"},
@@ -25,6 +25,7 @@ export const cinematicFilm = [
     {title: "Tiệc Trăng Máu", image: "https://phimimg.com/upload/vod/20231108-1/c98267c8775c97df0c76ad0cf8fe780f.jpg", thumb:"https://static2.vieon.vn/vieplay-image/thumbnail_big_v4/2025/10/28/izs5qn69_tiectrangmau_1920x1080_1267_712.webp", path: "tiec-trang-mau",time: "118 phút"},
     {title: "Conan 28: Dư Ảnh Của Độc Nhãn", image: "https://phimimg.com/upload/vod/20250827-1/aabb76a70d8afd21ddf2be37381c7587.jpg", thumb:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwF-84nhkv-S-SH07tPwov9EbjKX898zZypA&s", path: "tham-tu-lung-danh-conan-28-du-anh-cua-doc-nhan",time: "109 phút"},
     {title: "The Last Attack", image: "https://phimimg.com/upload/vod/20250419-1/50cf359f6ed6307597fc160044132ac3.jpg", thumb:"https://phimimg.com/upload/vod/20250419-1/5592e992bf3e556c9660f30d058dce71.jpg", path: "dai-chien-nguoi-khong-lo-lan-tan-cong-cuoi-cung",time: "145 phút"},
+    {title: "Lật Mặt 6", image: "https://phimimg.com/upload/vod/20240919-1/5c666eeb1ce5b80a0140906109da9d2a.jpg", thumb:"https://phimimg.com/upload/vod/20240919-1/04dc2a0a9dbc3efbb6289dec6349de9e.jpg", path: "lat-mat-6-tam-ve-dinh-menh",time: "132 phút"},
     {title: "Vô Hạn Thành", image: "https://phimimg.com/upload/vod/20250722-1/66ee196318069c6ede9450a5f76a4648.jpg", thumb:"https://phimimg.com/upload/vod/20250722-1/16ea0557ca40cd54a3d25c6750a65c0b.jpg", path: "thanh-guom-diet-quy-vo-han-thanh",time: "155 phút"},
 ];
 
@@ -32,6 +33,7 @@ export const Films = [
     {title: "Đại Chiến Người Và Thần 1", image: "https://phimimg.com/upload/vod/20251212-1/4d4cd441e2384ce7da04bb599d001d09.jpg", path: "dai-chien-nguoi-va-than-phan-1",episode_current: "Hoàn Tất (12/12)"},
     {title: "Đại Chiến Người Và Thần 2", image: "https://phimimg.com/upload/vod/20251212-1/f7e1bb3c9a084c4754c42f4758a68f65.jpg", path: "dai-chien-nguoi-va-than-phan-2",episode_current: "Hoàn Tất (15/15)"},
     {title: "Đại Chiến Người Và Thần 3", image: "https://phimimg.com/upload/vod/20251212-1/200f7ae86aa9473780bf77e559f94846.jpg", path: "dai-chien-nguoi-va-than-phan-3",episode_current: "Hoàn Tất (15/15)"},
+    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Song Quỹ", image: "https://phimimg.com/upload/vod/20251214-1/ce49bd08edb91c937516a7d27bb08ccd.jpg", path: "song-quy", episode_current: "Hoàn Tất (29/29)"},
     {title: "Tết Ở Làng Địa Ngục", image: "https://phimimg.com/upload/vod/20240113-1/bde8e52f94a9e35d8f993104d5bb86e2.jpg", path: "tet-o-lang-dia-nguc", episode_current: "Hoàn Tất (12/12)"},
     {title: "Tiệm Ăn Của Quỷ", image: "https://phimimg.com/upload/vod/20250126-1/8da0fb28e2333a5602112cbcc04e8c14.jpg", path: "tiem-an-cua-quy", episode_current: "Hoàn Tất (6/6)"},
@@ -43,7 +45,6 @@ export const Films = [
     {title: "Nụ Hôn Bùng Nổ", image: "https://phimimg.com/upload/vod/20251113-1/e1f3ffbc9759bc3bfaa1add317a477ce.jpg", path: "nu-hon-bung-no",episode_current: "Hoàn Tất (14/14)"},
     {title: "Khi Anh Chạy Về Phía Em", image: "https://phimimg.com/upload/vod/20230929-1/a6110983f8de490e116383020adc4662.jpg", path: "khi-anh-chay-ve-phia-em",episode_current: "Hoàn Tất (24/24)"},
     {title: "Yêu Nhầm Bạn Thân", image: "https://phimimg.com/upload/vod/20250523-1/9e90d5e45abb30f79b340985a2b16f14.jpg", path: "yeu-nham-ban-than",episode_current: "Full"},
-    {title: "Lật Mặt 6: Tấm Vé Định Mệnh", image: "https://phimimg.com/upload/vod/20240919-1/5c666eeb1ce5b80a0140906109da9d2a.jpg", path: "lat-mat-6-tam-ve-dinh-menh",episode_current: "Full"},
 ];
 
 export const AnimeFilm = [
@@ -82,6 +83,9 @@ export const AnimeFilm = [
 export const NewFilm = [
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang",episode_current: "Phim rạp mới"},
+    {title: "Thu Hút Mãnh Liệt", image: "https://phimimg.com/upload/vod/20260123-1/1fe5ea0dc9608596d3bc1eac1db703d0.jpg", path: "thu-hut-manh-liet",episode_current: "Luôn cập nhật"},
+    {title: "Thảm Họa Thiên Thạch: Di Tản", image: "https://phimimg.com/upload/vod/20260128-1/227d553ec342486d0cbdc34b0b1fc31d.jpg", path: "tham-hoa-thien-thach-di-tan",episode_current: "Full"},
+    {title: "Đụng Độ Siêu Trăn", image: "https://phimimg.com/upload/vod/20260127-1/77dcf424f5036b99140a47e16c23989a.jpg", path: "dung-do-sieu-tran",episode_current: "Full"},
     {title: "Yết Hí", image: "https://phimimg.com/upload/vod/20260109-1/d6d82c20c56d61f31894bd979c3eda4a.jpg", path: "yet-hi",episode_current: "Luôn cập nhật"},
     {title: "Cơn Say Mùa Xuân", image: "https://phimimg.com/upload/vod/20260106-1/deeaf96194e9eb72cc990cb4747536e6.jpg", path: "con-say-mua-xuan",episode_current: "Luôn cập nhật"},
     {title: "Song Quỹ", image: "https://phimimg.com/upload/vod/20251214-1/ce49bd08edb91c937516a7d27bb08ccd.jpg", path: "song-quy", episode_current: "Hoàn Tất (29/29)"},
@@ -95,17 +99,20 @@ export const NewFilm = [
 ]
 
 export const NewAnime = [
-    {title: "Ánh Sáng Cuối Con Đường", image: "https://phimimg.com/upload/vod/20250403-1/736408533a11ba88d6424c5846a1f4dd.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/1c54bc61de7a358e6d2699fae8f6f929.jpg", path: "vi-vua-manh-nhat-lam-gi-o-kiep-thu-hai",episode_current: "Hoàn Tất (12/12)"}, 
+    {title: "Ánh Sáng Cuối Con Đường", image: "https://phimimg.com/upload/vod/20250403-1/736408533a11ba88d6424c5846a1f4dd.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/1c54bc61de7a358e6d2699fae8f6f929.jpg", path: "vi-vua-manh-nhat-lam-gi-o-kiep-thu-hai",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Pháp Sư Tiễn Táng 2", image: "https://phimimg.com/upload/vod/20260118-1/40488f12abb7092629737b64256b8c01.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/78361b7dccef8920073dc9d7464f0729.jpg", path: "frieren-phap-su-tien-tang-phan-2",episode_current: "Luôn cập nhật"}, 
     {title: "Chú Thuật Hồi Chiến 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",episode_current: "Luôn cập nhật"},
-    {title: "Gia Đình Điệp Viên 3", image: "https://phimimg.com/upload/vod/20251005-1/ff02db3344d1a1e4a83abd6dbe17a364.jpg",thumb:"https://phimimg.com/upload/vod/20251005-1/58a42c65a7da54822e388a95d04788f0.jpg", path: "gia-dinh-diep-vien-phan-3",episode_current: "Hoàn Tất (13/13)"},
+    {title: "Đứa Con Của Thần Tượng 3", image: "https://phimimg.com/upload/vod/20260115-1/d430fcb28fcb9abc62e7178d0b188186.jpg",thumb:"https://phimimg.com/upload/vod/20260115-1/c8e4463ee795aba62dd54f41fae39697.jpg", path: "dua-con-cua-than-tuong-phan-3",episode_current: "Luôn cập nhật"},
+    {title: "Địa Ngục Cực Lạc 2", image: "https://phimimg.com/upload/vod/20260112-1/b293209ed89aaeaee89048c6971a09da.jpg",thumb:"https://phimimg.com/upload/vod/20260112-1/7d8273527463c063ffc0b578819fe553.jpg", path: "dia-nguc-cuc-lac-phan-2",episode_current: "Luôn cập nhật"},
     {title: "Solo Leveling Mùa 1", image: "https://phimimg.com/upload/vod/20251228-1/1ea9e68e59a1061cdadaa768314b7b49.jpg",thumb:"https://i.ytimg.com/vi/sTRt2o9sbDQ/maxresdefault.jpg", path: "thang-cap-mot-minh",episode_current: "Hoàn Tất (12/12)"},
     {title: "Solo Leveling Mùa 2", image: "https://phimimg.com/upload/vod/20251228-1/f42bcd85e02bd6b2cffe33930eead142.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/ad7aa3c8aec61387fb89e61a7b957ba1.jpg", path: "thang-cap-mot-minh-phan-2",episode_current: "Hoàn Tất (13/13)"},
     {title: "Huyết Quỷ Hỗn Chiến", image: "https://phimimg.com/upload/vod/20250713-1/2c3c7db71c2ff172083e8e0c77768f8a.jpg",thumb:"https://phimimg.com/upload/vod/20250713-1/a079fb1c44f1bfb42f7eb0a01a2acb15.jpg", path: "huyet-quy-hon-chien",episode_current: "Hoàn Tất (24/24)"},
+    {title: "Gia Đình Điệp Viên 3", image: "https://phimimg.com/upload/vod/20251005-1/ff02db3344d1a1e4a83abd6dbe17a364.jpg",thumb:"https://phimimg.com/upload/vod/20251005-1/58a42c65a7da54822e388a95d04788f0.jpg", path: "gia-dinh-diep-vien-phan-3",episode_current: "Hoàn Tất (13/13)"},
     {title: "Sát Thủ Về Vườn", image: "https://phimimg.com/upload/vod/20250112-1/19e480c57fc804cdcebfb39f409ffa31.jpg",thumb:"https://phimimg.com/upload/vod/20250112-1/fbf0edd755fb8be213f1d59ab1497202.jpg", path: "sat-thu-ve-vuon",episode_current: "Hoàn Tất (22/22)"},
     {title: "Gachiakuta", image: "https://phimimg.com/upload/vod/20250707-1/0bd08744cae0baf83bb99ba9eb07decc.jpg",thumb:"https://phimimg.com/upload/vod/20250707-1/8844c6722ca85a76e726dad012fc567e.jpg", path: "gachiakuta",episode_current: "Hoàn Tất (24/24)"},
     {title: "Tiến Sĩ Đá Phần 4", image: "https://phimimg.com/upload/vod/20250111-1/d23db88980804afd45a326dcc9d12112.jpg",thumb:"https://phimimg.com/upload/vod/20250111-1/70b8653b53be96fa060e99e4d02fcaff.jpg", path: "tien-si-da-hoi-sinh-the-gioi-phan-4",episode_current: "Hoàn Tất (24/24)"},
     {title: "Ma Thuật Và Cơ Bắp 2", image: "https://phimimg.com/upload/vod/20240304-1/45212abfec600d71c79d1f466f582a8f.jpg",thumb:"https://phimimg.com/upload/vod/20240304-1/3140f78ae9ea4ffed3ecdfd1e031f20e.jpg", path: "mashle-ma-thuat-va-co-bap-phan-2",episode_current: "Hoàn Tất (12/12)"},
-    {title: "Pháp Sư Tiễn Táng", image: "https://phimimg.com/upload/vod/20250528-1/4eccfcc0409f610cbd1b552a2b02a66c.jpg",thumb:"https://phimimg.com/upload/vod/20250528-1/f3b84ccdf8c4fb61aa247a54b27018d1.jpg", path: "frieren-phap-su-tien-tang",episode_current: "Hoàn Tất (28/28)"},
+    {title: "Pháp Sư Tiễn Táng 1", image: "https://phimimg.com/upload/vod/20250528-1/4eccfcc0409f610cbd1b552a2b02a66c.jpg",thumb:"https://phimimg.com/upload/vod/20250528-1/f3b84ccdf8c4fb61aa247a54b27018d1.jpg", path: "frieren-phap-su-tien-tang-phan-1",episode_current: "Hoàn Tất (28/28)"},
 ]
 export const Tokusatsu = [
     {title: "Kamen Rider: Geats", image: "https://phimimg.com/upload/vod/20241013-1/d5ec292d0d52fca910dcbb5181dbe0f4.jpg", path: "hiep-si-mat-na-dau-truong-tham-vong",episode_current: "Hoàn Tất (49/49)"},
@@ -125,11 +132,18 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg",thumb:"https://phimimg.com/upload/vod/20260103-1/6e21b9f5293afc32c1c8562389a63080.jpg", path: "tham-phan-trung-sinh",
+     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
+     content: "Lee Han Young (Ji Sung) – một thẩm phán từng lún sâu vào tham nhũng để rồi bị hãm hại bởi chính những người anh từng phục vụ. Trong khoảnh khắc đối mặt với cái chết, một sự kiện siêu nhiên đã xảy ra, đưa linh hồn anh trở về thời điểm 10 năm trước, khi anh vẫn còn là một tân binh trong ngành tư pháp. Được trao cơ hội thứ hai, anh quyết tâm tìm lại công lý bằng cách trừng phạt cái ác.",
+    },
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
      episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
     content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
     },
-
+    {title: "Quý Công Tử", image: "https://phimimg.com/upload/vod/20230921-1/cce2df756fe9e634fadc5034c46bb1e8.jpg",thumb:"https://phimimg.com/upload/vod/20230921-1/8b1cb9a6a2eccdbc1eb66ef24cad936d.jpg", path: "quy-cong-tu",
+    episode_current: "Full", lang: "Vietsub",
+    content: "Quý Công Tử xoay quanh người đàn ông bí ẩn được biết đến với tên gọi “Quý Công Tử”. Gã đột nhiên xuất hiện trước mắt Marco, một thanh niên người Philippines mơ ước trở thành vận động viên boxing chuyên nghiệp, lang thang khắp các sàn đấu bất hợp pháp tại đây. Nhằm chi trả cho viện phí của mẹ, Marco đến Hàn Quốc để tìm người cha đã bỏ rơi hai mẹ con cậu từ lâu. Đụng độ Quý Công Tử cùng hàng loạt những con người bí hiểm trong thế giới ngầm, Marco trở thành mục tiêu duy nhất của những thế lực mang nhiều mục đích khác nhau. Cuộc truy đuổi điên cuồng bắt đầu.",
+    },
    {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
@@ -138,14 +152,6 @@ export const HotFilm = [
    {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
     episode_current: "Full",lang: "Vietsub + Thuyết Minh",
     content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
-    },
-    {title: "Đại Chiến Người Và Thần Phần 3", image: "https://phimimg.com/upload/vod/20251212-1/200f7ae86aa9473780bf77e559f94846.jpg",thumb:"https://phimimg.com/upload/vod/20251212-1/ba20a9d54fecbe9d1690267b4f05dc10.jpg", path: "dai-chien-nguoi-va-than-phan-3",
-    episode_current: "Hoàn Tất (15/15)", lang: "Vietsub + Lồng Tiếng",
-    content: "Trước khi xóa sổ loài người khỏi thế giới, các vị thần cho họ cơ hội cuối cùng để chứng minh họ đáng được sống. Đã đến lúc Đại chiến người và thần bắt đầu!",
-    },
-   {title: "One Piece", image: "https://phimimg.com/upload/vod/20240310-1/31e6c244a0673838a46732d3b4f0b190.jpg",thumb:"https://phimimg.com/upload/vod/20240310-1/d61250d0c1670917fd783a1b48cbb29c.jpg", path: "dao-hai-tac",
-     episode_current: "1155", lang: "Vietsub + Lồng Tiếng",
-     content: "Phim Đảo Hải Tặc - One Piece là chuyện về cậu bé Monkey D. Luffy do ăn nhầm Trái Ác Quỷ, bị biến thành người cao su và sẽ không bao giờ biết bơi. 10 năm sau sự việc đó, cậu rời quê mình và kiếm đủ 10 thành viên để thành một băng hải tặc, biệt hiệu Hải tặc Mũ Rơm.\r\n\r\nKhi đó của phiêu lưu tìm kiếm kho báu One Piece bắt đầu. Trong cuộc phiêu lưu tìm kiếm One Piece, băng Hải tặc mũ rơm phải chiến đấu với nhiều băng hải tặc xấu khác cũng muốn độc chiếm One Piece và Hải quân của Chính phủ muốn diệt trừ hải tặc. Băng Hải tặc Mũ Rơm phải trải qua biết bao nhiêu khó khăn, không lùi bước với ước mơ &quot;Trở thành Vua Hải Tặc và chiếm được kho báu One Piece&quot;.",
     },
 
    {title: "Yết Hí", image: "https://phimimg.com/upload/vod/20260109-1/d6d82c20c56d61f31894bd979c3eda4a.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/cc0563a07da12a6896dffc6aa176c998.jpg", path: "yet-hi",
