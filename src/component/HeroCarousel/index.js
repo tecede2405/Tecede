@@ -92,8 +92,8 @@ export default function NewAnimeHero() {
         >
           <h1
             style={{
-              fontSize: isMobile ? "25px" : isTablet ? "30px" : "50px",
-              marginBottom: "20px",
+              fontSize: isMobile ? "30px" : isTablet ? "30px" : "50px",
+              marginBottom: "10px",
               fontWeight: 900,
               lineHeight: 1.2,
               WebkitTextStroke: "0.5px #000",

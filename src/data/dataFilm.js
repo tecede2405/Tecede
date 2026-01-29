@@ -1,6 +1,8 @@
 export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
     {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
+    {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",time: "122 phút"},
+    {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",time: "99 phút"},
     {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "120 phút"},
     {title: "Cám", image: "https://phimimg.com/upload/vod/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
     {title: "Ma Da", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigrj8EUtW2ioLrOd0HXt6DvtxRN5F61k03A&s", thumb:"https://phimimg.com/upload/vod/20241116-1/3747ec0cb2bbc3679512ef163621eefc.jpg", path: "ma-da",time: "195 phút"},
@@ -83,6 +85,7 @@ export const AnimeFilm = [
 export const NewFilm = [
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang",episode_current: "Phim rạp mới"},
+    {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg", path: "quy-nhap-trang",episode_current: "Full"},
     {title: "Thu Hút Mãnh Liệt", image: "https://phimimg.com/upload/vod/20260123-1/1fe5ea0dc9608596d3bc1eac1db703d0.jpg", path: "thu-hut-manh-liet",episode_current: "Luôn cập nhật"},
     {title: "Thảm Họa Thiên Thạch: Di Tản", image: "https://phimimg.com/upload/vod/20260128-1/227d553ec342486d0cbdc34b0b1fc31d.jpg", path: "tham-hoa-thien-thach-di-tan",episode_current: "Full"},
     {title: "Đụng Độ Siêu Trăn", image: "https://phimimg.com/upload/vod/20260127-1/77dcf424f5036b99140a47e16c23989a.jpg", path: "dung-do-sieu-tran",episode_current: "Full"},
@@ -132,38 +135,39 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-    {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg",thumb:"https://phimimg.com/upload/vod/20260103-1/6e21b9f5293afc32c1c8562389a63080.jpg", path: "tham-phan-trung-sinh",
-     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
-     content: "Lee Han Young (Ji Sung) – một thẩm phán từng lún sâu vào tham nhũng để rồi bị hãm hại bởi chính những người anh từng phục vụ. Trong khoảnh khắc đối mặt với cái chết, một sự kiện siêu nhiên đã xảy ra, đưa linh hồn anh trở về thời điểm 10 năm trước, khi anh vẫn còn là một tân binh trong ngành tư pháp. Được trao cơ hội thứ hai, anh quyết tâm tìm lại công lý bằng cách trừng phạt cái ác.",
+     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",
+    episode_current: "Full", lang: "Vietsub",
+    content: "Phim lấy cảm hứng từ truyền thuyết kinh dị nhất về người chết sống lại, kể về vợ chồng Quang và Như sống bằng nghề mai táng ở một ngôi làng vùng cao. Cuộc sống yên bình của họ bị xáo trộn khi phát hiện một cỗ quan tài vô chủ trên mảnh đất nhà mình. Từ đây, những hiện tượng kỳ lạ bắt đầu xảy ra và ám ảnh cả ngôi làng.",
     },
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
      episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
     content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
     },
-    {title: "Quý Công Tử", image: "https://phimimg.com/upload/vod/20230921-1/cce2df756fe9e634fadc5034c46bb1e8.jpg",thumb:"https://phimimg.com/upload/vod/20230921-1/8b1cb9a6a2eccdbc1eb66ef24cad936d.jpg", path: "quy-cong-tu",
-    episode_current: "Full", lang: "Vietsub",
-    content: "Quý Công Tử xoay quanh người đàn ông bí ẩn được biết đến với tên gọi “Quý Công Tử”. Gã đột nhiên xuất hiện trước mắt Marco, một thanh niên người Philippines mơ ước trở thành vận động viên boxing chuyên nghiệp, lang thang khắp các sàn đấu bất hợp pháp tại đây. Nhằm chi trả cho viện phí của mẹ, Marco đến Hàn Quốc để tìm người cha đã bỏ rơi hai mẹ con cậu từ lâu. Đụng độ Quý Công Tử cùng hàng loạt những con người bí hiểm trong thế giới ngầm, Marco trở thành mục tiêu duy nhất của những thế lực mang nhiều mục đích khác nhau. Cuộc truy đuổi điên cuồng bắt đầu.",
-    },
-   {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
-    episode_current: "Luôn cập nhật",lang: "Vietsub",
-    content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
-    },
-
-   {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
+    {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
     episode_current: "Full",lang: "Vietsub + Thuyết Minh",
     content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
     },
 
-   {title: "Yết Hí", image: "https://phimimg.com/upload/vod/20260109-1/d6d82c20c56d61f31894bd979c3eda4a.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/cc0563a07da12a6896dffc6aa176c998.jpg", path: "yet-hi",
-    episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
-    content: "Tiêu Trĩ Vũ và Hồ Tu gặp gỡ nhờ một buổi chơi “truy tìm lối thoát” có chủ đề dân quốc. Ở thế giới kịch bản đầy tuyết rơi và những bóng ma gián điệp chập chùng, hai người đánh ra tia lửa định mệnh. Thế nhưng, cuộc tái ngộ bất ngờ ngoài đời thực lại mở ra những bí ẩn về thân phận thật sự của đối phương. Xuyên qua không gian đan xen giữa hiện thực và hư cấu, họ cùng nhau bước hành trình trưởng thành song hành, từ những ràng buộc vượt qua mọi chiều không gian, để hoàn thành bước tiến hóa của tình yêu và chính bản thân mình.",
+   {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",
+     episode_current: "Full", lang: "Vietsub",
+     content: "Soon Tae nuôi mộng mở chuỗi nhà hàng tiếng tăm, quyết rửa tay gác kiếm nhưng bất đắc dĩ bị chỉ định làm đại ca xã đoàn. Anh nhanh chóng tìm cách đẩy trách nhiệm này cho Kang Pyo, cháu trai của ông trùm quá cố, nhưng đời không như mơ, Kang Pyo lại ôm ấp giấc mơ trở thành vũ công tango, chẳng buồn ngó lại nghiệp giang hồ. Chỉ riêng Pan Ho, kẻ chuyên gây rối lại là người duy nhất tha thiết muốn làm đại ca… nhưng tréo ngoe là chẳng ai tin tưởng. Thế là một cuộc đại chiến né chức nổ ra với mục tiêu tối thượng: Thua đường vote là thắng đường đời!",
     },
 
-   {title: "Chainsaw Man - The Movie: Chương Reze", image: "https://phimimg.com/upload/vod/20251209-1/69d2d97349877280293f7c1ccc9efdb4.jpg",thumb:"https://phimimg.com/upload/vod/20251209-1/c3096886a37e19947c1b6758f7b8829f.jpg", path: "chainsaw-man-the-movie-chuong-reze",
-     episode_current: "Full", lang: "Vietsub + Thuyết Minh",
-     content: "Tiếp nối series anime chuyển thể đình đám, Chainsaw Man lần đầu tiên oanh tạc màn ảnh rộng trong một cuộc phiêu lưu hoành tráng, ngập tràn các phân cảnh hành động. Ở phần trước, ta đã biết Denji từng làm Thợ Săn Quỷ cho yakuza để trả món nợ của cha mẹ nhưng bị họ phản bội và trừ khử. Trong khoảnh khắc hấp hối, chú chó quỷ cưa máy Pochita (người bạn đồng hành trung thành của Denji) đã đưa ra một khế ước, cứu sống cậu và hợp thể cùng cậu. Từ đó, một Quỷ Cưa bất khả chiến bại ra đời. Giờ đây ở Chainsaw Man – The Movie: Chương Reze, trong cuộc chiến tàn khốc giữa quỷ dữ, thợ săn quỷ và những kẻ thù trong bóng tối, một cô gái bí ẩn tên Reze xuất hiện trong thế giới của Denji. Denji buộc phải đối mặt với trận chiến sinh tử khốc liệt nhất của mình, một trận chiến được tiếp sức bởi tình yêu trong một thế giới nơi mọi người phải sinh tồn mà không biết bất kỳ luật lệ nào.",
+    {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg",thumb:"https://phimimg.com/upload/vod/20260103-1/6e21b9f5293afc32c1c8562389a63080.jpg", path: "tham-phan-trung-sinh",
+     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
+     content: "Lee Han Young (Ji Sung) – một thẩm phán từng lún sâu vào tham nhũng để rồi bị hãm hại bởi chính những người anh từng phục vụ. Trong khoảnh khắc đối mặt với cái chết, một sự kiện siêu nhiên đã xảy ra, đưa linh hồn anh trở về thời điểm 10 năm trước, khi anh vẫn còn là một tân binh trong ngành tư pháp. Được trao cơ hội thứ hai, anh quyết tâm tìm lại công lý bằng cách trừng phạt cái ác.",
+    },
+
+    {title: "Quý Công Tử", image: "https://phimimg.com/upload/vod/20230921-1/cce2df756fe9e634fadc5034c46bb1e8.jpg",thumb:"https://phimimg.com/upload/vod/20230921-1/8b1cb9a6a2eccdbc1eb66ef24cad936d.jpg", path: "quy-cong-tu",
+    episode_current: "Full", lang: "Vietsub",
+    content: "Quý Công Tử xoay quanh người đàn ông bí ẩn được biết đến với tên gọi “Quý Công Tử”. Gã đột nhiên xuất hiện trước mắt Marco, một thanh niên người Philippines mơ ước trở thành vận động viên boxing chuyên nghiệp, lang thang khắp các sàn đấu bất hợp pháp tại đây. Nhằm chi trả cho viện phí của mẹ, Marco đến Hàn Quốc để tìm người cha đã bỏ rơi hai mẹ con cậu từ lâu. Đụng độ Quý Công Tử cùng hàng loạt những con người bí hiểm trong thế giới ngầm, Marco trở thành mục tiêu duy nhất của những thế lực mang nhiều mục đích khác nhau. Cuộc truy đuổi điên cuồng bắt đầu.",
     },
     
+    {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
+    episode_current: "Luôn cập nhật",lang: "Vietsub",
+    content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
+    },
+
 ]
 
 
