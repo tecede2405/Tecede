@@ -135,17 +135,21 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",
+    {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
+    episode_current: "Full",lang: "Vietsub + Thuyết Minh",
+    content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
+    },
+     {title: "Kaguya: Công Chúa Vũ Trụ!", image: "https://phimimg.com/upload/vod/20260122-1/04e6b18a66ac7116d54146be5bcc7f6e.jpg",thumb:"https://phimimg.com/upload/vod/20260122-1/7eabb2d3cf4f6e8d2216f6cb67d1ee51.jpg", path: "kaguya-cong-chua-vu-tru",
     episode_current: "Full", lang: "Vietsub",
-    content: "Phim lấy cảm hứng từ truyền thuyết kinh dị nhất về người chết sống lại, kể về vợ chồng Quang và Như sống bằng nghề mai táng ở một ngôi làng vùng cao. Cuộc sống yên bình của họ bị xáo trộn khi phát hiện một cỗ quan tài vô chủ trên mảnh đất nhà mình. Từ đây, những hiện tượng kỳ lạ bắt đầu xảy ra và ám ảnh cả ngôi làng.",
+    content: "Cuộc sống của Iroha chệch khỏi quỹ đạo khi Kaguya, một cô gái phóng khoáng bỏ trốn khỏi mặt trăng, chuyển đến sống chung và thuyết phục cô cùng biểu diễn trong thế giới ảo.",
     },
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
      episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
     content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
     },
-    {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
-    episode_current: "Full",lang: "Vietsub + Thuyết Minh",
-    content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
+     {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
+    episode_current: "Luôn cập nhật",lang: "Vietsub",
+    content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
     },
 
    {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",
@@ -163,16 +167,10 @@ export const HotFilm = [
     content: "Quý Công Tử xoay quanh người đàn ông bí ẩn được biết đến với tên gọi “Quý Công Tử”. Gã đột nhiên xuất hiện trước mắt Marco, một thanh niên người Philippines mơ ước trở thành vận động viên boxing chuyên nghiệp, lang thang khắp các sàn đấu bất hợp pháp tại đây. Nhằm chi trả cho viện phí của mẹ, Marco đến Hàn Quốc để tìm người cha đã bỏ rơi hai mẹ con cậu từ lâu. Đụng độ Quý Công Tử cùng hàng loạt những con người bí hiểm trong thế giới ngầm, Marco trở thành mục tiêu duy nhất của những thế lực mang nhiều mục đích khác nhau. Cuộc truy đuổi điên cuồng bắt đầu.",
     },
     
-    {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
-    episode_current: "Luôn cập nhật",lang: "Vietsub",
-    content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
-    },
-
+   
 ]
 
 
-export const Conan = [
-    {title: "Conan Movie 1", image: "https://phimimg.com/upload/vod/20231019-1/d2e2c4cd6d19ccc793cf1cfb004aa894.jpg",thumb:"https://phimimg.com/upload/vod/20231019-1/10ba75b718b27fded8f14430aee7ac0a.jpg", path: "tham-tu-lung-danh-conan-1-qua-bom-choc-troi",time: "95 phút"}, 
-    {title: "Conan Movie 2", image: "https://phimimg.com/upload/vod/20231019-1/137937bbae1d27ab2f4f593d7e6d89de.jpg",thumb:"https://phimimg.com/upload/vod/20231019-1/c6c174d97ceb703f2ac4cb9106ab2bc4.jpg", path: "tham-tu-lung-danh-conan-2-muc-tieu-thu-14",time: "100 phút"},
-    {title: "Conan Movie 3", image: "https://phimimg.com/upload/vod/20231019-1/e954d2ab54b9a3b1fff45dcaad386105.jpg",thumb:"https://phimimg.com/upload/vod/20231019-1/e954d2ab54b9a3b1fff45dcaad386105.jpg", path: "tham-tu-lung-danh-conan-3-ao-thuat-gia-cuoi-cung-cua-the-ky",time: "100 phút"},
+export const HighRate = [
+   {title: "Violet Evergarden", image: "https://phimimg.com/upload/vod/20250106-1/bb0e3d87b08fc06761a0b414463f17e2.jpg", path: "bup-be-ky-uc",episode_current: "Hoàn Tất (13/13)"},
 ]

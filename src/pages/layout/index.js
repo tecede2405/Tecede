@@ -2,14 +2,14 @@ import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import "./layout.scss";
 import Tabbar from "../../component/tabar/index";
 import LoginForm from "../../component/ShowForm/showForm";
-
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   FaPhoneVolume,
   FaEnvelope,
   FaHashtag,
   FaBars,
-  FaTimes
+  FaTimes,
 } from "react-icons/fa";
 
 function Layout() {
@@ -47,7 +47,7 @@ function Layout() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
-        setShowTabbar(false); // 🔥 RESET MOBILE STATE
+        setShowTabbar(false); // RESET MOBILE STATE
       }
     };
 
@@ -84,11 +84,6 @@ function Layout() {
             <li>
               <NavLink to="/" className="menu__page">
                 Trang Chủ
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" className="menu__page">
-                Về chúng tôi
               </NavLink>
             </li>
             <li>
@@ -138,22 +133,45 @@ function Layout() {
       </div>
 
       {/* ===== FOOTER ===== */}
-      <footer>
-        <div className="footer-contact">
-          <ul>
-            <li>
-              <FaPhoneVolume className="icon" /> Số điện thoại: +84 384577121
-            </li>
-            <li>
-              <FaEnvelope className="icon" /> Email: thoaixd123@gmail.com
-            </li>
-            <li>
-              <FaHashtag className="icon" /> Hashtag: #tecede, #tecede blog
-            </li>
-          </ul>
-        </div>
-        <p>Copyright © 2024 by Tecede. All right reserved.</p>
+      <footer className="footer-custom">
+        
+          <div className="row text-start gy-4 p-3">
+
+            {/* Brand */}
+            <div className="col-12 col-md-4">
+              <h6 className="footer-subtitle">Giới thiệu</h6>
+              <p className="footer-desc">
+                Tecede - Website xem phim online miễn phí lỏ nhất Việt Nam.
+              </p>
+            </div>
+
+            {/* Contact */}
+            <div className="col-12 col-md-3">
+              <h6 className="footer-subtitle">Liên hệ</h6>
+              <ul className="footer-list">
+                <li><FaPhoneVolume /> +84 384 577 121</li>
+                <li><FaEnvelope /> thoaixd123@gmail.com</li>
+                <li><FaHashtag /> #tecede #tecede blog</li>
+              </ul>
+            </div>
+
+            {/* About */}
+            <div className="col-12 col-md-3">
+              <h6 className="footer-subtitle">Thông tin</h6>
+              <ul className="footer-list">
+                <li>
+                  <Link to="/about">Về chúng tôi</Link>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div className="footer-bottom">
+            © {new Date().getFullYear()} Tecede. All rights reserved.
+          </div>
       </footer>
+
     </>
   );
 }
