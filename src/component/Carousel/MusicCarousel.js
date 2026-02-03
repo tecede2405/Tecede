@@ -12,7 +12,7 @@ const AutoSlideInfinite = ({ items }) => {
 
   return (
     <div style={{ maxWidth: '100vw', overflow: 'hidden', margin: 'auto',
-     paddingLeft: '30px', paddingRight: '30px' }}>
+     paddingLeft: '10px', paddingRight: '0px' }}>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={15}

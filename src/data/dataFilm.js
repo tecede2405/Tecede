@@ -2,6 +2,7 @@ export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
     {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",time: "122 phút"},
+    {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",time: "118 phút"},
     {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",time: "99 phút"},
     {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "120 phút"},
     {title: "Cám", image: "https://phimimg.com/upload/vod/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
@@ -102,7 +103,9 @@ export const NewFilm = [
 ]
 
 export const NewAnime = [
+    
     {title: "Ánh Sáng Cuối Con Đường", image: "https://phimimg.com/upload/vod/20250403-1/736408533a11ba88d6424c5846a1f4dd.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/1c54bc61de7a358e6d2699fae8f6f929.jpg", path: "vi-vua-manh-nhat-lam-gi-o-kiep-thu-hai",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Đế Chế Diệt Vong", image: "https://phimimg.com/upload/vod/20260203-1/c2b352ab0b2d1449d32c7f97dcdb8e9d.jpg",thumb:"https://phimimg.com/upload/vod/20260203-1/52db28f620012aa1bab045d9c31bc512.jpg", path: "de-che-diet-vong-hametsu-no-oukoku",episode_current: "Hoàn Tất (12/12)"},
     {title: "Pháp Sư Tiễn Táng 2", image: "https://phimimg.com/upload/vod/20260118-1/40488f12abb7092629737b64256b8c01.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/78361b7dccef8920073dc9d7464f0729.jpg", path: "frieren-phap-su-tien-tang-phan-2",episode_current: "Luôn cập nhật"}, 
     {title: "Chú Thuật Hồi Chiến 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",episode_current: "Luôn cập nhật"},
     {title: "Đứa Con Của Thần Tượng 3", image: "https://phimimg.com/upload/vod/20260115-1/d430fcb28fcb9abc62e7178d0b188186.jpg",thumb:"https://phimimg.com/upload/vod/20260115-1/c8e4463ee795aba62dd54f41fae39697.jpg", path: "dua-con-cua-than-tuong-phan-3",episode_current: "Luôn cập nhật"},
@@ -135,19 +138,24 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",
+    episode_current: "Full", lang: "Vietsub",
+    content: "Tử Chiến Trên Không là phim điện ảnh hành động - kịch tính, được lấy cảm hứng từ vụ cướp máy bay có thật tại Việt Nam sau năm 1975.",
+    },
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
     episode_current: "Full",lang: "Vietsub + Thuyết Minh",
     content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
-    },
-     {title: "Kaguya: Công Chúa Vũ Trụ!", image: "https://phimimg.com/upload/vod/20260122-1/04e6b18a66ac7116d54146be5bcc7f6e.jpg",thumb:"https://phimimg.com/upload/vod/20260122-1/7eabb2d3cf4f6e8d2216f6cb67d1ee51.jpg", path: "kaguya-cong-chua-vu-tru",
-    episode_current: "Full", lang: "Vietsub",
-    content: "Cuộc sống của Iroha chệch khỏi quỹ đạo khi Kaguya, một cô gái phóng khoáng bỏ trốn khỏi mặt trăng, chuyển đến sống chung và thuyết phục cô cùng biểu diễn trong thế giới ảo.",
     },
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
      episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
     content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
     },
-     {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
+     {title: "Kaguya: Công Chúa Vũ Trụ!", image: "https://phimimg.com/upload/vod/20260122-1/04e6b18a66ac7116d54146be5bcc7f6e.jpg",thumb:"https://phimimg.com/upload/vod/20260122-1/7eabb2d3cf4f6e8d2216f6cb67d1ee51.jpg", path: "kaguya-cong-chua-vu-tru",
+    episode_current: "Full", lang: "Vietsub",
+    content: "Cuộc sống của Iroha chệch khỏi quỹ đạo khi Kaguya, một cô gái phóng khoáng bỏ trốn khỏi mặt trăng, chuyển đến sống chung và thuyết phục cô cùng biểu diễn trong thế giới ảo.",
+    },
+
+    {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
     },
@@ -161,13 +169,7 @@ export const HotFilm = [
      episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
      content: "Lee Han Young (Ji Sung) – một thẩm phán từng lún sâu vào tham nhũng để rồi bị hãm hại bởi chính những người anh từng phục vụ. Trong khoảnh khắc đối mặt với cái chết, một sự kiện siêu nhiên đã xảy ra, đưa linh hồn anh trở về thời điểm 10 năm trước, khi anh vẫn còn là một tân binh trong ngành tư pháp. Được trao cơ hội thứ hai, anh quyết tâm tìm lại công lý bằng cách trừng phạt cái ác.",
     },
-
-    {title: "Quý Công Tử", image: "https://phimimg.com/upload/vod/20230921-1/cce2df756fe9e634fadc5034c46bb1e8.jpg",thumb:"https://phimimg.com/upload/vod/20230921-1/8b1cb9a6a2eccdbc1eb66ef24cad936d.jpg", path: "quy-cong-tu",
-    episode_current: "Full", lang: "Vietsub",
-    content: "Quý Công Tử xoay quanh người đàn ông bí ẩn được biết đến với tên gọi “Quý Công Tử”. Gã đột nhiên xuất hiện trước mắt Marco, một thanh niên người Philippines mơ ước trở thành vận động viên boxing chuyên nghiệp, lang thang khắp các sàn đấu bất hợp pháp tại đây. Nhằm chi trả cho viện phí của mẹ, Marco đến Hàn Quốc để tìm người cha đã bỏ rơi hai mẹ con cậu từ lâu. Đụng độ Quý Công Tử cùng hàng loạt những con người bí hiểm trong thế giới ngầm, Marco trở thành mục tiêu duy nhất của những thế lực mang nhiều mục đích khác nhau. Cuộc truy đuổi điên cuồng bắt đầu.",
-    },
     
-   
 ]
 
 

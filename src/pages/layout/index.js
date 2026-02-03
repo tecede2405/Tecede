@@ -138,7 +138,7 @@ function Layout() {
           <div className="row text-start gy-4 p-3">
 
             {/* Brand */}
-            <div className="col-12 col-md-4">
+            <div className="col-12 col-md-4 col-sm-5">
               <h6 className="footer-subtitle">Giới thiệu</h6>
               <p className="footer-desc">
                 Tecede - Website xem phim online miễn phí lỏ nhất Việt Nam.
@@ -146,7 +146,7 @@ function Layout() {
             </div>
 
             {/* Contact */}
-            <div className="col-12 col-md-3">
+            <div className="col-12 col-md-3 col-sm-5">
               <h6 className="footer-subtitle">Liên hệ</h6>
               <ul className="footer-list">
                 <li><FaPhoneVolume /> +84 384 577 121</li>
@@ -156,7 +156,7 @@ function Layout() {
             </div>
 
             {/* About */}
-            <div className="col-12 col-md-3">
+            <div className="col-12 col-md-3 col-sm-5">
               <h6 className="footer-subtitle">Thông tin</h6>
               <ul className="footer-list">
                 <li>
