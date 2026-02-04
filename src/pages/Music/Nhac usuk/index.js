@@ -103,6 +103,7 @@ function Nhacusuk() {
                   <audio
                     ref={audioRef}
                     controls
+                    preload="none"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}
