@@ -9,8 +9,7 @@ async function generateSitemap() {
   const API_PATH = process.env.REACT_APP_API_LIST_PATH || '/danh-sach/phim-moi-cap-nhat?page=';
 
   const staticPages = [
-    '', '/about', '/music', '/music/nhac-tre', '/music/usuk', 
-    '/music/trung-quoc', '/music/nhactre-remix', '/music/edm', '/music/phonk', '/film/dao-hai-tac', '/film/tham-tu-lung-danh-co-nan',
+    '', '/about', '/film/dao-hai-tac', '/film/tham-tu-lung-danh-co-nan',
     '/film/dai-chien-nguoi-va-than-phan-3', '/film/mai-2024', '/film/quy-cau'
   ];
 
