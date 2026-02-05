@@ -135,7 +135,7 @@ function Layout() {
       {/* ===== FOOTER ===== */}
       <footer className="footer-custom">
         
-          <div className="row text-start gy-4 p-3">
+          <div className="row text-start gy-4 p-3" style={{ maxWidth: "100vw" }}>
 
             {/* Brand */}
             <div className="col-12 col-md-4 col-sm-5">
@@ -160,7 +160,7 @@ function Layout() {
               <h6 className="footer-subtitle">Thông tin</h6>
               <ul className="footer-list">
                 <li>
-                  <Link to="/about">Về chúng tôi</Link>
+                  <Link to="/404">Về chúng tôi</Link>
                 </li>
               </ul>
             </div>

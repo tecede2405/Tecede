@@ -174,5 +174,13 @@ export const HotFilm = [
 
 
 export const HighRate = [
-   {title: "Violet Evergarden", image: "https://phimimg.com/upload/vod/20250106-1/bb0e3d87b08fc06761a0b414463f17e2.jpg", path: "bup-be-ky-uc",episode_current: "Hoàn Tất (13/13)"},
+   {title: "Tài Xế Ẩn Danh 3", image: "https://phimimg.com/upload/vod/20251122-1/98a195e46ee8549833c3d8d15008c430.jpg", path: "tai-xe-an-danh-phan-3",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Cô Hầu Gái", image: "https://phimimg.com/upload/vod/20260203-1/485188e8b453f8f227cb0bcc663e2700.jpg", path: "co-hau-gai-2025",episode_current: "Full"},
+   {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg", path: "tham-phan-trung-sinh",episode_current: "Luôn cập nhật"},
+   {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
+   {title: "Kỵ Sĩ Của Bảy Vương Quốc", image: "https://phimimg.com/upload/vod/20260119-1/3bd2a0297784e1717d4e8f0e97f49486.jpg", path: "ky-si-cua-bay-vuong-quoc",episode_current: "Luôn cập nhật"},
+   {title: "Thu Hút Mãnh Liệt", image: "https://phimimg.com/upload/vod/20260123-1/1fe5ea0dc9608596d3bc1eac1db703d0.jpg", path: "thu-hut-manh-liet",episode_current: "Luôn cập nhật"},
+   {title: "Cơn Say Mùa Xuân", image: "https://phimimg.com/upload/vod/20260106-1/deeaf96194e9eb72cc990cb4747536e6.jpg", path: "con-say-mua-xuan",episode_current: "Luôn cập nhật"},
+   {title: "Cậu Bé Mất Tích 5", image: "https://phimimg.com/upload/vod/20251127-1/88dfce03b997600f0a898945fe8facb2.jpg", path: "cau-be-mat-tich-phan-5", episode_current: "Hoàn Tất (7/7)"},
+   {title: "Phi Vụ Động Trời 2", image: "https://phimimg.com/upload/vod/20251223-1/6bc1d549b86e490274d93bab66a3654d.jpg", path: "phi-vu-dong-troi-2", episode_current: "Full"},
 ]

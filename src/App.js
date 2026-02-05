@@ -20,7 +20,7 @@ import NhacTamTrang from "./pages/Music/NhacTamTrang/index";
 import NhacPhonk from "./pages/Music/Nhac Phonk/index";
 import NhacTreRemix from "./pages/Music/NhacTreRemix/index";
 import NhacDouyin from "./pages/Music/Nhac Douyin";
-
+import NotFound from "./pages/page404/index";
 // Admin
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
@@ -127,6 +127,7 @@ function App() {
                   <Route path="music/edm" element={<NhacEDM />} />
                   <Route path="music/mood" element={<NhacTamTrang />} />
                   <Route path="music/phonk" element={<NhacPhonk />} />
+                  <Route path="/404" element={<NotFound />} />
                   <Route
                     path="music/nhactre-remix"
                     element={<NhacTreRemix />}

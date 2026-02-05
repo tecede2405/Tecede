@@ -7,6 +7,7 @@ import NewFilm from '../../component/HomeFilm/newfilm';
 import NewAnimes from '../../component/HomeFilm/newAnime';
 import SieuNhan from '../../component/HomeFilm/tokusatsu';
 import PopularFilm from '../../component/HeroCarousel/index';
+import HighRateFilm from '../../component/HomeFilm/highRate';
 import "./style.scss";
 
 function Home() {
@@ -27,6 +28,9 @@ function Home() {
 
               <div className="Home__music"> 
                 <PopularFilm />
+              </div>
+              <div className="Home__music"> 
+                <HighRateFilm />
               </div>
               <div className="Home__music"> 
                 <Film />
@@ -55,6 +59,7 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu có thể cho mình xin 1 lượt theo dõi fanpage để nhận thông tin mới nhất về web và phim mới <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank" rel="noopener noreferrer">tại đây</a> nha.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không truy cập được vào web hãy bật 1.1.1.1 (Tải ở CH play, App store) và thử lại.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app. Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Vì trang này là trang miễn phí nên đôi lúc có sai sót các bạn hoan hỉ nhé.</i></li>
                 </ul>
               </div>
               

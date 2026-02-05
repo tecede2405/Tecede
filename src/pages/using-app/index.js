@@ -14,7 +14,7 @@ const AdminFeature = () => {
                         <h3 className="using-app-title">Bước 1</h3>
                         <div className="using-app__main-content">
                             <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751795780/1751738898401_edliti.jpg" alt="hướng dẫn" loading="lazy" />
-                            <i className="using-app-desc">Đầu tiên truy cập vào trang web này hoặc 1 trang bạn hay vào.</i>
+                            <i className="using-app-desc">Đầu tiên truy cập vào trang web này.</i>
                         </div>
                     </div>
                     <div className="using-app__main-box">

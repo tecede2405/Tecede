@@ -8,7 +8,7 @@ import SongList from "../../../component/SongList/SongList";
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
-
+import "../../../component/HomeMusic/homemusic.scss";
 function NhacTre() {
   const {
     playlist,

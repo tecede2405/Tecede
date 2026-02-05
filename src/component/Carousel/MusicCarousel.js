@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -46,7 +45,8 @@ const AutoSlideInfinite = ({ items }) => {
                 cursor: "pointer",
               }}
               className="card-img animate__animated animate__fadeIn"
-              onClick={() => navigate(`/music/${items.path}`)}
+              // /music/${items.path}
+              onClick={() => navigate(`/404`)}
             />
           </SwiperSlide>
         ))}
