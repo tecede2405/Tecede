@@ -1,6 +1,4 @@
-
 import Tabbar from '../../component/tabar';
-import HomeMusic from '../../component/HomeMusic';
 import { useNavigate } from "react-router-dom";
 import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
@@ -48,9 +46,6 @@ function Home() {
               </div>
               <div className="Home__music"> 
                 <SieuNhan />
-              </div>
-              <div className="Home__music"> 
-                <HomeMusic />
               </div>
               
               <div className="Home__note">
