@@ -51,11 +51,15 @@ function Tabbar({ isOpen, onClose }) {
 
   // FETCH QUỐC GIA
   fetch(`${process.env.REACT_APP_FILM_API_URL}/quoc-gia`)
-    .then((res) => res.json())
-    .then((data) => {
-      setCountries(data);
-    })
-    .catch(console.error);
+  .then((res) => res.json())
+  .then((data) => {
+    const filteredCountries = data.filter(
+      (country) => country.slug !== "ha-lan"
+    );
+    setCountries(filteredCountries);
+  })
+  .catch(console.error);
+
 
 }, []);
 
