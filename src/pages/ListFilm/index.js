@@ -9,7 +9,9 @@ import {
   NewFilm,
   NewAnime,
   Tokusatsu,
-  HighRate
+  HighRate,
+  KoreaFilm,
+  ChinaFilm
 } from "../../data/dataFilm";
 import "./style.scss";
 export default function FilmListByType() {
@@ -38,6 +40,8 @@ export default function FilmListByType() {
     if (type === "new-anime") data = NewAnime;
     if (type === "sieu-nhan") data = Tokusatsu;
     if (type === "high-rate-film") data = HighRate;
+    if (type === "korea-film") data = KoreaFilm;
+    if (type === "china-film") data = ChinaFilm;
 
     setResults(data);
   }, [type]);
@@ -125,6 +129,10 @@ export default function FilmListByType() {
             ? "Siêu Nhân"
             : type === "high-rate-film"
             ? "Phim Hot"
+            : type === "korea-film"
+            ? "Series Hàn Quốc"
+            : type === "china-film"
+            ? "Series Trung Quốc"
             : "Danh sách phim"
             }
         </h4>

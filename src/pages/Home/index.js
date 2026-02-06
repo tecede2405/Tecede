@@ -8,6 +8,8 @@ import NewAnimes from '../../component/HomeFilm/newAnime';
 import SieuNhan from '../../component/HomeFilm/tokusatsu';
 import PopularFilm from '../../component/HeroCarousel/index';
 import HighRateFilm from '../../component/HomeFilm/highRate';
+import KoreaFilms from "../../component/HomeFilm/koreaFilm";
+import ChinaFilms from "../../component/HomeFilm/chinaFilm";
 import "./style.scss";
 
 function Home() {
@@ -31,6 +33,12 @@ function Home() {
               </div>
               <div className="Home__music"> 
                 <HighRateFilm />
+              </div>
+              <div className="Home__music"> 
+                <KoreaFilms />
+              </div>
+              <div className="Home__music"> 
+                <ChinaFilms />
               </div>
               <div className="Home__music"> 
                 <Film />

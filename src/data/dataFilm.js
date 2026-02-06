@@ -3,6 +3,7 @@ export const cinematicFilm = [
     {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",time: "122 phút"},
     {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",time: "118 phút"},
+    {title: "Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",time: "104 phút"},
     {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",time: "99 phút"},
     {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "120 phút"},
     {title: "Cám", image: "https://phimimg.com/upload/vod/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
@@ -138,6 +139,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Tee Yod: Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",
+     episode_current: "Full", lang: "Vietsub",
+     content: "Những thế lực tà ác và một linh hồn báo thù nhắm vào một nữ sinh, buộc anh trai cô phải dấn thân vào khu rừng quỷ dị để cứu cô khỏi giáo phái bị nguyền rủa.",
+    },
     {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",
     episode_current: "Full", lang: "Vietsub",
     content: "Tử Chiến Trên Không là phim điện ảnh hành động - kịch tính, được lấy cảm hứng từ vụ cướp máy bay có thật tại Việt Nam sau năm 1975.",
@@ -163,13 +168,7 @@ export const HotFilm = [
    {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",
      episode_current: "Full", lang: "Vietsub",
      content: "Soon Tae nuôi mộng mở chuỗi nhà hàng tiếng tăm, quyết rửa tay gác kiếm nhưng bất đắc dĩ bị chỉ định làm đại ca xã đoàn. Anh nhanh chóng tìm cách đẩy trách nhiệm này cho Kang Pyo, cháu trai của ông trùm quá cố, nhưng đời không như mơ, Kang Pyo lại ôm ấp giấc mơ trở thành vũ công tango, chẳng buồn ngó lại nghiệp giang hồ. Chỉ riêng Pan Ho, kẻ chuyên gây rối lại là người duy nhất tha thiết muốn làm đại ca… nhưng tréo ngoe là chẳng ai tin tưởng. Thế là một cuộc đại chiến né chức nổ ra với mục tiêu tối thượng: Thua đường vote là thắng đường đời!",
-    },
-
-    {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg",thumb:"https://phimimg.com/upload/vod/20260103-1/6e21b9f5293afc32c1c8562389a63080.jpg", path: "tham-phan-trung-sinh",
-     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
-     content: "Lee Han Young (Ji Sung) – một thẩm phán từng lún sâu vào tham nhũng để rồi bị hãm hại bởi chính những người anh từng phục vụ. Trong khoảnh khắc đối mặt với cái chết, một sự kiện siêu nhiên đã xảy ra, đưa linh hồn anh trở về thời điểm 10 năm trước, khi anh vẫn còn là một tân binh trong ngành tư pháp. Được trao cơ hội thứ hai, anh quyết tâm tìm lại công lý bằng cách trừng phạt cái ác.",
-    },
-    
+    },    
 ]
 
 
@@ -183,4 +182,38 @@ export const HighRate = [
    {title: "Cơn Say Mùa Xuân", image: "https://phimimg.com/upload/vod/20260106-1/deeaf96194e9eb72cc990cb4747536e6.jpg", path: "con-say-mua-xuan",episode_current: "Luôn cập nhật"},
    {title: "Cậu Bé Mất Tích 5", image: "https://phimimg.com/upload/vod/20251127-1/88dfce03b997600f0a898945fe8facb2.jpg", path: "cau-be-mat-tich-phan-5", episode_current: "Hoàn Tất (7/7)"},
    {title: "Phi Vụ Động Trời 2", image: "https://phimimg.com/upload/vod/20251223-1/6bc1d549b86e490274d93bab66a3654d.jpg", path: "phi-vu-dong-troi-2", episode_current: "Full"},
+]
+
+export const KoreaFilm = [
+   {title: "Địa Ngục Độc Thân Phần 5", image: "https://phimimg.com/upload/vod/20260120-1/58166ddd12293c253590fa7250eac046.jpg", path: "dia-nguc-doc-than-phan-5", episode_current: "Luôn cập nhật"},
+   {title: "Điệu Chachacha Làng Biển", image: "https://phimimg.com/upload/vod/20240615-1/44687cef136b01ef4f976d90577d0bfc.jpg", path: "dieu-chachacha-lang-bien",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Con Trai Bạn Mẹ", image: "https://phimimg.com/upload/vod/20240818-1/e926ed8645e0e5e5e2decfdbf9a93e66.jpg", path: "con-trai-ban-me",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Trung Tâm Chăm Sóc Chấn Thương", image: "https://phimimg.com/upload/vod/20250125-1/3fb5a0e76bd15e648673727e110c7fc5.jpg", path: "trung-tam-cham-soc-chan-thuong", episode_current: "Hoàn Tất (8/8)"},
+   {title: "Quý Ông Plankton", image: "https://phimimg.com/upload/vod/20241108-1/12e06045cf1aba5d94fe9af0bb3cb452.jpg", path: "quy-ong-plankton",episode_current: "Hoàn Tất (10/10)"},
+   {title: "Chuyện Đời Bác Sĩ Nội Trú", image: "https://phimimg.com/upload/vod/20250412-1/0a1528a5a29c65e629b8850df90aedaa.jpg", path: "chuyen-doi-bac-si-noi-tru",episode_current: "Hoàn Tất (12/12)"},
+   {title: "Thần Đèn Ơi, Ước Đi", image: "https://phimimg.com/upload/vod/20251003-1/c6c1e14a1dd9432dd9c19574aa808145.jpg", path: "than-den-oi-uoc-di",episode_current: "Hoàn Tất (13/13)"},
+   {title: "Chàng Quỷ Của Tôi", image: "https://phimimg.com/upload/vod/20240103-1/1aded089bd2b35edf34a3b141bfb836c.jpg", path: "chang-quy-cua-toi",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Tuổi Hai Lăm, Tuổi Hai Mốt", image: "https://phimimg.com/upload/vod/20240324-1/e8dffe4760d2e46949b05840f9a0b9b2.jpg", path: "tuoi-hai-lam-tuoi-hai-mot",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Hoa Máu", image: "https://phimimg.com/upload/vod/20260205-1/50a279c9ab6a570c8a60f2b672efc30a.jpg", path: "hoa-mau",episode_current: "Luôn cập nhật"},
+   {title: "Nữ Hoàng Nước Mắt", image: "https://phimimg.com/upload/vod/20240310-1/cf38fab455d6d0849a2486b97eabb487.jpg", path: "nu-hoang-nuoc-mat",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Hãy Lấy Em Đi", image: "https://phimimg.com/upload/vod/20251011-1/ce7496f6ba1a4d6024d804813c226bc1.jpg", path: "hay-lay-em-di-anh-co-muon-cuoi-em-khong",episode_current: "Hoàn Tất (12/12)"},
+   {title: "Cõng Anh Mà Chạy", image: "https://phimimg.com/upload/vod/20240410-1/bcc4cd7dc4b227c388e13772543bbe1e.jpg", path: "cong-anh-ma-chay",episode_current: "Hoàn Tất (16/16)"},
+   {title: "Nụ Hôn Bùng Nổ", image: "https://phimimg.com/upload/vod/20251113-1/e1f3ffbc9759bc3bfaa1add317a477ce.jpg", path: "nu-hon-bung-no",episode_current: "Hoàn Tất (14/14)"},
+   {title: "Khi Cuộc Đời Cho Bạn Quả Quýt", image: "https://phimimg.com/upload/vod/20250308-1/1a65ac6c00bbb15df8431f6d918c6760.jpg", path: "khi-cuoc-doi-cho-ban-qua-quyt", episode_current: "Hoàn Tất (16/16)"},
+   {title: "Cơn Say Mùa Xuân", image: "https://phimimg.com/upload/vod/20260106-1/deeaf96194e9eb72cc990cb4747536e6.jpg", path: "con-say-mua-xuan",episode_current: "Luôn cập nhật"},
+   {title: "Luật Sư Công Ích", image: "https://phimimg.com/upload/vod/20251207-1/f5049d137ddf6436f15279fada08d881.jpg", path: "luat-su-cong-ich", episode_current: "Hoàn Tất (12/12)"},
+   {title: "Hoa Tuyết Điểm", image: "https://phimimg.com/upload/vod/20231207-1/4fc2599df7d866fc21e070ae54bc4d45.jpg", path: "hoa-tuyet-diem", episode_current: "Hoàn Tất (16/16)"},
+]
+
+export const ChinaFilm = [
+   {title: "Ngũ Phúc Lâm Môn", image: "https://phimimg.com/upload/vod/20250125-1/11d8cedcd7aa1c4b93b3d33e6f208b34.jpg", path: "ngu-phuc-lam-mon", episode_current: "Hoàn Tất (36/36)"},
+   {title: "Yêu Em", image: "https://phimimg.com/upload/vod/20250225-1/b99a2232b64a0692c456f2476c317f59.jpg", path: "yeu-em", episode_current: "Hoàn Tất (29/29)"},
+   {title: "Gửi Tôi Của Năm 1999", image: "https://phimimg.com/upload/vod/20250124-1/a48cf8733a475076efa986721e79a8de.jpg", path: "gui-toi-cua-nam-1999", episode_current: "Hoàn Tất (33/33)"},
+   {title: "Song Quỹ", image: "https://phimimg.com/upload/vod/20251214-1/ce49bd08edb91c937516a7d27bb08ccd.jpg", path: "song-quy", episode_current: "Hoàn Tất (28/28)"},
+   {title: "Xứng Đáng Để Yêu", image: "https://phimimg.com/upload/vod/20250402-1/78ba826800031271246d544c53a5697a.jpg", path: "xung-dang-de-yeu", episode_current: "Hoàn Tất (26/26)"},
+   {title: "Khó Dỗ Dành", image: "https://phimimg.com/upload/vod/20250218-1/7812aa97a4c6bfdd29e1bc33386b72e1.jpg", path: "kho-do-danh", episode_current: "Hoàn Tất (32/32)"},
+   {title: "Lighter and Princess", image: "https://phimimg.com/upload/vod/20240331-1/38e0c5c60e6b48d51a71a59429d12ecb.jpg", path: "chiec-bat-lua-va-vay-cong-chua",episode_current: "Hoàn Tất (36/36)"},
+   {title: "Dưới Tán Cây Có Ngôi Nhà Mái Đỏ", image: "https://phimimg.com/upload/vod/20250216-1/402cda244905f77ef5693fa5ad499df9.jpg", path: "duoi-tan-cay-co-ngoi-nha-mai-do",episode_current: "Hoàn Tất (30/30)"},  
+   {title: "Mạn Thành", image: "https://phimimg.com/upload/vod/20250214-1/4c72fd6d7fae55011785f864aed3ad5a.jpg", path: "man-thanh",episode_current: "Hoàn Tất (22/22)"},
+   {title: "Hôn Lễ Của Em", image: "https://phimimg.com/upload/vod/20231209-1/ff4ebc9bc993697a594d5c1cc0a47793.jpg", path: "hon-le-cua-em",episode_current: "Full"},  
 ]

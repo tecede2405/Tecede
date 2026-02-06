@@ -1,0 +1,48 @@
+import FilmCarousel from "../CoverflowCarousel/index";
+import { useNavigate } from "react-router-dom";
+import { GoChevronRight } from "react-icons/go";
+import {ChinaFilm} from "../../data/dataFilm";
+
+const filmData = ChinaFilm;
+
+function ChinaFilms() {
+const navigate = useNavigate();
+
+  return (
+    <>
+        <div className="mb-1">
+            <h2 className="film-category ms-3">Series Trung Quốc 
+              <GoChevronRight 
+                onClick={() => navigate("/detail/china-film")}
+                style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%", marginLeft: '7px' }}
+              />
+
+            </h2>
+        </div>
+        <div className="container container-film mt-1 mb-1">
+        <FilmCarousel
+          items={filmData}
+          renderItem={(item) => (
+            <div
+              className="film-card"
+              alt={item.title}
+              onClick={() => navigate(`/film/${item.path}`)}
+              style={{
+                backgroundImage: `url(${item.image})`
+              }}
+            >
+              <div className="film-card__overlay">
+                <h6 className="film-card__title">{item.title}</h6>
+                <p className="film-card__episode">
+                {item.episode_current || "?"}
+                </p>
+              </div>
+            </div>
+          )}
+        />
+      </div>  
+    </>
+   )
+}
+
+export default ChinaFilms;
