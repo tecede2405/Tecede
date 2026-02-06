@@ -139,6 +139,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg",thumb:"https://phimimg.com/upload/vod/20260206-1/65bde3b8112ed04109a3d1f15db3d759.jpg", path: "con-ra-the-thong-gi-nua",
+     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
+     content: "Vương Thúy Hoa xuyên không vào thế giới tiểu thuyết và hợp tác với Trương Tam để chống lại thiên tai, ổn định biên cương và đánh bại kẻ thù. Khi số phận trêu ngươi buộc họ phải đối mặt với sinh tử, cô chọn cứu anh bằng cách biến chất độc thành thuốc, và cuối cùng cả hai sống sót, chứng kiến thành quả mà họ cùng tạo dựng.",
+    }, 
     {title: "Tee Yod: Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",
      episode_current: "Full", lang: "Vietsub",
      content: "Những thế lực tà ác và một linh hồn báo thù nhắm vào một nữ sinh, buộc anh trai cô phải dấn thân vào khu rừng quỷ dị để cứu cô khỏi giáo phái bị nguyền rủa.",
@@ -163,20 +167,18 @@ export const HotFilm = [
     {title: "Chú Thuật Hồi Chiến Mùa 3", image: "https://phimimg.com/upload/vod/20260109-1/c99ee9406799474fcd724211f93a1d4d.jpg",thumb:"https://phimimg.com/upload/vod/20260109-1/30bbc3c9118bdda3e751cec034b99886.jpg", path: "chu-thuat-hoi-chien-phan-3",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Vì một lý do kỳ lạ nào đó, Yuji Itadori, mặc dù với thể chất hoàn hảo nhưng anh lại đâm đầu vào tham gia CLB Huyền Bí. Tuy nhiên, họ đã sớm phát hiện ra là những câu chuyện huyền bí hoàn toàn có thật khi các thành viên trong CLB lần lượt bị tấn công! Trong khi đó, Megumi Fushiguro “bí ẩn” lại đang truy tìm một đối tượng bị nguyền rủa cấp đặc biệt và cuộc tìm kiếm này đã đưa nhóm bạn đến Itadori",
-    },
-
-   {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",
-     episode_current: "Full", lang: "Vietsub",
-     content: "Soon Tae nuôi mộng mở chuỗi nhà hàng tiếng tăm, quyết rửa tay gác kiếm nhưng bất đắc dĩ bị chỉ định làm đại ca xã đoàn. Anh nhanh chóng tìm cách đẩy trách nhiệm này cho Kang Pyo, cháu trai của ông trùm quá cố, nhưng đời không như mơ, Kang Pyo lại ôm ấp giấc mơ trở thành vũ công tango, chẳng buồn ngó lại nghiệp giang hồ. Chỉ riêng Pan Ho, kẻ chuyên gây rối lại là người duy nhất tha thiết muốn làm đại ca… nhưng tréo ngoe là chẳng ai tin tưởng. Thế là một cuộc đại chiến né chức nổ ra với mục tiêu tối thượng: Thua đường vote là thắng đường đời!",
-    },    
+    },   
 ]
 
 
 export const HighRate = [
    {title: "Tài Xế Ẩn Danh 3", image: "https://phimimg.com/upload/vod/20251122-1/98a195e46ee8549833c3d8d15008c430.jpg", path: "tai-xe-an-danh-phan-3",episode_current: "Hoàn Tất (16/16)"},
-   {title: "Cô Hầu Gái", image: "https://phimimg.com/upload/vod/20260203-1/485188e8b453f8f227cb0bcc663e2700.jpg", path: "co-hau-gai-2025",episode_current: "Full"},
+   {title: "Vincenzo", image: "https://phimimg.com/upload/vod/20241026-1/b129bf9b9c749462d7b8d65a0d4a019a.jpg", path: "vincenzo",episode_current: "Hoàn Tất (20/20)"},
    {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg", path: "tham-phan-trung-sinh",episode_current: "Luôn cập nhật"},
+   {title: "Hoa Máu", image: "https://phimimg.com/upload/vod/20260205-1/50a279c9ab6a570c8a60f2b672efc30a.jpg", path: "hoa-mau",episode_current: "Luôn cập nhật"},
    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
+   {title: "Tên Trộm Dấu Yêu", image: "https://phimimg.com/upload/vod/20260105-1/0adea2e823ede3d6a2bca22d1f0ac286.jpg", path: "ten-trom-dau-yeu",episode_current: "Luôn cập nhật"},
+   {title: "Cô Hầu Gái", image: "https://phimimg.com/upload/vod/20260203-1/485188e8b453f8f227cb0bcc663e2700.jpg", path: "co-hau-gai-2025",episode_current: "Full"},
    {title: "Kỵ Sĩ Của Bảy Vương Quốc", image: "https://phimimg.com/upload/vod/20260119-1/3bd2a0297784e1717d4e8f0e97f49486.jpg", path: "ky-si-cua-bay-vuong-quoc",episode_current: "Luôn cập nhật"},
    {title: "Thu Hút Mãnh Liệt", image: "https://phimimg.com/upload/vod/20260123-1/1fe5ea0dc9608596d3bc1eac1db703d0.jpg", path: "thu-hut-manh-liet",episode_current: "Luôn cập nhật"},
    {title: "Cơn Say Mùa Xuân", image: "https://phimimg.com/upload/vod/20260106-1/deeaf96194e9eb72cc990cb4747536e6.jpg", path: "con-say-mua-xuan",episode_current: "Luôn cập nhật"},
@@ -207,6 +209,8 @@ export const KoreaFilm = [
 
 export const ChinaFilm = [
    {title: "Ngũ Phúc Lâm Môn", image: "https://phimimg.com/upload/vod/20250125-1/11d8cedcd7aa1c4b93b3d33e6f208b34.jpg", path: "ngu-phuc-lam-mon", episode_current: "Hoàn Tất (36/36)"},
+   {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg", path: "con-ra-the-thong-gi-nua", episode_current: "Luôn cập nhật"},
+   {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Luôn cập nhật"},
    {title: "Yêu Em", image: "https://phimimg.com/upload/vod/20250225-1/b99a2232b64a0692c456f2476c317f59.jpg", path: "yeu-em", episode_current: "Hoàn Tất (29/29)"},
    {title: "Gửi Tôi Của Năm 1999", image: "https://phimimg.com/upload/vod/20250124-1/a48cf8733a475076efa986721e79a8de.jpg", path: "gui-toi-cua-nam-1999", episode_current: "Hoàn Tất (33/33)"},
    {title: "Song Quỹ", image: "https://phimimg.com/upload/vod/20251214-1/ce49bd08edb91c937516a7d27bb08ccd.jpg", path: "song-quy", episode_current: "Hoàn Tất (28/28)"},

@@ -13,12 +13,14 @@ import ChinaFilms from "../../component/HomeFilm/chinaFilm";
 import "./style.scss";
 
 function Home() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleAppClick = () => {
     navigate("/using-app");
   };
-
+  const handleIosClick = () => {
+    navigate("/using-app-ios");
+  };
     return (
         <>
         <div className="Home">
@@ -66,7 +68,7 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 1. Có 2 đường dẫn truy cập: tecede.netlify.app và tecede.vercel.app, bạn có thể truy cập nếu 1 trong 2 bị lỗi.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu có thể cho mình xin 1 lượt theo dõi fanpage để nhận thông tin mới nhất về web và phim mới <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank" rel="noopener noreferrer">tại đây</a> nha.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không truy cập được vào web hãy bật 1.1.1.1 (Tải ở CH play, App store) và thử lại.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app. Xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app, đối với android xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>. Đối với IOS xem hướng dẫn <span onClick={handleIosClick}>ở đây</span>.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Vì trang này là trang miễn phí nên đôi lúc có sai sót các bạn hoan hỉ nhé.</i></li>
                 </ul>
               </div>

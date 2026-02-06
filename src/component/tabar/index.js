@@ -7,8 +7,8 @@ import {
   FaInstagram,
   FaTiktok,
   FaYoutube,
-  FaGithub,
-  FaMusic
+  FaMusic,
+  FaGlobeAsia
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./style.scss";
@@ -16,6 +16,7 @@ import "./style.scss";
 function Tabbar({ isOpen, onClose }) {
   const [openTab, setOpenTab] = useState("genre");
   const [genres, setGenres] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   const toggleTab = (key) => {
     setOpenTab(openTab === key ? null : key);
@@ -37,6 +38,7 @@ function Tabbar({ isOpen, onClose }) {
     return BLOCKED_KEYWORDS.some((k) => text.includes(k));
   };
 
+  // FETCH THỂ LOẠI
   fetch(`${process.env.REACT_APP_FILM_API_URL}/the-loai`)
     .then((res) => res.json())
     .then((data) => {
@@ -46,8 +48,16 @@ function Tabbar({ isOpen, onClose }) {
       setGenres(safeGenres);
     })
     .catch(console.error);
-}, []);
 
+  // FETCH QUỐC GIA
+  fetch(`${process.env.REACT_APP_FILM_API_URL}/quoc-gia`)
+    .then((res) => res.json())
+    .then((data) => {
+      setCountries(data);
+    })
+    .catch(console.error);
+
+}, []);
 
 
   const handleLinkClick = () => {
@@ -108,16 +118,6 @@ function Tabbar({ isOpen, onClose }) {
                 onClick={handleLinkClick}
               >
                 <FaYoutube /> YouTube
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/tecede2405"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleLinkClick}
-              >
-                <FaGithub /> GitHub
               </a>
             </li>
             <li>
@@ -187,6 +187,31 @@ function Tabbar({ isOpen, onClose }) {
           </ul>
         </div>
 
+        {/* COUNTRY */}
+        <div className={`tab-parent ${openTab === "country" ? "open" : ""}`}>
+          <button onClick={() => toggleTab("country")}>
+            <span className="title">
+              <FaGlobeAsia />
+              <span className="tab-label">Quốc gia</span>
+            </span>
+            <FaChevronDown className="arrow" />
+          </button>
+
+          <ul className="tab-child">
+            {countries.map((country) => (
+              <li key={country.slug}>
+                <NavLink
+                  to={`/quoc-gia/${country.slug}`}
+                  className="tab-link"
+                  onClick={handleLinkClick}
+                >
+                  {country.name}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {/* FILM */}
         <div className={`tab-parent ${openTab === "genre" ? "open" : ""}`}>
           <button onClick={() => toggleTab("genre")}>
@@ -211,6 +236,8 @@ function Tabbar({ isOpen, onClose }) {
             ))}
           </ul>
         </div>
+
+        
       </div>
     </>
   );

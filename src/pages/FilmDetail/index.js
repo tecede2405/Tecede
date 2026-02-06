@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams,useNavigate } from "react-router-dom";
 import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
+import { saveToHistory } from "../../utils/history";
 import "./style.scss";
 
 export default function FilmDetail() {
@@ -12,7 +13,7 @@ export default function FilmDetail() {
   const [currentServer, setCurrentServer] = useState(0); // index server đang chọn
   const [episodes, setEpisodes] = useState([]);    // các tập theo server
   const [currentVideo, setCurrentVideo] = useState(null);
-
+  
   // Fetch dữ liệu phim
   useEffect(() => {
     async function fetchFilm() {
@@ -35,6 +36,17 @@ export default function FilmDetail() {
 
     fetchFilm();
   }, [slug]);
+
+  // lưu lại lịch sử xem
+  useEffect(() => {
+    if (movie) {
+      saveToHistory({
+        title: movie.name,
+        image: movie.poster_url,
+        path: movie.slug,
+      });
+    }
+  }, [movie]);
 
   // Khi đổi server → đổi danh sách tập + chọn tập đầu
   const handleChangeServer = (serverIndex) => {

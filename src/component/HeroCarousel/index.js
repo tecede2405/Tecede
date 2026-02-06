@@ -21,7 +21,6 @@ export default function NewAnimeHero() {
   }, []);
 
 
-
   const isMobile = width < 525;
   const isTablet = width >= 525 && width < 1024;
 
@@ -35,17 +34,17 @@ export default function NewAnimeHero() {
           overflow: "hidden",
         }}
         >
-  {/* BACKGROUND */}
- <div
-  key={active.thumb} // đổi ảnh → remount → animation chạy
-  className="hero-bg"
-  style={{
-    backgroundImage: `
-      linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
-      url(${active.thumb})
-    `,
-  }}
-/>
+      {/* BACKGROUND */}
+    <div
+      key={active.thumb} // đổi ảnh → remount → animation chạy
+      className="hero-bg"
+      style={{
+        backgroundImage: `
+          linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
+          url(${active.thumb})
+        `,
+      }}
+    />
 
   {/* ===== GIỮ NGUYÊN TOÀN BỘ JSX CŨ CỦA BẠN DƯỚI ĐÂY ===== */}
 

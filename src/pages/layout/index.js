@@ -83,7 +83,12 @@ function Layout() {
           <ul>
             <li>
               <NavLink to="/" className="menu__page">
-                Trang Chủ
+                Trang chủ
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/history" className="menu__page">
+                Lịch sử
               </NavLink>
             </li>
             <li>
