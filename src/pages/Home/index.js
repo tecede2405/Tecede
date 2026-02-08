@@ -10,6 +10,8 @@ import PopularFilm from '../../component/HeroCarousel/index';
 import HighRateFilm from '../../component/HomeFilm/highRate';
 import KoreaFilms from "../../component/HomeFilm/koreaFilm";
 import ChinaFilms from "../../component/HomeFilm/chinaFilm";
+import GenreCarousel from "../../component/Carousel/genreCarousel";
+
 import "./style.scss";
 
 function Home() {
@@ -32,6 +34,9 @@ function Home() {
 
               <div className="Home__music"> 
                 <PopularFilm />
+              </div>
+              <div className="Home__music"> 
+                <GenreCarousel />
               </div>
               <div className="Home__music"> 
                 <HighRateFilm />
@@ -70,6 +75,7 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không truy cập được vào web hãy bật 1.1.1.1 (Tải ở CH play, App store) và thử lại.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app, đối với android xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>. Đối với IOS xem hướng dẫn <span onClick={handleIosClick}>ở đây</span>.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Vì trang này là trang miễn phí nên đôi lúc có sai sót các bạn hoan hỉ nhé.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 6. Mình không phát triển tính năng đăng nhập cho khách nhưng lịch sử xem vẫn lưu ở trên nha.</i></li>
                 </ul>
               </div>
               
