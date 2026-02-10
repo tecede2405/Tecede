@@ -92,7 +92,7 @@ export default function FilmListBySlug() {
     if (!enablePreview) return;
     hoverTimerRef.current = setTimeout(() => {
       setHoverFilm(film);
-    }, 500);
+    }, 2000);
   };
 
   const handleMouseLeave = () => {

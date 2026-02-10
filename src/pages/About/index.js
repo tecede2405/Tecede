@@ -19,7 +19,7 @@
             <div className="about__profile">
                 <img
                 src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125677/AboutIamge_gc1of5.png"
-                alt="Thoại Xayda - Developer"
+                alt="avatar"
                 loading="lazy"
                 className="about__avatar"
                 />

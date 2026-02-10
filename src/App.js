@@ -8,7 +8,7 @@ import About from "./pages/About/index";
 import Admin from "./pages/Admin/index";
 import "font-awesome/css/font-awesome.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Loading from "./component/Loading/index";
+import Loading from "./component/Loading/tet";
 import ScrollToTop from "./component/ScrollToTop/index";
 
 // Music pages
