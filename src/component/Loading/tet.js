@@ -7,7 +7,7 @@ const Loading = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -18,10 +18,10 @@ const Loading = () => {
     <div className="tetloading-screen">
       <div className="tet-box">
         <img
-          src="https://cdn-media.sforum.vn/storage/app/media/giakhanh/h%C3%ACnh%20%C4%91%E1%BB%99ng%20ch%C3%BAc%20m%E1%BB%ABng%20n%C4%83m%20m%E1%BB%9Bi/hinh-dong-chuc-mung-nam-moi-31.gif"
+          src="https://thammylinhanh.vn/wp-content/uploads/2025/12/tai-hinh-anh-chuc-tet-2026.jpg"
           alt="Happy New Year"
         />
-        <p>Đợi tí nhé bạn iu...</p>
+        <p className="loading-text">Đợi tí nhé bạn iu <span className="spinner-loading"></span></p>
         <p>Chúc bạn có 1 cái tết <b>đầm ấm và hạnh phúc bên gia đình</b> nhé!</p>
       </div>
     </div>
