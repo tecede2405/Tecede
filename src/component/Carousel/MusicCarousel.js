@@ -46,7 +46,7 @@ const AutoSlideInfinite = ({ items }) => {
               }}
               className="card-img animate__animated animate__fadeIn"
               // /music/${items.path}
-              onClick={() => navigate(`/404`)}
+              onClick={() => navigate(`/music/${items.path}`)}
             />
           </SwiperSlide>
         ))}

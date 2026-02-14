@@ -2,6 +2,7 @@ export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
     {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",time: "122 phút"},
+    {title: "Út Lan: Oán Linh Giữ Của", image: "https://phimimg.com/upload/vod/20260214-1/e0b89765d8e3af6e3c17376cd7b74a2c.jpg",thumb:"https://phimimg.com/upload/vod/20260214-1/63f81ecf86740e24cd088e739daadcd2.jpg", path: "ut-lan-oan-linh-giu-cua",time: "111 phút"},
     {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",time: "118 phút"},
     {title: "Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",time: "104 phút"},
     {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",time: "99 phút"},
@@ -88,6 +89,8 @@ export const NewFilm = [
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang",episode_current: "Phim rạp mới"},
     {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Luôn cập nhật"},
+    {title: "Hùng Long Phong Bá Phần 4", image: "https://phimimg.com/upload/vod/20260214-1/8bd4eba1068788972aceeae2fa924c28.jpg", path: "hung-long-phong-ba-phan-4",episode_current: "Luôn cập nhật"},
+    {title: "Út Lan: Oán Linh Giữ Của", image: "https://phimimg.com/upload/vod/20260214-1/e0b89765d8e3af6e3c17376cd7b74a2c.jpg", path: "ut-lan-oan-linh-giu-cua",episode_current: "Full"},
     {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg", path: "trao-em-ca-vu-tru",episode_current: "Luôn cập nhật"},
     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg", path: "quy-nhap-trang",episode_current: "Full"},
     {title: "Thu Hút Mãnh Liệt", image: "https://phimimg.com/upload/vod/20260123-1/1fe5ea0dc9608596d3bc1eac1db703d0.jpg", path: "thu-hut-manh-liet",episode_current: "Luôn cập nhật"},
@@ -145,6 +148,14 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Út Lan: Oán Linh Giữ Của", image: "https://phimimg.com/upload/vod/20260214-1/e0b89765d8e3af6e3c17376cd7b74a2c.jpg",thumb:"https://phimimg.com/upload/vod/20260214-1/63f81ecf86740e24cd088e739daadcd2.jpg", path: "ut-lan-oan-linh-giu-cua", 
+    episode_current: "Full",lang: "Vietsub",
+    content: "Sau sự ra đi của cha, Lan (Phương Thanh) về một vùng quê và ở đợ cho nhà ông Danh (Mạc Văn Khoa) - một người đàn ông góa vợ, không con cái. Ngay sau khi bước chân vào căn nhà, Lan phải đối mặt với hàng loạt hiện tượng kỳ dị và những cái chết bí ẩn liên tục xảy ra. Cùng với Sơn (Quốc Trường) - một nhà văn chuyên viết truyện kinh dị, Lan bắt đầu lật mở những bí mật kinh hoàng, khám phá lịch sử đen tối của căn nhà.",
+    },
+    {title: "Hùng Long Phong Bá (Phần 4)", image: "https://phimimg.com/upload/vod/20260214-1/8bd4eba1068788972aceeae2fa924c28.jpg",thumb:"https://phimimg.com/upload/vod/20260214-1/71cec309dd4be81a09e06e470536ae1d.jpg", path: "hung-long-phong-ba-phan-4", 
+    episode_current: "Luôn cập nhật",lang: "Vietsub",
+    content: "Sau khi Long trở thành trùm Chợ Lớn, tình bạn giữa Long, Hùng và Phong dần rạn nứt vì mâu thuẫn, lý tưởng đối lập. Căng thẳng bùng lên khi Hoàng xuất hiện với âm mưu thâm độc.",
+    },
     {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg",thumb:"https://phimimg.com/upload/vod/20260209-1/e898e1eda8286fc1188ce909123253d4.jpg", path: "trao-em-ca-vu-tru",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Hai người họ hàng bên nội và bên ngoại, sau một biến cố đau lòng, bị buộc phải cùng nhau nuôi dạy đứa cháu nhỏ mồ côi. Sống chung dưới một mái nhà, họ dần vượt qua những hiểu lầm và định kiến về nhau. Thông qua hành trình cùng làm cha mẹ, cả hai không chỉ tìm thấy sự trưởng thành cho bản thân mà còn nảy sinh một tình cảm lãng mạn không ngờ tới.",
@@ -161,18 +172,10 @@ export const HotFilm = [
     episode_current: "Full", lang: "Vietsub",
     content: "Tử Chiến Trên Không là phim điện ảnh hành động - kịch tính, được lấy cảm hứng từ vụ cướp máy bay có thật tại Việt Nam sau năm 1975.",
     },
-    {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg",thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang", 
-    episode_current: "Full",lang: "Vietsub + Thuyết Minh",
-    content: "Tiểu Yêu Heo quyết định rời núi Lãng Lãng để tham gia cuộc hành hương. Trên hành trình về phương Tây, những chú tiểu quái vật sẽ phải đối mặt với những thử thách nào? Cuối cùng, liệu chúng có đạt được ước mơ và sống như mong muốn?",
-    },
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
      episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
     content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
-    },
-    {title: "Tee Yod: Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",
-     episode_current: "Full", lang: "Vietsub",
-     content: "Những thế lực tà ác và một linh hồn báo thù nhắm vào một nữ sinh, buộc anh trai cô phải dấn thân vào khu rừng quỷ dị để cứu cô khỏi giáo phái bị nguyền rủa.",
-    },  
+    }, 
 ]
 
 

@@ -11,7 +11,7 @@ import HighRateFilm from '../../component/HomeFilm/highRate';
 import KoreaFilms from "../../component/HomeFilm/koreaFilm";
 import ChinaFilms from "../../component/HomeFilm/chinaFilm";
 import GenreCarousel from "../../component/Carousel/genreCarousel";
-
+import HomeMusic from "../../component/HomeMusic/index";
 import "./style.scss";
 
 function Home() {
@@ -66,7 +66,9 @@ function Home() {
               <div className="Home__music"> 
                 <SieuNhan />
               </div>
-              
+              <div className="Home__music"> 
+                <HomeMusic />
+              </div>
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>
