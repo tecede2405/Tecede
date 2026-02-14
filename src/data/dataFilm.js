@@ -89,6 +89,7 @@ export const NewFilm = [
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang",episode_current: "Phim rạp mới"},
     {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Luôn cập nhật"},
+    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg", path: "nghe-thuat-lua-doi-cua-sarah",episode_current: "Luôn cập nhật"},
     {title: "Hùng Long Phong Bá Phần 4", image: "https://phimimg.com/upload/vod/20260214-1/8bd4eba1068788972aceeae2fa924c28.jpg", path: "hung-long-phong-ba-phan-4",episode_current: "Luôn cập nhật"},
     {title: "Út Lan: Oán Linh Giữ Của", image: "https://phimimg.com/upload/vod/20260214-1/e0b89765d8e3af6e3c17376cd7b74a2c.jpg", path: "ut-lan-oan-linh-giu-cua",episode_current: "Full"},
     {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg", path: "trao-em-ca-vu-tru",episode_current: "Luôn cập nhật"},
@@ -148,6 +149,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg",thumb:"https://phimimg.com/upload/vod/20260213-1/08ce4f760d99001d8594e896c81dd055.jpg", path: "nghe-thuat-lua-doi-cua-sarah",
+    episode_current: "Luôn cập nhật", lang: "Vietsub",
+    content: "Một thi thể giữa thị trấn. Một thương hiệu xa xỉ đang lên. Một thanh tra điều tra mọi chi tiết trong câu chuyện liên tục thay đổi của một người phụ nữ. Thực sự đã xảy ra chuyện gì?",
+    },
     {title: "Út Lan: Oán Linh Giữ Của", image: "https://phimimg.com/upload/vod/20260214-1/e0b89765d8e3af6e3c17376cd7b74a2c.jpg",thumb:"https://phimimg.com/upload/vod/20260214-1/63f81ecf86740e24cd088e739daadcd2.jpg", path: "ut-lan-oan-linh-giu-cua", 
     episode_current: "Full",lang: "Vietsub",
     content: "Sau sự ra đi của cha, Lan (Phương Thanh) về một vùng quê và ở đợ cho nhà ông Danh (Mạc Văn Khoa) - một người đàn ông góa vợ, không con cái. Ngay sau khi bước chân vào căn nhà, Lan phải đối mặt với hàng loạt hiện tượng kỳ dị và những cái chết bí ẩn liên tục xảy ra. Cùng với Sơn (Quốc Trường) - một nhà văn chuyên viết truyện kinh dị, Lan bắt đầu lật mở những bí mật kinh hoàng, khám phá lịch sử đen tối của căn nhà.",
@@ -168,10 +173,6 @@ export const HotFilm = [
     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
     content: "Vào tiết Nguyên Tiêu, công chúa Ninh Viễn chết một cách ly kỳ trong dạ yến, Lý Bội Nghi của Nội Yết Cục và Thái Sử thừa Tiêu Hoài Cẩn của Thái Sử Cục phụng mệnh điều tra. Lý Bội Nghi võ nghệ cao cường lại giỏi nhìn thấu lòng người, vẻ ngoài lạnh lùng nhưng tâm địa lương thiện, một lòng truy tìm chân tướng. Với cô, phá án không chỉ là truy tìm sự thật mà còn là cuộc đấu trí so tài với hung thủ. Dưới sự phối hợp ăn ý với Tiêu Hoài Cẩn tư duy kín kẽ, họ từng bước bóc tách sự thật, thông qua cô gái quyền quý hống hách và Vũ Lâm Lang Tướng Kim Ngô Vệ mang trong mình bí mật, cuối cùng đã điều tra ra chân tướng, tìm được hung thủ. Sau đó, hàng loạt bí mật thâm cung và các vụ án kỳ lạ phức tạp liên tiếp xảy ra trong nội đình Đại Đường. Hoa trên tường đá Huyết Sắc Thiên Tư. Lời đồn bí mật giờ lành Thất Tinh Thác và nhiều vụ án khác liên quan đến số phận của nữ tử hậu cung.",
     },
-    {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",
-    episode_current: "Full", lang: "Vietsub",
-    content: "Tử Chiến Trên Không là phim điện ảnh hành động - kịch tính, được lấy cảm hứng từ vụ cướp máy bay có thật tại Việt Nam sau năm 1975.",
-    },
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
      episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
     content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
@@ -180,6 +181,7 @@ export const HotFilm = [
 
 
 export const HighRate = [
+    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg", path: "nghe-thuat-lua-doi-cua-sarah",episode_current: "Luôn cập nhật"},
    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
    {title: "Tài Xế Ẩn Danh 3", image: "https://phimimg.com/upload/vod/20251122-1/98a195e46ee8549833c3d8d15008c430.jpg", path: "tai-xe-an-danh-phan-3",episode_current: "Hoàn Tất (16/16)"},
    {title: "Thẩm Phán Trùng Sinh", image: "https://phimimg.com/upload/vod/20260103-1/554f1cc080753e7c1b6a600ad51afd77.jpg", path: "tham-phan-trung-sinh",episode_current: "Luôn cập nhật"},
@@ -200,6 +202,7 @@ export const HighRate = [
 export const KoreaFilm = [
    {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg", path: "trao-em-ca-vu-tru",episode_current: "Luôn cập nhật"},
    {title: "Địa Ngục Độc Thân Phần 5", image: "https://phimimg.com/upload/vod/20260120-1/58166ddd12293c253590fa7250eac046.jpg", path: "dia-nguc-doc-than-phan-5", episode_current: "Hoàn Tất (12/12)"},
+   {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg", path: "nghe-thuat-lua-doi-cua-sarah",episode_current: "Luôn cập nhật"},
    {title: "Tuổi Hai Lăm, Tuổi Hai Mốt", image: "https://phimimg.com/upload/vod/20240324-1/e8dffe4760d2e46949b05840f9a0b9b2.jpg", path: "tuoi-hai-lam-tuoi-hai-mot",episode_current: "Hoàn Tất (16/16)"},
    {title: "Hoa Máu", image: "https://phimimg.com/upload/vod/20260205-1/50a279c9ab6a570c8a60f2b672efc30a.jpg", path: "hoa-mau",episode_current: "Luôn cập nhật"},
    {title: "Điệu Chachacha Làng Biển", image: "https://phimimg.com/upload/vod/20240615-1/44687cef136b01ef4f976d90577d0bfc.jpg", path: "dieu-chachacha-lang-bien",episode_current: "Hoàn Tất (16/16)"},
