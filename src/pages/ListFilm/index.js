@@ -11,7 +11,8 @@ import {
   Tokusatsu,
   HighRate,
   KoreaFilm,
-  ChinaFilm
+  ChinaFilm,
+  China3D
 } from "../../data/dataFilm";
 import "./style.scss";
 export default function FilmListByType() {
@@ -42,6 +43,7 @@ export default function FilmListByType() {
     if (type === "high-rate-film") data = HighRate;
     if (type === "korea-film") data = KoreaFilm;
     if (type === "china-film") data = ChinaFilm;
+    if (type === "china3d-film") data = China3D;
 
     setResults(data);
   }, [type]);
@@ -133,6 +135,8 @@ export default function FilmListByType() {
             ? "Series Hàn Quốc"
             : type === "china-film"
             ? "Series Trung Quốc"
+            : type === "china3d-film"
+            ? "Hoạt Hình 3D Trung Quốc"
             : "Danh sách phim"
             }
         </h4>

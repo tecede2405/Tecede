@@ -12,6 +12,7 @@ import KoreaFilms from "../../component/HomeFilm/koreaFilm";
 import ChinaFilms from "../../component/HomeFilm/chinaFilm";
 import GenreCarousel from "../../component/Carousel/genreCarousel";
 import HomeMusic from "../../component/HomeMusic/index";
+import China3dFilms from "../../component/HomeFilm/china3dFilm";
 import "./style.scss";
 
 function Home() {
@@ -46,6 +47,9 @@ function Home() {
               </div>
               <div className="Home__music"> 
                 <ChinaFilms />
+              </div>
+              <div className="Home__music"> 
+                <China3dFilms />
               </div>
               <div className="Home__music"> 
                 <Film />
