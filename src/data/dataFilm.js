@@ -168,9 +168,9 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-    {title: "Trạch Thiên Ký", image: "https://phimimg.com/upload/vod/20260204-1/551fbd9cb8955022c0b50a60727decaa.jpg",thumb:"https://phimimg.com/upload/vod/20260204-1/1aca6f23b3cda6ce17fbfe32ada51669.jpg", path: "trach-thien-ky",
+    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em",
     episode_current: "Luôn cập nhật", lang: "Vietsub",
-    content: "Sinh ra đã bị thời gian kết án, chàng trai họ Trần mang theo hơi thở mong manh bước ra khỏi núi hoang, chọn đối diện vận mệnh thay vì chờ nó khép lại. Một thân bệnh tật, một lòng không khuất phục, đó là hành trang duy nhất khi hắn tiến vào trung tâm quyền lực của thiên hạ, nơi kẻ yếu chỉ là quân cờ. Thế cuộc không dung người trái ý. Một mối ràng buộc từ quá khứ khiến hắn trở thành mục tiêu, bị đẩy khỏi ánh đèn danh vọng, lưu đày vào nơi hoang phế. Chính tại chốn bị quên lãng ấy, &nbsp;hắn lật mở cổ điển thất truyền, lấy tri thức xưa làm đuốc, từng bước dò đường giữa bóng tối. Giữa chiến địa phong kín, hắn gặp lại người con gái mang dung nhan phượng hoàng dưới lớp ngụy trang. Hai người kề vai trong máu lửa, lấy sinh tử vá lại niềm tin, đập tan mưu đồ hắc ám.",
+    content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
     },
     {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg",thumb:"https://phimimg.com/upload/vod/20260213-1/08ce4f760d99001d8594e896c81dd055.jpg", path: "nghe-thuat-lua-doi-cua-sarah",
     episode_current: "Hoàn Tất (8/8)", lang: "Vietsub",
