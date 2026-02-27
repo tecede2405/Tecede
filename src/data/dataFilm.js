@@ -168,6 +168,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg",thumb:"https://phimimg.com/upload/vod/20260227-1/624088b5f00aaac1ceef03c021109c31.jpg", path: "dai-chien-van-menh",
+     episode_current: "Luôn cập nhật",lang: "Vietsub",
+    content: "Liệu số phận của chúng ta đã được định trước? Và liệu có ai thực sự có thể đọc được nó? Một cuộc thi đột phá dám tìm ra câu trả lời. 49 chuyên gia đọc vận mệnh hàng đầu Hàn Quốc – những bậc thầy về pháp sư, bói toán, bài tarot và xem tướng mặt – sẽ đặt danh dự của mình vào cuộc thi. Chỉ những người thực sự có thể đọc được vận mệnh mới sống sót. Ai sẽ là người chiến thắng?",
+    },
     {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em",
     episode_current: "Luôn cập nhật", lang: "Vietsub",
     content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
@@ -191,11 +195,7 @@ export const HotFilm = [
     {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg",thumb:"https://phimimg.com/upload/vod/20260206-1/65bde3b8112ed04109a3d1f15db3d759.jpg", path: "con-ra-the-thong-gi-nua",
      episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
      content: "Vương Thúy Hoa xuyên không vào thế giới tiểu thuyết và hợp tác với Trương Tam để chống lại thiên tai, ổn định biên cương và đánh bại kẻ thù. Khi số phận trêu ngươi buộc họ phải đối mặt với sinh tử, cô chọn cứu anh bằng cách biến chất độc thành thuốc, và cuối cùng cả hai sống sót, chứng kiến thành quả mà họ cùng tạo dựng.",
-    }, 
-    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",
-     episode_current: "Hoàn Tất (12/12)",lang: "Vietsub + Lồng Tiếng",
-    content: "Đi khắp thế giới để quay chương trình truyền hình, cảm xúc của một người nổi tiếng và phiên dịch viên của cô lại chẳng thể nào thông dịch. Liệu tình yêu có tìm được ngôn ngữ riêng?",
-    }, 
+    },  
 ]
 
 
