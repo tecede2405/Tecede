@@ -1,0 +1,307 @@
+/* ===============================
+   CINEMA HERO ROW
+================================= */
+
+.cinemaHeroRow {
+  width: 100%;
+  background: #121212;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===============================
+   SWIPER SAFE AREA
+================================= */
+
+.cinemaHeroRow__viewport {
+  width: 100%;
+  position: relative;
+}
+
+.cinemaHeroRow__swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* IMPORTANT → tránh click leak */
+.cinemaHeroRow__swiper .swiper-slide {
+  pointer-events: none;
+}
+
+.cinemaHeroRow__swiper .swiper-slide-active {
+  pointer-events: auto;
+}
+
+/* ===============================
+   HERO CARD
+================================= */
+
+.cinemaHeroCard {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+}
+
+/* ===============================
+   BACKDROP
+================================= */
+
+.cinemaHeroCard__backdrop {
+  position: absolute;
+  inset: 0;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter: brightness(0.6);
+}
+
+/* overlay gradient */
+.cinemaHeroCard::after {
+  content: ""; position: absolute; 
+  inset: 0; 
+  background: /* fade bên trái cho text */ 
+  linear-gradient( 90deg, #121212 0%, rgba(18,18,18,0.9) 30%,
+   rgba(18,18,18,0.55) 55%, transparent 90% ), /* fade dưới ĐẬM HƠN */ 
+   linear-gradient( to bottom, transparent 45%, rgba(18,18,18,0.75) 
+   65%, rgba(18,18,18,0.92) 82%,
+  #121212 100% );
+}
+
+/* ===============================
+   CONTENT LAYOUT
+================================= */
+
+.cinemaHeroCard__layout {
+  position: relative;
+  z-index: 5;
+
+  height: 100%;
+  padding: 0 80px;
+  display: flex;
+  align-items: center;
+  gap: 45px;
+
+}
+
+/* ===============================
+   POSTER
+================================= */
+
+.cinemaHeroCard__poster img {
+  width: 200px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.6);
+}
+
+/* ===============================
+   INFO
+================================= */
+
+.cinemaHeroCard__info {
+  max-width: 600px;
+  color: white;
+}
+
+.cinemaHeroCard__title {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* ===============================
+   META
+================================= */
+
+.cinemaHeroCard__meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.cinemaHeroCard__tag,
+.cinemaHeroCard__lang {
+  font-size: 14px;
+  background: rgba(255,255,255,.2);
+  padding: 5px 12px;
+  border-radius: 6px;
+}
+
+/* ===============================
+   DESCRIPTION
+================================= */
+
+.cinemaHeroCard__overview {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ddd;
+  margin-bottom: 25px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===============================
+   PLAY BUTTON
+================================= */
+
+/* ===============================
+   PLAY BUTTON CENTER
+================================= */
+
+.cinemaHeroCard__playBtn {
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 22px;
+
+  border-radius: 999px;
+  border: none;
+
+  background: linear-gradient(135deg, #1db954, #1ed760);
+  color: #000;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+  z-index: 10;
+
+  transition: all .35s ease;
+}
+
+/* icon */
+.cinemaHeroCard__playBtn svg {
+  font-size: 18px;
+}
+
+
+/* ===============================
+   PROGRESS BAR
+================================= */
+
+.cinemaHeroRow__progress {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.cinemaHeroRow__progressDot {
+  width: 40px;
+  height: 4px;
+  background: rgba(255,255,255,.3);
+  border-radius: 5px;
+
+  transition: all .3s;
+}
+
+.cinemaHeroRow__progressDot.active {
+  width: 80px;
+  background: #ffd000;
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 1200px) {
+
+  .cinemaHeroCard {
+    height: 620px;
+  }
+
+  .cinemaHeroCard__layout {
+    padding: 0 50px;
+    gap: 30px;
+  }
+
+  .cinemaHeroCard__title {
+    font-size: 34px;
+  }
+
+  .cinemaHeroCard__poster img {
+    width: 180px;
+    height: 260px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+  .cinemaHeroCard__playBtn{
+    margin: 0 auto;
+  }
+
+  .cinemaHeroCard {
+    height: auto;
+    min-height: 480px;
+  }
+
+  .cinemaHeroCard__layout {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+    gap: 20px;
+  }
+
+  .cinemaHeroCard__poster img {
+    width: 140px;
+    height: 200px;
+  }
+
+  .cinemaHeroCard__title {
+    font-size: 24px;
+  }
+
+  .cinemaHeroCard__overview {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .cinemaHeroCard__meta {
+    justify-content: center;
+  }
+
+  
+.cinemaHeroCard__tag,
+.cinemaHeroCard__lang {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .cinemaHeroCard__poster img {
+    width: 120px;
+    height: 170px;
+  }
+
+  .cinemaHeroCard__title {
+    font-size: 20px;
+  }
+
+  .cinemaHeroCard__overview {
+    font-size: 12px;
+  }
+
+  .cinemaHeroRow__progressDot {
+    width: 25px;
+  }
+
+  .cinemaHeroRow__progressDot.active {
+    width: 45px;
+  }
+}

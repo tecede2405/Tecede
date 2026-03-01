@@ -1,0 +1,216 @@
+/* ================= ROOT ================= */
+
+.movieHero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  background: #000;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ================= BACKGROUND SWIPER ================= */
+
+.bgSwiper {
+  padding : 0;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.bgSwiper .swiper-slide {
+  width: 100%;
+  height: 100vh;
+}
+
+.heroBg {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ===== Cinematic Gradient Overlay ===== */
+
+.heroBg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      #121212 0%,
+      rgba(18,18,18,0.95) 35%,
+      rgba(18,18,18,0.75) 60%,
+      rgba(18,18,18,0.45) 80%,
+      rgba(18,18,18,0.2) 100%
+    );
+}
+
+/* ================= CONTENT OVERLAY ================= */
+
+.heroContent {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: 60px 60px;
+
+  pointer-events: none;
+
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ================= TEXT ================= */
+
+.heroText {
+  max-width: 550px;
+  margin-bottom: 50px;
+  min-height: 220px;
+  contain: layout paint;
+}
+
+.heroText h1 {
+  font-size: 52px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.heroText p {
+  font-size: 15px;
+  line-height: 1.6;
+  height: 80px;
+  overflow: hidden;
+  opacity: 0.9;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ================= BUTTONS ================= */
+
+.heroBtns {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+}
+
+.playBtn {
+  background: #ffd000;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  pointer-events: auto;
+}
+
+.playBtn:hover {
+  background: #ffb800;
+}
+
+.infoBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 12px 20px;
+  color: white;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: 0.3s;
+  pointer-events: auto;
+}
+
+.infoBtn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ================= POSTER SECTION ================= */
+
+.posterWrapper {
+  width: 100%;
+  padding-bottom: 20px;
+  pointer-events: auto;
+}
+
+.posterWrapper .swiper {
+  overflow: visible;
+}
+
+/* ================= POSTER ITEM ================= */
+
+.poster {
+  width: 140px;
+  height: 200px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+
+  transition: transform 0.45s ease;
+}
+
+.poster.active {
+  transform: scale(1.12);
+}
+
+.poster.active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid #ffd000;
+  border-radius: 12px;
+  pointer-events: none;
+}
+/* ================= RESPONSIVE ================= */
+.posterWrapper .swiper-slide {
+  width: auto !important;
+}
+@media (max-width: 992px) {
+  .heroText h1 {
+    font-size: 36px;
+  }
+
+  .heroText {
+    max-width: 400px;
+  }
+
+  .poster img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroContent {
+    padding: 40px 25px;
+  }
+
+  .heroText h1 {
+    font-size: 28px;
+  }
+
+  .heroText p {
+    font-size: 13px;
+  }
+
+  .poster img {
+    height: 160px;
+  }
+}

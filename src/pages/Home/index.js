@@ -13,6 +13,8 @@ import ChinaFilms from "../../component/HomeFilm/chinaFilm";
 import GenreCarousel from "../../component/Carousel/genreCarousel";
 import HomeMusic from "../../component/HomeMusic/index";
 import China3dFilms from "../../component/HomeFilm/china3dFilm";
+// import MovieCarousel from "../../component/MovieCarousel/index";
+import MovieRow from "../../component/MovieRow/index";
 import "./style.scss";
 
 function Home() {
@@ -31,11 +33,10 @@ function Home() {
             <Tabbar />
             {/* main */}
             <div className="Home__main">
-             
-
               <div className="Home__music"> 
                 <PopularFilm />
               </div>
+              
               <div className="Home__music"> 
                 <GenreCarousel />
               </div>
@@ -45,16 +46,25 @@ function Home() {
               <div className="Home__music"> 
                 <KoreaFilms />
               </div>
+
               <div className="Home__music"> 
                 <ChinaFilms />
               </div>
               <div className="Home__music"> 
+                <MovieRow />
+              </div>
+              
+              <div className="Home__music"> 
                 <China3dFilms />
               </div>
+              
+              {/* <div className="Home__music"> 
+                <MovieCarousel />
+              </div> */}
               <div className="Home__music"> 
                 <Film />
               </div>
-              
+
               <div className="Home__music"> 
                 <NewAnimes />
               </div>

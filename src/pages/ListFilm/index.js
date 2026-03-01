@@ -201,9 +201,9 @@ export default function FilmListByType() {
               </div>
 
               <div className="film-detail-info mt-2">
-                {hoverFilm.time && <span>⏱ {hoverFilm.time}</span>}
+                {hoverFilm.time && <span>{hoverFilm.time}</span>}
                 {hoverFilm.episode_current && (
-                  <span>📺 {hoverFilm.episode_current}</span>
+                  <span>{hoverFilm.episode_current}</span>
                 )}
               </div>
             </div>

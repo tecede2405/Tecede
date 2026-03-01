@@ -77,7 +77,7 @@ function GenreCarousel() {
   const navigate = useNavigate();
 
   return (
-    <div className="genre-carousel">
+    <div className="genre-carousel mb-3">
       <h3 className="genre-carousel__title ms-3">
         Có Thể Bạn Quan Tâm
       </h3>
@@ -93,7 +93,11 @@ function GenreCarousel() {
             <div
               className="genre-carousel__card"
               style={{
-                background: `linear-gradient(135deg, ${item.color}, #00000080)`
+                background: `linear-gradient(
+                  135deg,
+                  ${item.color},
+                  rgba(255,255,255,0.15)
+                )`
               }}
               onClick={() => navigate(item.path)}
             >
