@@ -113,7 +113,7 @@ export const AnimeFilm = [
 
 export const NewFilm = [
     {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},
-    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em",episode_current: "Luôn cập nhật"},
+    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
     {title: "Vạt Áo Đồng Phục", image: "https://phimimg.com/upload/vod/20260225-1/03c081818c868643090b8283bc5e46a2.jpg", path: "vat-ao-dong-phuc", episode_current: "Luôn cập nhật"},
     {title: "Từ Hôm Nay, Tôi Là Con Người", image: "https://phimimg.com/upload/vod/20260117-1/2a3caceda2e1ac37ef188251faf77766.jpg", path: "tu-hom-nay-toi-la-con-nguoi",episode_current: "Hoàn Tất (12/12)"},
@@ -182,14 +182,14 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",
+    episode_current: "Luôn cập nhật", lang: "Vietsub",
+    content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
+    },
     {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg",thumb:"https://phimimg.com/upload/vod/20260225-1/fa2e4182792f1e496901235e4aa32b60.jpg", path: "giang-ho-da-vu-thap-nien-dang", 
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Mộ Thanh Yến, một thiếu chủ thâm độc bí hiểm hành sự quyết đoán cùng Thái Chiêu, một nữ hiệp không tranh với đời tính tình thoải mái và sáng suốt, có một màn giằng co giữa hai kẻ mạnh và tạo nên một mối tình ngọt ngào xen lẫn đau thương. Giữa chốn giang hồ quỷ quyệt khôn lường, hai người chung tay xé tan lớp mặt nạ giả dối của nhân sĩ võ lâm, trải qua yêu hận đan xen, vô vàn ngã rẽ, đấu trí không ngừng, khắc họa nên bức chân dung hiệp nghĩa đầy hơi thở nhân gian.",
     }, 
-    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em",
-    episode_current: "Luôn cập nhật", lang: "Vietsub",
-    content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
-    },
     {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg",thumb:"https://phimimg.com/upload/vod/20260227-1/624088b5f00aaac1ceef03c021109c31.jpg", path: "dai-chien-van-menh",
      episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Liệu số phận của chúng ta đã được định trước? Và liệu có ai thực sự có thể đọc được nó? Một cuộc thi đột phá dám tìm ra câu trả lời. 49 chuyên gia đọc vận mệnh hàng đầu Hàn Quốc – những bậc thầy về pháp sư, bói toán, bài tarot và xem tướng mặt – sẽ đặt danh dự của mình vào cuộc thi. Chỉ những người thực sự có thể đọc được vận mệnh mới sống sót. Ai sẽ là người chiến thắng?",
@@ -250,7 +250,7 @@ export const HotFilm2 = [
 
 export const HighRate = [
    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},
-   {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em",episode_current: "Luôn cập nhật"},
+   {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg", path: "nghe-thuat-lua-doi-cua-sarah",episode_current: "Hoàn Tất (8/8)"},
    {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
    {title: "Tài Xế Ẩn Danh 3", image: "https://phimimg.com/upload/vod/20251122-1/98a195e46ee8549833c3d8d15008c430.jpg", path: "tai-xe-an-danh-phan-3",episode_current: "Hoàn Tất (16/16)"},
@@ -275,7 +275,7 @@ export const KoreaFilm = [
    {title: "Địa Ngục Độc Thân Phần 5", image: "https://phimimg.com/upload/vod/20260120-1/58166ddd12293c253590fa7250eac046.jpg", path: "dia-nguc-doc-than-phan-5", episode_current: "Hoàn Tất (12/12)"},
    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},
    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg", path: "nghe-thuat-lua-doi-cua-sarah",episode_current: "Hoàn Tất (8/8)"},
-   {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em",episode_current: "Luôn cập nhật"},
+   {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
    {title: "Từ Hôm Nay, Tôi Là Con Người", image: "https://phimimg.com/upload/vod/20260117-1/2a3caceda2e1ac37ef188251faf77766.jpg", path: "tu-hom-nay-toi-la-con-nguoi",episode_current: "Hoàn Tất (12/12)"},
    {title: "Kẻ Thù Dấu Yêu", image: "https://phimimg.com/upload/vod/20250217-1/3102759f9632289009b73ad5158a51fc.jpg", path: "ke-thu-dau-yeu",episode_current: "Hoàn Tất (12/12)"},
    {title: "Tuổi Hai Lăm, Tuổi Hai Mốt", image: "https://phimimg.com/upload/vod/20240324-1/e8dffe4760d2e46949b05840f9a0b9b2.jpg", path: "tuoi-hai-lam-tuoi-hai-mot",episode_current: "Hoàn Tất (16/16)"},
