@@ -47,6 +47,89 @@
 .film-policy{
     color: #fff;
 }
+/* ===============================
+   MOVIE INFO (COMPACT)
+================================= */
+
+.movie-page__info {
+  background: rgba(0, 0, 0, 0.366);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 18px 22px;   /* giảm padding */
+  color: white;
+}
+
+.movie-page__info-layout {
+  display: flex;
+  gap: 18px;            /* giảm gap */
+  align-items: flex-start;
+}
+
+.movie-page__poster img {
+  width: 130px;         /* giảm từ 180 -> 130 */
+  height: 190px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 8px 30px rgba(0,0,0,.5);
+}
+
+.movie-page__content {
+  flex: 1;
+}
+
+.movie-page__name {
+  font-size: 20px;      /* nhỏ lại */
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.movie-page__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.movie-page__desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #ccc;
+  margin-top: 8px;
+
+  display: -webkit-box;       /* giới hạn chiều cao */
+  -webkit-line-clamp: 3;      /* chỉ 3 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 768px) {
+
+  .movie-page__info {
+    padding: 15px;
+  }
+
+  .movie-page__info-layout {
+    flex-direction: row;   /* giữ ngang luôn cho gọn */
+    gap: 15px;
+  }
+
+  .movie-page__poster img {
+    width: 100px;
+    height: 150px;
+  }
+
+  .movie-page__name {
+    font-size: 17px;
+  }
+
+  .movie-page__desc {
+    -webkit-line-clamp: 2;
+  }
+}
  @media (max-width: 768px){
     .movie-page{
         padding-bottom: 50px!important;

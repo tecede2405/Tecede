@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PosterSwiper from "./PosterSwiper";
-import { HotFilm } from "../../data/dataFilm";
-import FilmSearch from "../HomeFilm/FilmSearch";
+import { HotFilm2 } from "../../data/dataFilm";
+// import FilmSearch from "../HomeFilm/FilmSearch";
 import { FaPlay } from "react-icons/fa";
 import "swiper/css";
 import "./style.scss";
 
 export default function NewAnimeHero() {
   const navigate = useNavigate();
-  const [active, setActive] = useState(HotFilm[0]);
+  const [active, setActive] = useState(HotFilm2[0]);
   const [width, setWidth] = useState(window.innerWidth);
 
 
@@ -67,7 +67,7 @@ export default function NewAnimeHero() {
         />
 
         {/* ===== SEARCH ===== */}
-        <div
+        {/* <div
           style={{
             position: "absolute",
             top: "7%",
@@ -76,7 +76,7 @@ export default function NewAnimeHero() {
           }}
         >
           <FilmSearch fullWidth />
-        </div>
+        </div> */}
 
         {/* ===== CONTENT ===== */}
         <div
@@ -206,7 +206,7 @@ export default function NewAnimeHero() {
             }}
           >
             <PosterSwiper
-              data={HotFilm}
+              data={HotFilm2}
               active={active}
               setActive={setActive}
               isTablet={isTablet}
@@ -227,7 +227,7 @@ export default function NewAnimeHero() {
             }}
           >
             <PosterSwiper
-              data={HotFilm}
+              data={HotFilm2}
               active={active}
               setActive={setActive}
               isMobile

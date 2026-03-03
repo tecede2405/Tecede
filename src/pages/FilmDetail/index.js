@@ -131,7 +131,42 @@ export default function FilmDetail() {
             Tập sau
           </button>
         </div>
+             {/* Movie Info */}
+          <div className="movie-page__info mb-4">
+            <div className="movie-page__info-layout">
 
+              {/* Poster */}
+              <div className="movie-page__poster">
+                <img src={movie.poster_url} alt={movie.name} />
+              </div>
+
+              {/* Info */}
+              <div className="movie-page__content">
+                <h2 className="movie-page__name">{movie.name}</h2>
+
+                <div className="movie-page__meta">
+                  <span className="badge bg-info">
+                    Số tập: {movie.episode_total || episodes.length}
+                  </span>
+
+                  <span className="badge bg-secondary">
+                    {movie.lang}
+                  </span>
+
+                  {movie.category?.map((cat, index) => (
+                    <span key={index} className="badge bg-dark">
+                      {cat.name}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="movie-page__desc mt-3">
+                  {movie.content}
+                </p>
+              </div>
+
+            </div>
+          </div>
         {/* Episode List */}
         <h2 className="movie-page__subtitle h5 mb-3">
           Danh sách tập – {servers[currentServer].server_name}
@@ -158,6 +193,7 @@ export default function FilmDetail() {
           Nếu bạn cho rằng quyền lợi của mình bị ảnh hưởng, vui lòng liên hệ ngay cho chúng tôi sẽ xử lý và gỡ bỏ nội dung vi phạm kịp thời.
           Xin cảm ơn sự thông cảm và hợp tác của bạn.
         </p>
+
         <div className="Home__music">
                 <LatestMovies />
         </div>

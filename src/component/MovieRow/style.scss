@@ -6,7 +6,8 @@
   width: 100%;
   background: #121212;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
+  // overflow: hidden;
 }
 
 /* ===============================
@@ -50,7 +51,7 @@
 .cinemaHeroCard__backdrop {
   position: absolute;
   inset: 0;
-
+   z-index: 1;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -62,6 +63,7 @@
 .cinemaHeroCard::after {
   content: ""; position: absolute; 
   inset: 0; 
+  z-index: 2;
   background: /* fade bên trái cho text */ 
   linear-gradient( 90deg, #121212 0%, rgba(18,18,18,0.9) 30%,
    rgba(18,18,18,0.55) 55%, transparent 90% ), /* fade dưới ĐẬM HƠN */ 
@@ -156,12 +158,11 @@
 ================================= */
 
 .cinemaHeroCard__playBtn {
-
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 
-  padding: 12px 22px;
+  padding: 13px 26px;
 
   border-radius: 999px;
   border: none;
@@ -169,18 +170,50 @@
   background: linear-gradient(135deg, #1db954, #1ed760);
   color: #000;
 
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .3px;
 
   cursor: pointer;
   z-index: 10;
 
-  transition: all .35s ease;
+  box-shadow: 
+    0 8px 25px rgba(29,185,84,.35),
+    inset 0 1px 0 rgba(255,255,255,.4);
+
+  transition: 
+    transform .25s ease,
+    box-shadow .25s ease,
+    filter .25s ease;
 }
 
-/* icon */
+/* icon wrapper style */
 .cinemaHeroCard__playBtn svg {
-  font-size: 18px;
+  font-size: 30px;
+  background: rgba(0,0,0,.15);
+  padding: 6px;
+  border-radius: 50%;
+  transition: transform .25s ease;
+}
+
+/* hover */
+.cinemaHeroCard__playBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 35px rgba(29,185,84,.45),
+    0 0 18px rgba(29,185,84,.35);
+  filter: brightness(1.05);
+}
+
+/* hover icon rotate nhẹ */
+.cinemaHeroCard__playBtn:hover svg {
+  transform: scale(1.1);
+}
+
+/* click effect */
+.cinemaHeroCard__playBtn:active {
+  transform: translateY(0px) scale(.97);
+  box-shadow: 0 6px 18px rgba(29,185,84,.3);
 }
 
 
@@ -260,6 +293,7 @@
   .cinemaHeroCard__poster img {
     width: 140px;
     height: 200px;
+    margin-top:40px;
   }
 
   .cinemaHeroCard__title {

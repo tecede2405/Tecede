@@ -33,9 +33,10 @@ function Home() {
             <Tabbar />
             {/* main */}
             <div className="Home__main">
-              <div className="Home__music"> 
-                <PopularFilm />
+               <div className="Home__music"> 
+                <MovieRow />
               </div>
+              
               
               <div className="Home__music"> 
                 <GenreCarousel />
@@ -50,8 +51,9 @@ function Home() {
               <div className="Home__music"> 
                 <ChinaFilms />
               </div>
+              
               <div className="Home__music"> 
-                <MovieRow />
+                <PopularFilm />
               </div>
               
               <div className="Home__music"> 
