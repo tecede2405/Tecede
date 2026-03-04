@@ -36,11 +36,13 @@ export default function NewAnimeHero() {
         >
       {/* BACKGROUND */}
     <div
-      key={active.thumb} // đổi ảnh → remount → animation chạy
+      key={active.thumb}
       className="hero-bg"
       style={{
         backgroundImage: `
-          linear-gradient(to right, rgba(0,0,0,.85), rgba(0,0,0,.35)),
+          linear-gradient(to bottom, rgba(18,18,18,.75) 0%, rgba(18,18,18,.35) 30%, rgba(18,18,18,0) 60%),
+          linear-gradient(to top, rgba(18,18,18,.85) 0%, rgba(18,18,18,.55) 25%, rgba(18,18,18,0) 55%),
+          linear-gradient(to right, rgba(0,0,0,.65), rgba(0,0,0,.25)),
           url(${active.thumb})
         `,
       }}
