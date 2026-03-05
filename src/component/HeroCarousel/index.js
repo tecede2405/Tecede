@@ -29,7 +29,7 @@ export default function NewAnimeHero() {
       {/* ================= HERO ================= */}
       <div
         style={{
-          height: isMobile ? "380px" : isTablet ? "480px" : "600px",
+          height: isMobile ? "400px" : isTablet ? "500px" : "660px",
           position: "relative",
           overflow: "hidden",
         }}
@@ -40,11 +40,11 @@ export default function NewAnimeHero() {
       className="hero-bg"
       style={{
         backgroundImage: `
-          linear-gradient(to bottom, rgba(18,18,18,.75) 0%, rgba(18,18,18,.35) 30%, rgba(18,18,18,0) 60%),
-          linear-gradient(to top, rgba(18,18,18,.85) 0%, rgba(18,18,18,.55) 25%, rgba(18,18,18,0) 55%),
-          linear-gradient(to right, rgba(0,0,0,.65), rgba(0,0,0,.25)),
-          url(${active.thumb})
-        `,
+        linear-gradient(to bottom, rgba(18,18,18,1) 0%, rgba(18,18,18,.85) 20%, rgba(18,18,18,.45) 45%, rgba(18,18,18,0) 70%),
+        linear-gradient(to top, rgba(18,18,18,.9) 0%, rgba(18,18,18,.6) 25%, rgba(18,18,18,0) 55%),
+        linear-gradient(to right, rgba(0,0,0,.65), rgba(0,0,0,.25)),
+        url(${active.thumb})
+      `,
       }}
     />
 

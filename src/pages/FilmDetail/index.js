@@ -3,6 +3,7 @@ import { useParams,useNavigate } from "react-router-dom";
 import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
 import { saveToHistory } from "../../utils/history";
+import { MdOutlineStorage } from "react-icons/md";
 import "./style.scss";
 
 export default function FilmDetail() {
@@ -97,14 +98,16 @@ export default function FilmDetail() {
         </div>
 
         {/* Server selector */}
-        <h5 className="mb-3 text-info fst-italic">Chọn server</h5>
-        <div className="d-flex gap-2 mb-4 flex-wrap">
+       <h5 className="server-title"><MdOutlineStorage /> Chọn server</h5>
+
+        <div className="server-list">
           {servers.map((s, idx) => (
             <button
               key={idx}
-              className={`btn fst-italic ${idx === currentServer ? "btn-info" : "btn-outline-light"}`}
+              className={`server-pill ${idx === currentServer ? "active" : ""}`}
               onClick={() => handleChangeServer(idx)}
             >
+              <MdOutlineStorage />
               {s.server_name}
             </button>
           ))}

@@ -102,6 +102,44 @@
   overflow: hidden;
 }
 
+.server-list{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+// chon server
+.server-pill{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  padding:8px 16px;
+  border-radius:10px;
+  background-color: #00000030;
+  border:1px solid rgba(4, 0, 0, 0.689);
+  background:transparent;
+
+  color:#fff;
+  font-size:14px;
+
+  transition:all .25s ease;
+}
+
+.server-pill:hover{
+  border-color:#fff;
+  background:rgba(255,255,255,0.05);
+}
+
+.server-pill.active{
+  background:#84e5f9b4;
+  color:#000;
+}
+
+.server-icon{
+  font-size:14px;
+}
+
 /* ===============================
    RESPONSIVE
 ================================= */

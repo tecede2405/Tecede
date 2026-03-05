@@ -20,27 +20,26 @@ const moods = [
     path: "/quoc-gia/trung-quoc",
     color: "#E91E63"
   },
-  {
+   {
     id: 3,
+    title: "Phim Rạp",
+    desc: "Bình tĩnh nồ!",
+    path: "/detail/cinematic",
+    color: "#6C5CE7"
+  },
+  {
+    id: 4,
     title: "Anime",
     desc: "Vài bộ điển hình",
     path: "/detail/anime",
     color: "#6C5CE7"
   },
     {
-    id: 4,
+    id: 5,
     title: "Conan",
     desc: "Ghê ta Zzz",
     path: "/search/conan",
     color: "#FF9800"
-  },
-  
-   {
-    id: 5,
-    title: "Phim Rạp",
-    desc: "Bình tĩnh nồ!",
-    path: "/detail/cinematic",
-    color: "#6C5CE7"
   },
   {
     id: 6,

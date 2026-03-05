@@ -6,6 +6,8 @@ export const cinematicFilm = [
     {title: "Ma Da", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQigrj8EUtW2ioLrOd0HXt6DvtxRN5F61k03A&s", thumb:"https://phimimg.com/upload/vod/20241116-1/3747ec0cb2bbc3679512ef163621eefc.jpg", path: "ma-da",time: "195 phút"},
     {title: "Tiểu Yêu Quái Núi Lãng Lãng", image: "https://phimimg.com/upload/vod/20250907-1/4074dc1b02219548fd890c1a948dac70.jpg", thumb:"https://phimimg.com/upload/vod/20250907-1/2276a43ce7ac15b0954d772aac7d9e8f.jpg", path: "quai-vat-nho-nui-lang-lang-tieu-yeu-quai-nui-lang-lang",time: "118 phút"},
     {title: "Út Lan: Oán Linh Giữ Của", image: "https://phimimg.com/upload/vod/20260214-1/e0b89765d8e3af6e3c17376cd7b74a2c.jpg",thumb:"https://phimimg.com/upload/vod/20260214-1/63f81ecf86740e24cd088e739daadcd2.jpg", path: "ut-lan-oan-linh-giu-cua",time: "111 phút"},
+    {title: "Nụ Hôn Bạc Tỷ", image: "https://phimimg.com/upload/vod/20260305-1/277fff3f8a3f09efd03218b2ba176e5e.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/edeff022ca9b19a349f3b899467df1f5.jpg", path: "nu-hon-bac-ty",time: "100 phút"},
+    {title: "Hạnh Phúc Máu", image: "https://phimimg.com/upload/vod/20230922-1/500439d3f96493940e856beca3401233.jpg",thumb:"https://phimimg.com/upload/vod/20241231-1/e2f8f134a50b2934fe850b4403eff318.jpg", path: "hanh-phuc-mau",time: "100 phút"},
     {title: "Tử Chiến Trên Không", image: "https://phimimg.com/upload/vod/20260131-1/4e3b2c7d88c55d852dfe756e4acc56c1.jpg",thumb:"https://phimimg.com/upload/vod/20260131-1/675f2fb9a0465602ff0599e16649c6ca.jpg", path: "tu-chien-tren-khong",time: "118 phút"},
     {title: "Chị Dâu", image: "https://phimimg.com/upload/vod/20250529-1/82672132c0a2e07e915af631ff52484b.jpg",thumb:"https://phimimg.com/upload/vod/20250529-1/3a81e181a5f643bb9108bce41e22de5d.jpg", path: "chi-dau-2025",time: "100 phút"},
     {title: "Công Tử Bạc Liêu", image: "https://phimimg.com/upload/vod/20250403-1/2598439800e1d56a3ab37ed88160a364.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/6cc48ac44f9e5bd02a3b4c2301865d9e.jpg", path: "cong-tu-bac-lieu",time: "106 phút"},
@@ -129,9 +131,9 @@ export const AnimeFilm = [
     {title: "Ngạ Quỷ Vùng Tokyo 2", image: "https://phimimg.com/upload/vod/20251211-1/1152a0ce82540d5586594b44dfb126f8.jpg", path: "nga-quy-vung-tokyo-phan-2",episode_current: "Hoàn Tất (12/12)"},
     {title: "Ngạ Quỷ Vùng Tokyo 3", image: "https://phimimg.com/upload/vod/20251211-1/d7b4296961af9e9253066a8bcd18efff.jpg", path: "nga-quy-vung-tokyo-phan-3",episode_current: "Hoàn Tất (12/12)"},
     {title: "Ngạ Quỷ Vùng Tokyo 4", image: "https://phimimg.com/upload/vod/20251211-1/8f8c86245ce27154ade6f114453b2bbb.jpg", path: "nga-quy-vung-tokyo-phan-4",episode_current: "Hoàn Tất (12/12)"},
-    {title: "Đao Kiếm Thần Vực (Phần 1)", image: "https://phimimg.com/upload/vod/20250316-1/dc71c8a99074fd5ad2818640d7196ecd.jpg", path: "dao-kiem-than-vuc-phan-1",episode_current: "Hoàn Tất (12/12)"},
-    {title: "Đao Kiếm Thần Vực (Phần 2)", image: "https://phimimg.com/upload/vod/20250316-1/837349c8d0d02b2f8bf32d447d1d2588.jpg", path: "dao-kiem-than-vuc-phan-2",episode_current: "Hoàn Tất (12/12)"},
-    {title: "Đao Kiếm Thần Vực (Phần 3)", image: "https://phimimg.com/upload/vod/20250316-1/b81152bf7a72a80bd458007a599f1d95.jpg", path: "dao-kiem-than-vuc-phan-3",episode_current: "Hoàn Tất (12/12)"},
+    {title: "Đao Kiếm Thần Vực (Phần 1)", image: "https://phimimg.com/upload/vod/20250316-1/dc71c8a99074fd5ad2818640d7196ecd.jpg", path: "dao-kiem-than-vuc-phan-1",episode_current: "Hoàn Tất (25/25)"},
+    {title: "Đao Kiếm Thần Vực (Phần 2)", image: "https://phimimg.com/upload/vod/20250316-1/837349c8d0d02b2f8bf32d447d1d2588.jpg", path: "dao-kiem-than-vuc-phan-2",episode_current: "Hoàn Tất (24/24)"},
+    {title: "Đao Kiếm Thần Vực (Phần 3)", image: "https://phimimg.com/upload/vod/20250316-1/b81152bf7a72a80bd458007a599f1d95.jpg", path: "dao-kiem-than-vuc-phan-3",episode_current: "Hoàn Tất (47/47)"},
 ];
 
 export const NewFilm = [
@@ -187,7 +189,7 @@ export const NewAnime = [
     {title: "Pháp Sư Tiễn Táng 1", image: "https://phimimg.com/upload/vod/20250528-1/4eccfcc0409f610cbd1b552a2b02a66c.jpg",thumb:"https://phimimg.com/upload/vod/20250528-1/f3b84ccdf8c4fb61aa247a54b27018d1.jpg", path: "frieren-phap-su-tien-tang-phan-1",episode_current: "Hoàn Tất (28/28)"},
 ]
 export const Tokusatsu = [
-    {title: "Kamen Rider Eins With Girls Remix", image: "https://phimimg.com/upload/vod/20260303-1/48bd8e5fac355d20259a8fecd8fe4265.jpg", path: "https://phimimg.com/upload/vod/20260303-1/a5f322f2d136b16eb874c1a0a499f00a.jpg",episode_current: "Full"},
+    {title: "Kamen Rider Eins With Girls Remix", image:"https://phimimg.com/upload/vod/20260303-1/48bd8e5fac355d20259a8fecd8fe4265.jpg",path: "girls-remix-eins",episode_current: "Full"},
     {title: "Kamen Rider: Geats", image: "https://phimimg.com/upload/vod/20241013-1/d5ec292d0d52fca910dcbb5181dbe0f4.jpg", path: "hiep-si-mat-na-dau-truong-tham-vong",episode_current: "Hoàn Tất (49/49)"},
     {title: "Ultraman Zero: Belial Báo Thù", image: "https://phimimg.com/upload/vod/20250727-1/1c0a0211eddd7fdb916c199c6de4274f.jpg", path: "ultraman-zero-belial-bao-thu",episode_current: "Full"},
     {title: "Kamen Rider ZERO-ONE", image: "https://phimimg.com/upload/vod/20241219-1/beb1d3a687da61a7340194ba0777751b.jpg", path: "hiep-si-mat-na-hiem-hoa-ai",episode_current: "Hoàn Tất (46/46)"},
@@ -205,6 +207,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Nụ Hôn Bạc Tỷ", image: "https://phimimg.com/upload/vod/20260305-1/277fff3f8a3f09efd03218b2ba176e5e.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/edeff022ca9b19a349f3b899467df1f5.jpg", path: "nu-hon-bac-ty",
+     episode_current: "Full",lang: "Vietsub",
+    content: "Câu chuyện xoay quanh Thúy Vân (Thiên Ân) và người chị trời đánh Thúy Kiều (Thu Trang) đang phải đối mặt với món nợ lớn do người tình gây ra. Đứng trước nguy cơ mất trắng, cả hai buộc phải vạch kế hoạch chinh phục Nụ Hôn Bạc Tỷ từ hai chàng thiếu gia Quang (Lê Xuân Tiền) và Tú (Ma Ran Đô).",
+    },
     {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",
     episode_current: "Luôn cập nhật", lang: "Vietsub",
     content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
@@ -217,10 +223,7 @@ export const HotFilm = [
      episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Liệu số phận của chúng ta đã được định trước? Và liệu có ai thực sự có thể đọc được nó? Một cuộc thi đột phá dám tìm ra câu trả lời. 49 chuyên gia đọc vận mệnh hàng đầu Hàn Quốc – những bậc thầy về pháp sư, bói toán, bài tarot và xem tướng mặt – sẽ đặt danh dự của mình vào cuộc thi. Chỉ những người thực sự có thể đọc được vận mệnh mới sống sót. Ai sẽ là người chiến thắng?",
     },
-    {title: "Hội Chứng Sợ Yêu", image: "https://phimimg.com/upload/vod/20260228-1/61331adaf8959d15b132eaf69d7987d2.jpg",thumb:"https://phimimg.com/upload/vod/20260228-1/ad4d28e4f4cc791f56b3666b8cbbf6ab.jpg", path: "hoi-chung-so-yeu",
-     episode_current: "Luôn cập nhật",lang: "Vietsub",
-    content: "Một CEO của công ty hẹn hò thực tế ảo, người ghét tình yêu, gặp gỡ một nhà văn hoàn toàn không hiểu gì về chuyện tình cảm. Khi họ xung đột giữa đam mê do trí tuệ nhân tạo điều khiển và cảm xúc đời thực, một câu chuyện ngọt ngào nhưng cũng đầy rắc rối về sự hàn gắn và kết nối bất ngờ dần hé mở.",
-    },
+    
     {title: "Bụi Hoa Hồng", image: "https://phimimg.com/upload/vod/20260227-1/8b60d37846e87e2403abdaf5ec396b39.jpg",thumb:"https://phimimg.com/upload/vod/20260227-1/5b9a25050a82a4606d80dd00af9cd35e.jpg", path: "bui-hoa-hong", 
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Bộ phim kể về cuộc gặp gỡ định mệnh giữa Lý Hiểu Hề – một cô gái luôn nghiêm túc và thận trọng trong chuyện tình cảm – và chàng trai Tiểu Bối, từ đó, họ bắt đầu một mối tình lãng mạn. Chính sự chân thành và kiên định của Tiểu Bối đã tiếp thêm sức mạnh, giúp Lý Hiểu Hề dần vượt qua những cảm giác bất an và lo sợ trong tình yêu. Ngược lại, nhờ sự đồng hành và bao dung của Lý Hiểu Hề, Tiểu Bối cũng chữa lành được những vết thương lòng trong quá khứ, dần dần buông bỏ nỗi đau và học cách trân trọng hiện tại. Hành trình vun đắp tình cảm ấy đã giúp cả hai nhìn thấy nhiều khía cạnh đa dạng hơn của tình yêu. Sau khi cùng nhau trải qua bao khó khăn và thử thách, cuối cùng họ cũng trưởng thành hơn và tìm thấy tình yêu chân thành.",
@@ -331,6 +334,7 @@ export const KoreaFilm = [
 export const ChinaFilm = [
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Luôn cập nhật"},
    {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Hoàn Tất (34/34)"},
+   {title: "Đi Đến Nơi Có Gió", image: "https://phimimg.com/upload/vod/20251108-1/17eb0f07b5aec4c9b54e6493cee341ff.jpg", path: "di-den-noi-co-gio", episode_current: "Hoàn Tất (40/40)"},
    {title: "Vạt Áo Đồng Phục", image: "https://phimimg.com/upload/vod/20260225-1/03c081818c868643090b8283bc5e46a2.jpg", path: "vat-ao-dong-phuc", episode_current: "Luôn cập nhật"},
    {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg", path: "con-ra-the-thong-gi-nua", episode_current: "Hoàn Tất (32/32)"},
    {title: "Ngũ Phúc Lâm Môn", image: "https://phimimg.com/upload/vod/20250125-1/11d8cedcd7aa1c4b93b3d33e6f208b34.jpg", path: "ngu-phuc-lam-mon", episode_current: "Hoàn Tất (36/36)"},
@@ -354,6 +358,9 @@ export const China3D = [
     {title: "Trạch Thiên Ký", image: "https://phimimg.com/upload/vod/20260204-1/551fbd9cb8955022c0b50a60727decaa.jpg", path: "trach-thien-ky", episode_current: "Luôn cập nhật"},
     {title: "Tiên Nghịch", image: "https://phimimg.com/upload/vod/20240118-1/9295479ab21037d136d970e219e5f07d.jpg", path: "tien-nghich", episode_current: "Luôn cập nhật"},
     {title: "Nhất Niệm Vĩnh Hằng", image: "https://phimimg.com/upload/vod/20240820-1/56ef483389cd47b258bad4e3c18bdc07.jpg", path: "nhat-niem-vinh-hang", episode_current: "Hoàn Tất (165/165)"},
+    {title: "Thiên Tướng", image: "https://phimimg.com/upload/vod/20251016-1/c967089ca411a66fe76ef9f47090a34d.jpg", path: "thien-tuong", episode_current: "Luôn cập nhật"},
+    {title: "Thần Ấn Vương Tọa", image: "https://phimimg.com/upload/vod/20250423-1/560bc7dbd5121fb6e2681160f638409c.jpg", path: "than-an-vuong-toa", episode_current: "Luôn cập nhật"},
+    {title: "Long Phá Cửu Thiên", image: "https://phimimg.com/upload/vod/20260212-1/011e3bdf72257ffabb50b1cbe79a9dd4.jpg", path: "long-pha-cuu-thien", episode_current: "Luôn cập nhật"},
     {title: "Phong Linh Ngọc Tú (Phần 2)", image: "https://phimimg.com/upload/vod/20240608-1/3c789d0ea42c2a2df31b0d0055aa65d9.jpg", path: "phong-linh-ngoc-tu-phan-2", episode_current: "Hoàn Tất (12/12)"},
     {title: "Thôn Phệ Tinh Không", image: "https://phimimg.com/upload/vod/20240821-1/a651652396e9f53c09cd88d28700d5c4.jpg", path: "thon-phe-tinh-khong", episode_current: "Tập 211"},
     {title: "Phàm Nhân Tu Tiên", image: "https://phimimg.com/upload/vod/20240715-1/ed827a6e5d8f7c41aa0728403665cd87.jpg", path: "pham-nhan-tu-tien", episode_current: "Hoàn Tất (176/176)"},
