@@ -1,5 +1,6 @@
 export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
+    {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/0ed392d57a9e67bce3fee7955a903441.jpg", path: "truy-tim-long-dien-huong",time: "103 phút"},
     {title: "Làm Giàu Với Ma 2", image: "https://phimimg.com/upload/vod/20260101-1/86f6ed61a2f142f36ec35040a3377b7f.jpg",thumb:"https://phimimg.com/upload/vod/20260101-1/3d7252b82b44a1ac1c4e282013145a02.jpg", path: "lam-giau-voi-ma-2-cuoc-chien-hot-xoan",time: "133 phút"},
     {title: "Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20260129-1/4d420dcef0d8f183b115788140d02614.jpg",thumb:"https://phimimg.com/upload/vod/20260129-1/3558b82723d946ca1a0fa9e36197ec70.jpg", path: "quy-nhap-trang",time: "122 phút"},
     {title: "Cám", image: "https://phimimg.com/upload/vod/20250302-1/95297d8023e0e6cca061455cdc22cef0.jpg",thumb:"https://phimimg.com/upload/vod/20250302-1/887291d6f943171d2815f048130232dd.jpg",  path: "cam",time: "122 phút"},
@@ -137,6 +138,7 @@ export const AnimeFilm = [
 ];
 
 export const NewFilm = [
+    {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg", path: "truy-tim-long-dien-huong",episode_current: "Full"},
     {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},
     {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
     {title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong",episode_current: "Hoàn Tất (12/12)"},
@@ -207,6 +209,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/0ed392d57a9e67bce3fee7955a903441.jpg", path: "truy-tim-long-dien-huong",
+     episode_current: "Full",lang: "Vietsub",
+    content: "Một hành trình tìm lại bảo vật Long Diên Hương siêu quậy và siêu lầy lội đang chờ bạn ở phía trước. &nbsp;Quang Tuấn, Ma Ran Đô, Nguyên Thảo, Hoàng Tóc Dài, Doãn Quốc Đam,... đã sẵn sàng lên đường Truy Tìm Long Diên Hương.",
+    },
     {title: "Nụ Hôn Bạc Tỷ", image: "https://phimimg.com/upload/vod/20260305-1/277fff3f8a3f09efd03218b2ba176e5e.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/edeff022ca9b19a349f3b899467df1f5.jpg", path: "nu-hon-bac-ty",
      episode_current: "Full",lang: "Vietsub",
     content: "Câu chuyện xoay quanh Thúy Vân (Thiên Ân) và người chị trời đánh Thúy Kiều (Thu Trang) đang phải đối mặt với món nợ lớn do người tình gây ra. Đứng trước nguy cơ mất trắng, cả hai buộc phải vạch kế hoạch chinh phục Nụ Hôn Bạc Tỷ từ hai chàng thiếu gia Quang (Lê Xuân Tiền) và Tú (Ma Ran Đô).",
