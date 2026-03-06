@@ -12,7 +12,7 @@ export default function SearchResult(){
 
     const keyword = slug.replace(/-/g," ");
 
-    fetch(`${process.env.REACT_APP_OTRUYEN_API}/tim-kiem?keyword=${keyword}`)
+    fetch(`${process.env.REACT_APP_TRUYEN_API}/tim-kiem?keyword=${keyword}`)
       .then(res=>res.json())
       .then(res=>{
         setData(res.data.items || []);

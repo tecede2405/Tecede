@@ -26,11 +26,11 @@ export default function ComicHero() {
         </p>
 
         <div className="heroButtons">
-          <button className="btnPrimary" onClick={() => navigate("/truyen")}>
+          <button className="btnHeroPrimary" onClick={() => navigate("/truyen")}>
             ✨ Vào trang
           </button>
 
-          <button className="btnOutline" onClick={() => navigate("/truyen")}>
+          <button className="btnHeroSecondary" onClick={() => navigate("/truyen")}>
             Cũng vào trang :))
           </button>
         </div>
