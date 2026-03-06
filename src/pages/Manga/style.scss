@@ -1,0 +1,441 @@
+.readerContent{
+  width:100%;
+  padding:0 16px;
+}
+
+/* chapter */
+
+.chapterImages{
+  max-width:900px;
+  margin:auto;
+}
+
+.chapterImages img{
+  width:100%;
+  margin-bottom:10px;
+}
+
+/* sections */
+
+.comicSections{
+  margin-top:40px;
+}
+
+.comicBlock{
+  margin-bottom:40px;
+}
+
+.comicBlock h3{
+  margin-bottom:15px;
+  font-size:20px;
+}
+
+/* grid */
+
+.comicGrid{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:15px;
+}
+
+.comicCard img{
+  width:100%;
+  border-radius:6px;
+}
+
+.comicCard p{
+  font-size:14px;
+  margin-top:5px;
+}
+// Comic Detail
+
+
+/* HERO */
+.comicDetail{
+  margin:auto;
+  padding:30px 20px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* background blur toàn trang */
+
+.comicDetail::before{
+  content:"";
+  position:absolute;
+  inset:0;
+
+  background: var(--comic-bg) center/cover no-repeat;
+
+  filter: blur(20px);
+ 
+
+  transform:scale(1.1);
+
+  z-index:-1;
+}
+
+/* HERO */
+
+.comicDetailHero{
+  display:flex;
+  gap:30px;
+  margin-bottom:40px;
+
+  position:relative;
+  padding:30px;
+  border-radius:18px;
+  overflow:hidden;
+
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+}
+
+/* ảnh */
+
+.comicDetailLeft img{
+  width:170px;
+  border-radius:12px;
+}
+
+/* content */
+
+.comicDetailRight{
+  flex:1;
+}
+
+/* title */
+
+.comicDetailRight h3{
+  font-size:26px;
+  margin-bottom:6px;
+}
+
+/* sub */
+
+.comicSub{
+  color:#aaa;
+  font-size:12px;
+}
+
+/* meta */
+
+.comicMeta{
+  display:flex;
+  gap:18px;
+  margin:12px 0;
+  font-size:12px;
+  color:#aaa;
+}
+
+/* buttons */
+
+.comicButtons{
+  margin-top:16px;
+  display:flex;
+  gap:10px;
+}
+
+.btnPrimary{
+  background:#2f6fed;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+
+}
+
+.btnDark{
+  background:#1a1a1a;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.btnGray{
+  background:#333;
+  color:white;
+  border:none;
+  padding:12px 20px;
+  border-radius:10px;
+}
+
+
+
+/* CHAPTER LIST */
+
+.comicChapters{
+  background:#11111162;
+  padding:25px;
+  border-radius:14px;
+}
+.chapter{
+  font-size:12px;
+  font-weight:500;
+}
+.chapterGrid{
+  margin-top:20px;
+
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:10px;
+}
+
+.chapterItem{
+  background:#1a1a1a;
+  padding:14px 16px;
+  border-radius:8px;
+
+  display:flex;
+  justify-content:space-between;
+
+  cursor:pointer;
+}
+
+.chapterItem:hover{
+  background:#222;
+}
+
+/* HISTORY */
+/* HISTORY TABLE */
+
+.readingHistory {
+
+  margin-top: 40px;
+
+  h3 {
+    margin-bottom: 15px;
+    font-size: 22px;
+  }
+}
+
+/* HISTORY TABLE */
+
+.historyTable {
+  background:#11111162;
+  padding: 0 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.historyHeader {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  padding: 10px 0;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  font-weight: 600;
+  color: #ccc;
+}
+
+.historyRow {
+  display: grid;
+  grid-template-columns: 80px 1fr 120px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.historyRow:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.historyCol.thumb img {
+  width: 45px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+
+.historyCol.chapter {
+  color: #aaa;
+  font-size: 14px;
+}
+// Manga Reader
+.tecReader{
+  background:#0f1720;
+  min-height:100vh;
+}
+
+/* HEADER */
+
+.tecReaderHeader{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+
+  height:60px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 15px;
+
+  background:#1e293b;
+  color:#fff;
+
+  z-index:1000;
+}
+.readerTitle{
+  flex:1;
+  margin:0 10px;
+  overflow:hidden;
+}
+
+/* tên truyện */
+
+.readerTitle h4{
+  font-size:15px;
+  margin:0;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* chapter */
+
+.readerTitle span{
+  font-size:12px;
+  opacity:.7;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+/* CONTENT */
+
+.tecReaderContent{
+  padding-top:60px;
+  padding-bottom:70px;
+}
+
+.tecReaderImages{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.tecReaderImages img{
+  width:100%;
+  max-width:900px;
+  height:auto;
+  display:block;
+}
+
+/* FOOTER */
+
+.tecReaderFooter{
+
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+
+  height:60px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 20px;
+
+  background:#1e293b;
+  color:#fff;
+}
+
+.prevBtn,
+.nextBtn{
+
+  width:45px;
+  height:38px;
+
+  border:none;
+  border-radius:8px;
+
+  background:#3b82f6;
+  color:white;
+
+  font-size:20px;
+  cursor:pointer;
+}
+
+.prevBtn:disabled,
+.nextBtn:disabled{
+  opacity:.4;
+}
+
+.currentChap{
+  font-size:14px;
+}
+/* responsive */
+
+@media (max-width:1200px){
+  .comicGrid{
+    grid-template-columns:repeat(7,1fr);
+  }
+  .chapterGrid{
+    grid-template-columns:repeat(9,1fr);
+  }
+}
+
+@media (max-width:768px){
+  .comicGrid{
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+  }
+  .comicDetailHero{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  .comicDetailLeft img{
+    width:140px;
+  }
+
+  .comicDetailRight h3{
+    font-size:20px;
+  }
+
+  .comicMeta{
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .comicButtons{
+    justify-content:center;
+  }
+
+  .chapterGrid{
+    grid-template-columns:repeat(5,1fr);
+  }
+
+    .readerTitle h4{
+    font-size:13px;
+  }
+
+  .readerTitle span{
+    font-size:11px;
+  }
+
+}
+
+@media (max-width:500px){
+  .comicGrid{
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+   .chapterGrid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+}

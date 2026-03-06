@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import {
   FaChevronDown,
   FaFilm,
-  FaShareAlt,
-  FaFacebook,
-  FaInstagram,
-  FaTiktok,
-  FaYoutube,
+  // FaShareAlt,
+  // FaFacebook,
+  // FaInstagram,
+  // FaTiktok,
+  // FaYoutube,
   FaMusic,
-  FaGlobeAsia
+  FaGlobeAsia,
+  FaBook
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./style.scss";
@@ -74,7 +75,7 @@ function Tabbar({ isOpen, onClose }) {
       {/* TABBAR DRAWER */}
       <div className={`tabbar ${isOpen ? "show" : ""}`}>
         {/* SOCIAL */}
-        <div className={`tab-parent ${openTab === "social" ? "open" : ""}`}>
+        {/* <div className={`tab-parent ${openTab === "social" ? "open" : ""}`}>
           <button onClick={() => toggleTab("social")}>
             <span className="title">
               <FaShareAlt />
@@ -135,7 +136,7 @@ function Tabbar({ isOpen, onClose }) {
               </a>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         {/* MUSIC */}
         <div className={`tab-parent ${openTab === "music" ? "open" : ""}`}>
@@ -190,6 +191,24 @@ function Tabbar({ isOpen, onClose }) {
             </li>
           </ul>
         </div>
+        {/* COMIC */}
+        <div className={`tab-parent ${openTab === "comic" ? "open" : ""}`}>
+          <button onClick={() => toggleTab("comic")}>
+            <span className="title">
+              <FaBook />
+              <span className="tab-label">Trang đọc truyện</span>
+            </span>
+            <FaChevronDown className="arrow" />
+          </button>
+
+          <ul className="tab-child">
+            <li>
+              <NavLink to="/truyen" className="tab-link" onClick={handleLinkClick}>
+                Trang đọc truyện
+              </NavLink>
+            </li>
+          </ ul>
+        </div>
 
         {/* COUNTRY */}
         <div className={`tab-parent ${openTab === "country" ? "open" : ""}`}>
@@ -240,7 +259,7 @@ function Tabbar({ isOpen, onClose }) {
             ))}
           </ul>
         </div>
-
+        
         
       </div>
     </>

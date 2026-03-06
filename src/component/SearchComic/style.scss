@@ -1,0 +1,57 @@
+.tecSearchComic{
+
+  width:100%;
+  max-width:600px;
+  margin:auto;
+  position:relative;
+  margin-top: 35px;
+
+}
+
+.tecSearchComic__input{
+
+  width:100%;
+  height:46px;
+
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.4);
+  border-radius:30px;
+
+  padding:0 55px 0 20px;
+
+  color:white;
+  font-size:14px;
+
+  outline:none;
+
+}
+
+.tecSearchComic__input::placeholder{
+  color:#aaa;
+}
+
+.tecSearchComic__btn{
+
+  position:absolute;
+  right:5px;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:40px;
+  height:40px;
+
+  border:none;
+  border-left:1px solid rgba(255,255,255,0.2);
+
+  background:transparent;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+  font-size:18px;
+
+  cursor:pointer;
+
+}

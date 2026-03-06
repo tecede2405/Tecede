@@ -1,0 +1,51 @@
+.announcementBar {
+  width: 100%;
+  background: linear-gradient(90deg,#00ccff,#1726f64e);
+  overflow: hidden;
+  padding: 10px 0;
+  position: relative;
+}
+
+.announcementTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 18s linear infinite;
+}
+
+.announcementItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 0 40px;
+  white-space: nowrap;
+}
+
+.announcementItem svg {
+  color: #ffd000;
+  animation: fireGlow 1.5s infinite alternate;
+}
+
+/* marquee animation */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* glow icon */
+
+@keyframes fireGlow {
+  from {
+    filter: drop-shadow(0 0 2px #ff0);
+  }
+  to {
+    filter: drop-shadow(0 0 8px #ff0);
+  }
+}

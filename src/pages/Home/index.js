@@ -15,6 +15,8 @@ import HomeMusic from "../../component/HomeMusic/index";
 import China3dFilms from "../../component/HomeFilm/china3dFilm";
 // import MovieCarousel from "../../component/MovieCarousel/index";
 import MovieRow from "../../component/MovieRow/index";
+import ComicHero from "../../component/Banner/mangaBanner";
+import AnnouncementBar from "../../component/Marquee/AnnouncementBar";
 import "./style.scss";
 
 function Home() {
@@ -33,10 +35,10 @@ function Home() {
             <Tabbar />
             {/* main */}
             <div className="Home__main">
+              <AnnouncementBar />
                <div className="Home__music"> 
                 <MovieRow />
               </div>
-              
               
               <div className="Home__music"> 
                 <GenreCarousel />
@@ -85,6 +87,7 @@ function Home() {
               <div className="Home__music"> 
                 <HomeMusic />
               </div>
+              <ComicHero />
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>
@@ -92,8 +95,8 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu có thể cho mình xin 1 lượt theo dõi fanpage để nhận thông tin mới nhất về web và phim mới <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank" rel="noopener noreferrer">tại đây</a> nha.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không truy cập được vào web hãy bật 1.1.1.1 (Tải ở CH play, App store) và thử lại.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app, đối với android xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>. Đối với IOS xem hướng dẫn <span onClick={handleIosClick}>ở đây</span>.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Vì trang này là trang miễn phí nên đôi lúc có sai sót các bạn hoan hỉ nhé.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 6. Mình không phát triển tính năng đăng nhập cho khách nhưng lịch sử xem vẫn lưu ở trên nha.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Mình không phát triển tính năng đăng nhập cho khách nhưng lịch sử xem vẫn lưu ở trên nha.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 6. Nếu bạn không cài web ở lưu ý số 4 thì nên reload lại trang chủ ở mỗi lần truy cập nhé! Tại mình thường xuyên update trang.</i></li>
                 </ul>
               </div>
               

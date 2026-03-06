@@ -40,6 +40,10 @@ import FilmListBySlug from "./pages/Film/index";
 import ListFilm from "./pages/ListFilm/index";
 import GenrePage from "./pages/genresFilm/index";
 import FilmListByCountry from "./pages/FilmByCountry/index";
+import Manga from "./pages/Manga/index";
+import MangaDetail from "./pages/Manga/mangaDetail";
+import MangaSearch from "./pages/Manga/mangaSearch";
+import MangaReader from "./pages/Manga/mangaReader";
 // UI
 import Squares from "./component/SquaresBackgound/index";
 
@@ -123,6 +127,11 @@ function App() {
                   <Route path="/detail/:type" element={<ListFilm />} />
                   <Route path="/the-loai/:slug" element={<GenrePage />} />
                   <Route path="/quoc-gia/:slug" element={<FilmListByCountry />} />
+                  {/* Manga */}
+                  <Route path="truyen" element={<Manga />} />
+                  <Route path="truyen/chi-tiet/:slug" element={<MangaDetail />} />
+                  <Route path="/truyen/tim-kiem/:slug" element={<MangaSearch />} />
+                  <Route path="/truyen/doc/:id" element={<MangaReader />} />
 
                   <Route path="/history" element={<HistoryFilm />} />
                   {/* Music */}
