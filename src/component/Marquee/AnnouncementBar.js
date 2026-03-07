@@ -2,22 +2,21 @@ import "./AnnouncementBar.scss";
 import { FaFire } from "react-icons/fa";
 
 export default function AnnouncementBar() {
+  const items = [
+    "Mình Vừa Cập Nhật Trang Đọc Truyện",
+    "Ai Có Đam Mê Vào Đọc Nhé",
+    "Mình Sẽ Update Dần Dần",
+    "Theo Dõi Fanpage Để Nhận Thông Tin Mới Nhất Nha"
+  ];
+
   return (
     <div className="announcementBar">
       <div className="announcementTrack">
-
-        <div className="announcementItem">
-          <FaFire /> Mình Vừa Cập Nhật Trang Đọc Truyện
-        </div>
-
-        <div className="announcementItem">
-          <FaFire /> Ai Có Đam Mê Vào Đọc Nhé
-        </div>
-
-        <div className="announcementItem">
-          <FaFire /> Mình Sẽ Update Dần Dần
-        </div>
-
+        {[...items, ...items].map((text, index) => (
+          <div className="announcementItem" key={index}>
+            <FaFire /> {text}
+          </div>
+        ))}
       </div>
     </div>
   );

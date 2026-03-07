@@ -196,7 +196,7 @@ function Tabbar({ isOpen, onClose }) {
           <button onClick={() => toggleTab("comic")}>
             <span className="title">
               <FaBook />
-              <span className="tab-label">Trang đọc truyện</span>
+              <span className="tab-label">Đọc truyện</span>
             </span>
             <FaChevronDown className="arrow" />
           </button>
@@ -204,7 +204,7 @@ function Tabbar({ isOpen, onClose }) {
           <ul className="tab-child">
             <li>
               <NavLink to="/truyen" className="tab-link" onClick={handleLinkClick}>
-                Trang đọc truyện
+                Đọc truyện
               </NavLink>
             </li>
           </ ul>

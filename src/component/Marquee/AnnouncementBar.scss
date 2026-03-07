@@ -31,13 +31,14 @@
 /* marquee animation */
 
 @keyframes marquee {
-  0% {
+  from {
     transform: translateX(0);
   }
-  100% {
+  to {
     transform: translateX(-50%);
   }
 }
+
 
 /* glow icon */
 

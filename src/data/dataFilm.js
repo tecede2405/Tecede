@@ -13,7 +13,16 @@ export const cinematicFilm = [
     {title: "Chị Dâu", image: "https://phimimg.com/upload/vod/20250529-1/82672132c0a2e07e915af631ff52484b.jpg",thumb:"https://phimimg.com/upload/vod/20250529-1/3a81e181a5f643bb9108bce41e22de5d.jpg", path: "chi-dau-2025",time: "100 phút"},
     {title: "Công Tử Bạc Liêu", image: "https://phimimg.com/upload/vod/20250403-1/2598439800e1d56a3ab37ed88160a364.jpg",thumb:"https://phimimg.com/upload/vod/20250403-1/6cc48ac44f9e5bd02a3b4c2301865d9e.jpg", path: "cong-tu-bac-lieu",time: "106 phút"},
     {title: "Cô Dâu Hào Môn", image: "https://phimimg.com/upload/vod/20250129-1/a008a55771216663370dae5da82b7edf.jpg",thumb:"https://phimimg.com/upload/vod/20250129-1/f24b69ffb4c24e8f28c64093de552b3a.jpg", path: "co-dau-hao-mon",time: "114 phút"},
+    {title: "Ngài Quỷ", image: "https://phimimg.com/upload/vod/20241218-1/9a4140f9f2fda630e0633803e01fb649.jpg",thumb:"https://phimimg.com/upload/vod/20241218-1/1d913430c4eadf091eb8f07f9a6cc423.jpg", path: "ngai-quy",time: "95 phút"},
+    {title: "Ký Sinh Trùng", image: "https://phimimg.com/upload/vod/20250223-1/43b06a10df87b9f14097b5f5212510a8.jpg",thumb:"https://phimimg.com/upload/vod/20250223-1/197144573d8adb78f386f0ab58682903.jpg", path: "ky-sinh-trung",time: "132 phút"},
+    {title: "Ngôi Đền Kỳ Quái 4", image: "https://phimimg.com/upload/vod/20240729-1/922b5732aee3c0238d9c9c414b9e5374.jpg",thumb:"https://phimimg.com/upload/vod/20240729-1/f7d4044fe6da0614d5471198db232cfb.jpg", path: "ngoi-den-ky-quai-4",time: "112 phút"},
     {title: "Hai Muối", image: "https://phimimg.com/upload/vod/20250128-1/ede258f75b02c54deeb80dd9f8d43565.jpg",thumb:"https://phimimg.com/upload/vod/20250128-1/2089c4ade5ce274d97fa9e9ce82a4c97.jpg", path: "hai-muoi",time: "118 phút"},
+    {title: "La Tiểu Hắc Chiến Ký 2", image: "https://phimimg.com/upload/vod/20251028-1/4fffac6b86e70ee723508a83b14945c0.jpg",thumb:"https://phimimg.com/upload/vod/20251028-1/82f4d549bd8e7076b79e796f3372e252.jpg", path: "huyen-thoai-la-tieu-hac-2-la-tieu-hac-chien-ky-2",time: "119 phút"},
+    {title: "Đồi Câm Lặng: Ác Mộng Trong Sương", image: "https://phimimg.com/upload/vod/20260225-1/dbac0f3d8cdf9b2c5fdcde1fc9452659.jpg",thumb:"https://phimimg.com/upload/vod/20260225-1/fa407ab97f1b404c46cb558d6e2c272b.jpg", path: "doi-cam-lang-ac-mong-trong-suong",time: "106 phút"},
+    {title: "Linh Miêu: Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20241216-1/87b3bf4f9465892275ade60894320551.jpg",thumb:"https://phimimg.com/upload/vod/20241216-1/844eeb240b6f49734c526da5ff85279f.jpg", path: "linh-mieu-quy-nhap-trang",time: "109 phút"},
+    {title: "Quỷ Quyệt: Cửa Đỏ Vô Định", image: "https://phimimg.com/upload/vod/20250731-1/6bf7cce66b598e7cc98ef84b6a5ccd15.jpg",thumb:"https://phimimg.com/upload/vod/20250731-1/3b28db1eec65c01ddc8f0f8887bbc7e2.jpg", path: "quy-quyet-cua-do-vo-dinh",time: "107 phút"},
+    {title: "Quỷ Thay Đầu", image: "https://phimimg.com/upload/vod/20240410-1/542950c787683096dd3dc06a1b4d7221.jpg",thumb:"https://phimimg.com/upload/vod/20240410-1/1e20f90f89f28218cca270c610def72a.jpg", path: "quy-thay-dau",time: "95 phút"},
+    {title: "Quỷ Thay Đầu", image: "https://phimimg.com/upload/vod/20240410-1/542950c787683096dd3dc06a1b4d7221.jpg",thumb:"https://phimimg.com/upload/vod/20240410-1/1e20f90f89f28218cca270c610def72a.jpg", path: "quy-thay-dau",time: "95 phút"},
     {title: "Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",time: "104 phút"},   
     {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",time: "99 phút"},
     {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "120 phút"},
@@ -209,6 +218,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Bạn Trai Theo Yêu Cầu", image: "https://phimimg.com/upload/vod/20260307-1/903ea6483ca481d7210d81a56cfce3a0.jpg",thumb:"https://phimimg.com/upload/vod/20260307-1/ef00c48fd12166b790bcaa6db6eddbaf.jpg", path: "ban-trai-theo-yeu-cau",
+     episode_current: "Hoàn Tất (10/10)", lang: "Vietsub + Lồng Tiếng",
+     content: "Kiệt sức vì công việc, tình yêu là điều cuối cùng Seo Mi Rae nghĩ đến. Thế rồi một dịch vụ hẹn hò ảo khơi dậy những rung động – và có thể mở ra cơ hội thật sự để tìm thấy tình yêu.",
+    }, 
     {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/0ed392d57a9e67bce3fee7955a903441.jpg", path: "truy-tim-long-dien-huong",
      episode_current: "Full",lang: "Vietsub",
     content: "Một hành trình tìm lại bảo vật Long Diên Hương siêu quậy và siêu lầy lội đang chờ bạn ở phía trước. Quang Tuấn, Ma Ran Đô, Nguyên Thảo, Hoàng Tóc Dài, Doãn Quốc Đam,... đã sẵn sàng lên đường Truy Tìm Long Diên Hương.",
@@ -241,10 +254,6 @@ export const HotFilm = [
     {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg",thumb:"https://phimimg.com/upload/vod/20260209-1/e898e1eda8286fc1188ce909123253d4.jpg", path: "trao-em-ca-vu-tru",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Hai người họ hàng bên nội và bên ngoại, sau một biến cố đau lòng, bị buộc phải cùng nhau nuôi dạy đứa cháu nhỏ mồ côi. Sống chung dưới một mái nhà, họ dần vượt qua những hiểu lầm và định kiến về nhau. Thông qua hành trình cùng làm cha mẹ, cả hai không chỉ tìm thấy sự trưởng thành cho bản thân mà còn nảy sinh một tình cảm lãng mạn không ngờ tới.",
-    }, 
-    {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg",thumb:"https://phimimg.com/upload/vod/20260206-1/65bde3b8112ed04109a3d1f15db3d759.jpg", path: "con-ra-the-thong-gi-nua",
-     episode_current: "Hoàn Tất (32/32)", lang: "Vietsub + Thuyết Minh",
-     content: "Vương Thúy Hoa xuyên không vào thế giới tiểu thuyết và hợp tác với Trương Tam để chống lại thiên tai, ổn định biên cương và đánh bại kẻ thù. Khi số phận trêu ngươi buộc họ phải đối mặt với sinh tử, cô chọn cứu anh bằng cách biến chất độc thành thuốc, và cuối cùng cả hai sống sót, chứng kiến thành quả mà họ cùng tạo dựng.",
     },  
 ]
 export const HotFilm2 = [
@@ -303,6 +312,7 @@ export const HighRate = [
 ]
 
 export const KoreaFilm = [
+   {title: "Bạn Trai Theo Yêu Cầu", image: "https://phimimg.com/upload/vod/20260307-1/903ea6483ca481d7210d81a56cfce3a0.jpg", path: "ban-trai-theo-yeu-cau",episode_current: "Hoàn Tất (10/10)"},
    {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg", path: "trao-em-ca-vu-tru",episode_current: "Luôn cập nhật"},
    {title: "Địa Ngục Độc Thân Phần 5", image: "https://phimimg.com/upload/vod/20260120-1/58166ddd12293c253590fa7250eac046.jpg", path: "dia-nguc-doc-than-phan-5", episode_current: "Hoàn Tất (12/12)"},
    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},

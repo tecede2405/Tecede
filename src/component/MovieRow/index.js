@@ -47,10 +47,11 @@ const MovieRow = () => {
             modules={[EffectFade]}
             slidesPerView={1}
             effect="fade"
+            loop={true}
             speed={600}
             fadeEffect={{ crossFade: true }}
             onSlideChange={(swiper) =>
-              setActiveIndex(swiper.activeIndex)
+              setActiveIndex(swiper.realIndex)
             }
           >
             {movies.map((movie) => (

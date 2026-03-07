@@ -163,7 +163,7 @@ export default function FilmDetail() {
                   ))}
                 </div>
 
-                <p className="movie-page__desc mt-3">
+                <p className="movie-page__desc">
                   {movie.content}
                 </p>
               </div>
