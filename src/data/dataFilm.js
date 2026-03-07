@@ -22,7 +22,6 @@ export const cinematicFilm = [
     {title: "Linh Miêu: Quỷ Nhập Tràng", image: "https://phimimg.com/upload/vod/20241216-1/87b3bf4f9465892275ade60894320551.jpg",thumb:"https://phimimg.com/upload/vod/20241216-1/844eeb240b6f49734c526da5ff85279f.jpg", path: "linh-mieu-quy-nhap-trang",time: "109 phút"},
     {title: "Quỷ Quyệt: Cửa Đỏ Vô Định", image: "https://phimimg.com/upload/vod/20250731-1/6bf7cce66b598e7cc98ef84b6a5ccd15.jpg",thumb:"https://phimimg.com/upload/vod/20250731-1/3b28db1eec65c01ddc8f0f8887bbc7e2.jpg", path: "quy-quyet-cua-do-vo-dinh",time: "107 phút"},
     {title: "Quỷ Thay Đầu", image: "https://phimimg.com/upload/vod/20240410-1/542950c787683096dd3dc06a1b4d7221.jpg",thumb:"https://phimimg.com/upload/vod/20240410-1/1e20f90f89f28218cca270c610def72a.jpg", path: "quy-thay-dau",time: "95 phút"},
-    {title: "Quỷ Thay Đầu", image: "https://phimimg.com/upload/vod/20240410-1/542950c787683096dd3dc06a1b4d7221.jpg",thumb:"https://phimimg.com/upload/vod/20240410-1/1e20f90f89f28218cca270c610def72a.jpg", path: "quy-thay-dau",time: "95 phút"},
     {title: "Quỷ Ăn Tạng 3", image: "https://phimimg.com/upload/vod/20260205-1/399e69364b8b163422bbe106c707be93.jpg",thumb:"https://phimimg.com/upload/vod/20260205-1/19060cc4f257148389b870bdf347d690.jpg", path: "tee-yod-quy-an-tang-3",time: "104 phút"},   
     {title: "Đại Ca Ha Ha Ha", image: "https://phimimg.com/upload/vod/20251228-1/2fe8766632c86e7f6e56f296438d5fd4.jpg",thumb:"https://phimimg.com/upload/vod/20251228-1/f96dd9087576fbb5ad79800cb4546d7c.jpg", path: "dai-ca-ha-ha-ha",time: "99 phút"},
     {title: "Khế Ước Bán Dâu", image: "https://phimimg.com/upload/vod/20260118-1/9876156c3ce357e76504844eea7fb38a.jpg",thumb:"https://phimimg.com/upload/vod/20260118-1/490d98873185f55f8be905ee3f01baf1.jpg", path: "khe-uoc-ban-dau",time: "120 phút"},
@@ -144,9 +143,14 @@ export const AnimeFilm = [
     {title: "Đao Kiếm Thần Vực (Phần 1)", image: "https://phimimg.com/upload/vod/20250316-1/dc71c8a99074fd5ad2818640d7196ecd.jpg", path: "dao-kiem-than-vuc-phan-1",episode_current: "Hoàn Tất (25/25)"},
     {title: "Đao Kiếm Thần Vực (Phần 2)", image: "https://phimimg.com/upload/vod/20250316-1/837349c8d0d02b2f8bf32d447d1d2588.jpg", path: "dao-kiem-than-vuc-phan-2",episode_current: "Hoàn Tất (24/24)"},
     {title: "Đao Kiếm Thần Vực (Phần 3)", image: "https://phimimg.com/upload/vod/20250316-1/b81152bf7a72a80bd458007a599f1d95.jpg", path: "dao-kiem-than-vuc-phan-3",episode_current: "Hoàn Tất (47/47)"},
+    {title: "Hội Pháp Sư (Phần 1)", image: "https://phimimg.com/upload/vod/20250406-1/6529e5eb413c7eb31b19fbb5597e4ed0.jpg", path: "hoi-phap-su-phan-1",episode_current: "Hoàn Tất (175/175)"},
+    {title: "Hội Pháp Sư (Phần 2)", image: "https://phimimg.com/upload/vod/20250406-1/6529e5eb413c7eb31b19fbb5597e4ed0.jpg", path: "hoi-phap-su-phan-2",episode_current: "Hoàn Tất (51/51)"},
+    {title: "Hội Pháp Sư (Phần 3)", image: "https://phimimg.com/upload/vod/20250406-1/6529e5eb413c7eb31b19fbb5597e4ed0.jpg", path: "hoi-phap-su-phan-3",episode_current: "Hoàn Tất (51/51)"},
+    {title: "Hội Pháp Sư (Phần 4)", image: "https://phimimg.com/upload/vod/20250406-1/6529e5eb413c7eb31b19fbb5597e4ed0.jpg", path: "hoi-phap-su-phan-4",episode_current: "Hoàn Tất (51/51)"},
 ];
 
 export const NewFilm = [
+    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
     {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg", path: "truy-tim-long-dien-huong",episode_current: "Full"},
     {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},
     {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
@@ -218,13 +222,17 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-    {title: "Bạn Trai Theo Yêu Cầu", image: "https://phimimg.com/upload/vod/20260307-1/903ea6483ca481d7210d81a56cfce3a0.jpg",thumb:"https://phimimg.com/upload/vod/20260307-1/ef00c48fd12166b790bcaa6db6eddbaf.jpg", path: "ban-trai-theo-yeu-cau",
-     episode_current: "Hoàn Tất (10/10)", lang: "Vietsub + Lồng Tiếng",
-     content: "Kiệt sức vì công việc, tình yêu là điều cuối cùng Seo Mi Rae nghĩ đến. Thế rồi một dịch vụ hẹn hò ảo khơi dậy những rung động – và có thể mở ra cơ hội thật sự để tìm thấy tình yêu.",
-    }, 
+    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg",thumb:"https://phimimg.com/upload/vod/20260307-1/81572d43eddf1dc784f3f53f6323f46d.jpg", path: "truc-ngoc",
+    episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh",
+    content: "Bộ phim kể về cô nàng bán thịt Phàn Trường Ngọc, người có cuộc gặp gỡ định mệnh với hầu gia lưu lạc Tạ Chinh trong một đêm tuyết rơi. Một người mồ côi cha mẹ, quyết tâm trở thành nữ chủ hộ còn một người cố gắng mai danh ẩn tích để trả &nbsp;mối huyết thù 17 năm. Hai người &quot;mỗi người một mục đích&quot; đã diễn một vở kịch hôn nhân giả nhưng lại chớm nở một tình yêu thật! Từ lợi dụng nhau đã biến thành yêu thương, nhưng tình yêu ấy lại mang đến cuộc chiến đẫm máu, khiến đôi trai gái phải chia lìa. Phàn Trường Ngọc cầm dao mổ lợn ra chiến trường tìm người thân, tìm chồng, tìm công lý. Tạ Chinh trở lại là vị thiết huyết hầu gia, bảo vệ đất nước, che chở người yêu và truy tìm sự thật! Cuối cùng họ cũng gặp lại nhau nơi chiến trường, sát cánh bên nhau không sợ sinh tử; vạch trần sự thật, không e dè quyền uy; trở về quê hương mà vẫn giữ trọn tấm lòng ban đầu!",
+    },
     {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/0ed392d57a9e67bce3fee7955a903441.jpg", path: "truy-tim-long-dien-huong",
      episode_current: "Full",lang: "Vietsub",
     content: "Một hành trình tìm lại bảo vật Long Diên Hương siêu quậy và siêu lầy lội đang chờ bạn ở phía trước. Quang Tuấn, Ma Ran Đô, Nguyên Thảo, Hoàng Tóc Dài, Doãn Quốc Đam,... đã sẵn sàng lên đường Truy Tìm Long Diên Hương.",
+    },
+    {title: "Bạn Trai Theo Yêu Cầu", image: "https://phimimg.com/upload/vod/20260307-1/903ea6483ca481d7210d81a56cfce3a0.jpg",thumb:"https://phimimg.com/upload/vod/20260307-1/ef00c48fd12166b790bcaa6db6eddbaf.jpg", path: "ban-trai-theo-yeu-cau",
+     episode_current: "Hoàn Tất (10/10)", lang: "Vietsub + Lồng Tiếng",
+     content: "Kiệt sức vì công việc, tình yêu là điều cuối cùng Seo Mi Rae nghĩ đến. Thế rồi một dịch vụ hẹn hò ảo khơi dậy những rung động – và có thể mở ra cơ hội thật sự để tìm thấy tình yêu.",
     },
     {title: "Nụ Hôn Bạc Tỷ", image: "https://phimimg.com/upload/vod/20260305-1/277fff3f8a3f09efd03218b2ba176e5e.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/edeff022ca9b19a349f3b899467df1f5.jpg", path: "nu-hon-bac-ty",
      episode_current: "Full",lang: "Vietsub",
@@ -246,10 +254,6 @@ export const HotFilm = [
     {title: "Bụi Hoa Hồng", image: "https://phimimg.com/upload/vod/20260227-1/8b60d37846e87e2403abdaf5ec396b39.jpg",thumb:"https://phimimg.com/upload/vod/20260227-1/5b9a25050a82a4606d80dd00af9cd35e.jpg", path: "bui-hoa-hong", 
     episode_current: "Luôn cập nhật",lang: "Vietsub",
     content: "Bộ phim kể về cuộc gặp gỡ định mệnh giữa Lý Hiểu Hề – một cô gái luôn nghiêm túc và thận trọng trong chuyện tình cảm – và chàng trai Tiểu Bối, từ đó, họ bắt đầu một mối tình lãng mạn. Chính sự chân thành và kiên định của Tiểu Bối đã tiếp thêm sức mạnh, giúp Lý Hiểu Hề dần vượt qua những cảm giác bất an và lo sợ trong tình yêu. Ngược lại, nhờ sự đồng hành và bao dung của Lý Hiểu Hề, Tiểu Bối cũng chữa lành được những vết thương lòng trong quá khứ, dần dần buông bỏ nỗi đau và học cách trân trọng hiện tại. Hành trình vun đắp tình cảm ấy đã giúp cả hai nhìn thấy nhiều khía cạnh đa dạng hơn của tình yêu. Sau khi cùng nhau trải qua bao khó khăn và thử thách, cuối cùng họ cũng trưởng thành hơn và tìm thấy tình yêu chân thành.",
-    },
-    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg",thumb:"https://phimimg.com/upload/vod/20260213-1/08ce4f760d99001d8594e896c81dd055.jpg", path: "nghe-thuat-lua-doi-cua-sarah",
-    episode_current: "Hoàn Tất (8/8)", lang: "Vietsub",
-    content: "Một thi thể giữa thị trấn. Một thương hiệu xa xỉ đang lên. Một thanh tra điều tra mọi chi tiết trong câu chuyện liên tục thay đổi của một người phụ nữ. Thực sự đã xảy ra chuyện gì?",
     },
     {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg",thumb:"https://phimimg.com/upload/vod/20260209-1/e898e1eda8286fc1188ce909123253d4.jpg", path: "trao-em-ca-vu-tru",
     episode_current: "Luôn cập nhật",lang: "Vietsub",
@@ -290,6 +294,8 @@ export const HotFilm2 = [
 ]
 
 export const HighRate = [
+   {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
+   {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Luôn cập nhật"},
    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Luôn cập nhật"},
    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
    {title: "Nghệ Thuật Lừa Dối Của Sarah", image: "https://phimimg.com/upload/vod/20260213-1/6f8288b9cee4ae457be84bf97d951bea.jpg", path: "nghe-thuat-lua-doi-cua-sarah",episode_current: "Hoàn Tất (8/8)"},
@@ -350,6 +356,7 @@ export const KoreaFilm = [
 export const ChinaFilm = [
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Luôn cập nhật"},
    {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Hoàn Tất (34/34)"},
+   {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
    {title: "Đi Đến Nơi Có Gió", image: "https://phimimg.com/upload/vod/20251108-1/17eb0f07b5aec4c9b54e6493cee341ff.jpg", path: "di-den-noi-co-gio", episode_current: "Hoàn Tất (40/40)"},
    {title: "Vạt Áo Đồng Phục", image: "https://phimimg.com/upload/vod/20260225-1/03c081818c868643090b8283bc5e46a2.jpg", path: "vat-ao-dong-phuc", episode_current: "Luôn cập nhật"},
    {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg", path: "con-ra-the-thong-gi-nua", episode_current: "Hoàn Tất (32/32)"},
@@ -385,7 +392,3 @@ export const China3D = [
     {title: "Kiếm Lai (Phần 2)", image: "https://phimimg.com/upload/vod/20251226-1/08023551b828aed0a2ec631575945f5d.jpg", path: "kiem-lai-phan-2", episode_current: "Luôn cập nhật"},
     {title: "Vạn Giới Độc Tôn", image: "https://phimimg.com/upload/vod/20250308-1/25c9c7486b5de820475bd8fe0ccb316e.jpg", path: "van-gioi-doc-ton", episode_current: "Tập 424"},
 ]
-
-export const movies = [
-
-];
