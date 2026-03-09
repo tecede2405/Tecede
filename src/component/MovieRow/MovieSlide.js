@@ -25,7 +25,9 @@ const MovieSlide = ({ movie }) => {
       <h3 className="cinemaHeroCard__title">
         {movie.title}
       </h3>
-
+      <p className="cinemaHeroCard__origin_name">
+        {movie.origin_name}
+      </p>
       <div className="cinemaHeroCard__meta">
         <span className="cinemaHeroCard__tag">
           {movie.episode_current}
@@ -35,12 +37,12 @@ const MovieSlide = ({ movie }) => {
           {movie.lang}
         </span>
       </div>
-
+      
       <p className="cinemaHeroCard__overview">
         {movie.content}
       </p>
 
-      <button
+       <button
         className="cinemaHeroCard__playBtn"
         onClick={(e) => {
           e.stopPropagation();
@@ -50,6 +52,9 @@ const MovieSlide = ({ movie }) => {
         <FaPlay />
         <span>Xem ngay</span>
       </button>
+     
+
+      
 
     </div>
 

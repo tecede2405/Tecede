@@ -113,7 +113,7 @@
 .cinemaHeroCard__title {
   font-size: 40px;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 /* ===============================
@@ -137,7 +137,12 @@
 /* ===============================
    DESCRIPTION
 ================================= */
-
+.cinemaHeroCard__origin_name{
+  font-size: 14px;
+  font-style: italic;
+  color: #aaa;
+  margin-bottom: 12px;
+}
 .cinemaHeroCard__overview {
   font-size: 14px;
   line-height: 1.6;
