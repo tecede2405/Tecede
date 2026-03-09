@@ -11,6 +11,7 @@ const musicData = [
     {title: "nhactreremix", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1768119860/nhactreremix_qr4zfl.png", path: "nhactre-remix"},
     {title: "edm", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1768119861/edm_dd12g9.png", path: "edm"},
     {title: "phonk", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1768119861/phonk_pngw79.png", path: "phonk"},
+    {title: "nhac-lofi", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1773071336/jelly-lofi2_ipmoiv.jpg", path: "nhac-lofi"},
 ];
 
 function HomeMusic() {

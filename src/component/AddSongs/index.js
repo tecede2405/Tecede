@@ -123,6 +123,7 @@ function AddSongs() {
           <option value="nhacedm">Nhạc EDM</option>
           <option value="nhacphonk">Nhạc Phonk</option>
           <option value="nhackhongloi">Nhạc Không lời</option>
+          <option value="nhac-lofi">Nhạc Lofi</option>
         </select>
 
         {progress > 0 && progress < 100 && (

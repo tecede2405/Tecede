@@ -189,6 +189,11 @@ function Tabbar({ isOpen, onClose }) {
                 Nhạc Douyin
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/music/nhac-lofi" className="tab-link" onClick={handleLinkClick}>
+                Nhạc Lofi
+              </NavLink>
+            </li>
           </ul>
         </div>
         {/* COMIC */}

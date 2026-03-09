@@ -14,6 +14,7 @@ const categories = [
   { label: "Nhạc EDM", value: "nhacedm" },
   { label: "Nhạc Phonk", value: "nhacphonk" },
   { label: "Nhạc Không Lời", value: "nhackhongloi" },
+  { label: "Nhạc Lofi", value: "nhac-lofi" },
 ];
 
 export default function ManageSongs() {
