@@ -151,6 +151,7 @@ export const AnimeFilm = [
 ];
 
 export const NewFilm = [
+    {title: "One Piece Live Action Phần 2", image: "https://phimimg.com/upload/vod/20260310-1/2a2baa14e21a3f633e7f06aed2f53dd6.jpg", path: "dao-hai-tac-live-action-phan-2", episode_current: "Hoàn Tất (8/8)"},
     {title: "Quốc Bảo", image: "https://phimimg.com/upload/vod/20260228-1/bee778036be94f61585705eb6a305fa1.jpg", path: "quoc-bao", episode_current: "Full"},
     {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
     {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg", path: "truy-tim-long-dien-huong",episode_current: "Full"},
@@ -224,6 +225,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "One Piece (Live Action) (Phần 2)", image: "https://phimimg.com/upload/vod/20260310-1/2a2baa14e21a3f633e7f06aed2f53dd6.jpg",thumb:"https://phimimg.com/upload/vod/20260310-1/99863628ed38dea725060efb5cad611e.jpg", path: "dao-hai-tac-live-action-phan-2",
+     episode_current: "Hoàn Tất (8/8)",lang: "Vietsub + Lồng Tiếng", origin_name: "ONE PIECE (Live Action) (Season 2)",
+    content: "Với chiếc mũ rơm và nhóm bạn đủ thành phần, hải tặc trẻ Monkey D. Luffy có hành trình săn kho báu hoành tráng trong bản chuyển thể người đóng này của bộ manga nổi tiếng.",
+    },
     {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg",thumb:"https://phimimg.com/upload/vod/20260307-1/81572d43eddf1dc784f3f53f6323f46d.jpg", path: "truc-ngoc",
     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh", origin_name: "Pursuit Of Jade",
     content: "Bộ phim kể về cô nàng bán thịt Phàn Trường Ngọc, người có cuộc gặp gỡ định mệnh với hầu gia lưu lạc Tạ Chinh trong một đêm tuyết rơi. Một người mồ côi cha mẹ, quyết tâm trở thành nữ chủ hộ còn một người cố gắng mai danh ẩn tích để trả &nbsp;mối huyết thù 17 năm. Hai người &quot;mỗi người một mục đích&quot; đã diễn một vở kịch hôn nhân giả nhưng lại chớm nở một tình yêu thật! Từ lợi dụng nhau đã biến thành yêu thương, nhưng tình yêu ấy lại mang đến cuộc chiến đẫm máu, khiến đôi trai gái phải chia lìa. Phàn Trường Ngọc cầm dao mổ lợn ra chiến trường tìm người thân, tìm chồng, tìm công lý. Tạ Chinh trở lại là vị thiết huyết hầu gia, bảo vệ đất nước, che chở người yêu và truy tìm sự thật! Cuối cùng họ cũng gặp lại nhau nơi chiến trường, sát cánh bên nhau không sợ sinh tử; vạch trần sự thật, không e dè quyền uy; trở về quê hương mà vẫn giữ trọn tấm lòng ban đầu!",
@@ -252,10 +257,6 @@ export const HotFilm = [
     episode_current: "Luôn cập nhật",lang: "Vietsub", origin_name: "Generation to Generation",
     content: "Mộ Thanh Yến, một thiếu chủ thâm độc bí hiểm hành sự quyết đoán cùng Thái Chiêu, một nữ hiệp không tranh với đời tính tình thoải mái và sáng suốt, có một màn giằng co giữa hai kẻ mạnh và tạo nên một mối tình ngọt ngào xen lẫn đau thương. Giữa chốn giang hồ quỷ quyệt khôn lường, hai người chung tay xé tan lớp mặt nạ giả dối của nhân sĩ võ lâm, trải qua yêu hận đan xen, vô vàn ngã rẽ, đấu trí không ngừng, khắc họa nên bức chân dung hiệp nghĩa đầy hơi thở nhân gian.",
     }, 
-    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg",thumb:"https://phimimg.com/upload/vod/20260227-1/624088b5f00aaac1ceef03c021109c31.jpg", path: "dai-chien-van-menh",
-     episode_current: "Hoàn Tất (10/10)",lang: "Vietsub", origin_name: "Battle Of Fates",
-    content: "Liệu số phận của chúng ta đã được định trước? Và liệu có ai thực sự có thể đọc được nó? Một cuộc thi đột phá dám tìm ra câu trả lời. 49 chuyên gia đọc vận mệnh hàng đầu Hàn Quốc – những bậc thầy về pháp sư, bói toán, bài tarot và xem tướng mặt – sẽ đặt danh dự của mình vào cuộc thi. Chỉ những người thực sự có thể đọc được vận mệnh mới sống sót. Ai sẽ là người chiến thắng?",
-    },
     {title: "Trao Em Cả Vũ Trụ", image: "https://phimimg.com/upload/vod/20260209-1/6244cc481b717b579d553961a2d013fb.jpg",thumb:"https://phimimg.com/upload/vod/20260209-1/e898e1eda8286fc1188ce909123253d4.jpg", path: "trao-em-ca-vu-tru",
     episode_current: "Luôn cập nhật",lang: "Vietsub", origin_name: "Our Universe",
     content: "Hai người họ hàng bên nội và bên ngoại, sau một biến cố đau lòng, bị buộc phải cùng nhau nuôi dạy đứa cháu nhỏ mồ côi. Sống chung dưới một mái nhà, họ dần vượt qua những hiểu lầm và định kiến về nhau. Thông qua hành trình cùng làm cha mẹ, cả hai không chỉ tìm thấy sự trưởng thành cho bản thân mà còn nảy sinh một tình cảm lãng mạn không ngờ tới.",
