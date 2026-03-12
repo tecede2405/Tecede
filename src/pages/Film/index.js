@@ -174,7 +174,7 @@ export default function FilmListBySlug() {
     if (!enablePreview) return;
     hoverTimerRef.current = setTimeout(() => {
       setHoverFilm(film);
-    }, 2000);
+    }, 5000);
   };
 
   const handleMouseLeave = () => {
