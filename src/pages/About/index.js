@@ -18,7 +18,7 @@
             <section className="about__intro">
             <div className="about__profile">
                 <img
-                src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125677/AboutIamge_gc1of5.png"
+                src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773494282/AboutIamge_gc1of5_kiofel.png"
                 alt="avatar"
                 loading="lazy"
                 className="about__avatar"

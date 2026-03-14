@@ -49,7 +49,7 @@ function NhacTrung() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119864/china_bv9coi.png" alt="nhạc trung quốc" className="profile-image" />
+                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493343/china_bv9coi_yuixxd.png" alt="nhạc trung quốc" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Trung Quốc 🎵</h4>
                   <p className="profile-desc">Nghe bao hay bao suy.</p>

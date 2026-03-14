@@ -51,7 +51,7 @@ function Nhacusuk() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119882/usuk_sg8vyg.png" alt="nhạc âu mỹ" className="profile-image" />
+                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493341/usuk_i6ji2d_vz1dib.png" alt="nhạc âu mỹ" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Âu Mỹ 🎵</h4>
                   <p className="profile-desc">

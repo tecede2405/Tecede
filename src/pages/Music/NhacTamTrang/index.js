@@ -51,7 +51,7 @@ function NhacMood() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119883/sad_bml9ma.png" alt="nhạc tâm trạng" className="profile-image" />
+                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493340/mood_flxfii_yvjvhk.png" alt="nhạc tâm trạng" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Mood 🎵</h4>
                   <p className="profile-desc">

@@ -71,7 +71,7 @@ function Layout() {
 
           {/* LOGO */}
           <img
-            src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768991840/home-image_t70nm7.png"
+            src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773492578/ChatGPT_Image_19_49_11_14_thg_3_2026_xqll6s.png"
             alt="logo-Page"
             className="header__image"
             onClick={handleHomeClick}

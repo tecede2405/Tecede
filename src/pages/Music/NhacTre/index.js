@@ -53,7 +53,7 @@ function NhacTre() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119883/vpop_ks3q1j.png" alt="nhạc trẻ" className="profile-image" />
+                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493341/nhactre_owqjpc_a2dp6s.png" alt="nhạc trẻ" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Trẻ Việt Nam 🎵</h4>
                   <p className="profile-desc">

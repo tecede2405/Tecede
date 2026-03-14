@@ -52,7 +52,7 @@ function NhacPhonk() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768119882/phonk_b3nnbn.png" alt="nhạc phonk" className="profile-image" />
+                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493341/phonk_pngw79_nszgll.png" alt="nhạc phonk" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Phonk 🎵</h4>
                   <p className="profile-desc">Nhạc cháy như FreeFire.</p>
