@@ -102,7 +102,7 @@ function NhacLofi() {
                   <audio
                     ref={audioRef}
                     controls
-                    preload="none"
+                    preload="metadata"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}
