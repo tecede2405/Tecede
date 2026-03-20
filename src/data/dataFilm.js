@@ -1,6 +1,7 @@
 export const cinematicFilm = [
     {title: "Mai", image: "https://phimimg.com/upload/vod/20240423-1/7b281d88350fd638d84dc9abb5b6b0a6.jpg",thumb:"https://phimimg.com/upload/vod/20240423-1/afb71c134b82ad08f21b8d9127c70fc6.jpg", path: "mai-2024",time: "131 phút"},
     {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/0ed392d57a9e67bce3fee7955a903441.jpg", path: "truy-tim-long-dien-huong",time: "103 phút"},
+    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/e7ef2b7b1b6b0b235f8c8999b98a7d8a.jpg", path: "thien-duong-mau",time: "99 phút"},
     {title: "La Tiểu Hắc Chiến Ký 2", image: "https://phimimg.com/upload/vod/20251028-1/4fffac6b86e70ee723508a83b14945c0.jpg",thumb:"https://phimimg.com/upload/vod/20251028-1/82f4d549bd8e7076b79e796f3372e252.jpg", path: "huyen-thoai-la-tieu-hac-2-la-tieu-hac-chien-ky-2",time: "119 phút"},
     {title: "Quốc Bảo", image: "https://phimimg.com/upload/vod/20260228-1/bee778036be94f61585705eb6a305fa1.jpg",thumb:"https://phimimg.com/upload/vod/20260228-1/0023b048b0e309171efff2ebf680bc87.jpg", path: "quoc-bao",time: "174 phút"},
     {title: "Nụ Hôn Bạc Tỷ", image: "https://phimimg.com/upload/vod/20260305-1/277fff3f8a3f09efd03218b2ba176e5e.jpg",thumb:"https://i.ytimg.com/vi/Jo8puu4u2MI/maxresdefault.jpg", path: "nu-hon-bac-ty",time: "100 phút"},
@@ -170,6 +171,7 @@ export const AnimeFilm = [
 ];
 
 export const NewFilm = [
+    {title: "Bóng Ma Anh Quốc: Người Bất Tử", image: "https://phimimg.com/upload/vod/20260320-1/53505c93750c4c1be12c5a24f81a19de.jpg", path: "bong-ma-anh-quoc-nguoi-bat-tu", episode_current: "Full"},
     {title: "One Piece Live Action Phần 2", image: "https://phimimg.com/upload/vod/20260310-1/2a2baa14e21a3f633e7f06aed2f53dd6.jpg", path: "dao-hai-tac-live-action-phan-2", episode_current: "Hoàn Tất (8/8)"},
     {title: "Quốc Bảo", image: "https://phimimg.com/upload/vod/20260228-1/bee778036be94f61585705eb6a305fa1.jpg", path: "quoc-bao", episode_current: "Full"},
     {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
@@ -244,6 +246,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/e7ef2b7b1b6b0b235f8c8999b98a7d8a.jpg", path: "thien-duong-mau", 
+    episode_current: "Full",lang: "Vietsub", origin_name: "Bloody Haven",
+    content: "Thiên Đường Máu là phim điện ảnh đầu tiên về nạn lừa đảo người Việt ra nước ngoài. Tin lời hứa việc nhẹ lương cao, không ít thanh niên bị đưa đến những đặc khu, nơi họ trải qua cảnh giam lỏng và bị ép buộc phải gọi điện để lừa ngược lại chính đồng bào mình. Nhiều người trong số đó đã tìm cách đào thoát khỏi địa ngục mà họ đã trót dấn thân vào.",
+    }, 
     {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg",thumb:"https://phimimg.com/upload/vod/20260319-1/5a5b6d0060ae397cd841b720b0ae2f53.jpg", path: "xin-chao-1983",
      episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Dream Of Golden Years",
     content: "Ở tuổi 36, Hạ Hiểu Lan – nữ quản lý cấp cao – mất tất cả sau khi công ty phá sản. Trong lúc tuyệt vọng, cô xuyên không về quá khứ, trở thành cô gái nông thôn 18 tuổi. Không tiền bạc hay chỗ dựa, nhưng với trí tuệ, nhan sắc và nhiệt huyết tuổi trẻ, cô quyết tâm làm lại cuộc đời. Hiểu Lan vừa học tập, vừa khởi nghiệp từ con số 0, từng bước xây dựng sự nghiệp và theo đuổi ước mơ đại học. Trên hành trình đó, cô tìm thấy tình yêu, tình thân và những mối quan hệ đầy ý nghĩa, khẳng định bản thân và tạo nên một cuộc sống mới rực rỡ hơn xưa.",
@@ -275,11 +281,7 @@ export const HotFilm = [
     {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",
     episode_current: "Luôn cập nhật", lang: "Vietsub", origin_name: "In Your Radiant Season",
     content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
-    },
-    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg",thumb:"https://phimimg.com/upload/vod/20260225-1/fa2e4182792f1e496901235e4aa32b60.jpg", path: "giang-ho-da-vu-thap-nien-dang", 
-    episode_current: "Hoàn Tất (37/37)",lang: "Vietsub", origin_name: "Generation to Generation",
-    content: "Mộ Thanh Yến, một thiếu chủ thâm độc bí hiểm hành sự quyết đoán cùng Thái Chiêu, một nữ hiệp không tranh với đời tính tình thoải mái và sáng suốt, có một màn giằng co giữa hai kẻ mạnh và tạo nên một mối tình ngọt ngào xen lẫn đau thương. Giữa chốn giang hồ quỷ quyệt khôn lường, hai người chung tay xé tan lớp mặt nạ giả dối của nhân sĩ võ lâm, trải qua yêu hận đan xen, vô vàn ngã rẽ, đấu trí không ngừng, khắc họa nên bức chân dung hiệp nghĩa đầy hơi thở nhân gian.",
-    },  
+    }, 
 ]
 export const HotFilm2 = [
     {id: 1,title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong", 
@@ -315,8 +317,10 @@ export const HotFilm2 = [
 ]
 
 export const HighRate = [
+   {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg", path: "thien-duong-mau", episode_current: "Full"},
    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Luôn cập nhật"},
    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
+   {title: "Bóng Ma Anh Quốc: Người Bất Tử", image: "https://phimimg.com/upload/vod/20260320-1/53505c93750c4c1be12c5a24f81a19de.jpg", path: "bong-ma-anh-quoc-nguoi-bat-tu", episode_current: "Full"},
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Hoàn Tất (37/37)"},
    {title: "Đại Chiến Vận Mệnh", image: "https://phimimg.com/upload/vod/20260227-1/012b0b6ec3011efdac8f32c5c2e81d37.jpg", path: "dai-chien-van-menh",episode_current: "Hoàn Tất (10/10)"},
    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",episode_current: "Luôn cập nhật"},
@@ -380,9 +384,9 @@ export const KoreaFilm = [
 
 export const ChinaFilm = [
    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Luôn cập nhật"},
+   {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Hoàn Tất (37/37)"},
    {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Hoàn Tất (34/34)"},
-   {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Luôn cập nhật"},
    {title: "Đi Đến Nơi Có Gió", image: "https://phimimg.com/upload/vod/20251108-1/17eb0f07b5aec4c9b54e6493cee341ff.jpg", path: "di-den-noi-co-gio", episode_current: "Hoàn Tất (40/40)"},
    {title: "Vạt Áo Đồng Phục", image: "https://phimimg.com/upload/vod/20260225-1/03c081818c868643090b8283bc5e46a2.jpg", path: "vat-ao-dong-phuc", episode_current: "Luôn cập nhật"},
    {title: "Còn Ra Thể Thống Gì Nữa?", image: "https://phimimg.com/upload/vod/20260206-1/e69a8f905dd7f143d7e2f25025a2f433.jpg", path: "con-ra-the-thong-gi-nua", episode_current: "Hoàn Tất (32/32)"},
@@ -409,6 +413,8 @@ export const China3D = [
     {title: "Nhất Niệm Vĩnh Hằng", image: "https://phimimg.com/upload/vod/20240820-1/56ef483389cd47b258bad4e3c18bdc07.jpg", path: "nhat-niem-vinh-hang", episode_current: "Hoàn Tất (165/165)"},
     {title: "Thiên Tướng", image: "https://phimimg.com/upload/vod/20251016-1/c967089ca411a66fe76ef9f47090a34d.jpg", path: "thien-tuong", episode_current: "Luôn cập nhật"},
     {title: "Thần Ấn Vương Tọa", image: "https://phimimg.com/upload/vod/20250423-1/560bc7dbd5121fb6e2681160f638409c.jpg", path: "than-an-vuong-toa", episode_current: "Luôn cập nhật"},
+    {title: "Thần Mộ", image: "https://phimimg.com/upload/vod/20251124-1/b20ca22d56f6ea0c41cdafea81018a64.jpg", path: "than-mo-2022", episode_current: "Luôn cập nhật"},
+    {title: "Thế Giới Hoàn Mỹ", image: "https://phimimg.com/upload/vod/20240822-1/97aa8ce6feea9737ac591a26a289b725.jpg", path: "the-gioi-hoan-my", episode_current: "Luôn cập nhật"},
     {title: "Long Phá Cửu Thiên", image: "https://phimimg.com/upload/vod/20260212-1/011e3bdf72257ffabb50b1cbe79a9dd4.jpg", path: "long-pha-cuu-thien", episode_current: "Luôn cập nhật"},
     {title: "Phong Linh Ngọc Tú (Phần 2)", image: "https://phimimg.com/upload/vod/20240608-1/3c789d0ea42c2a2df31b0d0055aa65d9.jpg", path: "phong-linh-ngoc-tu-phan-2", episode_current: "Hoàn Tất (12/12)"},
     {title: "Thôn Phệ Tinh Không", image: "https://phimimg.com/upload/vod/20240821-1/a651652396e9f53c09cd88d28700d5c4.jpg", path: "thon-phe-tinh-khong", episode_current: "Tập 211"},
