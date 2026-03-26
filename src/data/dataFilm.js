@@ -246,6 +246,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Luật Sư Bóng Ma (Văn Phòng Luật Sư Shin I Rang)", image: "https://phimimg.com/upload/vod/20260314-1/3c0e3fe8e9dcfacb2ac5ff882a3b6af9.jpg",thumb:"https://phimimg.com/upload/vod/20260314-1/8d048e1956a9a918f4c58ce087d00105.jpg", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang", 
+    episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Phantom Lawyer",
+    content: "Bộ phim xoay quanh Shin Yi Rang (Yoo Yeon Seok), một luật sư bất ngờ có khả năng nhìn thấy hồn ma sau khi chuyển văn phòng đến nơi từng là nhà của một pháp sư. Những linh hồn mang theo uẩn khúc chưa được giải quyết tìm đến anh để nhờ giúp đỡ, buộc Yi Rang phải hóa thân, sống lại ký ức của họ nhằm tìm manh mối cho các vụ án. Đồng hành cùng anh là Han Na Hyun (Esom), nữ luật...",
+    },
     {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/e7ef2b7b1b6b0b235f8c8999b98a7d8a.jpg", path: "thien-duong-mau", 
     episode_current: "Full",lang: "Vietsub", origin_name: "Bloody Haven",
     content: "Thiên Đường Máu là phim điện ảnh đầu tiên về nạn lừa đảo người Việt ra nước ngoài. Tin lời hứa việc nhẹ lương cao, không ít thanh niên bị đưa đến những đặc khu, nơi họ trải qua cảnh giam lỏng và bị ép buộc phải gọi điện để lừa ngược lại chính đồng bào mình. Nhiều người trong số đó đã tìm cách đào thoát khỏi địa ngục mà họ đã trót dấn thân vào.",
@@ -266,17 +270,13 @@ export const HotFilm = [
      episode_current: "Hoàn Tất (8/8)",lang: "Vietsub + Lồng Tiếng", origin_name: "ONE PIECE (Live Action) (Season 2)",
     content: "Với chiếc mũ rơm và nhóm bạn đủ thành phần, hải tặc trẻ Monkey D. Luffy có hành trình săn kho báu hoành tráng trong bản chuyển thể người đóng này của bộ manga nổi tiếng.",
     },
-    {title: "La Tiểu Hắc Chiến Ký 2", image: "https://phimimg.com/upload/vod/20251028-1/4fffac6b86e70ee723508a83b14945c0.jpg",thumb:"https://phimimg.com/upload/vod/20251028-1/82f4d549bd8e7076b79e796f3372e252.jpg", path: "huyen-thoai-la-tieu-hac-2-la-tieu-hac-chien-ky-2", 
-    episode_current: "Full",lang: "Vietsub + Thuyết Minh", origin_name: "The Legend Of Hei 2",
-    content: "Tiểu Hắc cùng sư phụ sống những ngày yên bình tại một thị trấn nhỏ. Thế nhưng khi phân hội bị tấn công, sự kiện ấy đã phá vỡ nền hòa bình giữa các yêu giới được gìn giữ suốt bao năm. Nhiệm vụ “hoàn toàn mới” từ Yêu Linh Hội Quán không chỉ đẩy hai thầy trò vào bờ vực chia cắt, mà còn khiến vận mệnh của sư phụ thay đổi một cách dữ dội. Trước những bí ẩn chồng chéo và hiểm nguy rình rập, Tiểu Hắc cùng sư tỷ Lộc Dã bước vào một cuộc phiêu lưu mới để tìm ra sự thật. Lần này, liệu Tiểu Hắc có đủ sức vượt qua thử thách, bảo vệ sư phụ và hóa giải nguy cơ?",
-    },
     {title: "Ánh Sáng Của Đôi Ta", image: "https://phimimg.com/upload/vod/20260308-1/83b52571c8e2905ed342cfc933d9d804.jpg",thumb:"https://phimimg.com/upload/vod/20260308-1/9bf7cbc67110bac394d8243f087ffdcc.jpg", path: "anh-sang-cua-doi-ta",
      episode_current: "Luôn cập nhật",lang: "Vietsub", origin_name: "Still Shining",
     content: "Sau khi yêu nhau từ thời niên thiếu, hai người trẻ tuổi dần xa cách, để rồi tái ngộ sau 10 năm và cùng nhau đối mặt với nỗi đau, sự trưởng thành và những thử thách mới.",
     },
-    {title: "Bạn Trai Theo Yêu Cầu", image: "https://phimimg.com/upload/vod/20260307-1/903ea6483ca481d7210d81a56cfce3a0.jpg",thumb:"https://phimimg.com/upload/vod/20260307-1/ef00c48fd12166b790bcaa6db6eddbaf.jpg", path: "ban-trai-theo-yeu-cau",
-     episode_current: "Hoàn Tất (10/10)", lang: "Vietsub + Lồng Tiếng", origin_name: "Boyfriend On Demand",
-     content: "Kiệt sức vì công việc, tình yêu là điều cuối cùng Seo Mi Rae nghĩ đến. Thế rồi một dịch vụ hẹn hò ảo khơi dậy những rung động – và có thể mở ra cơ hội thật sự để tìm thấy tình yêu.",
+    {title: "Nụ Hôn Siren", image: "https://phimimg.com/upload/vod/20260309-1/84b2688ea91444f5923a6a23428544e1.jpg",thumb:"https://phimimg.com/upload/vod/20260309-1/32b40e018eba61d97214e250cc1c106d.jpg", path: "nu-hon-siren",
+     episode_current: "Luôn cập nhật", lang: "Vietsub", origin_name: "Siren's Kiss",
+     content: "Điều tra viên bảo hiểm hàng đầu Cha Woo-seok truy đuổi một đường dây lừa đảo liên quan đến hàng loạt cái chết bí ẩn. Trong quá trình điều tra, anh bị cuốn vào mối quan hệ nguy hiểm với Han Seol-ah — một nữ đấu giá nghệ thuật hoàn hảo đến mê hoặc, nhưng những người đàn ông từng yêu cô dường như đều có kết cục bi thảm. Khi ranh giới giữa sự hấp dẫn và nghi ngờ dần trở nên mờ nhạt, Woo-seok phải tìm ra sự thật: liệu Seol-ah là kẻ sát nhân, hay chỉ là nạn nhân của một âm mưu đen tối, trước khi chính mạng sống của anh trở thành cái giá phải trả cho sự thật.",
     },
     {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",
     episode_current: "Luôn cập nhật", lang: "Vietsub", origin_name: "In Your Radiant Season",
@@ -344,6 +344,8 @@ export const HighRate = [
 ]
 
 export const KoreaFilm = [
+   {title: "Nụ Hôn Siren", image: "https://phimimg.com/upload/vod/20260309-1/84b2688ea91444f5923a6a23428544e1.jpg", path: "nu-hon-siren",episode_current: "Luôn cập nhật"},
+   {title: "Luật Sư Bóng Ma", image: "https://phimimg.com/upload/vod/20260314-1/3c0e3fe8e9dcfacb2ac5ff882a3b6af9.jpg", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang",episode_current: "Luôn cập nhật"},
    {title: "Cực Hạn", image: "https://phimimg.com/upload/vod/20260317-1/a48394f3e66faf31b648658324ef3381.jpg", path: "cuc-han",episode_current: "Luôn cập nhật"},
    {title: "Ánh Sáng Của Đôi Ta", image: "https://phimimg.com/upload/vod/20260308-1/83b52571c8e2905ed342cfc933d9d804.jpg", path: "anh-sang-cua-doi-ta",episode_current: "Luôn cập nhật"},
    {title: "Bạn Trai Theo Yêu Cầu", image: "https://phimimg.com/upload/vod/20260307-1/903ea6483ca481d7210d81a56cfce3a0.jpg", path: "ban-trai-theo-yeu-cau",episode_current: "Hoàn Tất (10/10)"},
