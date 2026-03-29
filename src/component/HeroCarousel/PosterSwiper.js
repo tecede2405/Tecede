@@ -16,7 +16,7 @@ export default function PosterSwiper({
       {data.map((item, index) => (
         <SwiperSlide key={index}>
           <img
-            src={item.image}
+            src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
             alt={item.title}
             onClick={() => setActive(item)}
             style={{

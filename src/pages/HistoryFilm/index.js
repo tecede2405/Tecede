@@ -30,7 +30,7 @@ export default function WatchHistory() {
               >
                 <td style={{ width: "70px" }}>
                   <img
-                    src={item.image}
+                    src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
                     alt={item.title}
                     width="50"
                     height="70"

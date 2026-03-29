@@ -52,11 +52,9 @@ export default function useMusicPlayer(initialSongs) {
       const shuffled = shuffleArray(originalPlaylist);
       setCurrentPlaylist(shuffled);
       setCurrentIndex(0);
-      handlePlay(0); 
     } else {
       setCurrentPlaylist(originalPlaylist);
       setCurrentIndex(0);
-      handlePlay(0);
     }
     setIsShuffle(!isShuffle);
   };
@@ -81,24 +79,28 @@ export default function useMusicPlayer(initialSongs) {
 
   // ✅ Tự động phát bài tiếp khi bài hiện tại kết thúc
   const handleEnded = () => {
-  if (currentIndex === null) return;
-  if (currentIndex + 1 < currentPlaylist.length) {
-    handlePlay(currentIndex + 1); // ✅ dùng handlePlay
-  } else {
-    setCurrentIndex(null); // hoặc phát lại
-  }
-};
+    if (currentIndex === null) return;
 
-  // ✅ Auto phát khi đổi bài
+    const nextIndex = (currentIndex + 1) % currentPlaylist.length;
+    handlePlay(nextIndex);
+  };
+
+  //  Auto phát khi đổi bài
   useEffect(() => {
-    if (currentIndex !== null && audioRef.current) {
-      const audio = audioRef.current;
-      audio.load();
-      audio.play().catch((err) => {
-        console.warn("Không thể phát:", err.message || err);
+  if (currentIndex !== null && audioRef.current) {
+    const audio = audioRef.current;
+
+    audio.muted = false;
+
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn("Autoplay bị chặn:", err);
       });
     }
-  }, [currentIndex, currentPlaylist]);
+  }
+}, [currentIndex]);
 
   return {
     playlist: currentPlaylist,

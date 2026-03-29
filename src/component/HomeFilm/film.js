@@ -36,7 +36,7 @@ function Film() {
             <div
               className="film-card animate__animated animate__fadeIn"
               onClick={() => navigate(`/film/${film.path}`)}
-              style={{ backgroundImage: `url(${film.image})` }}
+              style={{ backgroundImage: `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(film.image)})` }}
             >
               <div className="film-card__overlay">
                 <h6 className="film-card__title">{film.title}</h6>

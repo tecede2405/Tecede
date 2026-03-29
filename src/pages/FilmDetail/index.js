@@ -71,7 +71,12 @@ export default function FilmDetail() {
  
 
   return (
-    <div className="movie-page pb-5 pt-3" style={{ "--bg-url": `url(${movie.poster_url})`}}>
+    <div 
+      className="movie-page pb-5 pt-3"
+      style={{
+        "--bg-url": `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(movie.poster_url)})`
+      }}
+    >
       <div className="container container-film">
 
         {/* Title */}
@@ -140,7 +145,11 @@ export default function FilmDetail() {
 
               {/* Poster */}
               <div className="movie-page__poster">
-                <img src={movie.poster_url} alt={movie.name} />
+                <img 
+                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(movie.poster_url)}`}
+                  alt={movie.name}
+                  loading="lazy" 
+                />
               </div>
 
               {/* Info */}

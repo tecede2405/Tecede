@@ -31,7 +31,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
               {/* THUMB 3:4 */}
               <div className="hero-card__thumb-wrap">
                 <img
-                  src={item.thumb || item.image}
+                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.thumb || item.image)}`}
                   alt={item.title}
                   className="hero-card__thumb"
                 />
@@ -39,7 +39,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
 
               {/* POSTER 2:3 ĐÈ */}
               <img
-                src={item.poster || item.image}
+                src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.poster || item.image)}`}
                 alt={item.title}
                 className="hero-card__poster"
               />

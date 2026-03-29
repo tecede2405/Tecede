@@ -29,7 +29,7 @@ const navigate = useNavigate();
               alt={item.title}
               onClick={() => navigate(`/film/${item.path}`)}
               style={{
-                backgroundImage: `url(${item.image})`
+                backgroundImage: `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)})`
               }}
             >
               <div className="film-card__overlay">

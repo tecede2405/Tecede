@@ -43,7 +43,7 @@ export default function NewAnimeHero() {
         linear-gradient(to bottom, rgba(18,18,18,1) 0%, rgba(18,18,18,.85) 20%, rgba(18,18,18,.45) 45%, rgba(18,18,18,0) 70%),
         linear-gradient(to top, rgba(18,18,18,.9) 0%, rgba(18,18,18,.6) 25%, rgba(18,18,18,0) 55%),
         linear-gradient(to right, rgba(0,0,0,.65), rgba(0,0,0,.25)),
-        url(${active.thumb})
+        url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(active.thumb)})
       `,
       }}
     />
