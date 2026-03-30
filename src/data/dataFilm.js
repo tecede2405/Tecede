@@ -3,6 +3,9 @@ export const cinematicFilm = [
     {title: "Truy Tìm Long Diên Hương", image: "https://phimimg.com/upload/vod/20260305-1/f27e602f78ac25f30a12c985e91ede32.jpg",thumb:"https://phimimg.com/upload/vod/20260305-1/0ed392d57a9e67bce3fee7955a903441.jpg", path: "truy-tim-long-dien-huong",time: "103 phút"},
     {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/e7ef2b7b1b6b0b235f8c8999b98a7d8a.jpg", path: "thien-duong-mau",time: "99 phút"},
     {title: "La Tiểu Hắc Chiến Ký 2", image: "https://phimimg.com/upload/vod/20251028-1/4fffac6b86e70ee723508a83b14945c0.jpg",thumb:"https://phimimg.com/upload/vod/20251028-1/82f4d549bd8e7076b79e796f3372e252.jpg", path: "huyen-thoai-la-tieu-hac-2-la-tieu-hac-chien-ky-2",time: "119 phút"},
+    {title: "Hoppers: Cú Nhảy Kỳ Diệu", image: "https://phimimg.com/upload/vod/20260330-1/d8c96083ab5b6d8a2a3e1fdafc9d0bc0.jpg",thumb:"https://phimimg.com/upload/vod/20260330-1/91d30de8c46d4b24ad2987c54376d54d.jpg", path: "hoppers-cu-nhay-ky-dieu",time: "105 phút"},
+    {title: "Tuyển Thủ Dê", image: "https://phimimg.com/upload/vod/20260325-1/1f5f942c1627deb2064d8be37d172855.jpg",thumb:"https://phimimg.com/upload/vod/20260325-1/57000b826e67c1db2727e310aec0b004.jpg", path: "tuyen-thu-de-mui-vi-chien-thang",time: "100 phút"},
+    {title: "Cứu", image: "https://phimimg.com/upload/vod/20260325-1/8b58708f9dc3aeb6db816ff4067a9019.jpg",thumb:"https://phimimg.com/upload/vod/20260325-1/27d72029d90f0c2560523fd8ab08a30e.jpg", path: "cuu-2026",time: "113 phút"},
     {title: "Tiếng Thét 7", image: "https://phimimg.com/upload/vod/20260320-1/47c0a38e4b50f086e788286cc4758e15.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/02357f6d4016248c8f7551004471f943.jpg", path: "tieng-thet-7",time: "114 phút"},
     {title: "Người Bất Tử", image: "https://phimimg.com/upload/vod/20250516-1/77da51d2e0c182775c82fe20b7b906e0.jpg",thumb:"https://phimimg.com/upload/vod/20250516-1/b6f3d4b02de2ea10a76f3ed5d6bb0721.jpg", path: "nguoi-bat-tu-2018",time: "132 phút"},
     {title: "Quốc Bảo", image: "https://phimimg.com/upload/vod/20260228-1/bee778036be94f61585705eb6a305fa1.jpg",thumb:"https://phimimg.com/upload/vod/20260228-1/0023b048b0e309171efff2ebf680bc87.jpg", path: "quoc-bao",time: "174 phút"},
@@ -86,7 +89,7 @@ export const cinematicFilm = [
     {title: "Zombie Cưng Của Ba", image: "https://phimimg.com/upload/vod/20250927-1/d95d5531b3e25c78438ae09f57d4aad2.jpg",thumb:"https://phimimg.com/upload/vod/20250927-1/a78cc05861f16028e314f1f9f3b26a7c.jpg", path: "zombie-cung-cua-ba",time: "114 phút"},
     {title: "Kẻ Vô Hình", image: "https://phimimg.com/upload/vod/20260115-1/79d11a5400d6e7756b0973adc0039797.jpg",thumb:"https://phimimg.com/upload/vod/20260115-1/28921720b813981570673c27787cb542.jpg", path: "ke-vo-hinh",time: "125 phút"},
     {title: "Conan 28: Dư Ảnh Của Độc Nhãn", image: "https://phimimg.com/upload/vod/20250827-1/aabb76a70d8afd21ddf2be37381c7587.jpg", thumb:"https://phimimg.com/upload/vod/20250827-1/eddefbf4813488f89a6f0c766f69f82f.jpg", path: "tham-tu-lung-danh-conan-28-du-anh-cua-doc-nhan",time: "109 phút"},
-    {title: "The Last Attack", image: "https://phimimg.com/upload/vod/20250419-1/50cf359f6ed6307597fc160044132ac3.jpg", thumb:"https://phimimg.com/upload/vod/20250419-1/5592e992bf3e556c9660f30d058dce71.jpg", path: "dai-chien-nguoi-khong-lo-lan-tan-cong-cuoi-cung",time: "145 phút"},
+    {title: "Đại Chiến Người Khổng Lồ", image: "https://phimimg.com/upload/vod/20250419-1/50cf359f6ed6307597fc160044132ac3.jpg", thumb:"https://phimimg.com/upload/vod/20250419-1/5592e992bf3e556c9660f30d058dce71.jpg", path: "dai-chien-nguoi-khong-lo-lan-tan-cong-cuoi-cung-dai-chien-titan",time: "145 phút"},
     {title: "Lật Mặt 6", image: "https://phimimg.com/upload/vod/20240919-1/5c666eeb1ce5b80a0140906109da9d2a.jpg", thumb:"https://phimimg.com/upload/vod/20240919-1/04dc2a0a9dbc3efbb6289dec6349de9e.jpg", path: "lat-mat-6-tam-ve-dinh-menh",time: "132 phút"},
     {title: "Vô Hạn Thành", image: "https://phimimg.com/upload/vod/20250722-1/66ee196318069c6ede9450a5f76a4648.jpg", thumb:"https://phimimg.com/upload/vod/20250722-1/16ea0557ca40cd54a3d25c6750a65c0b.jpg", path: "thanh-guom-diet-quy-vo-han-thanh",time: "155 phút"},
     {title: "Nhà Bà Nữ", image: "https://phimimg.com/upload/vod/20230922-1/8e7ee122a3ca993f858a005ab9b8211d.jpg", thumb:"https://phimimg.com/upload/vod/20230922-1/d2cfd0e655a35fd296702ab53226061e.jpg", path: "nha-ba-nu",time: "103 phút"},
@@ -319,6 +322,7 @@ export const HotFilm2 = [
 ]
 
 export const HighRate = [
+   {title: "Hoppers: Cú Nhảy Kỳ Diệu", image: "https://phimimg.com/upload/vod/20260330-1/d8c96083ab5b6d8a2a3e1fdafc9d0bc0.jpg", path: "hoppers-cu-nhay-ky-dieu", episode_current: "Full"},
    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg", path: "thien-duong-mau", episode_current: "Full"},
    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Luôn cập nhật"},
    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Hoàn Tất (40/40)"},
