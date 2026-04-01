@@ -102,9 +102,14 @@ function NhacLofi() {
                   <audio
                     ref={audioRef}
                     controls
+                    playsInline
+                    autoPlay
                     preload="metadata"
                     controlsList="nodownload"
                     className="custom-audio"
+                    onPlay={() => {
+                    audioRef.current.muted = false;
+                  }}
                     onEnded={handleEnded}
                   >
                     <source src={playlist[currentIndex].file} type="audio/mpeg" />

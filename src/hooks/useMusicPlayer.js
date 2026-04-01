@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
-// 🎲 Hàm xáo trộn mảng
+//  Hàm xáo trộn mảng
 function shuffleArray(arr) {
   const newArr = [...arr];
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -17,7 +17,7 @@ export default function useMusicPlayer(initialSongs) {
   const [isShuffle, setIsShuffle] = useState(false);
   const audioRef = useRef(null);
 
-  // ✅ Cập nhật playlist khi fetch từ API
+  //  Cập nhật playlist khi fetch từ API
   const updatePlaylist = useCallback((songs) => {
   setOriginalPlaylist(songs);
   setCurrentPlaylist(songs);
@@ -25,7 +25,7 @@ export default function useMusicPlayer(initialSongs) {
   setIsShuffle(false);
 }, []);
 
-  // ✅ Phát bài theo index
+  //  Phát bài theo index
   const handlePlay = (index) => {
   const song = currentPlaylist[index];
   if (song?._id) {
@@ -46,7 +46,7 @@ export default function useMusicPlayer(initialSongs) {
 });
 };
 
-  // ✅ Xáo trộn hoặc trở lại danh sách gốc
+  //  Xáo trộn hoặc trở lại danh sách gốc
   const handleShufflePlaylist = () => {
     if (!isShuffle) {
       const shuffled = shuffleArray(originalPlaylist);
@@ -59,12 +59,12 @@ export default function useMusicPlayer(initialSongs) {
     setIsShuffle(!isShuffle);
   };
 
-  // ✅ Phát bài tiếp theo
+  //  Phát bài tiếp theo
   const handleNext = () => {
   if (currentPlaylist.length === 0) return;
   const nextIndex =
     currentIndex === null ? 0 : (currentIndex + 1) % currentPlaylist.length;
-  handlePlay(nextIndex); // ✅ dùng handlePlay
+  handlePlay(nextIndex); //  dùng handlePlay
 };
 
   // ✅ Quay lại bài trước
@@ -74,10 +74,10 @@ export default function useMusicPlayer(initialSongs) {
     currentIndex === null
       ? 0
       : (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
-  handlePlay(prevIndex); // ✅ dùng handlePlay
+  handlePlay(prevIndex); // dùng handlePlay
   };
 
-  // ✅ Tự động phát bài tiếp khi bài hiện tại kết thúc
+  //  Tự động phát bài tiếp khi bài hiện tại kết thúc
   const handleEnded = () => {
     if (currentIndex === null) return;
 
@@ -90,16 +90,38 @@ export default function useMusicPlayer(initialSongs) {
   if (currentIndex !== null && audioRef.current) {
     const audio = audioRef.current;
 
-    audio.muted = false;
+    const playAudio = async () => {
+      try {
+        await audio.play();
+      } catch (err) {
+        console.warn("Autoplay bị chặn");
 
-    const playPromise = audio.play();
+        const resume = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener("click", resume);
+        };
 
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn("Autoplay bị chặn:", err);
-      });
-    }
+        document.addEventListener("click", resume);
+      }
+    };
+
+    playAudio();
   }
+}, [currentIndex]);
+  useEffect(() => {
+  const handleVisibility = () => {
+    if (document.visibilityState === "visible") {
+      if (audioRef.current && currentIndex !== null) {
+        audioRef.current.play().catch(() => {});
+      }
+    }
+  };
+
+  document.addEventListener("visibilitychange", handleVisibility);
+
+  return () => {
+    document.removeEventListener("visibilitychange", handleVisibility);
+  };
 }, [currentIndex]);
 
   return {

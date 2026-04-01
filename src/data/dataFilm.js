@@ -251,6 +251,10 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
+    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg",thumb:"https://phimimg.com/upload/vod/20260401-1/eedf100eab6203b36b0cc7c1fec5eddc.jpg", path: "nguyet-lan-y-ky",
+    episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh", origin_name: "Veil Of Shadows",
+    content: "Nguyệt Lân Ỷ Kỷ đưa khán giả vào một thế giới kỳ ảo, nơi sức mạnh cổ xưa của Long Thần đột ngột tái hiện trên cơ thể của thiếu nữ Tiểu Duy. Sự kiện này đã khuấy đảo cả tam giới, khiến cô trở thành mục tiêu săn đuổi của các thế lực tà ác lẫn chính nghĩa. Trong hành trình chạy trốn định mệnh, Tiểu Duy bị cuốn vào vòng xoáy ân oán giữa hồ ly chín đuôi đầy mưu mô Vụ Vọng Ngôn và vị pháp sư chính trực Ký Linh. Giữa những cuộc chiến pháp thuật mãn nhãn và những bí mật kinh thiên động địa dần được hé lộ, các nhân vật phải đấu tranh giữa tham vọng quyền lực và tình cảm cá nhân để bảo vệ niềm tin của chính mình.",
+    },
     {title: "Luật Sư Bóng Ma (Văn Phòng Luật Sư Shin I Rang)", image: "https://phimimg.com/upload/vod/20260314-1/3c0e3fe8e9dcfacb2ac5ff882a3b6af9.jpg",thumb:"https://phimimg.com/upload/vod/20260314-1/8d048e1956a9a918f4c58ce087d00105.jpg", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang", 
     episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Phantom Lawyer",
     content: "Bộ phim xoay quanh Shin Yi Rang (Yoo Yeon Seok), một luật sư bất ngờ có khả năng nhìn thấy hồn ma sau khi chuyển văn phòng đến nơi từng là nhà của một pháp sư. Những linh hồn mang theo uẩn khúc chưa được giải quyết tìm đến anh để nhờ giúp đỡ, buộc Yi Rang phải hóa thân, sống lại ký ức của họ nhằm tìm manh mối cho các vụ án. Đồng hành cùng anh là Han Na Hyun (Esom), nữ luật...",
@@ -283,10 +287,7 @@ export const HotFilm = [
      episode_current: "Luôn cập nhật", lang: "Vietsub", origin_name: "Siren's Kiss",
      content: "Điều tra viên bảo hiểm hàng đầu Cha Woo-seok truy đuổi một đường dây lừa đảo liên quan đến hàng loạt cái chết bí ẩn. Trong quá trình điều tra, anh bị cuốn vào mối quan hệ nguy hiểm với Han Seol-ah — một nữ đấu giá nghệ thuật hoàn hảo đến mê hoặc, nhưng những người đàn ông từng yêu cô dường như đều có kết cục bi thảm. Khi ranh giới giữa sự hấp dẫn và nghi ngờ dần trở nên mờ nhạt, Woo-seok phải tìm ra sự thật: liệu Seol-ah là kẻ sát nhân, hay chỉ là nạn nhân của một âm mưu đen tối, trước khi chính mạng sống của anh trở thành cái giá phải trả cho sự thật.",
     },
-    {title: "Mùa Rực Rỡ Của Em", image: "https://phimimg.com/upload/vod/20260223-1/8a44c515d71551459012656dfccf6e31.jpg",thumb:"https://phimimg.com/upload/vod/20260223-1/62667ee973537d0636ed2105c1d16dcc.jpg", path: "mua-ruc-ro-cua-em-mua-em-ruc-ro",
-    episode_current: "Luôn cập nhật", lang: "Vietsub", origin_name: "In Your Radiant Season",
-    content: "Chan sống mỗi ngày như thể đó là kỳ nghỉ hè. Haran thì lại bị mắc kẹt trong một mùa đông cô đơn. Khi quá khứ bị lãng quên đưa họ gặp lại nhau, Chan quyết tâm tặng cô một mùa xuân khác. Qua những tiếng cười và nước mắt, họ cùng nhau đối mặt với mùa đông và tìm thấy mùa xuân của mình trong câu chuyện tình lãng mạn ấm áp này.",
-    }, 
+    
 ]
 export const HotFilm2 = [
     {id: 1,title: "Tiếng Yêu Này, Anh Dịch Được Không?", image: "https://phimimg.com/upload/vod/20260116-1/8b1201713adc08736e33e45ab1c1f2e4.jpg",thumb:"https://phimimg.com/upload/vod/20260116-1/92ad3288f61736574a2a2dd3c4ee5df1.jpg", path: "tieng-yeu-nay-anh-dich-duoc-khong", 
@@ -322,6 +323,7 @@ export const HotFilm2 = [
 ]
 
 export const HighRate = [
+   {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg", path: "nguyet-lan-y-ky", episode_current: "Luôn cập nhật"},
    {title: "Hoppers: Cú Nhảy Kỳ Diệu", image: "https://phimimg.com/upload/vod/20260330-1/d8c96083ab5b6d8a2a3e1fdafc9d0bc0.jpg", path: "hoppers-cu-nhay-ky-dieu", episode_current: "Full"},
    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg", path: "thien-duong-mau", episode_current: "Full"},
    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Luôn cập nhật"},
