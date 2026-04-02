@@ -251,19 +251,19 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg",thumb:"https://phimimg.com/upload/vod/20260401-1/eedf100eab6203b36b0cc7c1fec5eddc.jpg", path: "nguyet-lan-y-ky",
+    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/155abaff30c9e70456884ba26ddd9f51",thumb:"https://res.cloudinary.com/dnqj71rcj/image/upload/v1775154873/1775154661635_zmu9xw.gif", path: "nguyet-lan-y-ky",
     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh", origin_name: "Veil Of Shadows",
     content: "Nguyệt Lân Ỷ Kỷ đưa khán giả vào một thế giới kỳ ảo, nơi sức mạnh cổ xưa của Long Thần đột ngột tái hiện trên cơ thể của thiếu nữ Tiểu Duy. Sự kiện này đã khuấy đảo cả tam giới, khiến cô trở thành mục tiêu săn đuổi của các thế lực tà ác lẫn chính nghĩa. Trong hành trình chạy trốn định mệnh, Tiểu Duy bị cuốn vào vòng xoáy ân oán giữa hồ ly chín đuôi đầy mưu mô Vụ Vọng Ngôn và vị pháp sư chính trực Ký Linh. Giữa những cuộc chiến pháp thuật mãn nhãn và những bí mật kinh thiên động địa dần được hé lộ, các nhân vật phải đấu tranh giữa tham vọng quyền lực và tình cảm cá nhân để bảo vệ niềm tin của chính mình.",
     },
-    {title: "Luật Sư Bóng Ma (Văn Phòng Luật Sư Shin I Rang)", image: "https://phimimg.com/upload/vod/20260314-1/3c0e3fe8e9dcfacb2ac5ff882a3b6af9.jpg",thumb:"https://phimimg.com/upload/vod/20260314-1/8d048e1956a9a918f4c58ce087d00105.jpg", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang", 
+    {title: "Luật Sư Bóng Ma (Văn Phòng Luật Sư Shin I Rang)", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/1072954bc7c0c2e710b39bd502cc6d4d",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/07e772c8ab7ce0be6dc2bb3bf4de95dc", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang", 
     episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Phantom Lawyer",
     content: "Bộ phim xoay quanh Shin Yi Rang (Yoo Yeon Seok), một luật sư bất ngờ có khả năng nhìn thấy hồn ma sau khi chuyển văn phòng đến nơi từng là nhà của một pháp sư. Những linh hồn mang theo uẩn khúc chưa được giải quyết tìm đến anh để nhờ giúp đỡ, buộc Yi Rang phải hóa thân, sống lại ký ức của họ nhằm tìm manh mối cho các vụ án. Đồng hành cùng anh là Han Na Hyun (Esom), nữ luật...",
     },
-    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/e7ef2b7b1b6b0b235f8c8999b98a7d8a.jpg", path: "thien-duong-mau", 
+    {title: "Thiên Đường Máu", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/c7ed2bf78f495761ca660547b2371683",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/4bb48f708fd274c1c9d7ea63ef582043", path: "thien-duong-mau", 
     episode_current: "Full",lang: "Vietsub", origin_name: "Bloody Haven",
     content: "Thiên Đường Máu là phim điện ảnh đầu tiên về nạn lừa đảo người Việt ra nước ngoài. Tin lời hứa việc nhẹ lương cao, không ít thanh niên bị đưa đến những đặc khu, nơi họ trải qua cảnh giam lỏng và bị ép buộc phải gọi điện để lừa ngược lại chính đồng bào mình. Nhiều người trong số đó đã tìm cách đào thoát khỏi địa ngục mà họ đã trót dấn thân vào.",
     }, 
-    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg",thumb:"https://phimimg.com/upload/vod/20260319-1/5a5b6d0060ae397cd841b720b0ae2f53.jpg", path: "xin-chao-1983",
+    {title: "Xin Chào 1983", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6fabe6ff83537702fbaa02371d3c3797",thumb:"https://phimimg.com/upload/vod/20260319-1/5a5b6d0060ae397cd841b720b0ae2f53.jpg", path: "xin-chao-1983",
      episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Dream Of Golden Years",
     content: "Ở tuổi 36, Hạ Hiểu Lan – nữ quản lý cấp cao – mất tất cả sau khi công ty phá sản. Trong lúc tuyệt vọng, cô xuyên không về quá khứ, trở thành cô gái nông thôn 18 tuổi. Không tiền bạc hay chỗ dựa, nhưng với trí tuệ, nhan sắc và nhiệt huyết tuổi trẻ, cô quyết tâm làm lại cuộc đời. Hiểu Lan vừa học tập, vừa khởi nghiệp từ con số 0, từng bước xây dựng sự nghiệp và theo đuổi ước mơ đại học. Trên hành trình đó, cô tìm thấy tình yêu, tình thân và những mối quan hệ đầy ý nghĩa, khẳng định bản thân và tạo nên một cuộc sống mới rực rỡ hơn xưa.",
     },

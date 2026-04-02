@@ -57,7 +57,7 @@
   background-position: center;
   background-repeat: no-repeat;
 
-  filter: brightness(0.6);
+  filter: brightness(0.8);
 }
 
 /* overlay gradient */
@@ -65,13 +65,32 @@
   content: ""; position: absolute; 
   inset: 0; 
   z-index: 2;
-  background: /* fade bên trái cho text */ 
-  linear-gradient( 90deg, #121212 0%, rgba(18,18,18,0.9) 30%,
-   rgba(18,18,18,0.55) 55%, transparent 90% ), /* fade dưới ĐẬM HƠN */ 
-   linear-gradient( to bottom, transparent 45%, rgba(18,18,18,0.75) 
-   65%, rgba(18,18,18,0.92) 82%,
-  #121212 100% );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(18,18,18,0.85) 0%,
+      rgba(18,18,18,0.75) 25%,
+      rgba(18,18,18,0.45) 55%,
+      transparent 85%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 55%,
+      rgba(18,18,18,0.6) 75%,
+      #121212 100%
+    );
 }
+// .cinemaHeroCard::after {
+//   content: ""; position: absolute; 
+//   inset: 0; 
+//   z-index: 2;
+//   background: /* fade bên trái cho text */ 
+//   linear-gradient( 90deg, #121212 0%, rgba(18,18,18,0.9) 30%,
+//    rgba(18,18,18,0.55) 55%, transparent 90% ), /* fade dưới ĐẬM HƠN */ 
+//    linear-gradient( to bottom, transparent 45%, rgba(18,18,18,0.75) 
+//    65%, rgba(18,18,18,0.92) 82%,
+//   #121212 100% );
+// }
 
 /* ===============================
    CONTENT LAYOUT

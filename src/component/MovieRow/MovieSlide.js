@@ -10,7 +10,7 @@ const MovieSlide = ({ movie }) => {
   <div
   className="cinemaHeroCard__backdrop"
   style={{
-    backgroundImage: `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(movie.thumb)})`
+    backgroundImage: `url(${movie.thumb})`
   }}
 />
 
