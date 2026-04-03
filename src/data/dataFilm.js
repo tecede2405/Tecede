@@ -4,6 +4,7 @@ export const cinematicFilm = [
     {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/e7ef2b7b1b6b0b235f8c8999b98a7d8a.jpg", path: "thien-duong-mau",time: "99 phút"},
     {title: "La Tiểu Hắc Chiến Ký 2", image: "https://phimimg.com/upload/vod/20251028-1/4fffac6b86e70ee723508a83b14945c0.jpg",thumb:"https://phimimg.com/upload/vod/20251028-1/82f4d549bd8e7076b79e796f3372e252.jpg", path: "huyen-thoai-la-tieu-hac-2-la-tieu-hac-chien-ky-2",time: "119 phút"},
     {title: "Hoppers: Cú Nhảy Kỳ Diệu", image: "https://phimimg.com/upload/vod/20260330-1/d8c96083ab5b6d8a2a3e1fdafc9d0bc0.jpg",thumb:"https://phimimg.com/upload/vod/20260330-1/91d30de8c46d4b24ad2987c54376d54d.jpg", path: "hoppers-cu-nhay-ky-dieu",time: "105 phút"},
+    {title: "Cục Vàng Của Ngoại", image: "https://phimimg.com/upload/vod/20260403-1/302beeb411b719a89f3678638ab48fe7.jpg",thumb:"https://phimimg.com/upload/vod/20260403-1/8a92b96e2654e74c7ca3beee085e1c18.jpg", path: "cuc-vang-cua-ngoai",time: "119 phút"},
     {title: "Tuyển Thủ Dê", image: "https://phimimg.com/upload/vod/20260325-1/1f5f942c1627deb2064d8be37d172855.jpg",thumb:"https://phimimg.com/upload/vod/20260325-1/57000b826e67c1db2727e310aec0b004.jpg", path: "tuyen-thu-de-mui-vi-chien-thang",time: "100 phút"},
     {title: "Cứu", image: "https://phimimg.com/upload/vod/20260325-1/8b58708f9dc3aeb6db816ff4067a9019.jpg",thumb:"https://phimimg.com/upload/vod/20260325-1/27d72029d90f0c2560523fd8ab08a30e.jpg", path: "cuu-2026",time: "113 phút"},
     {title: "Tiếng Thét 7", image: "https://phimimg.com/upload/vod/20260320-1/47c0a38e4b50f086e788286cc4758e15.jpg",thumb:"https://phimimg.com/upload/vod/20260320-1/02357f6d4016248c8f7551004471f943.jpg", path: "tieng-thet-7",time: "114 phút"},
@@ -255,6 +256,10 @@ export const HotFilm = [
     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh", origin_name: "Veil Of Shadows",
     content: "Nguyệt Lân Ỷ Kỷ đưa khán giả vào một thế giới kỳ ảo, nơi sức mạnh cổ xưa của Long Thần đột ngột tái hiện trên cơ thể của thiếu nữ Tiểu Duy. Sự kiện này đã khuấy đảo cả tam giới, khiến cô trở thành mục tiêu săn đuổi của các thế lực tà ác lẫn chính nghĩa. Trong hành trình chạy trốn định mệnh, Tiểu Duy bị cuốn vào vòng xoáy ân oán giữa hồ ly chín đuôi đầy mưu mô Vụ Vọng Ngôn và vị pháp sư chính trực Ký Linh. Giữa những cuộc chiến pháp thuật mãn nhãn và những bí mật kinh thiên động địa dần được hé lộ, các nhân vật phải đấu tranh giữa tham vọng quyền lực và tình cảm cá nhân để bảo vệ niềm tin của chính mình.",
     },
+    {title: "Cục Vàng Của Ngoại", image: "https://phimimg.com/upload/vod/20260403-1/302beeb411b719a89f3678638ab48fe7.jpg",thumb:"https://phimimg.com/upload/vod/20260403-1/8a92b96e2654e74c7ca3beee085e1c18.jpg", path: "cuc-vang-cua-ngoai",
+     episode_current: "Full",lang: "Vietsub", origin_name: "My Little Grandma",
+    content: "Lấy cảm hứng từ những ký ức tuổi thơ ngọt ngào, “Cục Vàng Của Ngoại” kể câu chuyện ấm áp về tình bà cháu trong một xóm nhỏ đầy nghĩa tình. Bà Hậu – người phụ nữ cả đời tần tảo – trở thành chỗ dựa duy nhất của cháu ngoại khi con gái bỏ đi. Dẫu cuộc sống còn nhiều nhọc nhằn, tình thương bà dành cho cháu vẫn trọn vẹn, đưa khán giả trở về những khoảnh khắc đời thường: nụ cười hồn nhiên của trẻ, vòng tay chở che của bà, và sự đùm bọc của hàng xóm. Một bức tranh tuổi thơ bình yên, ấm áp và chan chứa tình người.",
+    },
     {title: "Luật Sư Bóng Ma (Văn Phòng Luật Sư Shin I Rang)", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/1072954bc7c0c2e710b39bd502cc6d4d",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/07e772c8ab7ce0be6dc2bb3bf4de95dc", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang", 
     episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Phantom Lawyer",
     content: "Bộ phim xoay quanh Shin Yi Rang (Yoo Yeon Seok), một luật sư bất ngờ có khả năng nhìn thấy hồn ma sau khi chuyển văn phòng đến nơi từng là nhà của một pháp sư. Những linh hồn mang theo uẩn khúc chưa được giải quyết tìm đến anh để nhờ giúp đỡ, buộc Yi Rang phải hóa thân, sống lại ký ức của họ nhằm tìm manh mối cho các vụ án. Đồng hành cùng anh là Han Na Hyun (Esom), nữ luật...",
@@ -264,7 +269,7 @@ export const HotFilm = [
     content: "Thiên Đường Máu là phim điện ảnh đầu tiên về nạn lừa đảo người Việt ra nước ngoài. Tin lời hứa việc nhẹ lương cao, không ít thanh niên bị đưa đến những đặc khu, nơi họ trải qua cảnh giam lỏng và bị ép buộc phải gọi điện để lừa ngược lại chính đồng bào mình. Nhiều người trong số đó đã tìm cách đào thoát khỏi địa ngục mà họ đã trót dấn thân vào.",
     }, 
     {title: "Xin Chào 1983", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6fabe6ff83537702fbaa02371d3c3797",thumb:"https://phimimg.com/upload/vod/20260319-1/5a5b6d0060ae397cd841b720b0ae2f53.jpg", path: "xin-chao-1983",
-     episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Dream Of Golden Years",
+     episode_current: "Hoàn Tất (36/36)",lang: "Vietsub + Thuyết Minh", origin_name: "Dream Of Golden Years",
     content: "Ở tuổi 36, Hạ Hiểu Lan – nữ quản lý cấp cao – mất tất cả sau khi công ty phá sản. Trong lúc tuyệt vọng, cô xuyên không về quá khứ, trở thành cô gái nông thôn 18 tuổi. Không tiền bạc hay chỗ dựa, nhưng với trí tuệ, nhan sắc và nhiệt huyết tuổi trẻ, cô quyết tâm làm lại cuộc đời. Hiểu Lan vừa học tập, vừa khởi nghiệp từ con số 0, từng bước xây dựng sự nghiệp và theo đuổi ước mơ đại học. Trên hành trình đó, cô tìm thấy tình yêu, tình thân và những mối quan hệ đầy ý nghĩa, khẳng định bản thân và tạo nên một cuộc sống mới rực rỡ hơn xưa.",
     },
     {title: "Cực Hạn", image: "https://phimimg.com/upload/vod/20260317-1/a48394f3e66faf31b648658324ef3381.jpg",thumb:"https://phimimg.com/upload/vod/20260317-1/a1b772bb127660d04caec55e9e078aae.jpg", path: "cuc-han",
@@ -278,10 +283,6 @@ export const HotFilm = [
     {title: "One Piece Live Action (Phần 2)", image: "https://phimimg.com/upload/vod/20260310-1/2a2baa14e21a3f633e7f06aed2f53dd6.jpg",thumb:"https://phimimg.com/upload/vod/20260310-1/99863628ed38dea725060efb5cad611e.jpg", path: "dao-hai-tac-live-action-phan-2",
      episode_current: "Hoàn Tất (8/8)",lang: "Vietsub + Lồng Tiếng", origin_name: "ONE PIECE (Live Action) (Season 2)",
     content: "Với chiếc mũ rơm và nhóm bạn đủ thành phần, hải tặc trẻ Monkey D. Luffy có hành trình săn kho báu hoành tráng trong bản chuyển thể người đóng này của bộ manga nổi tiếng.",
-    },
-    {title: "Ánh Sáng Của Đôi Ta", image: "https://phimimg.com/upload/vod/20260308-1/83b52571c8e2905ed342cfc933d9d804.jpg",thumb:"https://phimimg.com/upload/vod/20260308-1/9bf7cbc67110bac394d8243f087ffdcc.jpg", path: "anh-sang-cua-doi-ta",
-     episode_current: "Luôn cập nhật",lang: "Vietsub", origin_name: "Still Shining",
-    content: "Sau khi yêu nhau từ thời niên thiếu, hai người trẻ tuổi dần xa cách, để rồi tái ngộ sau 10 năm và cùng nhau đối mặt với nỗi đau, sự trưởng thành và những thử thách mới.",
     },
     {title: "Nụ Hôn Siren", image: "https://phimimg.com/upload/vod/20260309-1/84b2688ea91444f5923a6a23428544e1.jpg",thumb:"https://phimimg.com/upload/vod/20260309-1/32b40e018eba61d97214e250cc1c106d.jpg", path: "nu-hon-siren",
      episode_current: "Luôn cập nhật", lang: "Vietsub", origin_name: "Siren's Kiss",
@@ -323,10 +324,11 @@ export const HotFilm2 = [
 ]
 
 export const HighRate = [
+   {title: "Cục Vàng Của Ngoại", image: "https://phimimg.com/upload/vod/20260403-1/302beeb411b719a89f3678638ab48fe7.jpg", path: "cuc-vang-cua-ngoai", episode_current: "Full"},
    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg", path: "nguyet-lan-y-ky", episode_current: "Luôn cập nhật"},
    {title: "Hoppers: Cú Nhảy Kỳ Diệu", image: "https://phimimg.com/upload/vod/20260330-1/d8c96083ab5b6d8a2a3e1fdafc9d0bc0.jpg", path: "hoppers-cu-nhay-ky-dieu", episode_current: "Full"},
    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg", path: "thien-duong-mau", episode_current: "Full"},
-   {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Luôn cập nhật"},
+   {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Hoàn Tất (36/36)"},
    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Hoàn Tất (40/40)"},
    {title: "Bóng Ma Anh Quốc: Người Bất Tử", image: "https://phimimg.com/upload/vod/20260320-1/53505c93750c4c1be12c5a24f81a19de.jpg", path: "bong-ma-anh-quoc-nguoi-bat-tu", episode_current: "Full"},
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Hoàn Tất (37/37)"},
@@ -393,7 +395,8 @@ export const KoreaFilm = [
 ]
 
 export const ChinaFilm = [
-   {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Luôn cập nhật"},
+    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg", path: "nguyet-lan-y-ky", episode_current: "Luôn cập nhật"},
+   {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Hoàn Tất (36/36)"},
    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Hoàn Tất (40/40)"},
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Hoàn Tất (37/37)"},
    {title: "Đường Cung Kỳ Án: Thanh Vụ Phong Minh", image: "https://phimimg.com/upload/vod/20260205-1/365d6e501c0e0d6263f51b0225429670.jpg", path: "duong-cung-ky-an-thanh-vu-phong-minh", episode_current: "Hoàn Tất (34/34)"},
