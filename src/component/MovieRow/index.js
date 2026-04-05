@@ -16,64 +16,63 @@ const MovieRow = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
 
-
-
   useEffect(() => {
     const onResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-
   const isMobile = width < 525;
   const isTablet = width >= 525 && width < 1024;
 
   return (
     <section className="cinemaHeroRow">
-        <div
-          style={{
-            position: "absolute",
-            top: "7%",
-            left: isMobile ? "0px" : isTablet ? "16px" : "60px",
-            width: isMobile ? "100%" : "600px",
-            zIndex: 9999
-          }}
+
+      <div
+        style={{
+          position: "absolute",
+          top: "7%",
+          left: isMobile ? "0px" : isTablet ? "16px" : "60px",
+          width: isMobile ? "100%" : "600px",
+          zIndex: 9999
+        }}
+      >
+        <FilmSearch fullWidth />
+      </div>
+
+      <div className="cinemaHeroRow__viewport">
+        <Swiper
+          className="cinemaHeroRow__swiper"
+          modules={[EffectFade]}
+          slidesPerView={1}
+          effect="fade"
+          loop={true}
+          speed={600}
+          fadeEffect={{ crossFade: true }}
+          onSlideChange={(swiper) =>
+            setActiveIndex(swiper.realIndex)
+          }
         >
-          <FilmSearch fullWidth/>
-        </div>
-        <div className="cinemaHeroRow__viewport">
-          <Swiper
-            className="cinemaHeroRow__swiper"
-            modules={[EffectFade]}
-            slidesPerView={1}
-            effect="fade"
-            loop={true}
-            speed={600}
-            fadeEffect={{ crossFade: true }}
-            onSlideChange={(swiper) =>
-              setActiveIndex(swiper.realIndex)
-            }
-          >
-            {movies.map((movie) => (
-              <SwiperSlide key={movie.id}>
-                <MovieSlide movie={movie} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {movies.map((movie, index) => (
+            <SwiperSlide key={index}>
+              <MovieSlide movie={movie} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-          <div className="cinemaHeroRow__progress">
-            {movies.map((_, index) => (
-              <span
-                key={index}
-                className={`cinemaHeroRow__progressDot ${
-                  index === activeIndex ? "active" : ""
-                }`}
-              />
-            ))}
-          </div>
+        <div className="cinemaHeroRow__progress">
+          {movies.map((_, index) => (
+            <span
+              key={index}
+              className={`cinemaHeroRow__progressDot ${
+                index === activeIndex ? "active" : ""
+              }`}
+            />
+          ))}
         </div>
+      </div>
 
-      </section>
+    </section>
   );
 };
 

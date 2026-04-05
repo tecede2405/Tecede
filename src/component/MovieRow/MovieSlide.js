@@ -1,66 +1,93 @@
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaPlay } from "react-icons/fa";
 import "./style.scss";
+
 const MovieSlide = ({ movie }) => {
   const navigate = useNavigate();
+
+  // state kiểm tra video load xong chưa
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   return (
     <div className="cinemaHeroCard">
 
-  <div
-  className="cinemaHeroCard__backdrop"
-  style={{
-    backgroundImage: `url(${movie.thumb})`
-  }}
-/>
+      {/* BACKGROUND */}
+      <div className="cinemaHeroCard__backdrop">
 
-  <div className="cinemaHeroCard__layout">
+        {/* VIDEO nếu có */}
+        {movie.video && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="cinemaHeroCard__video"
+            poster={movie.thumb}
+            onLoadedData={() => setVideoLoaded(true)}
+            onError={() => setVideoLoaded(false)}
+          >
+            <source src={movie.video} type="video/mp4" />
+          </video>
+        )}
 
-    <div className="cinemaHeroCard__poster">
-      <img src={movie.image} alt={movie.title} />
-    </div>
+        {/* IMAGE fallback (giữ logic cũ) */}
+        <div
+          className="cinemaHeroCard__image"
+          style={{
+            backgroundImage: `url(${movie.thumb})`,
+            opacity: videoLoaded ? 0 : 1
+          }}
+        />
 
-    <div className="cinemaHeroCard__info">
-
-      <h3 className="cinemaHeroCard__title">
-        {movie.title}
-      </h3>
-      <p className="cinemaHeroCard__origin_name">
-        {movie.origin_name}
-      </p>
-      <div className="cinemaHeroCard__meta">
-        <span className="cinemaHeroCard__tag">
-          {movie.episode_current}
-        </span>
-
-        <span className="cinemaHeroCard__lang">
-          {movie.lang}
-        </span>
       </div>
-      
-      <p className="cinemaHeroCard__overview">
-        {movie.content}
-      </p>
 
-       <button
-        className="cinemaHeroCard__playBtn"
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/film/${movie.path}`);
-        }}
-      >
-        <FaPlay />
-        <span>Xem ngay</span>
-      </button>
-     
+      {/* CONTENT */}
+      <div className="cinemaHeroCard__layout">
 
-      
+        <div className="cinemaHeroCard__poster">
+          <img src={movie.image} alt={movie.title} />
+        </div>
 
+        <div className="cinemaHeroCard__info">
+
+          <h3 className="cinemaHeroCard__title">
+            {movie.title}
+          </h3>
+
+          <p className="cinemaHeroCard__origin_name">
+            {movie.origin_name}
+          </p>
+
+          <div className="cinemaHeroCard__meta">
+            <span className="cinemaHeroCard__tag">
+              {movie.episode_current}
+            </span>
+
+            <span className="cinemaHeroCard__lang">
+              {movie.lang}
+            </span>
+          </div>
+
+          <p className="cinemaHeroCard__overview">
+            {movie.content}
+          </p>
+
+          <button
+            className="cinemaHeroCard__playBtn"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/film/${movie.path}`);
+            }}
+          >
+            <FaPlay />
+            <span>Xem ngay</span>
+          </button>
+
+        </div>
+      </div>
     </div>
-
-  </div>
-
-</div>
   );
 };
 

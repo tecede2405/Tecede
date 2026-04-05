@@ -252,10 +252,14 @@ export const Tokusatsu = [
 ]
 
 export const HotFilm = [
-    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/155abaff30c9e70456884ba26ddd9f51",thumb:"https://res.cloudinary.com/dnqj71rcj/image/upload/v1775154873/1775154661635_zmu9xw.gif", path: "nguyet-lan-y-ky",
+    {title: "Nguyệt Lân Ỷ Kỷ", video: "https://media-tiktok-sg.onflixcdn.pics/?url=7623324525979045138", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/155abaff30c9e70456884ba26ddd9f51",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/cc1f7b916e6f9d752d478362865b690a", path: "nguyet-lan-y-ky",
     episode_current: "Luôn cập nhật", lang: "Vietsub + Thuyết Minh", origin_name: "Veil Of Shadows",
     content: "Nguyệt Lân Ỷ Kỷ đưa khán giả vào một thế giới kỳ ảo, nơi sức mạnh cổ xưa của Long Thần đột ngột tái hiện trên cơ thể của thiếu nữ Tiểu Duy. Sự kiện này đã khuấy đảo cả tam giới, khiến cô trở thành mục tiêu săn đuổi của các thế lực tà ác lẫn chính nghĩa. Trong hành trình chạy trốn định mệnh, Tiểu Duy bị cuốn vào vòng xoáy ân oán giữa hồ ly chín đuôi đầy mưu mô Vụ Vọng Ngôn và vị pháp sư chính trực Ký Linh. Giữa những cuộc chiến pháp thuật mãn nhãn và những bí mật kinh thiên động địa dần được hé lộ, các nhân vật phải đấu tranh giữa tham vọng quyền lực và tình cảm cá nhân để bảo vệ niềm tin của chính mình.",
     },
+    {title: "Bạch Nhật Đề Đăng", image: "https://phimimg.com/upload/vod/20260329-1/07efc63f356411a39d21aa4c2b0d9f43.jpg",thumb:"https://phimimg.com/upload/vod/20260329-1/d86f8a6861ade21ad623082454d939b0.jpg", path: "mo-tu-tu-bach-nhat-de-dang", 
+    episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Love Beyond The Grave",
+    content: "Quỷ vương Hạ Tư Mộ thiên phú xuất chúng tình cờ gặp gỡ tiểu tướng quân Đoàn Tư trong lúc nghỉ ngơi kiếm mồi. Vị tiểu tướng quân mang theo tín vật của cố nhân này dường như lại không phải Đoàn Tư thực sự? Hai người dò xét lẫn nhau, cuối cùng Hạ Tư Mộ cũng biết được quá khứ đen tối cùng chí hướng trong lòng Đoàn Tư, còn Đoàn Tư cũng phát hiện ra sự kiên định và nỗi cô đơn của Hạ Tư Mộ. Một người phàm tuổi thọ chẳng quá trăm năm và một ác quỷ bốn trăm tuổi vẫn mang hình hài thiếu nữ, dùng tình yêu chống lại dòng chảy thời gian.",
+    }, 
     {title: "Cục Vàng Của Ngoại", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/e9f50227b6433ef65ed6a3c45e20d5ba",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/e9f50227b6433ef65ed6a3c45e20d5ba", path: "cuc-vang-cua-ngoai",
      episode_current: "Full",lang: "Vietsub", origin_name: "My Little Grandma",
     content: "Lấy cảm hứng từ những ký ức tuổi thơ ngọt ngào, “Cục Vàng Của Ngoại” kể câu chuyện ấm áp về tình bà cháu trong một xóm nhỏ đầy nghĩa tình. Bà Hậu – người phụ nữ cả đời tần tảo – trở thành chỗ dựa duy nhất của cháu ngoại khi con gái bỏ đi. Dẫu cuộc sống còn nhiều nhọc nhằn, tình thương bà dành cho cháu vẫn trọn vẹn, đưa khán giả trở về những khoảnh khắc đời thường: nụ cười hồn nhiên của trẻ, vòng tay chở che của bà, và sự đùm bọc của hàng xóm. Một bức tranh tuổi thơ bình yên, ấm áp và chan chứa tình người.",
@@ -264,10 +268,6 @@ export const HotFilm = [
     episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Phantom Lawyer",
     content: "Bộ phim xoay quanh Shin Yi Rang (Yoo Yeon Seok), một luật sư bất ngờ có khả năng nhìn thấy hồn ma sau khi chuyển văn phòng đến nơi từng là nhà của một pháp sư. Những linh hồn mang theo uẩn khúc chưa được giải quyết tìm đến anh để nhờ giúp đỡ, buộc Yi Rang phải hóa thân, sống lại ký ức của họ nhằm tìm manh mối cho các vụ án. Đồng hành cùng anh là Han Na Hyun (Esom), nữ luật...",
     },
-    {title: "Thiên Đường Máu", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/c7ed2bf78f495761ca660547b2371683",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/4bb48f708fd274c1c9d7ea63ef582043", path: "thien-duong-mau", 
-    episode_current: "Full",lang: "Vietsub", origin_name: "Bloody Haven",
-    content: "Thiên Đường Máu là phim điện ảnh đầu tiên về nạn lừa đảo người Việt ra nước ngoài. Tin lời hứa việc nhẹ lương cao, không ít thanh niên bị đưa đến những đặc khu, nơi họ trải qua cảnh giam lỏng và bị ép buộc phải gọi điện để lừa ngược lại chính đồng bào mình. Nhiều người trong số đó đã tìm cách đào thoát khỏi địa ngục mà họ đã trót dấn thân vào.",
-    }, 
     {title: "Xin Chào 1983", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6fabe6ff83537702fbaa02371d3c3797",thumb:"https://phimimg.com/upload/vod/20260319-1/5a5b6d0060ae397cd841b720b0ae2f53.jpg", path: "xin-chao-1983",
      episode_current: "Hoàn Tất (36/36)",lang: "Vietsub + Thuyết Minh", origin_name: "Dream Of Golden Years",
     content: "Ở tuổi 36, Hạ Hiểu Lan – nữ quản lý cấp cao – mất tất cả sau khi công ty phá sản. Trong lúc tuyệt vọng, cô xuyên không về quá khứ, trở thành cô gái nông thôn 18 tuổi. Không tiền bạc hay chỗ dựa, nhưng với trí tuệ, nhan sắc và nhiệt huyết tuổi trẻ, cô quyết tâm làm lại cuộc đời. Hiểu Lan vừa học tập, vừa khởi nghiệp từ con số 0, từng bước xây dựng sự nghiệp và theo đuổi ước mơ đại học. Trên hành trình đó, cô tìm thấy tình yêu, tình thân và những mối quan hệ đầy ý nghĩa, khẳng định bản thân và tạo nên một cuộc sống mới rực rỡ hơn xưa.",
@@ -326,6 +326,7 @@ export const HotFilm2 = [
 export const HighRate = [
    {title: "Cục Vàng Của Ngoại", image: "https://phimimg.com/upload/vod/20260403-1/302beeb411b719a89f3678638ab48fe7.jpg", path: "cuc-vang-cua-ngoai", episode_current: "Full"},
    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg", path: "nguyet-lan-y-ky", episode_current: "Luôn cập nhật"},
+   {title: "Bạch Nhật Đề Đăng", image: "https://phimimg.com/upload/vod/20260329-1/07efc63f356411a39d21aa4c2b0d9f43.jpg", path: "mo-tu-tu-bach-nhat-de-dang", episode_current: "Luôn cập nhật"},
    {title: "Hoppers: Cú Nhảy Kỳ Diệu", image: "https://phimimg.com/upload/vod/20260330-1/d8c96083ab5b6d8a2a3e1fdafc9d0bc0.jpg", path: "hoppers-cu-nhay-ky-dieu", episode_current: "Full"},
    {title: "Thiên Đường Máu", image: "https://phimimg.com/upload/vod/20260320-1/c68d804cbd9fbd4026e3c387d7736095.jpg", path: "thien-duong-mau", episode_current: "Full"},
    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Hoàn Tất (36/36)"},
@@ -395,7 +396,8 @@ export const KoreaFilm = [
 ]
 
 export const ChinaFilm = [
-    {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg", path: "nguyet-lan-y-ky", episode_current: "Luôn cập nhật"},
+   {title: "Bạch Nhật Đề Đăng", image: "https://phimimg.com/upload/vod/20260329-1/07efc63f356411a39d21aa4c2b0d9f43.jpg", path: "mo-tu-tu-bach-nhat-de-dang", episode_current: "Luôn cập nhật"},
+   {title: "Nguyệt Lân Ỷ Kỷ", image: "https://phimimg.com/upload/vod/20260401-1/adc0e8e7f7694ee4596df33805c6e5d2.jpg", path: "nguyet-lan-y-ky", episode_current: "Luôn cập nhật"},
    {title: "Xin Chào 1983", image: "https://phimimg.com/upload/vod/20260319-1/3e5edb52e9586f68653000deeda662b0.jpg", path: "xin-chao-1983", episode_current: "Hoàn Tất (36/36)"},
    {title: "Trục Ngọc", image: "https://phimimg.com/upload/vod/20260307-1/7e5b11b1d5ce3514f6d62787d164b816.jpg", path: "truc-ngoc", episode_current: "Hoàn Tất (40/40)"},
    {title: "Giang Hồ Dạ Vũ Thập Niên Đăng", image: "https://phimimg.com/upload/vod/20260225-1/712c09a1fc9cb38da9b7afcd46456759.jpg", path: "giang-ho-da-vu-thap-nien-dang", episode_current: "Hoàn Tất (37/37)"},
