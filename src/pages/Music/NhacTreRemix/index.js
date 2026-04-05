@@ -49,7 +49,7 @@ function NhacTreRemix() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493339/nhactreremix_qr4zfl_dfuc77.png" alt="nhạc remix" className="profile-image" />
+                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/87926809501fe62e67a56602a7cb7823" alt="nhạc remix" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Remix 🎵</h4>
                   <p className="profile-desc">Nhạc bay như tiên cảnh.</p>

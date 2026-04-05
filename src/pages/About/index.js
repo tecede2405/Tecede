@@ -18,7 +18,7 @@
             <section className="about__intro">
             <div className="about__profile">
                 <img
-                src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773494282/AboutIamge_gc1of5_kiofel.png"
+                src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/b93311238c15e779587306509b218c6a"
                 alt="avatar"
                 loading="lazy"
                 className="about__avatar"
@@ -96,7 +96,7 @@
             <div className="projects-grid mt-5">
                 <div className="project-card">
                 <img
-                    src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125757/project1_hnifkb.png"
+                    src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/e4ecdb70daa43da816a240f392b6a18b"
                     loading="lazy"
                     alt="Project 1"
                 />
@@ -108,7 +108,7 @@
 
                 <div className="project-card">
                 <img
-                    src="https://res.cloudinary.com/djzeqinsn/image/upload/v1768125761/project2_fpi1hx.png"
+                    src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/3abe38eef45c9d050cb1e04c9c209076"
                     loading="lazy"
                     alt="Project 2"
                 />
@@ -120,7 +120,7 @@
 
                 <div className="project-card">
                 <img
-                    src="https://res.cloudinary.com/djzeqinsn/image/upload/v1764407944/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-11-29_161827_krnxnn.png"
+                    src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/f6ab0350815711c96fef0654e5006a8f"
                     alt="Shop Mobile"
                     loading="lazy"
                 />
@@ -132,7 +132,7 @@
 
                 <div className="project-card clickable" onClick={handleAdminClick}>
                 <img
-                    src="https://res.cloudinary.com/djzeqinsn/image/upload/v1751473418/412cf700-0b7a-4d14-b998-8ba88d1cf8d9.png"
+                    src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/8512e1327f293c12245b17162fb0dbeb"
                     alt="Admin Post"
                     loading="lazy"
                 />
@@ -144,7 +144,7 @@
 
                 <div className="project-card clickable" onClick={handleAnimeClick}>
                 <img
-                    src="https://res.cloudinary.com/djzeqinsn/image/upload/v1754931345/2fdd6074-e842-43b1-8351-8cee247ec7af.png"
+                    src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/5116123bdcb63015bd107b03d0e72f87"
                     alt="Anime Demo"
                     loading="lazy"
                 />

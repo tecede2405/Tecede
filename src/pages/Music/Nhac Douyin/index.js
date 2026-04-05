@@ -52,7 +52,7 @@ function NhacDouyin() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493340/Picsart_25-09-04_14-09-56-125_qy6tua_juryss.jpg" alt="nhạc douyin" className="profile-image" />
+                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/bb95fae35b14b87ed5d6d2d15791e3f2" alt="nhạc douyin" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Douyin 🎵</h4>
                   <p className="profile-desc">

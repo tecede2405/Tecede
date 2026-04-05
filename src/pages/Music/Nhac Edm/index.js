@@ -51,7 +51,7 @@ function NhacEDM() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493343/edm_dd12g9_cy8qzu.png" alt="nhạc edm" className="profile-image" />
+                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6659861e5f2cb99d7a210d2b258ec8f5" alt="nhạc edm" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc EDM 🎧</h4>
                   <p className="profile-desc">Dành cho game thủ và gymer.</p>

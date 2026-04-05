@@ -71,7 +71,7 @@ function Layout() {
 
           {/* LOGO */}
           <img
-            src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773492578/ChatGPT_Image_19_49_11_14_thg_3_2026_xqll6s.png"
+            src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/2c06afde0ebca0c687b0d3add5f4b1f2"
             alt="logo-Page"
             className="header__image"
             onClick={handleHomeClick}

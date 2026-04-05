@@ -52,7 +52,7 @@ function NhacLofi() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493342/jelly-lofi2_ipmoiv_uu3pp5.jpg" alt="nhạc lofi" className="profile-image" />
+                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/b865a58f5977be30a5a2094a8ad71c6c" alt="nhạc lofi" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Lofi 🎵</h4>
                   <p className="profile-desc">Nhạc chill như jelly.</p>

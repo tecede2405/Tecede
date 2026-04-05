@@ -49,7 +49,7 @@ function NhacTrung() {
           ) : (
             <>
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493343/china_bv9coi_yuixxd.png" alt="nhạc trung quốc" className="profile-image" />
+                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/9cb9409ff6db5a3e70ca628f2be2b3ee" alt="nhạc trung quốc" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Trung Quốc 🎵</h4>
                   <p className="profile-desc">Nghe bao hay bao suy.</p>

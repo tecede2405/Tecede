@@ -3,15 +3,15 @@ import { MdLibraryMusic } from "react-icons/md";
 import "./homemusic.scss";
 
 const musicData = [
-    {title: "mood", image: "https://res.cloudinary.com/djzeqinsn/image/upload/v1768119861/mood_flxfii.png", path: "mood"},
-    {title: "nhacdouyin", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493340/Picsart_25-09-04_14-09-56-125_qy6tua_juryss.jpg", path: "nhac-douyin"},
-    {title: "nhactre", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493341/nhactre_owqjpc_a2dp6s.png", path: "nhac-tre"},
-    {title: "usuk", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493341/usuk_i6ji2d_vz1dib.png", path: "usuk"},
-    {title: "china", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493343/china_bv9coi_yuixxd.png", path: "trung-quoc"},
-    {title: "nhactreremix", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493339/nhactreremix_qr4zfl_dfuc77.png", path: "nhactre-remix"},
-    {title: "edm", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493343/edm_dd12g9_cy8qzu.png", path: "edm"},
-    {title: "phonk", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493341/phonk_pngw79_nszgll.png", path: "phonk"},
-    {title: "nhac-lofi", image: "https://res.cloudinary.com/dx4nlqvvk/image/upload/v1773493342/jelly-lofi2_ipmoiv_uu3pp5.jpg", path: "nhac-lofi"},
+    {title: "mood", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/85ea2a41bcba853ca1656f17b54d6a71", path: "mood"},
+    {title: "nhacdouyin", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/bb95fae35b14b87ed5d6d2d15791e3f2", path: "nhac-douyin"},
+    {title: "nhactre", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/f8067e4d176cf42261c0b2789a1a1035", path: "nhac-tre"},
+    {title: "usuk", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/1a5d4aca0654d716f9ec965dbafc8bf2", path: "usuk"},
+    {title: "china", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/9cb9409ff6db5a3e70ca628f2be2b3ee", path: "trung-quoc"},
+    {title: "nhactreremix", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/87926809501fe62e67a56602a7cb7823", path: "nhactre-remix"},
+    {title: "edm", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6659861e5f2cb99d7a210d2b258ec8f5", path: "edm"},
+    {title: "phonk", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/71e005cb391b2557e066432f5b2c7d4c", path: "phonk"},
+    {title: "nhac-lofi", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/b865a58f5977be30a5a2094a8ad71c6c", path: "nhac-lofi"},
 ];
 
 function HomeMusic() {
