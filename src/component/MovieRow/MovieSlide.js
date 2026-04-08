@@ -33,10 +33,12 @@ const MovieSlide = ({ movie }) => {
         )}
 
         {/* IMAGE fallback (giữ logic cũ) */}
-        <div
+        <img
+          src={movie.thumb}
+          alt={movie.title}
+          loading="lazy"
           className="cinemaHeroCard__image"
           style={{
-            backgroundImage: `url(${movie.thumb})`,
             opacity: videoLoaded ? 0 : 1
           }}
         />

@@ -19,6 +19,7 @@ export default function PosterSwiper({
             src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
             alt={item.title}
             onClick={() => setActive(item)}
+            loading="lazy"
             style={{
               width: isMobile ? "35px" : "60px",
               height: isMobile ? "35px" : "80px",

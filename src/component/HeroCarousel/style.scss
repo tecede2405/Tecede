@@ -1,9 +1,26 @@
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  animation: heroSlideIn .6s cubic-bezier(.22,.61,.36,1) forwards;
+  overflow: hidden;
+}
+
+/* ảnh nền */
+.hero-bg__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* overlay gradient (tách riêng) */
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.914) 0%, rgba(18, 18, 18, 0.366) 20%, rgba(18, 18, 18, 0.218) 25%, rgba(18,18,18,0) 50%),
+    linear-gradient(to top, rgba(18, 18, 18, 0.479) 0%, rgba(18, 18, 18, 0) 25%, rgba(18, 18, 18, 0) 25%),
+    linear-gradient(to right, rgba(0,0,0,.65), rgba(0,0,0,.25));
+  pointer-events: none;
 }
 
 @keyframes heroSlideIn {
