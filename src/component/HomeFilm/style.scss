@@ -48,7 +48,6 @@
 }
 .film-card {
   width: 100%;
-  aspect-ratio: 2 / 3;
   border-radius: 12px;
   cursor: pointer;
   position: relative;
@@ -69,13 +68,21 @@
 /* lớp phủ tối */
 .film-card::before {
   content: "";
+  display: block;
+  padding-top: 150%; /* 2:3 */
+}
+
+.film-carousel .film-card::after {
+  content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.5),
-    rgba(0, 0, 0, 0)
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.6) 25%,
+    rgba(0, 0, 0, 0.3) 45%,
+    rgba(0, 0, 0, 0.1) 60%,
+    rgba(0, 0, 0, 0) 75%
   );
   z-index: 2;
 }
