@@ -156,6 +156,7 @@ export default function FilmListByType() {
               <img
                 src={film.image || film.thumb}
                 alt={film.title}
+                loading="lazy"
                 className="film-poster"
               />
 

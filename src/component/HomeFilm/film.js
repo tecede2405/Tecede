@@ -33,18 +33,25 @@ function Film() {
         <FilmCarousel
           items={filmData}
           renderItem={(film) => (
+           
             <div
-              className="film-card animate__animated animate__fadeIn"
-              onClick={() => navigate(`/film/${film.path}`)}
-              style={{ backgroundImage: `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(film.image)})` }}
-            >
-              <div className="film-card__overlay">
-                <h6 className="film-card__title">{film.title}</h6>
-                <p className="film-card__episode">
-                  {film.episode_current || "?"}
-                </p>
+                className="film-card"
+                onClick={() => navigate(`/film/${film.path}`)}
+              >
+                <img
+                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(film.image)}`}
+                  alt={film.title}
+                  loading="lazy"
+                  className="film-card__img"
+                />
+
+                <div className="film-card__overlay">
+                  <h6 className="film-card__title">{film.title}</h6>
+                  <p className="film-card__episode">
+                    {film.episode_current || "?"}
+                  </p>
+                </div>
               </div>
-            </div>
           )}
         />
       </div>

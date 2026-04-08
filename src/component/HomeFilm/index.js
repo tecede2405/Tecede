@@ -24,18 +24,24 @@ const navigate = useNavigate();
         <FilmCarousel
           items={filmData}
           renderItem={(item) => (
+
             <div
               className="film-card animate__animated animate__fadeIn"
-              alt={item.title}
               onClick={() => navigate(`/film/${item.path}`)}
-              style={{
-                backgroundImage: `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)})`
-              }}
             >
+              {/* Ảnh full card */}
+              <img
+                src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
+                alt={item.title}
+                loading="lazy"
+                className="film-card__img"
+              />
+
+              {/* overlay giữ nguyên */}
               <div className="film-card__overlay">
                 <h6 className="film-card__title">{item.title}</h6>
                 <p className="film-card__episode">
-                {item.episode_current || "?"}
+                  {item.episode_current || "?"}
                 </p>
               </div>
             </div>

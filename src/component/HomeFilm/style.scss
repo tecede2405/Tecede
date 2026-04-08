@@ -48,19 +48,22 @@
 }
 .film-card {
   width: 100%;
-  background-image: 
-    radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px),
-    radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
-  background-position: 0 0, 25px 25px;
-  aspect-ratio: 2 / 3; /* chuẩn poster phim */
+  aspect-ratio: 2 / 3;
   border-radius: 12px;
-  background-size: cover;
-  background-position: center;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
+}
+/* Ảnh chính thay background */
+.film-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* giống background-size: cover */
+  z-index: 1;
 }
 
 /* lớp phủ tối */
@@ -68,19 +71,23 @@
   content: "";
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.233),
     rgba(0, 0, 0, 0)
   );
+  z-index: 2;
 }
 
 /* nội dung */
+
 .film-card__overlay {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 10px;
   color: #fff;
+  pointer-events: none;
 }
 
 .film-card__title {

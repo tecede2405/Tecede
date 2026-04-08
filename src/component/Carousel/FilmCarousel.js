@@ -33,6 +33,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
                 <img
                   src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.thumb || item.image)}`}
                   alt={item.title}
+                  loading="lazy"
                   className="hero-card__thumb"
                 />
               </div>
@@ -41,6 +42,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
               <img
                 src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.poster || item.image)}`}
                 alt={item.title}
+                loading="lazy"
                 className="hero-card__poster"
               />
 
