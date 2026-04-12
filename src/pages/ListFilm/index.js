@@ -146,7 +146,7 @@ export default function FilmListByType() {
       <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
         {results.map((film) => (
           <Link
-            to={`/film/${film.path}`}
+            to={`/chi-tiet/${film.path}`}
             key={film.path}
             className="film-card"
             onMouseEnter={() => handleMouseEnter(film)}
@@ -188,13 +188,13 @@ export default function FilmListByType() {
 
               <div className="previews-action mt-2">
                 <Link
-                  to={`/film/${hoverFilm.path}`}
+                  to={`/chi-tiet/${hoverFilm.path}`}
                   className="btn-watch btn btn-info me-2"
                 >
                   ▶ Xem ngay
                 </Link>
                 <Link
-                  to={`/film/${hoverFilm.path}`}
+                  to={`/chi-tiet/${hoverFilm.path}`}
                   className="btn-detail btn btn-outline-info"
                 >
                   Chi tiết

@@ -7,7 +7,7 @@ import "./style.scss";
 
 const CinemaHeroCarousel = ({ items = [] }) => {
   const navigate = useNavigate();
-
+  
   return (
     <div className="hero-carousel">
       <Swiper
@@ -26,7 +26,10 @@ const CinemaHeroCarousel = ({ items = [] }) => {
           <SwiperSlide key={idx}>
             <div
               className="hero-card"
-              onClick={() => navigate(`/film/${item.path}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/chi-tiet/${item.path}`);
+              }}
             >
               {/* THUMB 3:4 */}
               <div className="hero-card__thumb-wrap">

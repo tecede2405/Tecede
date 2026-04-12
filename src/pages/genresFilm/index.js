@@ -213,7 +213,7 @@ export default function FilmListBySlug() {
         ) : (
           results.map((film) => (
             <Link
-              to={`/film/${film.slug}`}
+              to={`/chi-tiet/${film.slug}`}
               key={film.slug}
               className="film-card"
               onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined}
@@ -267,13 +267,13 @@ export default function FilmListBySlug() {
 
               <div className="preview-actions">
                 <Link
-                  to={`/film/${hoverFilm.slug}`}
+                  to={`/chi-tiet/${hoverFilm.slug}`}
                   className="btn-watch btn btn-info"
                 >
                   ▶ Xem ngay
                 </Link>
                 <Link
-                  to={`/film/${hoverFilm.slug}`}
+                  to={`/chi-tiet/${hoverFilm.slug}`}
                   className="btn-detail btn btn-outline-info"
                 >
                   Chi tiết

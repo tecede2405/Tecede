@@ -80,7 +80,7 @@ const MovieSlide = ({ movie }) => {
             className="cinemaHeroCard__playBtn"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(`/film/${movie.path}`);
+              navigate(`/chi-tiet/${movie.path}`);
             }}
           >
             <FaPlay />

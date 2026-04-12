@@ -273,7 +273,7 @@ export const HotFilm = [
     },
     {title: "Luật Sư Bóng Ma (Văn Phòng Luật Sư Shin I Rang)", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/1072954bc7c0c2e710b39bd502cc6d4d",thumb:"https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/07e772c8ab7ce0be6dc2bb3bf4de95dc", path: "luat-su-bong-ma-van-phong-luat-su-shin-i-rang", 
     episode_current: "Luôn cập nhật",lang: "Vietsub + Thuyết Minh", origin_name: "Phantom Lawyer",
-    content: "Bộ phim xoay quanh Shin Yi Rang (Yoo Yeon Seok), một luật sư bất ngờ có khả năng nhìn thấy hồn ma sau khi chuyển văn phòng đến nơi từng là nhà của một pháp sư. Những linh hồn mang theo uẩn khúc chưa được giải quyết tìm đến anh để nhờ giúp đỡ, buộc Yi Rang phải hóa thân, sống lại ký ức của họ nhằm tìm manh mối cho các vụ án. Đồng hành cùng anh là Han Na Hyun (Esom), nữ luật...",
+    content: "  ",
     },
     {title: "Xin Chào 1983", image: "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6fabe6ff83537702fbaa02371d3c3797",thumb:"https://phimimg.com/upload/vod/20260319-1/5a5b6d0060ae397cd841b720b0ae2f53.jpg", path: "xin-chao-1983",
      episode_current: "Hoàn Tất (36/36)",lang: "Vietsub + Thuyết Minh", origin_name: "Dream Of Golden Years",

@@ -1,83 +1,81 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PosterSwiper from "./PosterSwiper";
-import { HotFilm2 } from "../../data/dataFilm";
-// import FilmSearch from "../HomeFilm/FilmSearch";
 import { FaPlay } from "react-icons/fa";
+import PosterSwiper from "./PosterSwiper";
+import { useMovies } from "../../context/MoviesContext";
+import { useMemo } from "react";
 import "swiper/css";
 import "./style.scss";
 
 export default function NewAnimeHero() {
   const navigate = useNavigate();
-  const [active, setActive] = useState(HotFilm2[0]);
+
+  
+  const { grouped, loading } = useMovies();
+
+  const movies = useMemo(() => {
+    return grouped?.["phim-hot-2"] || [];
+  }, [grouped]);
+
+  const [active, setActive] = useState(null);
   const [width, setWidth] = useState(window.innerWidth);
 
-
-
+  // resize listener
   useEffect(() => {
     const onResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // set active khi có data
+  useEffect(() => {
+    if (movies.length > 0 && !active) {
+      setActive(movies[0]);
+    }
+  }, [movies, active]);
 
   const isMobile = width < 525;
   const isTablet = width >= 525 && width < 1024;
 
+  // loading từ context luôn
+  if (loading || !active) return <p>Đang tải...</p>;
+
   return (
     <>
-      {/* ================= HERO ================= */}
       <div
         style={{
           height: isMobile ? "400px" : isTablet ? "500px" : "660px",
           position: "relative",
           overflow: "hidden",
         }}
-        >
-      {/* BACKGROUND */}
-    <div className="hero-bg">
-      <img
-        key={active.thumb}
-        src={active.thumb}
-        alt={active.title}
-        loading="eager"
-        className="hero-bg__img"
-      />
-      </div>
+      >
+        {/* BACKGROUND */}
+        <div className="hero-bg">
+          <img
+            key={active.thumb}
+            src={active.thumb}
+            alt={active.title}
+            loading="eager"
+            className="hero-bg__img"
+          />
+        </div>
 
-  {/* ===== GIỮ NGUYÊN TOÀN BỘ JSX CŨ CỦA BẠN DƯỚI ĐÂY ===== */}
-
-
-        {/* ===== BOTTOM OVERLAY ===== */}
+        {/* OVERLAY */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: `
-              linear-gradient(
-                to bottom,
-                rgba(18,18,18,0) 50%,
-                rgba(18,18,18,.85) 80%,
-                rgba(18,18,18,1) 100%
-              )
-            `,
+            background: `linear-gradient(
+              to bottom,
+              rgba(18,18,18,0) 50%,
+              rgba(18,18,18,0.85) 80%,
+              rgba(18,18,18,1) 100%
+            )`,
             pointerEvents: "none",
           }}
         />
 
-        {/* ===== SEARCH ===== */}
-        {/* <div
-          style={{
-            position: "absolute",
-            top: "7%",
-            left: isMobile ? "0px" : isTablet ? "16px" : "60px",
-            width: isMobile ? "100%" : "600px",
-          }}
-        >
-          <FilmSearch fullWidth />
-        </div> */}
-
-        {/* ===== CONTENT ===== */}
+        {/* CONTENT */}
         <div
           style={{
             position: "absolute",
@@ -86,6 +84,7 @@ export default function NewAnimeHero() {
             transform: "translateY(-50%)",
             color: "#fff",
             maxWidth: isMobile ? "90%" : "520px",
+            zIndex: 2,
           }}
         >
           <h1
@@ -95,23 +94,18 @@ export default function NewAnimeHero() {
               fontWeight: 900,
               lineHeight: 1.2,
               WebkitTextStroke: "0.5px #000",
-              textShadow: `
-                -1px -1px 0 #000,
-                1px -1px 0 #000,
-                -1px  1px 0 #000,
-                1px  1px 0 #000
-              `,
             }}
           >
             {active.title}
           </h1>
+
           <p
             style={{
               fontSize: isMobile ? "13px" : "14px",
               lineHeight: 1.6,
               opacity: 0.9,
               marginBottom: "16px",
-              maxHeight: isMobile ? "3.2em" : "4.8em", // 🔥 clamp 2–3 dòng
+              maxHeight: isMobile ? "3.2em" : "4.8em",
               overflow: "hidden",
               display: "-webkit-box",
               WebkitLineClamp: isMobile ? 2 : 3,
@@ -120,35 +114,20 @@ export default function NewAnimeHero() {
           >
             {active.content}
           </p>
+
           <div className="d-flex align-items-center gap-4 mb-2">
-            {/* ===== INFO ===== */}
             <div>
-              <p
-                style={{
-                  opacity: 0.9,
-                  fontSize: "14px",
-                  marginBottom: "6px",
-                }}
-              >
+              <p style={{ fontSize: "14px", marginBottom: "6px" }}>
                 Tập: <strong>{active.episode_current}</strong>
               </p>
-
-              <span
-                style={{
-                  display: "inline-block",
-                  padding: "4px 0",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                {active.lang}
-              </span>
+              <span style={{ fontSize: "12px" }}>{active.lang}</span>
             </div>
 
-            {/* ===== PLAY BUTTON ===== */}
             <button
-              onClick={() => navigate(`/film/${active.path}`)}
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/chi-tiet/${active.path}`);
+              }}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -160,8 +139,6 @@ export default function NewAnimeHero() {
                 color: "#000",
                 fontWeight: 700,
                 cursor: "pointer",
-                boxShadow: "0 8px 24px rgba(29,185,84,.45)",
-                transition: "all .25s ease",
               }}
             >
               <span
@@ -175,25 +152,14 @@ export default function NewAnimeHero() {
                   background: "#000",
                 }}
               >
-                <FaPlay
-                  style={{
-                    color: "#1db954",
-                    fontSize: isMobile ? "12px" : "14px",
-                    marginLeft: "2px",
-                  }}
-                />
+                <FaPlay style={{ color: "#1db954" }} />
               </span>
-
-              <span style={{ fontSize: isMobile ? "13px" : "14px" }}>
-                Xem ngay
-              </span>
+              <span>Xem ngay</span>
             </button>
           </div>
-
-          
         </div>
 
-        {/* ===== SWIPER DESKTOP / TABLET ===== */}
+        {/* SWIPER DESKTOP */}
         {!isMobile && (
           <div
             style={{
@@ -202,10 +168,11 @@ export default function NewAnimeHero() {
               right: "40px",
               width: isTablet ? "340px" : "460px",
               padding: "10px",
+              zIndex: 3,
             }}
           >
             <PosterSwiper
-              data={HotFilm2}
+              data={movies}
               active={active}
               setActive={setActive}
               isTablet={isTablet}
@@ -214,25 +181,23 @@ export default function NewAnimeHero() {
         )}
       </div>
 
-      {/* ===== SWIPER MOBILE ===== */}
+      {/* MOBILE SWIPER */}
       {isMobile && (
-          <div
-            style={{
-              position: "relative",
-              marginTop: "-18px", // 🔥 kéo lên
-              padding: "12px 12px 16px",
-              background: "#121212",
-              zIndex: 5,
-            }}
-          >
-            <PosterSwiper
-              data={HotFilm2}
-              active={active}
-              setActive={setActive}
-              isMobile
-            />
-          </div>
-        )}
+        <div
+          style={{
+            marginTop: "-18px",
+            padding: "12px",
+            background: "#121212",
+          }}
+        >
+          <PosterSwiper
+            data={movies}
+            active={active}
+            setActive={setActive}
+            isMobile
+          />
+        </div>
+      )}
     </>
   );
 }

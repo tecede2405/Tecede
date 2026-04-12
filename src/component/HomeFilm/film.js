@@ -1,19 +1,32 @@
 import FilmCarousel from "../CoverflowCarousel/index";
 import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
-import { Films } from "../../data/dataFilm";
+import { useMovies } from "../../context/MoviesContext";
 import "animate.css/animate.min.css";
-
 import "./style.scss";
-
-const filmData = Films;
 
 function Film() {
   const navigate = useNavigate();
 
+  const { grouped, loading } = useMovies();
+
+  const filmData = grouped["phim-noi-bat"] || [];
+
+  function FilmSkeleton() {
+    return (
+      <div className="film-card skeleton">
+        <div className="film-card__img skeleton-img"></div>
+
+        <div className="film-card__overlay">
+          <div className="skeleton-text title"></div>
+          <div className="skeleton-text episode"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
-
       <div className="mb-1">
         <h2 className="film-category ms-3">
           Phim Nổi Bật
@@ -30,13 +43,21 @@ function Film() {
       </div>
 
       <div className="container container-film mt-1 mb-1">
-        <FilmCarousel
-          items={filmData}
-          renderItem={(film) => (
-           
-            <div
+        {loading ? (
+          <FilmCarousel
+            items={[...Array(10)]}
+            renderItem={(_, index) => <FilmSkeleton key={index} />}
+          />
+        ) : (
+          <FilmCarousel
+            items={filmData}
+            renderItem={(film) => (
+              <div
                 className="film-card"
-                onClick={() => navigate(`/film/${film.path}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/chi-tiet/${film.path}`);
+                }}
               >
                 <img
                   src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(film.image)}`}
@@ -52,8 +73,9 @@ function Film() {
                   </p>
                 </div>
               </div>
-          )}
-        />
+            )}
+          />
+        )}
       </div>
     </>
   );

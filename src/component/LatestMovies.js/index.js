@@ -58,7 +58,7 @@ export default function LatestMoviesTable() {
                       loading="lazy"
                     />
                     <div>
-                      <Link to={`/film/${movie.slug}`} className="title">
+                      <Link to={`/chi-tiet/${movie.slug}`} className="title">
                         {movie.name}
                       </Link>
                       <p className="origin">({movie.origin_name})</p>

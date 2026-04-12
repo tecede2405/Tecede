@@ -236,11 +236,12 @@ export default function FilmListBySlug() {
       <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
         {results.map((film) => (
           <Link
-            to={`/film/${film.slug}`}
+            to={`/chi-tiet/${film.slug}`}
             key={film.slug}
             className="film-card"
             onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined}
             onMouseLeave={enablePreview ? handleMouseLeave : undefined}
+            
           >
             <div className="film-poster-wrapper">
               <img
@@ -291,7 +292,7 @@ export default function FilmListBySlug() {
 
               <div className="preview-actions">
                 <Link
-                  to={`/film/${hoverFilm.slug}`}
+                  to={`/chi-tiet/${hoverFilm.path}`}
                   className="btn-watch btn btn-info"
                 >
                   ▶ Xem ngay

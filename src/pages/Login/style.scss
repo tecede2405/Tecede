@@ -1,0 +1,122 @@
+.login-page {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+/* ===== CONTAINER ===== */
+.login-container {
+  position: relative;
+  z-index: 2;
+  width: 380px;
+  padding: 32px;
+  border-radius: 16px;
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.4s ease;
+}
+
+/* ===== HEADER ===== */
+.login-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.login-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.login-header h2 {
+  color: #fff;
+  margin: 0;
+}
+
+/* ===== INPUT FLOATING ===== */
+.input-group {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 10px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #111;
+  color: #fff;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 14px;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+/* FLOAT EFFECT */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+  border-color: #e50914;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 8px;
+  background: #111;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #e50914;
+}
+
+/* ===== BUTTON ===== */
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(45deg, #e50914, #ff2d3d);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(229, 9, 20, 0.5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

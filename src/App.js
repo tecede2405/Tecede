@@ -37,6 +37,7 @@ import Anime from "./pages/Amine/index";
 import AnimeDetail from "./pages/AnimeDetail/index";
 import AnimeSearch from "./pages/AnimeSearch/index";
 import FilmDetail from "./pages/FilmDetail/index";
+import FilmInfo from "./pages/FilmDetail/filmDetail";
 import FilmListBySlug from "./pages/Film/index";
 import ListFilm from "./pages/ListFilm/index";
 import GenrePage from "./pages/genresFilm/index";
@@ -45,6 +46,8 @@ import Manga from "./pages/Manga/index";
 import MangaDetail from "./pages/Manga/mangaDetail";
 import MangaSearch from "./pages/Manga/mangaSearch";
 import MangaReader from "./pages/Manga/mangaReader";
+import LoginPage from "./pages/Login/index";
+import RegisterPage from "./pages/Register/index";
 // UI
 import Squares from "./component/SquaresBackgound/index";
 
@@ -119,12 +122,15 @@ function App() {
               <Routes>
                 <Route path="/" element={<Layout />}>
                   <Route index element={<Home />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
                   <Route path="about" element={<About />} />
                   <Route path="using-app" element={<UsingApp />} />
                   <Route path="using-app-ios" element={<UsingAppIos />} />
                   {/* Film */}
-                  <Route path="film/:slug" element={<FilmDetail />} />
+                  <Route path="xem-phim/:slug/:server/:episodeSlug" element={<FilmDetail />} />
                   <Route path="search/:filmSlug" element={<FilmListBySlug />} />
+                  <Route path="/chi-tiet/:slug" element={<FilmInfo />} />
                   <Route path="/detail/:type" element={<ListFilm />} />
                   <Route path="/the-loai/:slug" element={<GenrePage />} />
                   <Route path="/quoc-gia/:slug" element={<FilmListByCountry />} />

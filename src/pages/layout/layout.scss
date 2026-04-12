@@ -47,10 +47,12 @@
             margin: 0;
 
             li {
+                display: flex;
+                align-items: center;
                 height: 100%;
 
                 .menu__page {
-                    width: 120px;
+                    width: 200px;
                     height: 100%;
                     color: #ddd;
                     text-shadow: 
@@ -61,14 +63,14 @@
                     font-weight: 700;
                     text-decoration: none;
                     display: flex;
-                    flex-direction: column;
+                    
                     align-items: center;
                     justify-content: center;
                     white-space: nowrap;
                 }
 
                 .active {
-                    color: black;
+                    color: rgb(90, 79, 79);
                     text-shadow: 
                         -1px -1px 0 white, 
                         1px -1px 0 white, 
@@ -381,7 +383,7 @@
                 padding: 0;
 
                 li {
-                    width: 30%;
+                    width: 50%;
                     height: 100%;
                     font-size: 12px;
                     margin-right:20px;
