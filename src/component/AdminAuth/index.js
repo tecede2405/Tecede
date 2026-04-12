@@ -51,7 +51,7 @@ export default function HeaderAuth() {
         <div
           style={{
             position: "absolute",
-            right: 0,
+            right: -200,
             bottom: "110%",
             width: 200,
             background: "#1c1c1c",

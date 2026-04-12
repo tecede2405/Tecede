@@ -2,23 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { GoChevronLeft} from "react-icons/go";
-import {
-  cinematicFilm,
-  Films,
-  AnimeFilm,
-  NewFilm,
-  NewAnime,
-  Tokusatsu,
-  HighRate,
-  KoreaFilm,
-  ChinaFilm,
-  China3D
-} from "../../data/dataFilm";
+import { useMovies } from "../../context/MoviesContext";
 import "./style.scss";
 export default function FilmListByType() {
   const { type } = useParams();
 
-  const [results, setResults] = useState([]);
   const [search, setSearch] = useState("");
   const [hoverFilm, setHoverFilm] = useState(null);
   const [enablePreview, setEnablePreview] = useState(
@@ -31,22 +19,23 @@ export default function FilmListByType() {
   const navigate = useNavigate();
 
   /* ===================== MAP DATA THEO TYPE ===================== */
-  useEffect(() => {
-    let data = [];
+const { grouped, loading } = useMovies();
 
-    if (type === "cinematic") data = cinematicFilm;
-    if (type === "films") data = Films;
-    if (type === "anime") data = AnimeFilm;
-    if (type === "new-film") data = NewFilm;
-    if (type === "new-anime") data = NewAnime;
-    if (type === "sieu-nhan") data = Tokusatsu;
-    if (type === "high-rate-film") data = HighRate;
-    if (type === "korea-film") data = KoreaFilm;
-    if (type === "china-film") data = ChinaFilm;
-    if (type === "china3d-film") data = China3D;
+const typeMap = {
+  cinematic: "phim-chieu-rap",
+  films: "phim-noi-bat",
+  anime: "anime",
+  "new-film": "phim-moi",
+  "new-anime": "anime-moi",
+  "sieu-nhan": "tokusatsu",
+  "high-rate-film": "high-rate-film",
+  "korea-film": "korea-film",
+  "china-film": "china-film",
+  "china3d-film": "china3d",
+};
 
-    setResults(data);
-  }, [type]);
+  const category = typeMap[type] || "phim-noi-bat";
+  const results = grouped?.[category] || [];    
 
   /* ===================== RESPONSIVE PREVIEW ===================== */
   useEffect(() => {
@@ -143,36 +132,85 @@ export default function FilmListByType() {
 
       </div>
       {/* GRID */}
-      <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
-        {results.map((film) => (
-          <Link
-            to={`/chi-tiet/${film.path}`}
-            key={film.path}
-            className="film-card"
-            onMouseEnter={() => handleMouseEnter(film)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className="film-poster-wrapper">
-              <img
-                src={film.image || film.thumb}
-                alt={film.title}
-                loading="lazy"
-                className="film-poster"
-              />
+      {loading ? (
+        <div className="text-light p-4">Loading...</div>
+      ) : (
+        <>
+          <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
+            {results.map((film) => (
+              <Link
+                to={`/chi-tiet/${film.path}`}
+                key={film.path}
+                className="film-card"
+                onMouseEnter={() => handleMouseEnter(film)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="film-poster-wrapper">
+                  <img
+                    src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
+                      film.image || film.thumb || ""
+                    )}`}
+                    alt={film.title}
+                    loading="lazy"
+                    className="film-poster"
+                  />
 
-              <span className="film-episodes">
-                {film.time || film.episode_current}
-              </span>
+                  <span className="film-episodes">
+                    {film.time || film.episode_current}
+                  </span>
 
-              <div className="film-overlay">
-                <h6 className="film-name">{film.title}</h6>
+                  <div className="film-overlay">
+                    <h6 className="film-name">{film.title}</h6>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* PREVIEW */}
+          {enablePreview && hoverFilm && (
+            <div className="hover-preview-backdrop">
+              <div
+                className="hover-preview-card"
+                ref={previewRef}
+                onMouseLeave={() => setHoverFilm(null)}
+                style={{
+                  backgroundImage: `url(${hoverFilm.thumb || hoverFilm.image})`,
+                }}
+              >
+                <div className="previews-info">
+                  <h5 className="previews-name">{hoverFilm.title}</h5>
+
+                  <div className="previews-action mt-2">
+                    <Link
+                      to={`/chi-tiet/${hoverFilm.path}`}
+                      className="btn-watch btn btn-info me-2"
+                    >
+                      ▶ Xem ngay
+                    </Link>
+                    <Link
+                      to={`/chi-tiet/${hoverFilm.path}`}
+                      className="btn-detail btn btn-outline-info"
+                    >
+                      Chi tiết
+                    </Link>
+                  </div>
+
+                  <div className="film-detail-info mt-2">
+                    {hoverFilm.time && <span>{hoverFilm.time}</span>}
+                    {hoverFilm.episode_current && (
+                      <span>{hoverFilm.episode_current}</span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-          </Link>
-        ))}
-      </div>
+          )}
+        </>
+      )}
 
       {/* PREVIEW */}
+
       {enablePreview && hoverFilm && (
         <div className="hover-preview-backdrop">
           <div

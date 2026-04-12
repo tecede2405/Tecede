@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./style.scss"; // Xem file CSS ở dưới
+import { FaPlay } from "react-icons/fa";
+import "./style.scss"; 
 
 export default function MovieDetail() {
   const { slug } = useParams();
@@ -54,12 +55,15 @@ export default function MovieDetail() {
                 <div className="skeleton-tag"></div>
                 <div className="skeleton-tag"></div>
                 <div className="skeleton-tag"></div>
+                <div className="skeleton-tag"></div>
+                <div className="skeleton-tag"></div>
               </div>
 
               {/* BUTTON */}
               <div className="skeleton-btn"></div>
 
               {/* DESCRIPTION */}
+              <div className="skeleton-text desc"></div>
               <div className="skeleton-text desc"></div>
               <div className="skeleton-text desc"></div>
               <div className="skeleton-text desc short"></div>
@@ -125,8 +129,14 @@ export default function MovieDetail() {
             <div className="tag-container">
               <Tag text={movie.quality} color="#e50914" />
               <Tag text={movie.lang} color="#007bff" />
-              <Tag text={movie.time} />
-              <Tag text={movie.episode_current} />
+              <Tag text={movie.time} color="#9D4EDD"/>
+              <Tag text={`Trạng thái: ${movie.episode_current}`} color="#FF8500"/>
+
+              <Tag text={`Tổng : ${movie.episode_total} tập`} color="#28a745" />
+
+              {movie.country?.map((c) => (
+                <Tag key={c.id} text={`Quốc gia: ${c.name}`} color="#ffc107" />
+              ))}
             </div>
 
             <div className="action-buttons">
@@ -145,12 +155,12 @@ export default function MovieDetail() {
                     );
                   }}
               >
-                ▶ XEM NGAY
+                <FaPlay className="me-1 mb-1" /> XEM NGAY
               </button>
             </div>
 
-            <p className="description">
-              {movie.content?.replace(/<\/?[^>]+(>|$)/g, "") || "Đang cập nhật nội dung..."}
+            <p className="movie_description">
+              {movie.content?.replace(/<\/?[^>]+(>|$)/g, "")?.replace(/&quot;/g, '"') || "Đang cập nhật nội dung..."}
             </p>
           </div>
         </div>
@@ -158,8 +168,9 @@ export default function MovieDetail() {
 
       {/* EPISODES SECTION */}
       <div className="episodes-section mt-3">
+        <h3 className="mb-3 fst-italic">Danh Sách Tập</h3>
         <div className="section-header">
-          <h3 className="title-vn">Danh sách tập</h3>
+          
           <div className="server-tabs">
             {servers.map((s, i) => (
               <button

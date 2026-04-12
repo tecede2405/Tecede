@@ -16,6 +16,7 @@ import { FaClockRotateLeft } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
+import {VerifiedBadge} from "../../component/VerifiedBadge/index";
 function Layout() {
 
   const [showTabbar, setShowTabbar] = useState(false);
@@ -106,6 +107,7 @@ function Layout() {
                     >
                       <MdOutlineAccountCircle className="me-2" style={{ fontSize: "1.25rem" }} />
                       {user.display_name}
+                      {user.display_name === "Tecede" && <VerifiedBadge />}
                     </span>
 
                     {showUserMenu && (

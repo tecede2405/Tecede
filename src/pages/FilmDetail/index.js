@@ -4,7 +4,7 @@ import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
 import { MdOutlineStorage } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
-
+import {VerifiedBadge} from "../../component/VerifiedBadge/index";
 import "./style.scss";
 
 export default function FilmDetail() {
@@ -525,9 +525,13 @@ useEffect(() => {
                   {getAvatarLetter(c.display_name)}
                 </div>
 
-                <b style={{ color: "#fff" }}>
-                  {c.display_name || "User"}
-                </b>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <b style={{ color: "#fff" }}>
+                    {c.display_name || "User"}
+                  </b>
+
+                  {c.display_name === "Tecede" && <VerifiedBadge />}
+                </div>
               </div>
               <p style={{ margin: "6px 0", color: "#ccc" }}>{c.content}</p>
               <button onClick={() => setReplyBox(c.id)} style={{ fontSize: 12, background: "#333", color: "white", border: "none", padding: "4px 10px", borderRadius: 4, cursor: "pointer" }}>Trả lời</button>
@@ -561,9 +565,13 @@ useEffect(() => {
                           {getAvatarLetter(r.display_name)}
                         </div>
 
-                        <b style={{ fontSize: 13 }}>
-                          {r.display_name || "User"}
-                        </b>
+                  
+                          <b style={{ fontSize: 13, display: "flex", alignItems: "center" }}>
+                            {r.display_name || "User"}
+                            {r.display_name === "Tecede" && <VerifiedBadge />}
+                          </b>
+
+                         
                       </div>
                       <p style={{ margin: "4px 0", fontSize: 14 }}>{r.content}</p>
                     </div>
