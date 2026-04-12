@@ -23,7 +23,7 @@ export default function FilmDetail() {
   const lastEpisodeRef = useRef("");
   const isSavingRef = useRef(false);
   const lastKeyRef = useRef("");  
-  const [movieDetail, setMovieDetail] = useState(null);
+
   // Trạng thái để buộc iframe phải hủy và tạo lại (mount/unmount)
   const [isVideoLoading, setIsVideoLoading] = useState(false);
 
@@ -32,7 +32,6 @@ export default function FilmDetail() {
 
   useEffect(() => {
     setMovie(null);
-    setMovieDetail(null);
     setServers([]);
     setEpisodes([]);
   }, [slug]);
@@ -85,14 +84,13 @@ export default function FilmDetail() {
     return () => clearTimeout(t);
   }, [currentVideo]);
 
-  const loadComments = async () => {
+  const loadComments = useCallback(async () => {
     try {
       const res = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/comments/${slug}`);
       const data = await res.json();
       setComments(data);
-    } catch (e) {
-    }
-  };
+    } catch (e) {}
+  }, [slug]);
 
   // 4. FETCH DỮ LIỆU PHIM
 useEffect(() => {
@@ -101,28 +99,29 @@ useEffect(() => {
       const res = await fetch(`${process.env.REACT_APP_FILM_API_URL}/phim/${slug}`);
       const data = await res.json();
 
-      // Lưu vào Ref trước khi set State
-      
-      setMovieDetail(data.movie);
       setMovie(data.movie);
       setServers(data.episodes || []);
       setCurrentServer(0);
+
       const initialServer = (data.episodes && data.episodes[0]) || { server_data: [] };
       const initialEpisodes = initialServer.server_data || [];
+
       setEpisodes(initialEpisodes);
-      
+
       if (!episodeSlug && initialEpisodes.length > 0) {
         const firstSlug = initialEpisodes[0].slug;
         setSelectedEpisodeSlug(firstSlug);
+
         navigate(`/xem-phim/${slug}/${encodeURIComponent(server)}/${firstSlug}`, { replace: true });
       }
     } catch (err) {
       console.error(err);
     }
   }
+
   fetchFilm();
   loadComments();
-}, [slug]);
+}, [slug, episodeSlug, navigate, server, loadComments]);
 
 
 
@@ -313,7 +312,6 @@ useEffect(() => {
 
   if (lastKeyRef.current === key) return;
 
-
   const timer = setTimeout(async () => {
     if (isSavingRef.current) return;
 
@@ -332,7 +330,7 @@ useEffect(() => {
     } finally {
       isSavingRef.current = false;
     }
-  }, 1000);
+  }, 2500);
 
   return () => clearTimeout(timer);
 }, [
@@ -341,7 +339,9 @@ useEffect(() => {
   currentVideo?.slug,
   user?.token,
   movie,
-  episodes.length 
+  episodes.length,
+  isReady,
+  saveHistoryToServer
 ]);
 
 
