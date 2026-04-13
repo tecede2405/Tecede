@@ -1,0 +1,75 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px); // 🔥 kính mờ
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  background: linear-gradient(145deg, #1f1f1f, #2a2a2a);
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+  width: 90%;
+  max-width: 420px;
+
+  box-shadow: 
+    0 10px 40px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,255,255,0.05);
+
+  animation: fadeInScale 0.4s ease;
+}
+
+.modal-box h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.modal-box p {
+  font-size: 15px;
+  color: #bbb;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.modal-box button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff4d4f, #f25252);
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+  box-shadow: 0 5px 20px rgba(255, 77, 79, 0.4);
+}
+
+.modal-box button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(255, 77, 79, 0.6);
+}
+
+.modal-box button:active {
+  transform: scale(0.97);
+}
+
+/* animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

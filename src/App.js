@@ -180,6 +180,8 @@ function App() {
                   />
 
                   <Route path="/admin-post" element={<AdminFeature />} />
+
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
             </div>

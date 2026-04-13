@@ -1,38 +1,36 @@
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import { FaExclamationTriangle } from "react-icons/fa";
 
-export default function NotFound() {
-  return (
-    <div className="min-vh-100 d-flex align-items-center">
-      <Container>
-        <Row className="justify-content-center text-center" >
-          <Col md={8}>
-            <div className="p-5 shadow-lg bg-white rounded-4">
-              
-              <FaExclamationTriangle 
-                size={80} 
-                className="text-warning mb-4" 
-              />
+  import { useEffect, useState } from "react";
+  import "./style.scss";
 
-              <h1 className="display-1 fw-bold text-danger">404</h1>
+  function NotFound() {
 
-              <h3 className="mb-3">Trang đang cập nhật</h3>
+    const [show, setShow] = useState(false);
 
-              <p className="text-muted mb-4">
-                Xin lỗi, trang bạn đang tìm kiếm đang cập nhật.
-              </p>
+    useEffect(() => {
+      // delay để tạo hiệu ứng
+      setTimeout(() => setShow(true), 200);
+    }, []);
 
-              <Link to="/">
-                <Button variant="primary" size="lg" className="px-4">
-                  Quay về Trang Chủ
-                </Button>
-              </Link>
+    const handleGoHome = () => {
+      window.location.href = "/"; // reload + về trang chủ
+    };
 
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
-}
+    if (!show) return null;
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal-box">
+          <h2>Trang không tồn tại</h2>
+          <p>
+            Trang này có thể đã bị thay đổi đường dẫn hoặc không còn tồn tại hoặc đang được phát triển.
+          </p>
+
+          <button onClick={handleGoHome}>
+            Quay về trang chủ
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  export default NotFound;
