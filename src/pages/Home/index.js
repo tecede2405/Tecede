@@ -17,6 +17,7 @@ import China3dFilms from "../../component/HomeFilm/china3dFilm";
 import MovieRow from "../../component/MovieRow/index";
 import ComicHero from "../../component/Banner/mangaBanner";
 import AnnouncementBar from "../../component/Marquee/AnnouncementBar";
+import { Helmet } from "react-helmet-async";
 import "./style.scss";
 
 function Home() {
@@ -30,6 +31,42 @@ function Home() {
   };
     return (
         <>
+        <Helmet>
+          <title>
+            Tecede - Xem phim miễn phí, Vietsub HD, Anime, Phim mới cập nhật
+          </title>
+
+          <meta
+            name="description"
+            content="Xem phim miễn phí chất lượng cao tại Tecede. Cập nhật phim mới mỗi ngày: phim lẻ, phim bộ, anime, phim Hàn, Trung Quốc, 3D, vietsub đầy đủ."
+          />
+
+          <meta
+            name="keywords"
+            content="xem phim miễn phí, phim vietsub, phim hd, anime, phim hàn quốc, phim trung quốc, phim mới, tecede"
+          />
+
+          {/* Open Graph (share Facebook) */}
+          <meta
+            property="og:title"
+            content="Tecede - Xem phim miễn phí HD"
+          />
+
+          <meta
+            property="og:description"
+            content="Kho phim miễn phí chất lượng cao, cập nhật liên tục mỗi ngày."
+          />
+
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={window.location.href} />
+
+          {/* nếu có logo thì thêm */}
+          <meta
+            property="og:image"
+            content="../../../public/home-image.png"
+          />
+        </Helmet>
+
         <div className="Home">
             {/* tabbar */}
             <Tabbar />
@@ -95,8 +132,7 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 2. Nếu có thể cho mình xin 1 lượt theo dõi fanpage để nhận thông tin mới nhất về web và phim mới <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank" rel="noopener noreferrer">tại đây</a> nha.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 3. Nếu bạn không truy cập được vào web hãy bật 1.1.1.1 (Tải ở CH play, App store) và thử lại.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app, đối với android xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>. Đối với IOS xem hướng dẫn <span onClick={handleIosClick}>ở đây</span>.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Mình không phát triển tính năng đăng nhập cho khách nhưng lịch sử xem vẫn lưu ở trên nha.</i></li>
-                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 6. Nếu bạn không cài web ở lưu ý số 4 thì nên reload lại trang chủ ở mỗi lần truy cập nhé! Tại mình thường xuyên update trang.</i></li>
+                  <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Nếu bạn không cài web ở lưu ý số 4 thì nên reload lại trang chủ ở mỗi lần truy cập nhé! Tại mình thường xuyên update trang.</i></li>
                 </ul>
               </div>
               

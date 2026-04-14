@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 import "./style.scss";
 
 export default function RegisterPage() {
@@ -89,6 +90,9 @@ export default function RegisterPage() {
           "url(https://png.pngtree.com/thumb_back/fh260/background/20250307/pngtree-a-vibrant-movie-themed-background-with-the-film-reels-camera-and-image_17080149.jpg)",
       }}
     >
+      <Helmet>
+        <title>Đăng ký - Tecede</title>
+      </Helmet>
       <div className="login-overlay" />
 
      <div className="login-container">

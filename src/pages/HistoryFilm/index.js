@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { MdHistory, MdPlayCircleOutline } from "react-icons/md";
-
+import { Helmet } from "react-helmet-async";
 export default function WatchHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,7 +97,22 @@ export default function WatchHistory() {
   );
 
 return (
-    <div className="container py-4" style={{ minHeight: "80vh" }}>
+    <>
+    <Helmet>
+      <title>Lịch sử xem phim - Tecede</title>
+      <meta
+        name="description"
+        content="Xem lại các bộ phim bạn đã xem gần đây trên Tecede. Tiếp tục xem nhanh chóng và tiện lợi."
+      />
+
+      {/* Open Graph */}
+      <meta property="og:title" content="Lịch sử xem phim - Tecede" />
+      <meta
+        property="og:description"
+        content="Theo dõi và tiếp tục xem các bộ phim bạn yêu thích tại Tecede."
+      />
+    </Helmet>
+      <div className="container py-4" style={{ minHeight: "80vh" }}>
       <div className="d-flex align-items-center mb-4 border-bottom border-secondary pb-3">
         <MdHistory className="text-danger me-2" size={30} />
         <h3 className="text-light m-0 fw-bold">Lịch sử đã xem</h3>
@@ -202,5 +217,6 @@ return (
         }
       `}</style>
     </div>
+    </>
   );
 }

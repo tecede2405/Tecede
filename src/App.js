@@ -48,6 +48,7 @@ import MangaSearch from "./pages/Manga/mangaSearch";
 import MangaReader from "./pages/Manga/mangaReader";
 import LoginPage from "./pages/Login/index";
 import RegisterPage from "./pages/Register/index";
+import ProfilePage from "./pages/ProfilePage/index";
 // UI
 import Squares from "./component/SquaresBackgound/index";
 
@@ -150,6 +151,7 @@ function App() {
                   <Route path="music/phonk" element={<NhacPhonk />} />
                   <Route path="music/nhac-lofi" element={<NhacLofi />} />
                   <Route path="/404" element={<NotFound />} />
+                  <Route path="/profile" element={<ProfilePage />} />
                   <Route
                     path="music/nhactre-remix"
                     element={<NhacTreRemix />}

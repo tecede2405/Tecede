@@ -2,52 +2,107 @@ require('dotenv').config();
 const fs = require('fs');
 const axios = require('axios');
 
-async function generateSitemap() {
-  const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://tecede.netlify.app'; 
-  const API_URL = process.env.REACT_APP_FILM_API_URL; 
-  const API_PATH = process.env.REACT_APP_API_LIST_PATH || '/danh-sach/phim-moi-cap-nhat?page=';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  const staticPages = [
-    '', '/about', '/film/dao-hai-tac', '/film/tham-tu-lung-danh-co-nan',
-    '/film/dai-chien-nguoi-va-than-phan-3', '/film/mai-2024', '/film/quy-cau'
+async function fetchAllFromSource(baseUrl, limitPage = 50) {
+  let page = 1;
+  let all = [];
+  let hasMore = true;
+
+  while (hasMore) {
+    try {
+      const url = `${baseUrl}${page}`;
+      console.log("Fetching:", url);
+
+      const res = await axios.get(url);
+
+      const items =
+        res.data?.items ||
+        res.data?.data?.items ||
+        [];
+
+      if (!items.length) break;
+
+      console.log(`Page ${page}: ${items.length} phim`);
+
+      all.push(...items);
+      page++;
+
+      // tránh spam API
+      await sleep(300);
+
+      // giới hạn tránh bị ban IP
+      if (page > limitPage) break;
+
+    } catch (err) {
+      console.log("❌ Fetch lỗi:", err.message);
+
+      // nếu bị rate limit thì nghỉ lâu hơn
+      await sleep(2000);
+      break;
+    }
+  }
+
+  return all;
+}
+
+async function generateSitemap() {
+  const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://tecede.netlify.app';
+  const API_URL = process.env.REACT_APP_FILM_API_URL;
+
+  const staticPages = ['', '/about'];
+
+  // ✅ tất cả nguồn
+  const sources = [
+    // 🔥 phim mới (KHÔNG có /v1/api)
+    `${API_URL}/danh-sach/phim-moi-cap-nhat?page=`,
+
+    // phim
+    `${API_URL}/v1/api/danh-sach/phim-le?page=`,
+    `${API_URL}/v1/api/danh-sach/phim-bo?page=`,
+
+    // quốc gia
+    `${API_URL}/v1/api/quoc-gia/han-quoc?page=`,
+    `${API_URL}/v1/api/quoc-gia/trung-quoc?page=`,
+    `${API_URL}/v1/api/quoc-gia/nhat-ban?page=`,
+    `${API_URL}/v1/api/quoc-gia/viet-nam?page=`,
+
+    // thể loại
+    `${API_URL}/v1/api/the-loai/hanh-dong?page=`,
+    `${API_URL}/v1/api/the-loai/tinh-cam?page=`,
+    `${API_URL}/v1/api/the-loai/hai-huoc?page=`,
+    `${API_URL}/v1/api/the-loai/co-trang?page=`,
+    `${API_URL}/v1/api/the-loai/hoat-hinh?page=`,
   ];
 
   try {
-    console.log('Đang khởi tạo sơ đồ trang web...');
+    console.log("🔥 Bắt đầu build sitemap...");
+
     let allMovies = [];
 
-    // Crawl nhiều page hơn và tự dừng khi hết phim
-    let page = 1;
-    let hasMore = true;
+    for (const source of sources) {
+      console.log("🚀 Fetch nguồn:", source);
 
-    while (hasMore) {
-
-      const response = await axios.get(`${API_URL}${API_PATH}${page}`);
-
-      if (response.data && response.data.items && response.data.items.length > 0) {
-        allMovies = allMovies.concat(response.data.items);
-        page++;
-
-        //  tránh crawl quá nhiều nếu API thay đổi
-        if (page > 150) {
-          hasMore = false;
-        }
-
-      } else {
-        hasMore = false;
-      }
-
+      const data = await fetchAllFromSource(source, 50); // 👈 limit 50 page / nguồn
+      allMovies.push(...data);
     }
 
-    console.log(`Đã lấy ${allMovies.length} phim từ API`);
+    console.log(`📦 Raw: ${allMovies.length}`);
+
+    // remove trùng slug
+    const uniqueMovies = Array.from(
+      new Map(allMovies.map((item) => [item.slug, item])).values()
+    );
+
+    console.log(`✅ Unique: ${uniqueMovies.length}`);
 
     const today = new Date().toISOString();
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-    // Thêm các trang tĩnh
-    staticPages.forEach(page => {
+    // static pages
+    staticPages.forEach((page) => {
       sitemap += `
   <url>
     <loc>${BASE_URL}${page}</loc>
@@ -57,14 +112,27 @@ async function generateSitemap() {
   </url>`;
     });
 
-    // Thêm link phim
-    allMovies.forEach((movie) => {
+    // movie pages
+    uniqueMovies.forEach((movie) => {
       sitemap += `
   <url>
-    <loc>${BASE_URL}/film/${movie.slug}</loc>
+    <loc>${BASE_URL}/chi-tiet/${movie.slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+  </url>`;
+    });
+
+    // category pages
+    const categories = ['han-quoc', 'trung-quoc', 'nhat-ban', 'viet-nam'];
+
+    categories.forEach((cat) => {
+      sitemap += `
+  <url>
+    <loc>${BASE_URL}/quoc-gia/${cat}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
   </url>`;
     });
 
@@ -72,19 +140,11 @@ async function generateSitemap() {
 
     fs.writeFileSync('./public/sitemap.xml', sitemap);
 
-    console.log(`✅ Sitemap đã được cập nhật kín đáo.`);
-    console.log(` Tổng URL trong sitemap: ${allMovies.length + staticPages.length}`);
-
-    // 🔥 Ping Google để crawl lại sitemap
-    try {
-      await axios.get(`https://www.google.com/ping?sitemap=${BASE_URL}/sitemap.xml`);
-      console.log(' Đã ping Google để cập nhật sitemap.');
-    } catch (err) {
-      console.log(' Không ping được Google, nhưng sitemap vẫn đã tạo.');
-    }
+    console.log(`🌍 Total URLs: ${uniqueMovies.length + staticPages.length + categories.length}`);
+    console.log("🎉 DONE sitemap!");
 
   } catch (error) {
-    console.error(' Có lỗi xảy ra trong quá trình tạo Sitemap.');
+    console.error("❌ Lỗi tạo sitemap:", error.message);
   }
 }
 

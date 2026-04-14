@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./style.scss";
 import { useAuth } from "../../context/AuthContext";
+import { Helmet } from "react-helmet-async";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -93,6 +94,9 @@ export default function LoginPage() {
           "url(https://png.pngtree.com/thumb_back/fh260/background/20250307/pngtree-a-vibrant-movie-themed-background-with-the-film-reels-camera-and-image_17080149.jpg)",
       }}
     >
+      <Helmet>
+        <title>Đăng nhập - Tecede</title>
+      </Helmet>
       <div className="login-overlay" />
 
       <div className="login-container">

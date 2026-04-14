@@ -508,22 +508,40 @@ useEffect(() => {
           {comments.map((c) => (
             <div key={c.id} style={{ background: "#1a1a1a", padding: 12, borderRadius: 6, marginBottom: 12, border: "1px solid #333" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: "50%",
-                    background: "#e50914",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    color: "white",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {getAvatarLetter(c.display_name)}
-                </div>
+                {c.avatar ? (
+                  <img
+                    src={c.avatar}
+                    alt="avatar"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/default-avatar.png";
+                    }}
+                    loading="lazy"
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: "50%",
+                      background: "#e50914",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      color: "white",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {getAvatarLetter(c.display_name)}
+                  </div>
+                )}
 
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <b style={{ color: "#fff" }}>
@@ -548,22 +566,40 @@ useEffect(() => {
                   {c.replies.map((r) => (
                     <div key={r.id} style={{ background: "#111", padding: 10, borderRadius: 5, marginBottom: 8, border: "1px solid #222" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <div
-                          style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: "50%",
-                            background: "#444",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: "bold",
-                            color: "white",
-                            fontSize: 12
-                          }}
-                        >
-                          {getAvatarLetter(r.display_name)}
-                        </div>
+                        {r.avatar ? (
+                          <img
+                            src={r.avatar}
+                            alt="avatar"
+                            loading="lazy"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "/default-avatar.png";
+                            }}
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <div
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              background: "#444",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontWeight: "bold",
+                              color: "white",
+                              fontSize: 12
+                            }}
+                          >
+                            {getAvatarLetter(r.display_name)}
+                          </div>
+                        )}
 
                   
                           <b style={{ fontSize: 13, display: "flex", alignItems: "center" }}>

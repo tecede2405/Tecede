@@ -105,8 +105,44 @@ function Layout() {
                       onClick={() => setShowUserMenu(!showUserMenu)}
                       style={{ cursor: "pointer" }}
                     >
-                      <MdOutlineAccountCircle className="me-2" style={{ fontSize: "1.25rem" }} />
-                      {user.display_name}
+                      <span
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                        }}
+                      >
+                        {user.avatar ? (
+                          <img
+                            src={user.avatar}
+                            alt="avatar"
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <div
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: "50%",
+                              background: "#e50914",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontSize: 12,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {getAvatarLetter(user.display_name)}
+                          </div>
+                        )}
+
+                        {user.display_name}
+                      </span>
                       {user.display_name === "Tecede" && <VerifiedBadge />}
                     </span>
 
@@ -160,22 +196,35 @@ function Layout() {
                               marginBottom: 15,
                             }}
                           >
-                            <div
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: "50%",
-                                background: "#e50914",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontWeight: "bold",
-                                color: "white",
-                                fontSize: 12,
-                              }}
-                            >
-                              {getAvatarLetter(user.display_name)}
-                            </div>
+                            {user.avatar ? (
+                                <img
+                                  src={user.avatar}
+                                  alt="avatar"
+                                  style={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: "50%",
+                                    objectFit: "cover",
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  style={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: "50%",
+                                    background: "#e50914",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontWeight: "bold",
+                                    color: "white",
+                                    fontSize: 12,
+                                  }}
+                                >
+                                  {getAvatarLetter(user.display_name)}
+                                </div>
+                              )}
 
                             <div style={{ color: "#fff", fontWeight: 500 }}>
                               {user.display_name}
@@ -203,7 +252,7 @@ function Layout() {
                           </div>
                               <div style={{ marginBottom: 10 }}>
                             <button
-                              onClick={() => navigate("/404")}
+                              onClick={() => navigate("/profile")}
                               style={{
                                 width: "100%",
                                 padding: "8px",
@@ -215,7 +264,7 @@ function Layout() {
                                 marginBottom: 8,
                               }}
                             >
-                              Đổi biệt danh
+                              Sửa thông tin
                             </button>
                           </div>
                           {/* logout */}
@@ -304,10 +353,13 @@ function Layout() {
               <h6 className="footer-subtitle">Thông tin</h6>
               <ul className="footer-list">
                 <li>
-                  <Link to="/404">Về chúng tôi</Link>
+                  <Link to="/about">Về chúng tôi</Link>
                 </li>
                 <li>
                   <AdminAuth />
+                </li>
+                <li>
+                  <Link to="/sitemap.xml">Sitemap</Link>
                 </li>
               </ul>
             </div>

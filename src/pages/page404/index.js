@@ -20,9 +20,9 @@
     return (
       <div className="modal-overlay">
         <div className="modal-box">
-          <h2>Trang không tồn tại</h2>
+          <h2>Xin Lỗi Vì Sự Bất Tiện Này</h2>
           <p>
-            Trang này có thể đã bị thay đổi đường dẫn hoặc không còn tồn tại hoặc đang được phát triển.
+             hãy quay lại trang chủ để reload lại trang nhé!
           </p>
 
           <button onClick={handleGoHome}>
