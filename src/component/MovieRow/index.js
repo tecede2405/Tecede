@@ -9,6 +9,7 @@ import "swiper/css/effect-fade";
 import { useMovies } from "../../context/MoviesContext";
 import "./style.scss";
 
+
 const MovieRow = () => {
   const { grouped, loading } = useMovies();
 
@@ -25,7 +26,7 @@ const MovieRow = () => {
 
   const isMobile = width < 525;
   const isTablet = width >= 525 && width < 1024;
-
+  
   return (
     <section className="cinemaHeroRow">
       <div

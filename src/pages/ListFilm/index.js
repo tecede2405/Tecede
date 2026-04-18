@@ -169,85 +169,69 @@ const typeMap = {
 
           {/* PREVIEW */}
           {enablePreview && hoverFilm && (
-            <div className="hover-preview-backdrop">
-              <div
-                className="hover-preview-card"
-                ref={previewRef}
-                onMouseLeave={() => setHoverFilm(null)}
-                style={{
-                  backgroundImage: `url(${hoverFilm.thumb || hoverFilm.image})`,
-                }}
-              >
-                <div className="previews-info">
-                  <h5 className="previews-name">{hoverFilm.title}</h5>
+          <div className="hover-preview-backdrop">
+            <div
+              className="hover-preview-card"
+              ref={previewRef}
+              onMouseLeave={() => setHoverFilm(null)}
+              style={{
+                backgroundImage: `url(${hoverFilm.thumb || hoverFilm.image})`,
+              }}
+            >
+              <div className="preview-info">
+                
+                {/* LEFT */}
+                <div className="preview-left">
+                  <h5 className="preview-name">{hoverFilm.title}</h5>
 
-                  <div className="previews-action mt-2">
+                  {/* META (chỉ có gì dùng đó) */}
+                  <div className="preview-meta">
+                    {hoverFilm.time && (
+                      <span className="preview-tag">{hoverFilm.time}</span>
+                    )}
+                    {hoverFilm.episode_current && (
+                      <span className="preview-tag">{hoverFilm.episode_current}</span>
+                    )}
+                  </div>
+
+                  {/* BUTTON */}
+                  <div className="preview-actions">
                     <Link
                       to={`/chi-tiet/${hoverFilm.path}`}
-                      className="btn-watch btn btn-info me-2"
+                      className="btn-watch"
                     >
                       ▶ Xem ngay
                     </Link>
+
                     <Link
                       to={`/chi-tiet/${hoverFilm.path}`}
-                      className="btn-detail btn btn-outline-info"
+                      className="btn-detail"
                     >
                       Chi tiết
                     </Link>
                   </div>
-
-                  <div className="film-detail-info mt-2">
-                    {hoverFilm.time && <span>{hoverFilm.time}</span>}
-                    {hoverFilm.episode_current && (
-                      <span>{hoverFilm.episode_current}</span>
-                    )}
-                  </div>
                 </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
 
-      {/* PREVIEW */}
+                {/* RIGHT */}
+                {/* <div className="preview-right">
+                  {hoverFilm.episode_current && (
+                    <div className="preview-box blue">
+                      {hoverFilm.episode_current}
+                    </div>
+                  )}
 
-      {enablePreview && hoverFilm && (
-        <div className="hover-preview-backdrop">
-          <div
-            className="hover-preview-card"
-            ref={previewRef}
-            onMouseLeave={() => setHoverFilm(null)}
-            style={{
-              backgroundImage: `url(${hoverFilm.thumb || hoverFilm.image})`,
-            }}
-          >
-            <div className="previews-info">
-              <h5 className="previews-name">{hoverFilm.title}</h5>
+                  {hoverFilm.time && (
+                    <div className="preview-box yellow">
+                      <strong>Thời lượng:</strong> {hoverFilm.time}
+                    </div>
+                  )}
+                </div> */}
 
-              <div className="previews-action mt-2">
-                <Link
-                  to={`/chi-tiet/${hoverFilm.path}`}
-                  className="btn-watch btn btn-info me-2"
-                >
-                  ▶ Xem ngay
-                </Link>
-                <Link
-                  to={`/chi-tiet/${hoverFilm.path}`}
-                  className="btn-detail btn btn-outline-info"
-                >
-                  Chi tiết
-                </Link>
-              </div>
-
-              <div className="film-detail-info mt-2">
-                {hoverFilm.time && <span>{hoverFilm.time}</span>}
-                {hoverFilm.episode_current && (
-                  <span>{hoverFilm.episode_current}</span>
-                )}
               </div>
             </div>
           </div>
-        </div>
+        )}
+        </>
       )}
     </div>
   );

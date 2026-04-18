@@ -397,11 +397,19 @@
 
 /* tag */
 .skeleton-tag {
-  width: 70px;
   height: 22px;
   border-radius: 6px;
+  flex: 0 0 auto; /* không stretch */
   @extend .skeleton-bg;
 }
+
+/* tạo độ random cho giống thật */
+.skeleton-tag:nth-child(1) { width: 60px; }
+.skeleton-tag:nth-child(2) { width: 80px; }
+.skeleton-tag:nth-child(3) { width: 90px; }
+.skeleton-tag:nth-child(4) { width: 120px; }
+.skeleton-tag:nth-child(5) { width: 100px; }
+.skeleton-tag:nth-child(6) { width: 140px; }
 
 /* button */
 .skeleton-btn {
@@ -470,5 +478,18 @@
     }
     .tag-container{
         justify-content: center;
+    }
+    .skeleton-tag {
+      height: 20px;
+    }
+    .skeleton-text.title,
+    .skeleton-text.subtitle {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .skeleton-btn {
+      margin-left: auto;
+      margin-right: auto;
     }
  }

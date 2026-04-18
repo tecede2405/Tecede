@@ -161,12 +161,19 @@
   margin-bottom: 15px;
 }
 
-.cinemaHeroCard__tag,
-.cinemaHeroCard__lang {
-  font-size: 14px;
-  background: rgba(255,255,255,.2);
-  padding: 5px 12px;
-  border-radius: 6px;
+.film-info-tag {
+  display: inline-block;
+  padding: 4px 20px;
+  margin-right: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9px;
+
+  background: rgba(22, 20, 20, 0.1);
+  color: #ffffff;
+
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  backdrop-filter: blur(4px);
 }
 
 /* ===============================
@@ -490,5 +497,51 @@
 
   .cinemaHeroRow__progressDot.active {
     width: 45px;
+  }
+
+  // Skeleton
+  .cinemaHeroSkeletonReal {
+    height: auto;
+    min-height: 480px;
+  }
+
+  .skeleton-layout {
+    flex-direction: column;     
+    text-align: center;
+    padding: 40px 20px;
+    gap: 20px;
+  }
+
+  .skeleton-poster {
+    width: 140px;
+    height: 200px;
+    margin-top: 50px;
+  }
+
+  .skeleton-content {
+    width: 100%;               
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .skeleton-title {
+    margin: 0 auto 12px;
+    width: 80%;
+    height: 26px;
+  }
+
+  .skeleton-tags {
+    justify-content: center;
+  }
+
+  .skeleton-desc .line {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .skeleton-btn {
+    margin: 20px auto 0;       
+    width: 140px;
+    height: 40px;
   }
 }

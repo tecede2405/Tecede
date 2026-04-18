@@ -92,3 +92,72 @@
   border-color: #e50914;
   box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
 }
+/* ===== INPUT NHẬP TRANG ===== */
+.page-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+}
+
+/* Input số trang */
+.page-input-wrapper input {
+  width: 55px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1e1e1e;
+  color: #fff;
+  text-align: center;
+  outline: none;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+/* Focus giống active */
+.page-input-wrapper input:focus {
+  border-color: #e50914;
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.25);
+}
+
+/* Ẩn mũi tên input number (Chrome) */
+.page-input-wrapper input::-webkit-outer-spin-button,
+.page-input-wrapper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.page-input-wrapper input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Text "/ totalPages" */
+.page-input-wrapper span {
+  color: #aaa;
+  font-size: 13px;
+}
+
+/* Nút Go */
+.page-input-wrapper button {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover giống nút pagination */
+.page-input-wrapper button:hover {
+  background-color: #333;
+  border-color: #555;
+  transform: translateY(-2px);
+}
+
+/* Active click */
+.page-input-wrapper button:active {
+  transform: scale(0.95);
+}

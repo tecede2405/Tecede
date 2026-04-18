@@ -6,7 +6,7 @@ import "./style.scss";
 export default function FilmListBySlug() {
   const { slug } = useParams();
   const navigate = useNavigate();
-
+  const [pageInput, setPageInput] = useState(1);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -135,6 +135,22 @@ export default function FilmListBySlug() {
   };
 
   /* ================= PAGINATION ================= */
+  useEffect(() => {
+    setPageInput(page);
+  }, [page]);
+
+  const handlePageSubmit = () => {
+    if (!pageInput) return;
+
+    let newPage = Number(pageInput);
+
+    if (isNaN(newPage)) return;
+
+    if (newPage < 1) newPage = 1;
+    if (newPage > totalPages) newPage = totalPages;
+
+    setPage(newPage);
+  };
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
@@ -159,15 +175,33 @@ export default function FilmListBySlug() {
         <button disabled={page === 1} onClick={() => setPage(page - 1)}>
           ‹
         </button>
+
         {start > 1 && <span>...</span>}
         {pages}
         {end < totalPages && <span>...</span>}
+
         <button
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >
           ›
         </button>
+
+        {/* INPUT NHẬP TRANG */}
+        <div className="page-input-wrapper">
+          <input
+            type="number"
+            value={pageInput}
+            onChange={(e) => setPageInput(e.target.value)}
+            onBlur={handlePageSubmit}
+            onKeyDown={(e) => e.key === "Enter" && handlePageSubmit()}
+            min={1}
+            max={totalPages}
+          />
+          <span>/ {totalPages}</span>
+
+          <button onClick={handlePageSubmit}>Chuyển trang</button>
+        </div>
       </div>
     );
   };
@@ -250,57 +284,76 @@ export default function FilmListBySlug() {
 
       {/* PREVIEW */}
       {enablePreview && hoverFilm && (
-        <div className="hover-preview-backdrop">
-          <div
-            className="hover-preview-card"
-            onMouseLeave={() => setHoverFilm(null)}
-            ref={previewRef}
-            style={{
-              backgroundImage: `url(${getPoster(
-                hoverFilm.thumb_url || hoverFilm.poster_url
-              )})`,
-            }}
-          >
-            <div className="preview-info">
-              <h5 className="preview-name">{hoverFilm.name}</h5>
-              <span className="film-year">{hoverFilm.origin_name}</span>
+  <div className="hover-preview-backdrop">
+    <div
+      className="hover-preview-card"
+      onMouseLeave={() => setHoverFilm(null)}
+      ref={previewRef}
+      style={{
+        backgroundImage: `url(${getPoster(
+          hoverFilm.thumb_url || hoverFilm.poster_url
+        )})`,
+      }}
+    >
+      <div className="preview-info">
+        {/* LEFT */}
+        <div className="preview-left">
+          <h5 className="preview-name">{hoverFilm.name}</h5>
 
-              <div className="preview-actions">
-                <Link
-                  to={`/chi-tiet/${hoverFilm.slug}`}
-                  className="btn-watch btn btn-info"
-                >
-                  ▶ Xem ngay
-                </Link>
-                <Link
-                  to={`/chi-tiet/${hoverFilm.slug}`}
-                  className="btn-detail btn btn-outline-info"
-                >
-                  Chi tiết
-                </Link>
-              </div>
+          {/* origin_name giữ nguyên data, chỉ đổi class */}
+          <div className="preview-origin">
+            {hoverFilm.origin_name}
+          </div>
 
-              <div className="film-detail-info mt-2">
-                <span className="detail-year me-2 mt-2">
-                  Chất lượng: {hoverFilm.quality || "N/A"}
-                </span>
-                <span className="detail-year me-2 mt-2">
-                  Số tập: {hoverFilm.episode_current || "N/A"}
-                </span>
-                <span className="detail-year me-2 mt-2">
-                  Thời lượng: {hoverFilm.time || "N/A"}
-                </span>
-                <p
-                  className="detail-year mt-2"
-                  style={{ display: "inline-block", maxWidth: "70%" }}
-                >
-                  Ngôn ngữ: {hoverFilm.lang || "N/A"}
-                </p>
-              </div>
-            </div>
+          {/* chuyển từ detail-year -> preview-tag */}
+          <div className="preview-meta">
+            <span className="preview-tag">
+              {hoverFilm.quality || "N/A"}
+            </span>
+            <span className="preview-tag">
+              {hoverFilm.lang || "N/A"}
+            </span>
+          </div>
+
+          <div className="preview-actions">
+            <Link
+              to={`/chi-tiet/${hoverFilm.slug}`}
+              className="btn-watch"
+            >
+              ▶ Xem ngay
+            </Link>
+
+            <Link
+              to={`/chi-tiet/${hoverFilm.slug}`}
+              className="btn-detail"
+            >
+              Chi tiết
+            </Link>
           </div>
         </div>
-      )}
+
+        {/* RIGHT (giữ nguyên info, chỉ đổi class) */}
+        <div className="preview-right">
+          <div className="preview-box blue">
+            <b>Chất lượng:</b> {hoverFilm.quality || "N/A"}
+          </div>
+
+          <div className="preview-box yellow">
+            <b>Số tập:</b> {hoverFilm.episode_current || "N/A"}
+          </div>
+
+          <div className="preview-box green">
+            <b>Thời lượng:</b> {hoverFilm.time || "N/A"}
+          </div>
+
+          <div className="preview-box blue">
+            <b>Ngôn ngữ:</b> {hoverFilm.lang || "N/A"}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

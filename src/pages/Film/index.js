@@ -274,58 +274,57 @@ export default function FilmListBySlug() {
       </div>
 
       {/* PREVIEW */}
-      {enablePreview && hoverFilm && (
-        <div className="hover-preview-backdrop">
-          <div
-            className="hover-preview-card"
-            onMouseLeave={() => setHoverFilm(null)}
-            ref={previewRef}
-            style={{
-              backgroundImage: `url(${getPoster(
-                hoverFilm.thumb_url || hoverFilm.poster_url
-              )})`
-            }}
-          >
-            <div className="preview-info">
-              <h5 className="preview-name">{hoverFilm.name}</h5>
-              <span className="film-year">{hoverFilm.origin_name}</span>
+      {/* PREVIEW */}
+{enablePreview && hoverFilm && (
+  <div className="hover-preview-backdrop">
+    <div
+      className="hover-preview-card"
+      onMouseLeave={() => setHoverFilm(null)}
+      ref={previewRef}
+      style={{
+        backgroundImage: `url(${getPoster(
+          hoverFilm.thumb_url || hoverFilm.poster_url
+        )})`
+      }}
+    >
+      <div className="preview-info">
+  <div className="preview-left">
+    <h5 className="preview-name">{hoverFilm.name}</h5>
+    <div className="preview-origin">{hoverFilm.origin_name}</div>
 
-              <div className="preview-actions">
-                <Link
-                  to={`/chi-tiet/${hoverFilm.path}`}
-                  className="btn-watch btn btn-info"
-                >
-                  ▶ Xem ngay
-                </Link>
-                <Link
-                  to={`/film/${hoverFilm.slug}`}
-                  className="btn-detail btn btn-outline-info"
-                >
-                  Chi tiết
-                </Link>
-              </div>
+    <div className="preview-meta">
+      <span className="preview-tag">{hoverFilm.quality}</span>
+      <span className="preview-tag">{hoverFilm.lang}</span>
+      <span className="preview-tag">{hoverFilm.year}</span>
+    </div>
 
-              <div className="film-detail-info mt-2">
-                <span className="detail-year me-2 mt-2">
-                  Chất lượng: {hoverFilm.quality}
-                </span>
-                <span className="detail-year me-2 mt-2">
-                  Số tập: {hoverFilm.episode_current}
-                </span>
-                <span className="detail-year me-2 mt-2">
-                  Thời lượng : {hoverFilm.time}
-                </span>
-                <p
-                  className="detail-year mt-2"
-                  style={{ display: "inline-block", maxWidth: "70%" }}
-                >
-                  Ngôn ngữ phụ đề: {hoverFilm.lang}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+    <div className="preview-actions">
+      <Link to={`/chi-tiet/${hoverFilm.path}`} className="btn-watch">
+        ▶ Xem ngay
+      </Link>
+      <Link to={`/film/${hoverFilm.slug}`} className="btn-detail">
+        Chi tiết
+      </Link>
+    </div>
+  </div>
+
+  <div className="preview-right">
+    <div className="preview-box blue">
+      <b>Tập:</b> {hoverFilm.episode_current || "N/A"}
+    </div>
+
+    <div className="preview-box yellow">
+      <b>Thời lượng:</b> {hoverFilm.time || "N/A"}
+    </div>
+
+    <div className="preview-box green">
+      <b>Ngôn ngữ:</b> {hoverFilm.lang || "N/A"}
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

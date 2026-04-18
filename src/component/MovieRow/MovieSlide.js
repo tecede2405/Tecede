@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { FaPlay } from "react-icons/fa";
 import "./style.scss";
@@ -9,6 +9,17 @@ const MovieSlide = ({ movie }) => {
   // state kiểm tra video load xong chưa
   const [videoLoaded, setVideoLoaded] = useState(false);
 
+  function Tag({ text, color }) {
+  if (!text) return null;
+  return (
+    <span
+      className="film-info-tag"
+      style={{ borderLeft: color ? `5px solid ${color}` : "1px solid #444" }}
+    >
+      {text}
+    </span>
+  );
+}
   return (
     <div className="cinemaHeroCard">
 
@@ -54,6 +65,8 @@ const MovieSlide = ({ movie }) => {
 
         <div className="cinemaHeroCard__info">
 
+          
+
           <h3 className="cinemaHeroCard__title">
             {movie.title}
           </h3>
@@ -63,13 +76,8 @@ const MovieSlide = ({ movie }) => {
           </p>
 
           <div className="cinemaHeroCard__meta">
-            <span className="cinemaHeroCard__tag">
-              {movie.episode_current}
-            </span>
-
-            <span className="cinemaHeroCard__lang">
-              {movie.lang}
-            </span>
+            <Tag text={movie.episode_current} color="#d31709" />
+            <Tag text={movie.lang} color="#09d31a" />
           </div>
 
           <p className="cinemaHeroCard__overview">
