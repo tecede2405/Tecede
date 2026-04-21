@@ -68,6 +68,50 @@
   grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
   gap:12px;
 }
+// comics skeleton
+/* Skeleton base */
+.skeleton-box,
+.skeleton-line {
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 25%,
+    #2a2a2a 37%,
+    #1a1a1a 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Thumb */
+.skeleton .comicThumb {
+  width: 100%;
+  height: 160px; 
+}
+
+/* Text */
+.skeleton-line {
+  height: 10px;
+  margin-bottom: 8px;
+}
+
+.skeleton-line.title {
+  height: 14px;
+  width: 90%;
+}
+
+.skeleton-line.small {
+  width: 60%;
+}
 @media(max-width:1200px){
   .comicList{
     grid-template-columns:repeat(4,1fr);

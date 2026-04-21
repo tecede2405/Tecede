@@ -91,7 +91,7 @@ export default function LoginPage() {
       className="login-page"
       style={{
         backgroundImage:
-          "url(https://png.pngtree.com/thumb_back/fh260/background/20250307/pngtree-a-vibrant-movie-themed-background-with-the-film-reels-camera-and-image_17080149.jpg)",
+          "url(https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/VN-vi-20260105-TRIFECTA-perspective_ec5c484f-840e-4d19-9f35-b9e6a0eef2c7_medium.jpg)",
       }}
     >
       <Helmet>

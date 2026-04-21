@@ -167,12 +167,10 @@
   margin-right: 6px;
   font-size: 12px;
   font-weight: 500;
-  border-radius: 9px;
+  border-radius: 7px;
 
-  background: rgba(22, 20, 20, 0.1);
+  background: rgba(227, 224, 224, 0.049);
   color: #ffffff;
-
-  border: 1px solid rgba(229, 9, 20, 0.3);
   backdrop-filter: blur(4px);
 }
 
@@ -490,7 +488,9 @@
   .cinemaHeroCard__overview {
     font-size: 12px;
   }
-
+  .film-info-tag {
+    font-size: 10px;
+  }
   .cinemaHeroRow__progressDot {
     width: 25px;
   }

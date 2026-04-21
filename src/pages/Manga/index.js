@@ -31,17 +31,17 @@ export default function Manga() {
     // mới cập nhật
     fetch(`${process.env.REACT_APP_TRUYEN_API}/danh-sach/truyen-moi`)
       .then(res => res.json())
-      .then(data => setLatest(data.data.items.slice(0,16)));
+      .then(data => setLatest(data.data.items.slice(0,24)));
 
     // đang thịnh hành
     fetch(`${process.env.REACT_APP_TRUYEN_API}/danh-sach/dang-phat-hanh`)
       .then(res => res.json())
-      .then(data => setTrending(data.data.items.slice(0,16)));
+      .then(data => setTrending(data.data.items.slice(0,24)));
 
     // sắp ra mắt
     fetch(`${process.env.REACT_APP_TRUYEN_API}/danh-sach/sap-ra-mat`)
       .then(res => res.json())
-      .then(data => setComing(data.data.items.slice(0,16)));
+      .then(data => setComing(data.data.items.slice(0,24)));
 
   }, [chapterId]);
 

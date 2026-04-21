@@ -17,7 +17,7 @@ export default function MovieDetail() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`)
+    fetch(`${process.env.REACT_APP_FILM_API_URL}/phim/${slug}`)
       .then(res => res.json())
       .then(data => {
         setMovie(data.movie || null);
@@ -26,7 +26,6 @@ export default function MovieDetail() {
       .catch(() => setMovie(null))
       .finally(() => setLoading(false));
   }, [slug]);
-
 
   function MovieDetailSkeleton() {
     return (
