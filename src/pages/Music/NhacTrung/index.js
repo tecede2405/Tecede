@@ -94,21 +94,17 @@ function NhacTrung() {
                   </div>
 
                   <audio
+                    key={currentIndex}
                     ref={audioRef}
+                    src={playlist[currentIndex]?.file}
                     controls
                     playsInline
                     autoPlay
                     preload="metadata"
                     controlsList="nodownload"
                     className="custom-audio"
-                    onPlay={() => {
-                    audioRef.current.muted = false;
-                  }}
                     onEnded={handleEnded}
-                  >
-                    <source src={playlist[currentIndex].file} type="audio/mpeg" />
-                    Trình duyệt của bạn không hỗ trợ phát nhạc.
-                  </audio>
+                  />
                 </div>
               )}
             </>

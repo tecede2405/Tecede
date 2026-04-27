@@ -90,6 +90,8 @@ export default function useMusicPlayer(initialSongs) {
   if (currentIndex !== null && audioRef.current) {
     const audio = audioRef.current;
 
+    audio.load(); //BẮT BUỘC
+
     const playAudio = async () => {
       try {
         await audio.play();

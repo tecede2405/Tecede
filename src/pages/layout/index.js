@@ -359,7 +359,7 @@ function Layout() {
                   <AdminAuth />
                 </li>
                 <li>
-                  <Link to="/sitemap.xml">Sitemap</Link>
+                  <a href="/sitemap.xml">Sitemap</a>
                 </li>
               </ul>
             </div>

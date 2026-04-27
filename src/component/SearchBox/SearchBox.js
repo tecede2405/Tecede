@@ -31,7 +31,7 @@ export default function SearchBar({ songs, onSelectSong }) {
 
   return (
     <>
-      <h6 className="search-song">Tìm nhạc ở đây nè... 🔍</h6>
+      <h6 className="search-song">Tìm nhạc ở đây nè</h6>
       <div className="search-box mb-3 position-relative">
       <input
         type="text"

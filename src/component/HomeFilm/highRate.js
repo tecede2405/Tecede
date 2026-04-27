@@ -51,7 +51,7 @@ function HighRateFilms() {
             items={filmData}
             renderItem={(item) => (
               <div
-                className="film-card animate__animated animate__fadeIn"
+                className="film-card animate__animated animate__fadeInLeft"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/chi-tiet/${item.path}`);

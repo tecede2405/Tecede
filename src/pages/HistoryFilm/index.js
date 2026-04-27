@@ -121,7 +121,7 @@ return (
       {history.length === 0 ? (
         <div className="text-center py-5" style={{ color: "#666" }}>
           <MdPlayCircleOutline size={60} className="mb-3" />
-          <p>Bạn chưa xem bộ phim nào gần đây.</p>
+          <p>Có vẻ bạn chưa xem bộ phim nào gần đây hoặc nếu bạn đã xem phim, hãy đăng xuất rồi đăng nhập lại nha.</p>
         </div>
       ) : (
         <div className="rounded-3 overflow-hidden shadow-lg" style={{ backgroundColor: "#111" }}>

@@ -50,7 +50,7 @@ function KoreaFilms() {
             items={filmData}
             renderItem={(item) => (
               <div
-                className="film-card animate__animated animate__fadeIn"
+                className="film-card animate__animated animate__fadeInUp"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/chi-tiet/${item.path}`);
