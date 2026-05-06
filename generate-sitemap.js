@@ -50,7 +50,7 @@ async function generateSitemap() {
   const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://tecede.netlify.app';
   const API_URL = process.env.REACT_APP_FILM_API_URL;
 
-  const staticPages = ['', '/about'];
+  const staticPages = [''];
 
   // ✅ tất cả nguồn
   const sources = [
@@ -68,10 +68,6 @@ async function generateSitemap() {
     `${API_URL}/v1/api/quoc-gia/viet-nam?page=`,
 
     // thể loại
-    `${API_URL}/v1/api/the-loai/hanh-dong?page=`,
-    `${API_URL}/v1/api/the-loai/tinh-cam?page=`,
-    `${API_URL}/v1/api/the-loai/hai-huoc?page=`,
-    `${API_URL}/v1/api/the-loai/co-trang?page=`,
     `${API_URL}/v1/api/the-loai/hoat-hinh?page=`,
   ];
 
@@ -83,7 +79,7 @@ async function generateSitemap() {
     for (const source of sources) {
       console.log("🚀 Fetch nguồn:", source);
 
-      const data = await fetchAllFromSource(source, 50); // 👈 limit 50 page / nguồn
+      const data = await fetchAllFromSource(source, 50); // limit 50 page / nguồn
       allMovies.push(...data);
     }
 

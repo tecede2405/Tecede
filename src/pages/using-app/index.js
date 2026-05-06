@@ -34,7 +34,7 @@ const UsingApp = () => {
                     <div className="using-app__main-box">
                         <h3 className="using-app-title">Bước 4</h3>
                         <div className="using-app__main-content">
-                            <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/5fd764bc7f0695b7c37b6c5ba3d17f17" alt="hướng dẫn" loading="lazy" />
+                            <img src="https://i.ibb.co/fdTzpvxF/1778084614562.jpg" alt="hướng dẫn" loading="lazy" />
                             <i className="using-app-desc">1 ô như này sẽ xuất hiện trên màn hình. Cuối cùng chỉ cần click "Cài đặt"</i>
                         </div>
                     </div>

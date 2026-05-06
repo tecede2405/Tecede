@@ -4,7 +4,7 @@ import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home/index";
-import About from "./pages/About/index";
+// import About from "./pages/About/index";
 import Admin from "./pages/Admin/index";
 import "font-awesome/css/font-awesome.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -125,7 +125,7 @@ function App() {
                   <Route index element={<Home />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
-                  <Route path="about" element={<About />} />
+                  {/* <Route path="about" element={<About />} /> */}
                   <Route path="using-app" element={<UsingApp />} />
                   <Route path="using-app-ios" element={<UsingAppIos />} />
                   {/* Film */}

@@ -2,7 +2,6 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./layout.scss";
 import Tabbar from "../../component/tabar/index";
 import AdminAuth from "../../component/AdminAuth/index";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   FaPhoneVolume,
@@ -342,8 +341,8 @@ function Layout() {
             <div className="col-12 col-md-3 col-sm-5">
               <h6 className="footer-subtitle">Liên hệ</h6>
               <ul className="footer-list">
-                <li><FaPhoneVolume /> +84 384 577 121</li>
-                <li><FaEnvelope /> thoaixd123@gmail.com</li>
+                <li><FaPhoneVolume /> +84 384 577 xxx</li>
+                <li><FaEnvelope /> erenjeager6753@gmail.com</li>
                 <li><FaHashtag /> #tecede #tecede blog</li>
               </ul>
             </div>
@@ -352,9 +351,6 @@ function Layout() {
             <div className="col-12 col-md-3 col-sm-5">
               <h6 className="footer-subtitle">Thông tin</h6>
               <ul className="footer-list">
-                <li>
-                  <Link to="/about">Về chúng tôi</Link>
-                </li>
                 <li>
                   <AdminAuth />
                 </li>
