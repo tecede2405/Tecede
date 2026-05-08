@@ -141,9 +141,9 @@ export default function MovieDetail() {
       <meta
         property="og:image"
         content={
-          movie?.poster_url
+          movie?.thumb_url
             ? `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-                movie.poster_url
+                movie.thumb_url
               )}`
             : ""
         }

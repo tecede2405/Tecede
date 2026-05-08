@@ -80,7 +80,7 @@ export default function EditSong() {
 
   // ================= UI =================
   return (
-    <Card title="Chỉnh sửa bài hát" style={{ maxWidth: 700, margin: "auto" }} className="edit-song-form text-light">
+    <Card title="Chỉnh sửa bài hát" style={{ maxWidth: 900, margin: "auto" }} className="edit-song-form text-light">
       <Form key={id} layout="vertical" form={form} onFinish={onFinishConfirm}>
         <Form.Item label="Tên bài hát" name="title" rules={[{ required: true }]}>
           <Input />

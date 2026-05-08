@@ -1,18 +1,22 @@
 import "./index.scss";
 import { useState, useEffect } from "react";
 import socket from "../../utils/socket";
+import { useLocation } from "react-router-dom";
 
 const OverView = () => {
   const [counts, setCounts] = useState({});
   const [totalListens, setTotalListens] = useState(0);
 
-  // analytics
+  // USERS
+  const [user, setUser] = useState(null);
 
-  // socket
+  // ONLINE
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [onlineCount, setOnlineCount] = useState(0);
 
-  /* ================= FETCH STATS ================= */
+  const location = useLocation();
+
+  /* ===== FETCH OVERVIEW ===== */
   useEffect(() => {
     const categories = [
       "nhactre",
@@ -24,22 +28,68 @@ const OverView = () => {
       "nhactreremix",
     ];
 
+    /* ===== RESET USER ===== */
+    setUser(null);
+
+    /* ===== TOTAL SONGS ===== */
     Promise.all(
       categories.map((cat) =>
-        fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/${cat}`)
+        fetch(
+          `${process.env.REACT_APP_API_URL}/api/songs/category/${cat}`
+        )
           .then((res) => res.json())
-          .then((data) => ({ [cat]: data.length }))
+          .then((data) => ({
+            [cat]: data.length,
+          }))
       )
     ).then((results) => {
       setCounts(Object.assign({}, ...results));
     });
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/total-listens`)
+    /* ===== TOTAL LISTENS ===== */
+    fetch(
+      `${process.env.REACT_APP_API_URL}/api/songs/stats/total-listens`
+    )
       .then((res) => res.json())
-      .then((data) => setTotalListens(data.total || 0));
-  }, []);
+      .then((data) => {
+        setTotalListens(data.total || 0);
+      });
 
-  /* ================= SOCKET: ONLINE USERS ================= */
+    /* ===== TOTAL USERS ===== */
+    /* ===== USER MỚI NHẤT ===== */
+fetch(
+  `${process.env.REACT_APP_SERVER_API_URL}/auth/users`
+)
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("USERS API:", data);
+
+    let users = [];
+
+    if (Array.isArray(data)) {
+      users = data;
+    } else if (Array.isArray(data.users)) {
+      users = data.users;
+    }
+
+    if (users.length > 0) {
+      // lấy user cuối cùng
+      const latestUser =
+        users[0];
+
+      // lấy id
+      setUser(latestUser.id);
+    } else {
+      setUser(0);
+    }
+  })
+  .catch((err) => {
+    console.log("Fetch users error:", err);
+    setUser(0);
+  });
+  }, [location.pathname]);
+
+  /* ===== SOCKET ===== */
   useEffect(() => {
     socket.on("online:list", (users) => {
       setOnlineUsers(users);
@@ -51,80 +101,113 @@ const OverView = () => {
     };
   }, []);
 
-  const totalSongs = Object.values(counts).reduce((s, v) => s + v, 0);
+  const totalSongs = Object.values(counts).reduce(
+    (s, v) => s + v,
+    0
+  );
+
   const avgListen =
-    totalSongs > 0 ? Math.round(totalListens / totalSongs) : 0;
+    totalSongs > 0
+      ? Math.round(totalListens / totalSongs)
+      : 0;
+
+  const stats = [
+    {
+      title: "Số bài hát",
+      value: totalSongs,
+    },
+    {
+      title: "Playlist",
+      value: 9,
+    },
+    {
+      title: "Tổng lượt nghe",
+      value: totalListens,
+    },
+    {
+      title: "Trung bình lượt / bài",
+      value: avgListen,
+    },
+    {
+      title: "Người dùng đã đăng ký",
+      value: user === null ? "..." : user,
+    },
+    {
+      title: "Đang online",
+      value: onlineCount,
+    },
+  ];
 
   return (
-    <>
-      <h2 className="overview-title">Tổng quan hệ thống</h2>
+    <div className="overview-page">
+      {/* Stats */}
+      <div className="stats-grid">
+        {stats.map((item, index) => (
+          <div className="stat-card" key={index}>
+            <div className="stat-title">
+              {item.title}
+            </div>
 
-      <table className="dashboard">
-        <tbody>
-          <tr>
-            <th>Thông số</th>
-            <th>Nội dung hiển thị</th>
-          </tr>
+            <div className="stat-value">
+              {typeof item.value === "number"
+                ? item.value.toLocaleString()
+                : item.value}
+            </div>
+          </div>
+        ))}
+      </div>
 
-          <tr>
-            <td>Số bài hát hiện có</td>
-            <td>{totalSongs}</td>
-          </tr>
+      {/* Online users */}
+      <div className="online-wrapper">
+        <div className="online-title">
+          <span className="dot"></span>
+          Người đang online
 
-          <tr>
-            <td>Playlist được tạo</td>
-            <td>9</td>
-          </tr>
+          <div className="online-badge">
+            {onlineCount} online
+          </div>
+        </div>
 
-          <tr>
-            <td>Tổng số lượt nghe</td>
-            <td>{totalListens}</td>
-          </tr>
+        <div className="table-card">
+          <table className="dashboard-table">
+            <thead>
+              <tr>
+                <th>IP</th>
+                <th>Trang đang xem</th>
+                <th>Hoạt động lúc</th>
+              </tr>
+            </thead>
 
-          <tr>
-            <td>Trung bình lượt nghe / bài</td>
-            <td>{avgListen}</td>
-          </tr>
+            <tbody>
+              {onlineUsers.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="3"
+                    className="empty-row"
+                  >
+                    Không có ai online
+                  </td>
+                </tr>
+              ) : (
+                onlineUsers.map((u) => (
+                  <tr key={u.visitorId}>
+                    <td>{u.ip}</td>
 
+                    <td>{u.page}</td>
 
-          <tr>
-            <td>Người đang online</td>
-            <td>{onlineCount}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3 className="text-light" style={{ marginTop: 30 }}>
-        🟢 Người đang online
-      </h3>
-
-      <table className="dashboard small">
-        <thead>
-          <tr>
-            <th>IP</th>
-            <th>Trang</th>
-            <th>Hoạt động lúc</th>
-          </tr>
-        </thead>
-        <tbody>
-          {onlineUsers.length === 0 && (
-            <tr>
-              <td colSpan="3">Không có ai online</td>
-            </tr>
-          )}
-
-          {onlineUsers.map((u) => (
-            <tr key={u.visitorId}>
-              <td>{u.ip}</td>
-              <td>{u.page}</td>
-              <td>
-                {new Date(u.lastActive).toLocaleTimeString("vi-VN")}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+                    <td>
+                      {new Date(
+                        u.lastActive
+                      ).toLocaleTimeString("vi-VN")}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   );
 };
 

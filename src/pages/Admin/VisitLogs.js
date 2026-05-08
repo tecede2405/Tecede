@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./admin.scss";
 
 export default function VisitLogs() {
   const [logs, setLogs] = useState([]);
@@ -17,58 +18,85 @@ export default function VisitLogs() {
       });
   }, []);
 
+  const getDeviceClass = (device) => {
+    if (device === "mobile") return "mobile";
+    if (device === "tablet") return "tablet";
+    return "desktop";
+  };
+
+  const getDeviceLabel = (device) => {
+    if (device === "mobile") return "Mobile";
+    if (device === "tablet") return "Tablet";
+    return "Desktop";
+  };
+
   return (
-    <div style={{ padding: 20 }}>
-      <h2 className="text-light">Lịch sử truy cập website</h2>
+    <div className="visit-page">
+      <div className="visit-header">
+        <h2>Lịch sử truy cập website</h2>
+        <p>Theo dõi hoạt động người dùng theo thời gian thực</p>
+      </div>
 
-      <table className="dashboard-visitor small" style={{ marginTop: 20 }}>
-        <thead>
-          <tr>
-            <th>IP</th>
-            <th>Thiết bị</th>
-            <th>Trình duyệt</th>
-            <th>Trang</th>
-            <th>Thời gian</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {loading && (
+      <div className="visit-table-wrapper">
+        <table className="visit-table">
+          <thead>
             <tr>
-              <td colSpan="6">Đang tải dữ liệu...</td>
+              <th>IP</th>
+              <th>Thiết bị</th>
+              <th>Trình duyệt</th>
+              <th>Trang</th>
+              <th>Thời gian</th>
             </tr>
-          )}
+          </thead>
 
-          {!loading && logs.length === 0 && (
-            <tr>
-              <td colSpan="6">Chưa có dữ liệu</td>
-            </tr>
-          )}
-
-          {!loading &&
-            logs.map((log, index) => (
-              <tr key={index}>
-                <td>{log.ip}</td>
-
-                <td>
-                  {log.device === "mobile"
-                    ? "Mobile"
-                    : log.device === "tablet"
-                    ? "Tablet"
-                    : "Desktop"}
-                </td>
-
-                <td>{log.browser || "Unknown"}</td>
-
-                <td>{log.page}</td>
-
-                <td>
-                  {new Date(log.visitedAt).toLocaleString("vi-VN")}
+          <tbody>
+            {loading && (
+              <tr>
+                <td colSpan="5" className="empty-cell">
+                  Đang tải dữ liệu...
                 </td>
               </tr>
-            ))}
-        </tbody>
-      </table>
+            )}
+
+            {!loading && logs.length === 0 && (
+              <tr>
+                <td colSpan="5" className="empty-cell">
+                  Chưa có dữ liệu
+                </td>
+              </tr>
+            )}
+
+            {!loading &&
+              logs.map((log, index) => (
+                <tr key={index}>
+                  <td>{log.ip}</td>
+
+                  <td>
+                    <span
+                      className={`device-badge ${getDeviceClass(
+                        log.device
+                      )}`}
+                    >
+                      {getDeviceLabel(log.device)}
+                    </span>
+                  </td>
+
+                  <td>{log.browser || "Unknown"}</td>
+
+                  <td className="page-url">
+                    {log.page}
+                  </td>
+
+                  <td>
+                    {new Date(
+                      log.visitedAt
+                    ).toLocaleString("vi-VN")}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

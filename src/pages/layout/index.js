@@ -333,7 +333,7 @@ function Layout() {
             <div className="col-12 col-md-4 col-sm-5">
               <h6 className="footer-subtitle">Giới thiệu</h6>
               <p className="footer-desc">
-                Tecede - Website xem phim online miễn phí lỏ nhất Việt Nam.
+                Tecede - Website xem phim miễn phí lỏ nhất Việt Nam.
               </p>
             </div>
 
@@ -341,7 +341,7 @@ function Layout() {
             <div className="col-12 col-md-3 col-sm-5">
               <h6 className="footer-subtitle">Liên hệ</h6>
               <ul className="footer-list">
-                <li><FaPhoneVolume /> +84 384 577 xxx</li>
+                <li><FaPhoneVolume /> +84 3x4 5x7 xxx</li>
                 <li><FaEnvelope /> erenjeager6753@gmail.com</li>
                 <li><FaHashtag /> #tecede #tecede blog</li>
               </ul>

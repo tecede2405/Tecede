@@ -1,88 +1,276 @@
-.add-song {
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  
+.add-song-page {
+  color: white;
+}
 
-  input, select {
-    display: block;
-    width: 100%;
-    margin-bottom: 12px;
-    padding: 8px;
-  }
+.add-song-header {
+  margin-bottom: 24px;
 
-  button {
-    background: #007bff;
-    color: white;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    cursor: pointer;
+  h2 {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 8px;
   }
 
   p {
-    margin-top: 10px;
-    font-weight: bold;
+    color: #94a3b8;
+    font-size: 15px;
   }
 }
 
-.form-add-song{
-  width: 100%;
-  background: #212121;
-  border : 1px solid #ddd;
-  padding: 20px;
-  margin: 0 auto;
-}
-.form-add-song input,.form-add-song option,.form-add-song select{
-  border-radius: 50px;
-  background: #303030;
-  border: none;
-  color: #ddd;
-}
-.form-add-song button {
-  border-radius: 50px;
-}
-.form-add-song .upload-btn:hover {
-  background : #fff;
-  color:blue;
-}
-.custom-upload-btn {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom:10px;
-  border-radius:50px;
+/* ===== FORM ===== */
+.add-song-form {
+  padding: 24px;
+
+  border-radius: 24px;
+
+  background: rgba(255,255,255,0.04);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
 }
 
-.custom-upload-btn:hover {
-  background-color: #0056b3;
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #cbd5e1;
+  }
+
+  input,
+  select {
+    width: 100%;
+
+    padding: 15px 18px;
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.05);
+
+    color: white;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.25s ease;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+      0 0 0 4px rgba(59,130,246,0.15);
+  }
+}
+
+/* ===== UPLOAD ===== */
+.upload-box {
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 34px 20px;
+
+  border-radius: 22px;
+
+  border: 2px dashed rgba(255,255,255,0.12);
+
+  background: rgba(255,255,255,0.03);
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.upload-area:hover {
+  border-color: #3b82f6;
+
+  background: rgba(59,130,246,0.08);
+}
+.form-group select {
+  background: #1e293b;
+  color: white;
+}
+
+/* option dropdown */
+.form-group select option {
+  background: #111827;
+  color: white;
+}
+.upload-text {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.upload-area span {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* ===== PROGRESS ===== */
+.progress-wrapper {
+  margin-bottom: 22px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  font-size: 13px;
+  color: #cbd5e1;
 }
 
 .progress-bar {
-  width: 100%;
-  background: #eee;
   height: 10px;
-  border-radius: 5px;
-  margin: 10px 0;
-  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.08);
 }
 
 .progress-fill {
-  background: #4caf50;
   height: 100%;
-  border-radius: 5px;
-  transition: width 0.3s ease;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #06b6d4
+  );
+
+  transition: 0.3s ease;
 }
 
-.progress-bar span {
-  position: absolute;
-  top: -20px;
-  right: 0;
-  font-size: 12px;
-  color: #4caf50;
+/* ===== BUTTON ===== */
+.submit-btn {
+  width: 100%;
+
+  padding: 16px;
+
+  border: none;
+
+  border-radius: 18px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #4f46e5
+  );
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(37,99,235,0.35);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ===== MESSAGE ===== */
+.message {
+  margin-top: 18px;
+
+  padding: 14px 18px;
+
+  border-radius: 14px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.message.success {
+  background: rgba(34,197,94,0.15);
+  color: #4ade80;
+}
+
+.message.error {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .add-song-form {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .add-song-header h2 {
+    font-size: 28px;
+  }
+
+  .upload-area {
+    padding: 28px 16px;
+  }
+}
+
+@media (max-width: 540px) {
+  .add-song-form {
+    padding: 14px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .submit-btn {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .upload-text {
+    font-size: 14px;
+  }
 }

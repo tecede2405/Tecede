@@ -360,8 +360,12 @@ useEffect(() => {
   };
 
  if (!movie || !currentVideo || servers.length === 0) {
-    return <div className="container"><p>Đang tải...</p></div>;
-  }
+  return (
+    <div className="movie-loading">
+      <div className="movie-loading__spinner"></div>
+    </div>
+  );
+}
   return (
     <div
       className="movie-page pb-5 pt-3"
@@ -392,8 +396,18 @@ useEffect(() => {
               frameBorder="0"
             />
           ) : (
-            <div className="d-flex justify-content-center align-items-center bg-black text-white">
-              <span>Đang tải tập phim...</span>
+            <div className="video-loading-preview">
+              <img
+                src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
+                  movie.thumb_url || movie.poster_url
+                )}`}
+                alt={movie.name}
+                className="video-loading-preview__image"
+              />
+
+              <div className="video-loading-preview__overlay">
+                <div className="video-loading-preview__spinner"></div>
+              </div>
             </div>
           )}
 

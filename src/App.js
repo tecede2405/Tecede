@@ -26,8 +26,10 @@ import NotFound from "./pages/page404/index";
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
 import RequireAuth from "./component/RequireAuth/index";
-import AdminFeature from "./pages/admin-feature/index";
+import OverView from "./component/Overview/index";
 import EditSong from "./pages/EditSong/index";
+import ManageUsers from "./pages/ManageUsers/index";
+import AddFilms from "./component/AddFilms/index";
 
 // Other pages
 import UsingApp from "./pages/using-app/index";
@@ -163,8 +165,9 @@ function App() {
                   <Route path="anime/:id" element={<AnimeDetail />} />
                   <Route path="search" element={<AnimeSearch />} />
 
+                
                   {/* Admin */}
-                  <Route
+                <Route
                     path="admin"
                     element={
                       <RequireAuth>
@@ -172,17 +175,29 @@ function App() {
                       </RequireAuth>
                     }
                   >
-                    <Route path="add" element={<AddSongs />} />
+                    {/* Trang mặc định /admin */}
+                    <Route index element={<OverView />} />
+
+                    {/* Nested routes */}
+                    <Route path="add-song" element={<AddSongs />} />
+
+                    <Route path="add-film" element={<AddFilms />} />
+
                     <Route path="manage" element={<ManageSongs />} />
+
+                    <Route path="visits" element={<VisitLogs />} />
+
+                    {/* USERS */}
+                    <Route path="users" element={<ManageUsers />} />
+
+
+                    <Route
+                      path="songs/edit/:id"
+                      element={<EditSong />}
+                    />
                   </Route>
-                  <Route path="/admin/visits" element={<VisitLogs />} />
-                  <Route
-                    path="/admin/songs/edit/:id"
-                    element={<EditSong />}
-                  />
 
-                  <Route path="/admin-post" element={<AdminFeature />} />
-
+               
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>

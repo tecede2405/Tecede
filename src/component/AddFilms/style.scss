@@ -1,0 +1,188 @@
+.add-movie-page {
+  padding: 16px;
+  color: white;
+}
+
+// .add-movie-header {
+//   margin-bottom: 16px;
+
+//   h2 {
+//     margin-bottom: 4px;
+//     font-weight: bold;
+//   }
+
+//   p {
+//     color: #94a3b8;
+//     font-size: 13px;
+//   }
+// }
+
+.add-movie-form {
+  background: rgba(255,255,255,0.04);
+
+  border: 1px solid rgba(255,255,255,0.06);
+
+  border-radius: 16px;
+
+  padding: 16px;
+}
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.04);
+
+    color: white;
+
+    outline: none;
+
+    font-size: 13px;
+
+    box-sizing: border-box;
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  option {
+    background: #111827;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+}
+
+.form-group.full {
+  grid-column: span 2;
+}
+
+.form-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.preview-img {
+  width: 100%;
+
+  height: 190px;
+
+  object-fit: cover;
+
+  border-radius: 12px;
+
+  margin-top: 8px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: #0f172a;
+}
+
+.submit-btn {
+  margin-top: 16px;
+
+  width: 100%;
+
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #4f46e5
+  );
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+  opacity: 0.92;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* SWEET ALERT */
+.swal2-popup {
+  border-radius: 16px !important;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  border-radius: 10px !important;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .add-movie-page {
+    padding: 10px;
+  }
+
+  .add-movie-form {
+    padding: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: span 1;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-img {
+    height: 160px;
+  }
+
+  .add-movie-header h2 {
+    font-size: 20px;
+  }
+}

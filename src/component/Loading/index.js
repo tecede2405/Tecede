@@ -18,14 +18,14 @@ const Loading = () => {
     <div className="loading-screen">
       <div className="terminal-loader">
         <div className="terminal-header">
-          <div className="terminal-title">Hey Bro :</div>
+          <div className="terminal-title">Tecede :</div>
           <div className="terminal-controls">
             <div className="control close"></div>
             <div className="control minimize"></div>
             <div className="control maximize"></div>
           </div>
         </div>
-        <div className="text">Chờ Xíu...</div>
+        <div className="text">Chờ Xíu Nè...</div>
       </div>
     </div>
   );
