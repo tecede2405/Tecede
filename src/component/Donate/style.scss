@@ -1,0 +1,368 @@
+.donate-wrapper {
+  padding: 0 15px;
+  margin: 15px 0;
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+.donate-board {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  background: #151515;
+
+  border-radius: 16px;
+
+  padding: 20px;
+
+  color: white;
+
+  border: 1px solid #2b2b2b;
+}
+
+.donate-header {
+  font-size: 22px;
+
+  font-weight: 700;
+
+  margin-bottom: 20px;
+}
+
+.donate-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.donate-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #1d1d1d;
+
+  transition: 0.2s;
+}
+
+.donate-item:hover {
+  background: #252525;
+}
+
+.rank {
+  min-width: 58px;
+
+  width: 58px;
+
+  height: 58px;
+
+  border-radius: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-weight: 700;
+
+  font-size: 18px;
+}
+
+.rank-1 {
+  background: linear-gradient(
+    135deg,
+    #ffd700,
+    #ffb700
+  );
+
+  color: black;
+}
+
+.rank-2 {
+  background: linear-gradient(
+    135deg,
+    #d9d9d9,
+    #bdbdbd
+  );
+
+  color: black;
+}
+
+.rank-3 {
+  background: linear-gradient(
+    135deg,
+    #cd7f32,
+    #b96a1f
+  );
+}
+
+.rank-4,
+.rank-5 {
+  background: #323232;
+}
+
+.donate-info {
+  flex: 1;
+  margin-left: 15px;
+  min-width: 0;
+}
+
+.nickname {
+  font-size: 16px;
+
+  font-weight: 700;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.message {
+  margin-top: 6px;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  width: 100%;
+}
+
+.message span {
+  display: inline-block;
+
+  font-size: 11px;
+
+  color: #a8a8a8;
+
+  line-height: 1.5;
+
+  will-change: transform;
+
+  animation: donate-scroll 12s linear infinite;
+}
+
+@keyframes donate-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.amount {
+  font-size: 18px;
+
+  font-weight: 700;
+
+  color: #00d26a;
+
+  white-space: nowrap;
+}
+
+.donate-actions {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.support-btn,
+.view-more-btn {
+  flex: 1;
+
+  height: 36.5px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+  margin-top:0!important;
+  transition: 0.2s;
+}
+
+.support-btn {
+  background: linear-gradient(
+    135deg,
+    #009ff5,
+    #ef4444
+  );
+}
+
+.view-more-btn {
+  background: #252525;
+
+  border: 1px solid #343434;
+}
+
+.support-btn:hover,
+.view-more-btn:hover {
+  opacity: 0.9;
+
+  transform: translateY(-1px);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .donate-actions {
+    gap: 8px;
+  }
+
+  .support-btn,
+  .view-more-btn {
+    height: 42px;
+
+    font-size: 13px;
+  }
+}
+/* SKELETON */
+.skeleton {
+  position: relative;
+
+  overflow: hidden;
+
+  background: #2a2a2a;
+}
+
+.skeleton::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: -150px;
+
+  width: 150px;
+
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}
+
+.skeleton-text {
+  height: 16px;
+
+  border-radius: 8px;
+}
+
+.donate-header.skeleton {
+  width: 220px;
+
+  height: 28px;
+
+  margin-bottom: 20px;
+
+  border-radius: 8px;
+}
+
+.nickname.skeleton {
+  width: 120px;
+
+  margin-bottom: 8px;
+}
+
+.message.skeleton {
+  width: 180px;
+}
+
+.message.short {
+  width: 140px;
+}
+
+.amount-skeleton {
+  width: 90px;
+}
+
+.view-more-btn.skeleton {
+  height: 46px;
+
+  border-radius: 12px;
+
+  margin-top: 20px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .donate-wrapper {
+    padding: 0 8px;
+  }
+
+  .donate-board {
+    padding: 14px;
+  }
+
+  .donate-header {
+    font-size: 18px;
+
+    margin-bottom: 16px;
+  }
+
+  .donate-item {
+    padding: 10px;
+
+    gap: 10px;
+  }
+
+  .rank {
+    min-width: 46px;
+
+    width: 46px;
+
+    height: 46px;
+
+    font-size: 14px;
+  }
+
+  .nickname {
+    font-size: 14px;
+  }
+
+  .message {
+    font-size: 11px;
+  }
+
+  .amount {
+    font-size: 14px;
+  }
+
+  .support-btn,
+  .view-more-btn {
+    height: 42px;
+
+    font-size: 13px;
+  }
+}

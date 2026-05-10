@@ -17,6 +17,7 @@ import China3dFilms from "../../component/HomeFilm/china3dFilm";
 import MovieRow from "../../component/MovieRow/index";
 import ComicHero from "../../component/Banner/mangaBanner";
 import AnnouncementBar from "../../component/Marquee/AnnouncementBar";
+import Donate from "../../component/Donate/index";
 import { Helmet } from "react-helmet-async";
 import "./style.scss";
 
@@ -79,6 +80,9 @@ function Home() {
               
               <div className="Home__music"> 
                 <GenreCarousel />
+              </div>
+              <div className="Home__music"> 
+                <Donate />
               </div>
               <div className="Home__music"> 
                 <HighRateFilm />

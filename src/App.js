@@ -30,7 +30,7 @@ import OverView from "./component/Overview/index";
 import EditSong from "./pages/EditSong/index";
 import ManageUsers from "./pages/ManageUsers/index";
 import AddFilms from "./component/AddFilms/index";
-
+import AddDonate from "./component/AddDonate/index";
 // Other pages
 import UsingApp from "./pages/using-app/index";
 import UsingAppIos from "./pages/using-app/ios";
@@ -51,6 +51,8 @@ import MangaReader from "./pages/Manga/mangaReader";
 import LoginPage from "./pages/Login/index";
 import RegisterPage from "./pages/Register/index";
 import ProfilePage from "./pages/ProfilePage/index";
+import Donates from "./pages/Donate/index";
+import Support from "./pages/Support/index";
 // UI
 import Squares from "./component/SquaresBackgound/index";
 
@@ -127,6 +129,8 @@ function App() {
                   <Route index element={<Home />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/donates" element={<Donates />} />
+                  <Route path="/ung-ho" element={<Support />} />
                   {/* <Route path="about" element={<About />} /> */}
                   <Route path="using-app" element={<UsingApp />} />
                   <Route path="using-app-ios" element={<UsingAppIos />} />
@@ -190,7 +194,7 @@ function App() {
                     {/* USERS */}
                     <Route path="users" element={<ManageUsers />} />
 
-
+                    <Route path="donate" element={<AddDonate />} />
                     <Route
                       path="songs/edit/:id"
                       element={<EditSong />}

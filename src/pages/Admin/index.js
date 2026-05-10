@@ -29,6 +29,10 @@ function Admin() {
       path: "/admin/visits",
       label: "Logs truy cập",
     },
+    {
+      path: "/admin/donate",
+      label: "Donate",
+    }
   ];
 
   return (

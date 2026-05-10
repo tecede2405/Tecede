@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { MdHistory, MdPlayCircleOutline } from "react-icons/md";
 import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
 export default function WatchHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,140 @@ export default function WatchHistory() {
 
     fetchHistory();
   }, [user]);
+
+  const deleteHistoryItem = async (id) => {
+  const confirm = await Swal.fire({
+    title: "Xóa lịch sử?",
+    text: "Phim này sẽ bị xóa khỏi lịch sử xem",
+    icon: "warning",
+
+    background: "#111827",
+    color: "#fff",
+
+    confirmButtonColor: "#dc3545",
+    cancelButtonColor: "#374151",
+
+    confirmButtonText: "Xóa",
+    cancelButtonText: "Hủy",
+
+    showCancelButton: true,
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_SERVER_API_URL}/history/${id}`,
+      {
+        method: "DELETE",
+
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error();
+    }
+
+    setHistory((prev) =>
+      prev.filter((item) => item.id !== id)
+    );
+
+    Swal.fire({
+      icon: "success",
+      title: "Đã xóa lịch sử",
+
+      toast: true,
+      position: "top-end",
+
+      timer: 2000,
+      showConfirmButton: false,
+
+      background: "#111827",
+      color: "#fff",
+    });
+  } catch (err) {
+    console.log(err);
+
+    Swal.fire({
+      icon: "error",
+      title: "Xóa thất bại",
+
+      background: "#111827",
+      color: "#fff",
+
+      confirmButtonColor: "#dc3545",
+    });
+  }
+};
+
+const deleteAllHistory = async () => {
+  const confirm = await Swal.fire({
+    title: "Xóa toàn bộ lịch sử?",
+    text: "Hành động này không thể hoàn tác",
+    icon: "warning",
+
+    background: "#111827",
+    color: "#fff",
+
+    confirmButtonColor: "#dc3545",
+    cancelButtonColor: "#374151",
+
+    confirmButtonText: "Xóa tất cả",
+    cancelButtonText: "Hủy",
+
+    showCancelButton: true,
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_SERVER_API_URL}/history`,
+      {
+        method: "DELETE",
+
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error();
+    }
+
+    setHistory([]);
+
+    Swal.fire({
+      icon: "success",
+      title: "Đã xóa toàn bộ lịch sử",
+
+      toast: true,
+      position: "top-end",
+
+      timer: 2000,
+      showConfirmButton: false,
+
+      background: "#111827",
+      color: "#fff",
+    });
+  } catch (err) {
+    console.log(err);
+
+    Swal.fire({
+      icon: "error",
+      title: "Xóa thất bại",
+
+      background: "#111827",
+      color: "#fff",
+
+      confirmButtonColor: "#dc3545",
+    });
+  }
+};
 
   if (!user?.token) {
     return (
@@ -113,10 +248,27 @@ return (
       />
     </Helmet>
       <div className="container py-4" style={{ minHeight: "80vh" }}>
-      <div className="d-flex align-items-center mb-4 border-bottom border-secondary pb-3">
-        <MdHistory className="text-danger me-2" size={30} />
-        <h3 className="text-light m-0 fw-bold">Lịch sử đã xem</h3>
+      <div className="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3 flex-wrap gap-3">
+      <div className="d-flex align-items-center">
+        <MdHistory
+          className="text-danger me-2"
+          size={30}
+        />
+
+        <h3 className="text-light m-0 fw-bold">
+          Lịch sử đã xem
+        </h3>
       </div>
+
+      {history.length > 0 && (
+        <button
+          className="btn btn-sm btn-outline-danger rounded-pill px-3"
+          onClick={deleteAllHistory}
+        >
+          Xóa tất cả
+        </button>
+      )}
+    </div>
 
       {history.length === 0 ? (
         <div className="text-center py-5" style={{ color: "#666" }}>
@@ -194,9 +346,31 @@ return (
                     </td>
 
                     <td className="text-end pe-4 py-3">
-                      <button className="btn btn-sm btn-outline-light rounded-pill px-3 shadow-sm" style={{ fontSize: "0.8rem", borderColor: "rgba(255,255,255,0.2)" }}>
-                        Xem tiếp
-                      </button>
+                      <div className="d-flex justify-content-end gap-2">
+                        <button
+                          className="btn btn-sm btn-outline-light rounded-pill px-3 shadow-sm"
+                          style={{
+                            fontSize: "0.8rem",
+                            borderColor: "rgba(255,255,255,0.2)",
+                          }}
+                        >
+                          Xem tiếp
+                        </button>
+
+                        <button
+                          className="btn btn-sm btn-outline-danger rounded-pill px-3"
+                          style={{
+                            fontSize: "0.8rem",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+
+                            deleteHistoryItem(item.id);
+                          }}
+                        >
+                          Xóa
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
