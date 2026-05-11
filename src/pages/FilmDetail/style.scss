@@ -250,11 +250,12 @@
     position: relative;
     padding: 100px 5% 50px;
     overflow: hidden;
-
+    background: #121212;
     .hero-bg {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       background-size: cover;
+      background-color: #121212;
       background-position: center;
       filter: blur(2px) brightness(0.4);
       transform: scale(1.1);
@@ -433,16 +434,24 @@
 .skeleton * {
   pointer-events: none;
 }
+.movie-detail-container.skeleton {
+  min-height: 100vh;
+  background: #121212;
+}
+.skeleton .episodes-section {
+  background: #121212;
+}
 
-.skeleton-bg {
+@mixin skeleton-loading {
   background: linear-gradient(
     90deg,
     #1a1a1a 25%,
     #2a2a2a 37%,
     #1a1a1a 63%
   );
+
   background-size: 400% 100%;
-  animation: shimmer 1.4s infinite;
+  animation: detailShimmer 1.4s infinite linear;
 }
 
 /* poster */
@@ -450,14 +459,14 @@
   width: 150px;
   height: 220px;
   border-radius: 12px;
-  @extend .skeleton-bg;
+  @include skeleton-loading;
 }
 
 /* text */
 .skeleton-text {
   border-radius: 6px;
   margin-bottom: 10px;
-  @extend .skeleton-bg;
+  @include skeleton-loading;
 }
 
 .skeleton-text.title {
@@ -489,7 +498,7 @@
   height: 22px;
   border-radius: 6px;
   flex: 0 0 auto; /* không stretch */
-  @extend .skeleton-bg;
+  @include skeleton-loading;
 }
 
 /* tạo độ random cho giống thật */
@@ -506,7 +515,7 @@
   height: 36px;
   border-radius: 999px;
   margin: 15px 0;
-  @extend .skeleton-bg;
+  @include skeleton-loading;
 }
 
 /* server */
@@ -514,18 +523,18 @@
   width: 120px;
   height: 28px;
   border-radius: 6px;
-  @extend .skeleton-bg;
+  @include skeleton-loading;
 }
 
 /* episode */
 .skeleton-episode {
   height: 40px;
   border-radius: 8px;
-  @extend .skeleton-bg;
+  @include skeleton-loading;
 }
 
 /* shimmer animation */
-@keyframes shimmer {
+@keyframes detailShimmer {
   0% {
     background-position: 100% 0;
   }

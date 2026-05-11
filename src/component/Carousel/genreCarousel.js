@@ -23,7 +23,7 @@ const moods = [
    {
     id: 3,
     title: "Phim Rạp",
-    desc: "Bình tĩnh nồ!",
+    desc: "Bình tĩnh ní!",
     path: "/detail/cinematic",
     color: "#6C5CE7"
   },

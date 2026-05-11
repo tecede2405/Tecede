@@ -9,7 +9,7 @@ function NewAnimes() {
 
   const { grouped, loading } = useMovies();
 
-  const filmData = grouped["anime-moi"] || [];
+  const filmData = (grouped["anime-moi"] || []).slice(0, 12);
 
   return (
     <>

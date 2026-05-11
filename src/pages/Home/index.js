@@ -6,7 +6,7 @@ import Film from '../../component/HomeFilm/film';
 import NewFilm from '../../component/HomeFilm/newfilm';
 import NewAnimes from '../../component/HomeFilm/newAnime';
 import SieuNhan from '../../component/HomeFilm/tokusatsu';
-import PopularFilm from '../../component/HeroCarousel/index';
+// import PopularFilm from '../../component/HeroCarousel/index';
 import HighRateFilm from '../../component/HomeFilm/highRate';
 import KoreaFilms from "../../component/HomeFilm/koreaFilm";
 import ChinaFilms from "../../component/HomeFilm/chinaFilm";
@@ -95,9 +95,9 @@ function Home() {
                 <ChinaFilms />
               </div>
               
-              <div className="Home__music"> 
+              {/* <div className="Home__music"> 
                 <PopularFilm />
-              </div>
+              </div> */}
               
               <div className="Home__music"> 
                 <China3dFilms />

@@ -9,7 +9,7 @@ function CinematicFilm() {
 
   const { grouped, loading } = useMovies();
 
-  const filmData = grouped["phim-chieu-rap"] || [];
+  const filmData = (grouped["phim-chieu-rap"] || []).slice(0, 12);
 
   return (
     <>

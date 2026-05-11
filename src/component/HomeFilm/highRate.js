@@ -8,7 +8,7 @@ function HighRateFilms() {
 
   const { grouped, loading } = useMovies();
 
-  const filmData = grouped["high-rate-film"] || [];
+  const filmData = (grouped["high-rate-film"] || []).slice(0, 12);
 
   function FilmSkeleton() {
     return (
@@ -57,18 +57,25 @@ function HighRateFilms() {
                   navigate(`/chi-tiet/${item.path}`);
                 }}
               >
-                <img
-                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
-                  alt={item.title}
-                  loading="lazy"
-                  className="film-card__img"
-                />
+                <div className="film-card__poster">
+                  <img
+                    src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
+                    alt={item.title}
+                    loading="lazy"
+                    className="film-card__img"
+                  />
 
-                <div className="film-card__overlay">
-                  <h6 className="film-card__title">{item.title}</h6>
-                  <p className="film-card__episode">
+                  <div className="film-card__episode">
                     {item.episode_current || "?"}
-                  </p>
+                  </div>
+
+                  <div className="film-card__lang">
+                    {item.lang || "Vietsub"}
+                  </div>
+                </div>
+
+                <div className="film-card__info">
+                  <h6 className="film-card__title">{item.title}</h6>
                 </div>
               </div>
             )}

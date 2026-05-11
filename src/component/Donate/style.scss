@@ -58,11 +58,11 @@
 }
 
 .rank {
-  min-width: 58px;
+  min-width: 46px;
 
-  width: 58px;
+  width: 46px;
 
-  height: 58px;
+  height: 46px;
 
   border-radius: 12px;
 
@@ -74,7 +74,7 @@
 
   font-weight: 700;
 
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .rank-1 {
@@ -112,12 +112,13 @@
 
 .donate-info {
   flex: 1;
+  max-height: 50px;
   margin-left: 15px;
   min-width: 0;
 }
 
 .nickname {
-  font-size: 16px;
+  font-size: 13px;
 
   font-weight: 700;
 
@@ -132,7 +133,7 @@
   margin-top: 6px;
 
   overflow: hidden;
-
+  padding: 2px!important;
   white-space: nowrap;
 
   width: 100%;
@@ -140,18 +141,14 @@
 
 .message span {
   display: inline-block;
-
-  font-size: 11px;
-
+  font-size: 10px;
   color: #a8a8a8;
-
   line-height: 1.5;
-
   will-change: transform;
-
+}
+.scroll-text {
   animation: donate-scroll 12s linear infinite;
 }
-
 @keyframes donate-scroll {
   0% {
     transform: translateX(0);
@@ -184,7 +181,7 @@
 .view-more-btn {
   flex: 1;
 
-  height: 36.5px;
+  height: 36.4px!important;
 
   border: none;
 
@@ -236,15 +233,15 @@
   }
 }
 /* SKELETON */
-.skeleton {
+.donate-skeleton {
   position: relative;
 
   overflow: hidden;
 
-  background: #2a2a2a;
+  background: #121212;
 }
 
-.skeleton::after {
+.donate-skeleton::after {
   content: "";
 
   position: absolute;
@@ -260,7 +257,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.08),
+    rgba(30, 26, 26, 0.492),
     transparent
   );
 
@@ -273,13 +270,13 @@
   }
 }
 
-.skeleton-text {
+.donate-skeleton-text {
   height: 16px;
 
   border-radius: 8px;
 }
 
-.donate-header.skeleton {
+.donate-header.donate-skeleton {
   width: 220px;
 
   height: 28px;
@@ -289,13 +286,13 @@
   border-radius: 8px;
 }
 
-.nickname.skeleton {
+.nickname.donate-skeleton {
   width: 120px;
 
   margin-bottom: 8px;
 }
 
-.message.skeleton {
+.message.donate-skeleton {
   width: 180px;
 }
 
@@ -307,7 +304,7 @@
   width: 90px;
 }
 
-.view-more-btn.skeleton {
+.view-more-btn.donate-skeleton {
   height: 46px;
 
   border-radius: 12px;

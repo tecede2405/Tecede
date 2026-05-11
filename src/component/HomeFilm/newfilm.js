@@ -8,7 +8,7 @@ function NewFilms() {
 
   const { grouped, loading } = useMovies();
 
-  const filmData = grouped["phim-moi"] || [];
+  const filmData = (grouped["phim-moi"] || []).slice(0, 12);
 
   function FilmSkeleton() {
     return (
@@ -50,13 +50,14 @@ function NewFilms() {
           <FilmCarousel
             items={filmData}
             renderItem={(item) => (
-              <div
-                className="film-card animate__animated animate__fadeIn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/chi-tiet/${item.path}`);
-                }}
-              >
+             <div
+              className="film-card animate__animated animate__fadeInLeft"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/chi-tiet/${item.path}`);
+              }}
+            >
+              <div className="film-card__poster">
                 <img
                   src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
                   alt={item.title}
@@ -64,13 +65,19 @@ function NewFilms() {
                   className="film-card__img"
                 />
 
-                <div className="film-card__overlay">
-                  <h6 className="film-card__title">{item.title}</h6>
-                  <p className="film-card__episode">
-                    {item.episode_current || "?"}
-                  </p>
+                <div className="film-card__episode">
+                  {item.episode_current || "?"}
+                </div>
+
+                <div className="film-card__lang">
+                  {item.lang || "Vietsub"}
                 </div>
               </div>
+
+              <div className="film-card__info">
+                <h6 className="film-card__title">{item.title}</h6>
+              </div>
+            </div>
             )}
           />
         )}

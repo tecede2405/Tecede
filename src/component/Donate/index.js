@@ -24,39 +24,39 @@ function DonateLeaderboard() {
   );
 
   if (loading) {
-    return (
-      <div className="donate-board">
-        <div className="donate-header skeleton skeleton-text" />
+  return (
+    <div className="donate-board">
+      <div className="donate-header donate-skeleton donate-skeleton-text" />
 
-        <div className="donate-list">
-          {[...Array(5)].map((_, index) => (
-            <div
-              className="donate-item"
-              key={index}
-            >
-              <div className="rank skeleton" />
+      <div className="donate-list">
+        {[...Array(5)].map((_, index) => (
+          <div
+            className="donate-item"
+            key={index}
+          >
+            <div className="rank donate-skeleton" />
 
-              <div className="donate-info">
-                <div className="nickname skeleton skeleton-text" />
+            <div className="donate-info">
+              <div className="nickname donate-skeleton donate-skeleton-text" />
 
-                <div className="message skeleton skeleton-text short" />
-              </div>
-
-              <div className="amount skeleton skeleton-text amount-skeleton" />
+              <div className="message donate-skeleton donate-skeleton-text short" />
             </div>
-          ))}
-        </div>
 
-        <div className="view-more-btn skeleton" />
+            <div className="amount donate-skeleton donate-skeleton-text amount-skeleton" />
+          </div>
+        ))}
       </div>
-    );
-  }
+
+      <div className="view-more-btn donate-skeleton" />
+    </div>
+  );
+}
 
   return (
     <div className="donate-wrapper">
       <div className="donate-board">
         <div className="donate-header">
-          Ủng Hộ trong {currentMonth}
+          #5 Donate trong {currentMonth}
         </div>
 
         <div className="donate-list">
@@ -76,7 +76,13 @@ function DonateLeaderboard() {
 
                 {item.message && (
                   <div className="message">
-                    <span>
+                    <span
+                      className={
+                        item.message.length > 35
+                          ? "scroll-text"
+                          : ""
+                      }
+                    >
                       “{item.message}”
                     </span>
                   </div>
@@ -95,7 +101,7 @@ function DonateLeaderboard() {
             className="support-btn"
             onClick={() => navigate("/ung-ho")}
           >
-            Ủng hộ
+            Donate
           </button>
 
           <button

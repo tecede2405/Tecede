@@ -57,11 +57,27 @@
 }
 .hero-card__detail{
     position: absolute;
-    bottom: 5px;
+    bottom: -4px;
     right: 10px;
     color: #fff;
 }
 
+.film-card__title2 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.film-card__episode2 {
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+}
 // GENRE CAROUSEL
 
 .genre-carousel {

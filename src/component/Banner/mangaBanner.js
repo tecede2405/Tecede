@@ -15,12 +15,12 @@ export default function ComicHero() {
       <div className="heroOverlay"></div>
 
       <div className="heroContent">
-        <h3>
-          Đọc Truyện Tranh Online <br />
+        <h4 style={{ fontSize: "18px", color: "#ffcc00" }}>
+          Đọc Truyện Tranh Online
           Miễn Phí & Nhanh Nhất
-        </h3>
+        </h4>
 
-        <p>
+        <p style={{ fontSize: "14px", marginTop: "20px", }}>
           Khám phá hàng nghìn bộ truyện tranh.
           Cập nhật chương mới nhanh chóng mỗi ngày.
         </p>

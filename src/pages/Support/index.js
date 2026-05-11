@@ -5,20 +5,20 @@ function SupportPage() {
     <div className="support-page">
       <div className="support-container">
         <h1 className="support-title">
-          Ủng Hộ Tecede
+          Donate
         </h1>
 
         <p className="support-description">
           Nếu bạn yêu thích Tecede, hãy ủng
           hộ một ly cà phê để giúp ad có chi phí duy trì
-          server nhé.
+          server nhé. Tự nguyện và tùy tâm nhé, không bắt buộc đâu. Cảm ơn bạn rất nhiều!
         </p>
 
         <p className="support-description">
         <span className="support-bank">
             STK: 7624052005 MB Bank
         </span>{" "}
-        hoặc quét mã bên dưới để ủng hộ.
+        hoặc quét mã bên dưới để donate.
         </p>
 
         <div className="support-image-wrapper">
@@ -30,7 +30,7 @@ function SupportPage() {
         </div>
 
         <div className="support-note">
-          Nội dung ủng hộ và biệt danh sẽ được hiển thị sau vài giờ trên bảng ủng hộ trong tháng. Cảm ơn bạn rất nhiều!
+          Nội dung chuyển khoản bao gồm biệt danh và nội dung donate sẽ được hiển thị sau vài giờ trên bảng donate trong tháng.
         </div>
       </div>
     </div>
