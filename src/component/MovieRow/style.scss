@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 /* ===============================
    CINEMA HERO ROW
 ================================= */
@@ -147,8 +148,33 @@
 
 .cinemaHeroCard__title {
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 900;
+
   margin-bottom: 12px;
+
+  /* gradient trắng bóng */
+  background: linear-gradient(
+    to bottom,
+    hsl(0, 0%, 100%) 0%,
+    #dde7ec 35%,
+    #0195ff 55%,
+    #0b95ff 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* viền đen */
+  -webkit-text-stroke: 1px #000000;
+
+  /* shadow cinematic */
+  text-shadow:
+    0 2px 0 #9febef,
+    0 4px 10px rgba(83, 187, 215, 0.7),
+    0 0 20px rgba(70, 131, 228, 0.268);
+
+  letter-spacing: 1px;
+  line-height: 1.1;
 }
 
 /* ===============================

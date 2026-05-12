@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import FilmCarousel from "../CoverflowCarousel/index";
 import { useMovies } from "../../context/MoviesContext";
+import { FaFilm } from "react-icons/fa";
 
 function ChinaFilms() {
   const navigate = useNavigate();
@@ -24,19 +25,23 @@ function ChinaFilms() {
 
   return (
     <>
-      <div className="mb-1">
+      <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
-          Series Trung Quốc
+        <FaFilm className="film-category__icon" />
+        <span>Series Trung Quốc</span>
+      </h2>
+        <div className="watch-more" onClick={() => navigate("/detail/china-film")}>
+          <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
           <GoChevronRight
-            onClick={() => navigate("/detail/china-film")}
             style={{
               cursor: "pointer",
               border: "1px solid #ddd",
+              color: "#fff",
               borderRadius: "50%",
               marginLeft: "7px",
             }}
           />
-        </h2>
+        </div>
       </div>
 
       <div className="container container-film mt-1 mb-1">

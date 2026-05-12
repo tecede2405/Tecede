@@ -2,7 +2,7 @@ import FilmCarousel from "../CoverflowCarousel/index";
 import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
-
+import { FaFilm } from "react-icons/fa";
 function HighRateFilms() {
   const navigate = useNavigate();
 
@@ -25,19 +25,23 @@ function HighRateFilms() {
 
   return (
     <>
-      <div className="mb-1">
+      <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
-          Phim Hot
+          <FaFilm className="film-category__icon" />
+          <span>Phim Hot</span>
+        </h2>
+        <div className="watch-more" onClick={() => navigate("/detail/high-rate-film")}>
+          <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
           <GoChevronRight
-            onClick={() => navigate("/detail/high-rate-film")}
             style={{
               cursor: "pointer",
               border: "1px solid #ddd",
+              color: "#fff",
               borderRadius: "50%",
               marginLeft: "7px",
             }}
           />
-        </h2>
+        </div>
       </div>
 
       <div className="container container-film mt-1 mb-1">

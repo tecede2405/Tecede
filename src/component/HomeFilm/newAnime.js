@@ -2,6 +2,7 @@ import FilmCarousel from "../Carousel/FilmCarousel";
 import { GoChevronRight } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { useMovies } from "../../context/MoviesContext";
+import { FaFilm } from "react-icons/fa";
 import "animate.css";
 
 function NewAnimes() {
@@ -13,19 +14,23 @@ function NewAnimes() {
 
   return (
     <>
-      <div className="mb-1">
+      <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
-          Anime Mới
+          <FaFilm className="film-category__icon" />
+          <span>Anime Mới</span>
+        </h2>
+        <div className="watch-more" onClick={() => navigate("/detail/new-anime")}>
+          <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
           <GoChevronRight
-            onClick={() => navigate("/detail/new-anime")}
             style={{
               cursor: "pointer",
               border: "1px solid #ddd",
+              color: "#fff",
               borderRadius: "50%",
               marginLeft: "7px",
             }}
           />
-        </h2>
+        </div>
       </div>
 
       <div className="container container-film mt-1 mb-1">

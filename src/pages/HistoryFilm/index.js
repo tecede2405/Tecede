@@ -345,12 +345,12 @@ return (
                       </div>
                     </td>
 
-                    <td className="text-end pe-4 py-3">
+                    <td className="text-end">
                       <div className="d-flex justify-content-end gap-2">
                         <button
                           className="btn btn-sm btn-outline-light rounded-pill px-3 shadow-sm"
                           style={{
-                            fontSize: "0.8rem",
+                            fontSize: "0.7rem",
                             borderColor: "rgba(255,255,255,0.2)",
                           }}
                         >
@@ -360,7 +360,7 @@ return (
                         <button
                           className="btn btn-sm btn-outline-danger rounded-pill px-3"
                           style={{
-                            fontSize: "0.8rem",
+                            fontSize: "0.7rem",
                           }}
                           onClick={(e) => {
                             e.stopPropagation();

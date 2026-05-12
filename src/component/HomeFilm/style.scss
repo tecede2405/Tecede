@@ -43,8 +43,37 @@
 
 }
 
-.film-category{
+.film-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
   font-size: 20px;
+  font-weight: 700;
+
+  background: linear-gradient(
+    90deg,
+    #67951d 0%,
+    #baed3a 30%,
+    #ff4ecd 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  width: fit-content;
+
+  &__icon {
+    color: #c084fc;
+    font-size: 18px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.5));
+  }
+}
+
+.watch-more{
+  margin-bottom: 14px;
+  margin-right: 30px;
 }
 .film-card {
   width: 100%;

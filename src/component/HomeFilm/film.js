@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
 import "animate.css/animate.min.css";
+import { FaFilm } from "react-icons/fa";
 import "./style.scss";
 
 function Film() {
@@ -27,19 +28,24 @@ function Film() {
 
   return (
     <>
-      <div className="mb-1">
+      <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
-          Phim Nổi Bật
+          <FaFilm className="film-category__icon" />
+          <span>Phim Nổi Bật</span>
+        </h2>
+      
+        <div className="watch-more" onClick={() => navigate("/detail/films")}>
+          <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
           <GoChevronRight
-            onClick={() => navigate("/detail/films")}
             style={{
               cursor: "pointer",
               border: "1px solid #ddd",
+              color: "#fff",
               borderRadius: "50%",
               marginLeft: "7px",
             }}
           />
-        </h2>
+        </div>
       </div>
 
       <div className="container container-film mt-1 mb-1">
@@ -53,7 +59,7 @@ function Film() {
             items={filmData}
             renderItem={(film) => (
               <div
-              className="film-card animate__animated animate__fadeInLeft"
+              className="film-card"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/chi-tiet/${film.path}`);

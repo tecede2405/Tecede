@@ -2,7 +2,7 @@ import FilmCarousel from "../CoverflowCarousel/index";
 import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
-
+import { FaFilm } from "react-icons/fa";
 function China3dFilms() {
   const navigate = useNavigate();
 
@@ -25,19 +25,23 @@ function China3dFilms() {
 
   return (
     <>
-      <div className="mb-1">
+      <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
-          Hoạt Hình 3D Trung Quốc
+          <FaFilm className="film-category__icon" />
+          <span>Hoạt Hình 3D Trung Quốc</span>
+        </h2>
+        <div className="watch-more" onClick={() => navigate("/detail/china3d-film")}>
+          <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
           <GoChevronRight
-            onClick={() => navigate("/detail/china3d-film")}
             style={{
               cursor: "pointer",
               border: "1px solid #ddd",
+              color: "#fff",
               borderRadius: "50%",
               marginLeft: "7px",
             }}
           />
-        </h2>
+        </div>
       </div>
 
       <div className="container container-film mt-1 mb-1">
@@ -51,7 +55,7 @@ function China3dFilms() {
             items={filmData}
             renderItem={(item) => (
               <div
-              className="film-card animate__animated animate__fadeInLeft"
+              className="film-card"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/chi-tiet/${item.path}`);
