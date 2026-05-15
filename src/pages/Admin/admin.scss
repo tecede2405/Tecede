@@ -7,6 +7,10 @@
 
 .admin-topbar{
   margin-bottom: 10px!important;
+  position: sticky;
+  top: 70px;
+  background: #142a44d0!important;
+  z-index: 10;
 }
 .nav-item{
     text-decoration: none;
@@ -639,13 +643,20 @@
     color: #93c5fd;
   }
 }
-
+@media (max-width: 1000px){
+   .admin-topbar{
+    position: static;
+    top: 0;
+  }
+}
 
 @media (max-width: 640px) {
   .admin-layout {
     padding: 14px;
     margin: 0;
   }
+
+ 
 
   .admin-topbar {
     padding: 18px;

@@ -434,7 +434,10 @@
 /* =========================
    SKELETON DETAIL PAGE
 ========================= */
-
+.dark-swal-popup {
+  border: 1px solid #333;
+  border-radius: 16px;
+}
 .skeleton * {
   pointer-events: none;
 }

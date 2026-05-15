@@ -53,6 +53,7 @@ import RegisterPage from "./pages/Register/index";
 import ProfilePage from "./pages/ProfilePage/index";
 import Donates from "./pages/Donate/index";
 import Support from "./pages/Support/index";
+import TemporaryClosed404 from "./pages/Error/index";
 // UI
 import Squares from "./component/SquaresBackgound/index";
 
@@ -158,6 +159,7 @@ function App() {
                   <Route path="music/nhac-lofi" element={<NhacLofi />} />
                   <Route path="/404" element={<NotFound />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/404closed" element={<TemporaryClosed404 />} />
                   <Route
                     path="music/nhactre-remix"
                     element={<NhacTreRemix />}

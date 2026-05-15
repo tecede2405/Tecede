@@ -5,6 +5,7 @@ import { GoChevronLeft } from "react-icons/go";
 import { MdOutlineStorage } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import {VerifiedBadge} from "../../component/VerifiedBadge/index";
+import Swal from "sweetalert2";
 import "./style.scss";
 
 export default function FilmDetail() {
@@ -201,12 +202,38 @@ useEffect(() => {
   const submitComment = async (parentId = null) => {
   const content = parentId ? replyInput : commentInput;
 
+ if (!content.trim()) return;
+
   if (!content.trim()) return;
 
-  if (!user?.token) {
-    alert("Bạn cần đăng nhập");
-    return;
-  }
+if (!user?.token) {
+  Swal.fire({
+    icon: "warning",
+    title: "Chưa đăng nhập",
+    text: "Bạn cần đăng nhập để bình luận",
+    background: "#111",
+    color: "#fff",
+    showCancelButton: true,
+    confirmButtonText: "Đăng nhập",
+    cancelButtonText: "Đóng",
+    confirmButtonColor: "#e50914",
+    cancelButtonColor: "#333",
+    customClass: {
+      popup: "dark-swal-popup",
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      navigate("/login");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
+    }
+  });
+
+  return;
+}
 
   try {
     const res = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/comments`, {
@@ -521,7 +548,7 @@ useEffect(() => {
         <div>
           {comments.map((c) => (
             <div key={c.id} style={{ background: "#1a1a1a", padding: 12, borderRadius: 6, marginBottom: 12, border: "1px solid #333" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 {c.avatar ? (
                   <img
                     src={c.avatar}
@@ -563,71 +590,243 @@ useEffect(() => {
                   </b>
 
                   {c.display_name === "Tecede" && <VerifiedBadge />}
+                  <i style={{ fontSize: 11, color: "#999" }}>{c.created_at}</i>
                 </div>
               </div>
               <p style={{ margin: "6px 0", color: "#ccc" }}>{c.content}</p>
-              <button onClick={() => setReplyBox(c.id)} style={{ fontSize: 12, background: "#333", color: "white", border: "none", padding: "4px 10px", borderRadius: 4, cursor: "pointer" }}>Trả lời</button>
+              <button
+                 onClick={() => {
+                  if (replyBox === c.id) {
+                    setReplyBox(null);
+                    setReplyInput("");
+                  } else {
+                    setReplyBox(c.id);
+                    setReplyInput(`@${c.display_name || "User"} `);
+                  }
+                }}
+                style={{
+                  fontSize: 12,
+                  background: "#333",
+                  color: "white",
+                  border: "none",
+                  padding: "4px 10px",
+                  borderRadius: 4,
+                  cursor: "pointer"
+                }}
+              >
+                Trả lời
+              </button>
 
-              {replyBox === c.id && (
-                <div style={{ marginTop: 10 }}>
-                  <textarea value={replyInput} onChange={(e) => setReplyInput(e.target.value)} placeholder="Viết trả lời..." style={{ width: "100%", padding: 8, background: "#111", color: "white", border: "1px solid #333", borderRadius: 4 }} />
-                  <button onClick={() => submitComment(c.id)} style={{ marginTop: 5, padding: "5px 12px", background: "#e50914", color: "white", border: "none", borderRadius: 4 }}>Gửi</button>
+              {replyBox === c.id  && (
+                <div
+                  style={{
+                    marginTop: 10,
+                    marginLeft: 10,
+                  }}
+                >
+                  <textarea
+                    value={replyInput}
+                    onChange={(e) => setReplyInput(e.target.value)}
+                    placeholder="Viết trả lời..."
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      background: "#111",
+                      color: "white",
+                      border: "1px solid #333",
+                      borderRadius: 4
+                    }}
+                  />
+
+                  <button
+                    onClick={() => submitComment(c.id)}
+                    style={{
+                      marginTop: 5,
+                      padding: "5px 12px",
+                      background: "#e50914",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 4
+                    }}
+                  >
+                    Gửi
+                  </button>
                 </div>
               )}
 
               {c.replies?.length > 0 && (
-                <div style={{ marginLeft: 20, marginTop: 10 }}>
-                  {c.replies.map((r) => (
-                    <div key={r.id} style={{ background: "#111", padding: 10, borderRadius: 5, marginBottom: 8, border: "1px solid #222" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        {r.avatar ? (
-                          <img
-                            src={r.avatar}
-                            alt="avatar"
-                            loading="lazy"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "/default-avatar.png";
-                            }}
-                            style={{
-                              width: 28,
-                              height: 28,
-                              borderRadius: "50%",
-                              objectFit: "cover",
-                            }}
-                          />
-                        ) : (
-                          <div
-                            style={{
-                              width: 28,
-                              height: 28,
-                              borderRadius: "50%",
-                              background: "#444",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontWeight: "bold",
-                              color: "white",
-                              fontSize: 12
-                            }}
-                          >
-                            {getAvatarLetter(r.display_name)}
-                          </div>
-                        )}
+  <div style={{ marginLeft: 20, marginTop: 10 }}>
+    {c.replies.map((r) => (
+      <div
+        key={r.id}
+        style={{
+          background: "#111",
+          padding: 10,
+          borderRadius: 5,
+          marginBottom: 8,
+          border: "1px solid #222"
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8
+          }}
+        >
+          {r.avatar ? (
+            <img
+              src={r.avatar}
+              alt="avatar"
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/default-avatar.png";
+              }}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: "#444",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                color: "white",
+                fontSize: 12
+              }}
+            >
+              {getAvatarLetter(r.display_name)}
+            </div>
+          )}
 
-                  
-                          <b style={{ fontSize: 13, display: "flex", alignItems: "center" }}>
-                            {r.display_name || "User"}
-                            {r.display_name === "Tecede" && <VerifiedBadge />}
-                          </b>
+          <b
+            style={{
+              fontSize: 13,
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            {r.display_name || "User"}
 
-                         
-                      </div>
-                      <p style={{ margin: "4px 0", fontSize: 14 }}>{r.content}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
+            {r.display_name === "Tecede" && (
+              <VerifiedBadge />
+            )}
+          </b>
+
+          <i
+            style={{
+              fontSize: 10,
+              color: "#999"
+            }}
+          >
+            {r.created_at}
+          </i>
+        </div>
+
+        <p
+          style={{
+            margin: "4px 0",
+            fontSize: 14,
+            color: "#ddd",
+            lineHeight: 1.5
+          }}
+        >
+          {r.content.split(/(@\w+)/g).map((part, index) => {
+            if (part.startsWith("@")) {
+              return (
+                <span
+                  key={index}
+                  style={{
+                    color: "#4da6ff",
+                    fontWeight: 600
+                  }}
+                >
+                  {part}
+                </span>
+              );
+            }
+
+            return part;
+          })}
+        </p>
+
+        <button
+          onClick={() => {
+            if (replyBox === r.id) {
+              setReplyBox(null);
+              setReplyInput("");
+            } else {
+              setReplyBox(r.id);
+              setReplyInput(`@${r.display_name || "User"} `);
+            }
+          }}
+          style={{
+            marginTop: 4,
+            fontSize: 11,
+            background: "#2a2a2a",
+            color: "#ddd",
+            border: "1px solid #333",
+            padding: "3px 10px",
+            borderRadius: 999,
+            cursor: "pointer",
+          }}
+        >
+          Trả lời
+        </button>
+
+        {replyBox === r.id && (
+          <div
+            style={{
+              marginTop: 10
+            }}
+          >
+            <textarea
+              value={replyInput}
+              onChange={(e) =>
+                setReplyInput(e.target.value)
+              }
+              placeholder={`Trả lời @${
+                r.display_name || "User"
+              }...`}
+              style={{
+                width: "100%",
+                padding: 8,
+                background: "#111",
+                color: "white",
+                border: "1px solid #333",
+                borderRadius: 4
+              }}
+            />
+
+            <button
+              onClick={() => submitComment(c.id)}
+              style={{
+                marginTop: 5,
+                padding: "5px 12px",
+                background: "#e50914",
+                color: "white",
+                border: "none",
+                borderRadius: 4
+              }}
+            >
+              Gửi
+            </button>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+)}
             </div>
           ))}
         </div>

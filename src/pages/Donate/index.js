@@ -77,7 +77,11 @@ function DonatePage() {
               </div>
 
               <div className="message">
-                <span>
+                <span className={
+                        item.message.length > 35
+                          ? "scroll-text"
+                          : ""
+                      }>
                   {item.message ||
                     "Không có nội dung"}
                 </span>

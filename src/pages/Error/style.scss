@@ -1,0 +1,158 @@
+.tc404-wrapper {
+  width: 100%;
+  height: 100vh;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/VN-vi-20260105-TRIFECTA-perspective_ec5c484f-840e-4d19-9f35-b9e6a0eef2c7_medium.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  font-family: sans-serif;
+}
+
+.tc404-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(5px);
+}
+
+.tc404-content {
+  position: relative;
+  z-index: 2;
+
+  width: 90%;
+  max-width: 800px;
+
+  text-align: center;
+  color: #fff;
+
+  padding: 20px;
+}
+
+.tc404-title {
+  font-size: 130px;
+  font-weight: 800;
+
+  color: #e50914;
+
+  margin-bottom: 10px;
+
+  text-shadow: 0 0 25px rgba(229, 9, 20, 0.7);
+}
+
+.tc404-desc {
+  font-size: 24px;
+  line-height: 1.7;
+
+  margin-bottom: 45px;
+}
+
+.tc404-highlight {
+  color: #e50914;
+  font-weight: 700;
+
+  text-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
+}
+
+.tc404-home-btn {
+  position: relative;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  padding: 16px 42px;
+
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition: transform 0.3s ease;
+}
+
+.tc404-home-btn span {
+  position: relative;
+  z-index: 3;
+
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tc404-home-btn::before {
+  content: "";
+
+  position: absolute;
+  inset: -3px;
+
+  border-radius: 999px;
+
+  background: conic-gradient(
+    from 0deg,
+    #ff0000,
+    #ff7b00,
+    #ffee00,
+    #00ff95,
+    #00c3ff,
+    #003cff,
+    #ae00ff,
+    #ff008c,
+    #ff0000
+  );
+
+  animation: tc404RotateBorder 2s linear infinite;
+}
+
+.tc404-home-btn::after {
+  content: "";
+
+  position: absolute;
+  inset: 3px;
+
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.88);
+
+  z-index: 1;
+}
+
+.tc404-home-btn:hover {
+  transform: scale(1.05);
+}
+
+@keyframes tc404RotateBorder {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .tc404-title {
+    font-size: 85px;
+  }
+
+  .tc404-desc {
+    font-size: 18px;
+  }
+
+  .tc404-home-btn {
+    padding: 14px 30px;
+  }
+
+  .tc404-home-btn span {
+    font-size: 16px;
+  }
+}

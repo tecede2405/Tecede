@@ -129,7 +129,9 @@ export default function LoginPage() {
             <label>Mật khẩu</label>
           </div>
 
-          <button type="submit">Đăng nhập</button>
+          <button type="submit" className="login-submit-btn">
+            <span>Đăng nhập</span>
+          </button>
         </form>
 
         <p className="login-register">

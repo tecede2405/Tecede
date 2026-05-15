@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { MdHistory, MdPlayCircleOutline } from "react-icons/md";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
+import "./style.scss";
 export default function WatchHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -174,54 +175,45 @@ const deleteAllHistory = async () => {
   }
 };
 
-  if (!user?.token) {
-    return (
-      <div className="container py-5">
-        <div 
-          className="mx-auto text-center p-5 shadow-lg" 
-          style={{
-            maxWidth: "600px",
-            background: "#121212",
-            backdropFilter: "blur(15px)",
-            borderRadius: "24px",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
-            marginTop: "50px"
-          }}
-        >
-          <div className="mb-4">
-            <div 
-              className="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-circle mb-3"
-              style={{ width: "90px", height: "90px" }}
-            >
-              <MdHistory size={50} />
-            </div>
+if (!user?.token) {
+  return (
+    <div className="wh404-wrapper">
+      <div className="wh404-overlay"></div>
+
+      <div className="wh404-content">
+        <div className="wh404-heading">
+          <div className="wh404-icon">
+            <MdHistory size={40} />
           </div>
-          
-          <h4 className="text-light fw-bold mb-3">Lịch Sử Xem</h4>
-          <p className="text-secondary mb-4 mx-auto" style={{ maxWidth: "420px", lineHeight: "1.6" }}>
-            Bạn chưa đăng nhập. Hãy đăng nhập để lưu lại lịch sử xem nha.
-          </p>
-          
-          <div className="d-grid gap-3 d-sm-flex justify-content-sm-center">
-            <button
-              className="btn btn-danger btn-lg shadow-sm"
-              style={{ borderRadius: "50px", fontSize : "1rem" }}
-              onClick={() => navigate("/login")}
-            >
-              Đăng nhập ngay
-            </button>
-            <button
-              className="btn btn-outline-light btn-lg px-4"
-              style={{ borderRadius: "50px", fontSize : "1rem" }}
-              onClick={() => navigate("/")}
-            >
-              Về Trang chủ
-            </button>
-          </div>
+
+          <h2 className="wh404-title">
+            Lịch sử xem
+          </h2>
+        </div>
+
+        <p className="wh404-desc">
+          Bạn chưa đăng nhập. Hãy đăng nhập để lưu lại lịch sử xem phim nhé.
+        </p>
+
+        <div className="wh404-btn-group">
+          <button
+            className="wh404-action-btn wh404-login-btn"
+            onClick={() => navigate("/login")}
+          >
+            <span>Đăng nhập ngay</span>
+          </button>
+
+          <button
+            className="wh404-action-btn"
+            onClick={() => navigate("/")}
+          >
+            <span>Về trang chủ</span>
+          </button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (loading) return (
     <div className="container py-5 text-center text-light">
