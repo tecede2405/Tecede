@@ -1,7 +1,7 @@
 
 const songs = [
    {
-      title: 'Em Muốn Ta Là Gì',
+      title: 'Em Muốn Ta Là Gì ',
       artist: 'Thanh Hưng',
       image: 'https://i.ytimg.com/vi/IGNwV4RJNeo/maxresdefault.jpg',
       file: 'https://res.cloudinary.com/dr9sdtbzg/video/upload/v1750790571/Em_Mu%E1%BB%91n_Ta_L%C3%A0_G%C3%AC_-_Thanh_H%C6%B0ng_Official_MV_mbzhhv.mp3',
