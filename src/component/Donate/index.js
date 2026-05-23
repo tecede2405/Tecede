@@ -7,9 +7,24 @@ function DonateLeaderboard() {
 
   const { donates, loading } = useDonates();
 
-  const topDonates = [...donates]
-    .sort((a, b) => b.amount - a.amount)
-    .slice(0, 5);
+  const now = new Date();
+
+  const currentMonthDonates = donates.filter((item) => {
+    if (!item.created_at) return false;
+
+    const donateDate = new Date(
+      item.created_at.replace(" ", "T")
+    );
+
+    return (
+      donateDate.getMonth() === now.getMonth() &&
+      donateDate.getFullYear() === now.getFullYear()
+    );
+  });
+
+  const topDonates = [...currentMonthDonates]
+  .sort((a, b) => b.amount - a.amount)
+  .slice(0, 5);
 
   const formatMoney = (money) => {
     return Number(money).toLocaleString("vi-VN") + "đ";
@@ -60,40 +75,46 @@ function DonateLeaderboard() {
         </div>
 
         <div className="donate-list">
-          {topDonates.map((item, index) => (
-            <div
-              className="donate-item"
-              key={item.id}
-            >
-              <div className={`rank rank-${index + 1}`}>
-                #{index + 1}
-              </div>
-
-              <div className="donate-info">
-                <div className="nickname">
-                  {item.nickname}
+          {topDonates.length === 0 ? (
+            <div className="empty-donate">
+              Chưa có ai donate trong tháng này
+            </div>
+          ) : (
+            topDonates.map((item, index) => (
+              <div
+                className="donate-item"
+                key={item.id}
+              >
+                <div className={`rank rank-${index + 1}`}>
+                  #{index + 1}
                 </div>
 
-                {item.message && (
-                  <div className="message">
-                    <span
-                      className={
-                        item.message.length > 35
-                          ? "scroll-text"
-                          : ""
-                      }
-                    >
-                      “{item.message}”
-                    </span>
+                <div className="donate-info">
+                  <div className="nickname">
+                    {item.nickname}
                   </div>
-                )}
-              </div>
 
-              <div className="amount">
-                {formatMoney(item.amount)}
+                  {item.message && (
+                    <div className="message">
+                      <span
+                        className={
+                          item.message?.length > 35
+                            ? "scroll-text"
+                            : ""
+                        }
+                      >
+                        “{item.message}”
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="amount">
+                  {formatMoney(item.amount)}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="donate-actions">
@@ -101,7 +122,7 @@ function DonateLeaderboard() {
             className="support-btn"
             onClick={() => navigate("/ung-ho")}
           >
-            Donate
+            Donate ở đây
           </button>
 
           <button

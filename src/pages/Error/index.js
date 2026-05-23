@@ -15,7 +15,7 @@ export default function TemporaryClosed404() {
           Xin lỗi, trang nhạc này tạm thời bị đóng trong{" "}
           
           <span className="tc404-highlight">
-            18 ngày
+            21 ngày
           </span>
 
           {" "}để bảo trì kể từ{" "}

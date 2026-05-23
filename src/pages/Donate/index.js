@@ -4,6 +4,20 @@ import { useDonates } from "../../context/DonateContext";
 function DonatePage() {
   const { donates, loading } = useDonates();
 
+  const now = new Date();
+
+  const currentMonthDonates = donates.filter((item) => {
+    if (!item.created_at) return false;
+
+    const donateDate = new Date(
+      item.created_at.replace(" ", "T")
+    );
+
+    return (
+      donateDate.getMonth() === now.getMonth() &&
+      donateDate.getFullYear() === now.getFullYear()
+    );
+  });
   const formatMoney = (money) => {
     return (
       Number(money).toLocaleString("vi-VN") +
@@ -56,7 +70,12 @@ function DonatePage() {
       </div>
 
       <div className="donate-page-list">
-        {donates.map((item, index) => (
+        {currentMonthDonates.length === 0 ? (
+          <div className="empty-donate">
+            Chưa có ai donate trong tháng này
+          </div>
+        ) : (
+          currentMonthDonates.map((item, index) => (
           <div
             className="donate-row"
             key={item.id}
@@ -78,7 +97,7 @@ function DonatePage() {
 
               <div className="message">
                 <span className={
-                        item.message.length > 35
+                        item.message?.length > 35
                           ? "scroll-text"
                           : ""
                       }>
@@ -92,7 +111,8 @@ function DonatePage() {
               {formatMoney(item.amount)}
             </div>
           </div>
-        ))}
+        ))
+      )}
       </div>
     </div>
   );

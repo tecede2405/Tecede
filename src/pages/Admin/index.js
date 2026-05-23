@@ -26,10 +26,6 @@ function Admin() {
       label: "Quản lý bài hát",
     },
     {
-      path: "/admin/visits",
-      label: "Logs truy cập",
-    },
-    {
       path: "/admin/donate",
       label: "Donate",
     }

@@ -61,8 +61,7 @@ import Squares from "./component/SquaresBackgound/index";
 import socket from "./utils/socket";
 import { getVisitorId } from "./utils/visitor";
 import { subscribeUser } from "./utils/pushNotification";
-import { trackVisit } from "./utils/trackVisitor";
-import VisitLogs from "./pages/Admin/VisitLogs";
+
 
 
 function App() {
@@ -79,18 +78,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  /* ================= TRACK VISIT ================= */
- useEffect(() => {
-  // Ghi log ngay khi load trang
-  trackVisit(location.pathname);
 
-  // Ghi log định kỳ mỗi 30 giây
-  const interval = setInterval(() => {
-    trackVisit(location.pathname);
-  }, 30000);
-
-  return () => clearInterval(interval);
-}, [location.pathname]);
 
   /* ================= SOCKET ONLINE TRACK ================= */
   useEffect(() => {
@@ -191,7 +179,6 @@ function App() {
 
                     <Route path="manage" element={<ManageSongs />} />
 
-                    <Route path="visits" element={<VisitLogs />} />
 
                     {/* USERS */}
                     <Route path="users" element={<ManageUsers />} />

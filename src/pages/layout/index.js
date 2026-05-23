@@ -120,6 +120,7 @@ function Layout() {
                               height: 28,
                               borderRadius: "50%",
                               objectFit: "cover",
+                              border: "1px solid #333",
                             }}
                           />
                         ) : (
@@ -146,157 +147,96 @@ function Layout() {
                     </span>
 
                     {showUserMenu && (
-                      <>
-                        {/* overlay click ngoài */}
-                        <div
+                    <>
+                      <div
+                        className="user-menu-overlay"
+                        onClick={() => setShowUserMenu(false)}
+                      />
+
+                      <div className="user-menu-modal">
+                        {/* close */}
+                        <button
+                          className="close-btn"
                           onClick={() => setShowUserMenu(false)}
-                          style={{
-                            position: "fixed",
-                            inset: 0,
-                            zIndex: 999,
-                          }}
-                        />
-
-                        {/* modal */}
-                        <div
-                          style={{
-                            position: "absolute",
-                            right: 20,
-                            top: "100%",
-                            width: 250,
-                            background: "#1c1c1c",
-                            borderRadius: 10,
-                            padding: 15,
-                            zIndex: 1000,
-                            boxShadow: "0 5px 20px rgba(0,0,0,0.5)",
-                            border: "1px solid #333",
-                          }}
                         >
-                         
-                          <div style={{ textAlign: "right" }}>
-                            <span
-                              onClick={() => setShowUserMenu(false)}
-                              style={{
-                                cursor: "pointer",
-                                color: "#aaa",
-                                fontSize: 14,
-                              }}
-                            >
-                              ✕
-                            </span>
-                          </div>
+                          <FaTimes />
+                        </button>
 
-                         
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 10,
-                              marginBottom: 15,
-                            }}
-                          >
-                            {user.avatar ? (
-                                <img
-                                  src={user.avatar}
-                                  alt="avatar"
-                                  style={{
-                                    width: 40,
-                                    height: 40,
-                                    borderRadius: "50%",
-                                    objectFit: "cover",
-                                  }}
-                                />
-                              ) : (
-                                <div
-                                  style={{
-                                    width: 40,
-                                    height: 40,
-                                    borderRadius: "50%",
-                                    background: "#e50914",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    fontWeight: "bold",
-                                    color: "white",
-                                    fontSize: 12,
-                                  }}
-                                >
-                                  {getAvatarLetter(user.display_name)}
-                                </div>
-                              )}
-
-                            <div style={{ color: "#fff", fontWeight: 500 }}>
-                              {user.display_name}
+                        {/* profile */}
+                        <div className="user-profile">
+                          {user.avatar ? (
+                            <img
+                              src={user.avatar}
+                              alt="avatar"
+                              className="user-avatar"
+                            />
+                          ) : (
+                            <div className="avatar-fallback">
+                              {getAvatarLetter(user.display_name)}
                             </div>
-                          </div>
-                          
+                          )}
 
-                          {/* extra options */}
-                          <div style={{ marginBottom: 10 }}>
-                            <button
-                              onClick={() => navigate("/history")}
-                              style={{
-                                width: "100%",
-                                padding: "8px",
-                                background: "#333",
-                                color: "white",
-                                border: "none",
-                                borderRadius: 6,
-                                cursor: "pointer",
-                                marginBottom: 8,
-                              }}
-                            >
-                              Lịch sử xem
-                            </button>
+                          <div className="user-profile-info">
+                            <div className="user-name">
+                              {user.display_name}
+                              {user.display_name === "Tecede" && (
+                                <VerifiedBadge />
+                              )}
+                            </div>
+
                           </div>
-                              <div style={{ marginBottom: 10 }}>
-                            <button
-                              onClick={() => navigate("/profile")}
-                              style={{
-                                width: "100%",
-                                padding: "8px",
-                                background: "#333",
-                                color: "white",
-                                border: "none",
-                                borderRadius: 6,
-                                cursor: "pointer",
-                                marginBottom: 8,
-                              }}
-                            >
-                              Sửa thông tin
-                            </button>
-                          </div>
-                          {/* logout */}
+                        </div>
+
+                        {/* menu */}
+                        <div className="user-menu-actions">
+                           {user.role === "admin" && (
+                              <button
+                                className="menu-action-btn admin-btn"
+                                onClick={() => navigate("/admin")}
+                              >
+                                <FaBars />
+                                <span>Trang quản trị</span>
+                              </button>
+                            )}
                           <button
-                            onClick={() => {
-                            logout();
-                            setShowUserMenu(false);
+                            className="menu-action-btn"
+                            onClick={() => navigate("/history")}
+                          >
+                            <FaClockRotateLeft />
+                            <span>Lịch sử xem</span>
+                          </button>
 
-                            DarkSwal.fire({
-                            icon: "success",
-                              title: "Đăng xuất thành công",
-                              text: "Hẹn gặp lại bạn nhé!",
-                              timer: 1500,
-                              showConfirmButton: false,
-                          }).then(() => {
-                              navigate("/");
-                            });
-                          }}
-                            style={{
-                              width: "100%",
-                              padding: "8px",
-                              background: "#e50914",
-                              color: "white",
-                              border: "none",
-                              borderRadius: 6,
-                              cursor: "pointer",
+                          <button
+                            className="menu-action-btn"
+                            onClick={() => navigate("/profile")}
+                          >
+                            <MdOutlineAccountCircle />
+                            <span>Sửa thông tin</span>
+                          </button>
+
+                          <button
+                            className="logout-btn"
+                            onClick={() => {
+                              logout();
+                              setShowUserMenu(false);
+
+                              DarkSwal.fire({
+                                icon: "success",
+                                title: "Đăng xuất thành công",
+                                text: "Hẹn gặp lại bạn nhé!",
+                                timer: 1500,
+                                showConfirmButton: false,
+                              }).then(() => {
+                                navigate("/");
+                              });
                             }}
                           >
                             Đăng xuất
                           </button>
                         </div>
-                      </>
-                    )}
+                      </div>
+                    </>
+                  )}
                   </>
                 ) : (
                 <NavLink to="/login" className="menu__page">

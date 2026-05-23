@@ -502,6 +502,22 @@
 
 @media (max-width: 480px) {
 
+  .cinemaHeroCard__title {
+    background: none;
+
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+
+    /* bỏ viền */
+    -webkit-text-stroke: 0;
+
+    /* shadow đen */
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.9),
+      0 4px 10px rgba(0, 0, 0, 0.7),
+      0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
   .cinemaHeroCard__poster img {
     width: 120px;
     height: 170px;
