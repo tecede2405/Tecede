@@ -90,16 +90,26 @@ fetch(
   }, [location.pathname]);
 
   /* ===== SOCKET ===== */
-  useEffect(() => {
-    socket.on("online:list", (users) => {
-      setOnlineUsers(users);
-      setOnlineCount(users.length);
-    });
+useEffect(() => {
+  socket.connect();
 
-    return () => {
-      socket.off("online:list");
-    };
-  }, []);
+  const visitorId = "admin-dashboard";
+
+  socket.emit("user:online", {
+    visitorId,
+    page: "/admin",
+  });
+
+  socket.on("online:list", (users) => {
+    setOnlineUsers(users);
+    setOnlineCount(users.length);
+  });
+
+  return () => {
+    socket.off("online:list");
+    socket.disconnect();
+  };
+}, []);
 
   const totalSongs = Object.values(counts).reduce(
     (s, v) => s + v,

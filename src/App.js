@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Layout from "./pages/layout";
 import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/index";
 // import About from "./pages/About/index";
 import Admin from "./pages/Admin/index";
@@ -58,15 +58,12 @@ import TemporaryClosed404 from "./pages/Error/index";
 import Squares from "./component/SquaresBackgound/index";
 
 // Utils
-import socket from "./utils/socket";
-import { getVisitorId } from "./utils/visitor";
 import { subscribeUser } from "./utils/pushNotification";
 
 
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
 
   /* ================= LOADING + PUSH ================= */
   useEffect(() => {
@@ -79,16 +76,7 @@ function App() {
   }, []);
 
 
-
-  /* ================= SOCKET ONLINE TRACK ================= */
-  useEffect(() => {
-    const visitorId = getVisitorId();
-
-    socket.emit("user:online", {
-      visitorId,
-      page: location.pathname,
-    });
-  }, [location.pathname]);
+;
 
 
 
