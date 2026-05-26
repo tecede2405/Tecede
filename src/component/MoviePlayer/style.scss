@@ -90,45 +90,64 @@ input[type="range"] {
   appearance: none;
 
   width: 100%;
-  height: 4px;
+  height: 18px; /* vùng kéo lớn hơn */
+  background: transparent;
+  cursor: pointer;
 
-  border-radius: 999px;
-  overflow: hidden;
-
-  background: rgba(255,255,255,0.15);
+  position: relative;
 }
+
 /* track */
 .video-progress::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: 999px;
 
-  background: rgba(255,255,255,0.15);
+  background: linear-gradient(
+    to right,
+    #a855f7 0%,
+    #9333ea var(--progress, 0%),
+    rgba(255,255,255,0.2) var(--progress, 0%)
+  );
 }
 
-/* thumb + fill */
+/* nút kéo */
 .video-progress::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
 
-  width: 12px;
-  height: 12px;
-
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
 
-  background: #a855f7;
+  background: #c084fc;
+  border: 2px solid #fff;
 
-  margin-top: -4px;
+  margin-top: -6px;
 
-  box-shadow: -1000px 0 0 1000px #a855f7;
+  box-shadow:
+    0 0 10px rgba(192,132,252,.8);
+
+  transition: transform .15s ease;
 }
 
+/* hover */
+.video-progress:hover::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
 
-/* Firefox */
+/* FIREFOX */
 .video-progress::-moz-range-track {
   height: 4px;
-
-  background: rgba(255,255,255,0.15);
-
   border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+}
+
+.video-progress::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: #c084fc;
 }
 
 .video-progress::-moz-range-progress {
@@ -139,15 +158,6 @@ input[type="range"] {
   border-radius: 999px;
 }
 
-.video-progress::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-
-  border: none;
-  border-radius: 50%;
-
-  background: #a855f7;
-}
 
 /* ================= VOLUME ================= */
 
@@ -402,12 +412,12 @@ input[type="range"] {
   }
 
   .time {
-    font-size: 11px;
+    font-size: 9px;
   }
 
   .seek-btn {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
   }
 
   .seek-text {
@@ -433,5 +443,9 @@ input[type="range"] {
 
   .skip-ads-btn {
     bottom: 70px;
+  }
+  #pipBtn {
+    width: 30px;
+    height: 30px;
   }
 }
