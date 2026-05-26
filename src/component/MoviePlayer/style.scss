@@ -1,24 +1,25 @@
+/* ================= CONTAINER & BASE ================= */
 .player-container {
   width: 100%;
   position: relative;
   background: #000;
   overflow: hidden;
   aspect-ratio: 16 / 9;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none; /* Chống nháy xanh chọn text khi chạm nhanh trên iOS */
+
+  video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: #000;
+    object-fit: contain;
+  }
 }
 
-video {
-  width: 100%;
-  height: 100%;
-  display: block;
-  background: #000;
-  object-fit: contain;
-}
-
-/* ================= CONTROLS ================= */
-
+/* ================= CONTROLS CONTAINER ================= */
 .controls {
+  box-sizing: border-box;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -26,26 +27,23 @@ video {
   padding: 15px;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.5),
     transparent
   );
 
   display: flex;
   flex-direction: column;
   gap: 10px;
+  z-index: 10;
+  pointer-events: auto; /* Kích hoạt nhận diện sự kiện chạm */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  
-  /* Cố định z-index cực cao để tránh bị các lớp Native Video của iOS nuốt chửng */
-  z-index: 2147483647; 
-  pointer-events: auto;
-  box-sizing: border-box;
-}
 
-.controls.hide {
-  opacity: 0;
-  pointer-events: none !important;
-  transform: translateY(20px);
+  &.hide {
+    opacity: 0;
+    pointer-events: none !important; /* Khóa tương tác hoàn toàn khi ẩn */
+    transform: translateY(20px);
+  }
 }
 
 .bottom-controls {
@@ -61,7 +59,13 @@ video {
   gap: 10px;
 }
 
-/* ================= BUTTONS ================= */
+/* ================= GLOBAL FORM ELEMENTS ================= */
+button,
+select,
+input {
+  touch-action: manipulation; /* Loại bỏ độ trễ 300ms khi nhấp trên di động */
+  outline: none;
+}
 
 button {
   background: transparent;
@@ -69,10 +73,6 @@ button {
   color: white;
   font-size: 18px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
@@ -85,78 +85,72 @@ button {
   font-size: 14px;
 }
 
-/* ================= RANGE INPUTS ================= */
-
-input[type="range"] {
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-/* ===== VIDEO PROGRESS ===== */
-
+/* ================= THE HIGH-SENSITIVITY PROGRESS BAR ================= */
 .video-progress {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 18px; /* Tăng diện tích kéo thả nhạy bén hơn trên màn hình cảm ứng */
+  height: 24px; /* Tăng hitbox vùng đệm ngón tay từ 18px lên 24px để kéo cực nhạy */
   background: transparent;
   cursor: pointer;
   position: relative;
+  margin: 0;
+  padding: 0;
+  z-index: 15;
+
+  /* Webkit Browsers (Chrome, Safari, iOS Safari, Android Content) */
+  &::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      #a855f7 0%,
+      #9333ea var(--progress, 0%),
+      rgba(255, 255, 255, 0.2) var(--progress, 0%)
+    );
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #c084fc;
+    border: 2px solid #fff;
+    margin-top: -5px; /* Căn giữa track 4px */
+    box-shadow: 0 0 10px rgba(192, 132, 252, 0.8);
+    transition: transform 0.15s ease;
+  }
+
+  &:hover::-webkit-slider-thumb {
+    transform: scale(1.25);
+  }
+
+  /* Firefox Engine Layout */
+  &::-moz-range-track {
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: #c084fc;
+    box-shadow: 0 0 10px rgba(192, 132, 252, 0.8);
+  }
+
+  &::-moz-range-progress {
+    height: 4px;
+    background: #a855f7;
+    border-radius: 999px;
+  }
 }
 
-/* Webkit Track */
-.video-progress::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    #a855f7 0%,
-    #9333ea var(--progress, 0%),
-    rgba(255, 255, 255, 0.2) var(--progress, 0%)
-  );
-}
-
-/* Webkit Thumb */
-.video-progress::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #c084fc;
-  border: 2px solid #fff;
-  margin-top: -6px;
-  box-shadow: 0 0 10px rgba(192, 132, 252, 0.8);
-  transition: transform 0.15s ease;
-}
-
-.video-progress:hover::-webkit-slider-thumb {
-  transform: scale(1.2);
-}
-
-/* Firefox Elements */
-.video-progress::-moz-range-track {
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.video-progress::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border: none;
-  border-radius: 50%;
-  background: #c084fc;
-}
-
-.video-progress::-moz-range-progress {
-  height: 4px;
-  background: #a855f7;
-  border-radius: 999px;
-}
-
-/* ================= VOLUME MANAGEMENT ================= */
-
+/* ================= AUDIO VOLUME WRAPPER ================= */
 .volume-wrapper {
   display: flex;
   align-items: center;
@@ -164,55 +158,27 @@ input[type="range"] {
 }
 
 .volume {
+  -webkit-appearance: none;
+  appearance: none;
   width: 0;
   opacity: 0;
   overflow: hidden;
-  transition: width 0.25s ease, opacity 0.25s ease;
-  -webkit-appearance: none;
-  appearance: none;
   height: 4px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.15);
-}
+  transition: width 0.25s ease, opacity 0.25s ease;
 
-.volume::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #a855f7;
-  box-shadow: -1000px 0 0 1000px #a855f7;
-}
-
-/* ================= BUFFERING LOADER ================= */
-
-.buffer-loader {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2147483640;
-  pointer-events: none;
-}
-
-.spinner {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top-color: white;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #a855f7;
+    box-shadow: -1000px 0 0 1000px #a855f7; /* Fill màu mượt bên trái slider */
   }
 }
 
-/* ================= RESPONSIVE HOVER VIEW ================= */
-
+/* Hover Volume chỉ hoạt động trên PC (tránh lỗi kẹt giao diện cảm ứng di động) */
 @media (min-width: 769px) {
   .volume-wrapper:hover .volume {
     width: 90px;
@@ -220,14 +186,31 @@ input[type="range"] {
   }
 }
 
-@media (max-width: 768px) {
-  .volume {
-    display: none;
+/* ================= SYSTEM LOADER / SPINNER ================= */
+.buffer-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 8;
+  pointer-events: none;
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #c084fc;
+    animation: spin 0.8s linear infinite;
   }
 }
 
-/* ================= SEEK BUTTONS ================= */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
+/* ================= TUA PHIM CHUYÊN NGHIỆP ================= */
 .seek-btn {
   position: relative;
   width: 42px;
@@ -242,75 +225,71 @@ input[type="range"] {
   align-items: center;
   color: white;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: all 0.2s ease;
   padding: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  .seek-icon {
+    font-size: 18px;
+    transform: translateY(-2px);
+  }
+
+  .seek-text {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: 700;
+  }
 }
 
-.seek-btn:hover {
-  background: rgba(255, 255, 255, 0.18);
-  transform: scale(1.08);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-}
-
-.seek-btn:active {
-  transform: scale(0.96);
-}
-
-.seek-icon {
-  font-size: 18px;
-  transform: translateY(-2px);
-}
-
-.seek-text {
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 8px;
-  font-weight: 700;
-}
-
-/* ================= PREVIEW LABELS ================= */
-
+/* ================= MÀN HÌNH XEM THỬ TIẾN ĐỘ ================= */
 .preview-time {
   position: absolute;
-  bottom: 90px;
+  bottom: 60px; /* Hạ thấp để không đè lên vùng click của thanh timeline */
   left: 0;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.9);
   color: white;
   padding: 5px 10px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s;
-  z-index: 2147483647;
+  transition: opacity 0.15s ease;
+  z-index: 20;
   white-space: nowrap;
 }
 
-/* ================= SELECTION SPEEDS ================= */
-
+/* ================= TÙY CHỌN TỐC ĐỘ PHÁT ================= */
 .speed-select {
   background: rgba(255, 255, 255, 0.08);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: 6px 10px;
-  outline: none;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   cursor: pointer;
-  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
+  option {
+    background: #111;
+    color: white;
+  }
 }
 
-.speed-select option {
-  background: #111;
-}
-
-/* ================= PIP & FULLSCREEN BUTTONS ================= */
-
+/* ================= PICTURE IN PICTURE ================= */
 #pipBtn {
   width: 36px;
   height: 36px;
@@ -320,86 +299,84 @@ input[type="range"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
 }
 
-#pipBtn:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
-/* ================= CENTER PLAY ICON ================= */
-
+/* ================= NÚT ĐIỀU KHIỂN TRUNG TÂM ================= */
 .center-play {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.8);
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 42px;
+  font-size: 36px;
   cursor: pointer;
   opacity: 0;
-  pointer-events: auto;
-  transition: 0.25s ease;
-  z-index: 2147483645;
+  pointer-events: none; /* Tránh cản click vào video khi ẩn */
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 9;
+
+  &.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
-.center-play.show {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* ================= ADS CONTROL ================= */
-
+/* ================= BUTTON BỎ QUA QUẢNG CÁO ================= */
 .skip-ads-btn {
   position: absolute;
   right: 20px;
-  bottom: calc(env(safe-area-inset-bottom) + 90px);
-  padding: 10px 16px;
+  bottom: 100px; /* Vị trí mặc định ở chế độ thường */
+  padding: 10px 18px;
   background: rgba(255, 255, 255, 0.95);
   color: #000;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 700;
-  z-index: 2147483647;
+  font-size: 14px;
+  z-index: 25; /* Nằm đè lên thanh controls */
+  cursor: pointer;
   pointer-events: auto;
-  touch-action: manipulation;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ================= FULLSCREEN SYSTEM FALLBACK ================= */
-
+/* ================= PC STANDARDS FULLSCREEN API ================= */
 .player-container:fullscreen {
   width: 100vw;
   height: 100vh;
-  border-radius: 0;
+  
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
 
-.player-container:fullscreen video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* ================= MOBILE EXPANSION CONFIGURATION ================= */
-
+/* ================= MOBILE CSS FULLSCREEN (Dành riêng cho iPhone/iPad/Android) ================= */
 .player-container.mobile-fullscreen {
   position: fixed;
-  inset: 0;
-  width: 100dvw;
-  height: 100dvh;
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-  background: #000;
-  z-index: 2147483646;
+  inset: 0 !important;
+  width: 100dvw !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #000 !important;
+  z-index: 2147483647 !important; /* Lớp hiển thị cao nhất hệ thống */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -410,21 +387,25 @@ input[type="range"] {
     object-fit: contain;
   }
 
-  /* Chống dính vạch gạt Home Indicator của iOS khi ở chế độ Fullscreen */
   .controls {
     z-index: 2147483647 !important;
     pointer-events: auto !important;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 15px) !important;
+    /* Đẩy controls lên cao, né vùng an toàn tai thỏ/thanh vuốt đáy của iOS */
+    padding-bottom: calc(env(safe-area-inset-bottom, 15px) + 10px);
   }
 
-  .center-play, 
-  .buffer-loader {
+  .center-play {
     z-index: 2147483647 !important;
+  }
+
+  .skip-ads-btn {
+    z-index: 2147483647 !important;
+    /* Đẩy nút skip ads lên cao tương ứng để không đè vào thanh tiến độ khi xoay ngang */
+    bottom: calc(env(safe-area-inset-bottom, 15px) + 120px);
   }
 }
 
-/* ================= MOBILE MEDIA QUERIES ================= */
-
+/* ================= MOBILE RESPONSIVE MEDIA QUERIES ================= */
 @media (max-width: 768px) {
   .controls {
     padding: 10px;
@@ -441,51 +422,51 @@ input[type="range"] {
   }
 
   .time {
-    width: 50px;
-    font-size: 8px;
+    font-size: 11px;
   }
-
+  .player-container.mobile-fullscreen {
+    .skip-ads-btn {
+      bottom: calc(env(safe-area-inset-bottom, 15px) + 70px);
+    }
+  }
   .seek-btn {
-    width: 27px;
-    height: 27px;
+    width: 32px;
+    height: 32px;
+
+    .seek-icon {
+      font-size: 14px;
+      transform: translateY(-1px);
+    }
+
+    .seek-text {
+      font-size: 7px;
+      bottom: 3px;
+    }
   }
 
-  .seek-text {
-    font-size: 7px;
-    bottom: 4px;
+  .volume {
+    display: none !important; /* Di động điều khiển volume bằng nút cứng vật lý */
   }
 
   .speed-select {
-    padding: 3px;
-    font-size: 11px;
+    padding: 4px 6px;
+    font-size: 12px;
   }
 
   .center-play {
-    width: 70px;
-    height: 70px;
-    font-size: 32px;
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
   }
 
   .preview-time {
-    bottom: 75px;
-    font-size: 10px;
+    bottom: 55px;
+    font-size: 11px;
     padding: 4px 8px;
   }
 
-  .skip-ads-btn {
-    bottom: calc(env(safe-area-inset-bottom) + 70px) !important;
-    z-index: 2147483647 !important;
-  }
-
   #pipBtn {
-    width: 27px;
-    height: 27px;
-  }
-
-  // Tăng vùng đệm tương tác cho ngón tay trên mobile
-  button, 
-  select, 
-  input {
-    min-height: 28px;
+    width: 32px;
+    height: 32px;
   }
 }

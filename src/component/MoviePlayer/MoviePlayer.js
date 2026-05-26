@@ -21,16 +21,14 @@ export default function MoviePlayer({ src, title, poster }) {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isBuffering, setIsBuffering] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-
   const hideTimeout = useRef(null);
   const centerTimeout = useRef(null);
 
   const storageKey = `movie-progress-${src}`;
   const VOLUME_KEY = "movie-volume";
 
-  // Kiểm tra thiết bị di động chuẩn xác hơn
   const isMobile = /Android|iPhone|iPad|iPod/i.test(
-    typeof navigator !== "undefined" ? navigator.userAgent : ""
+    typeof window !== "undefined" ? navigator.userAgent : ""
   );
 
   const showCenterIcon = () => {
@@ -41,14 +39,13 @@ export default function MoviePlayer({ src, title, poster }) {
     }, 600);
   };
 
-  // Reset thông số khi đổi phim
   useEffect(() => {
     setProgress(0);
     setCurrentTime("00:00");
     setDuration("00:00");
   }, [src]);
 
-  // Khởi tạo luồng phát trực tuyến HLS và trung tâm điều khiển MediaSession
+  // HLS & Media Session Setup
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !src) return;
@@ -58,7 +55,13 @@ export default function MoviePlayer({ src, title, poster }) {
         title: title || "Movie",
         artist: "Tecede",
         album: "Movie Player",
-        artwork: [{ src: poster, sizes: "512x512", type: "image/png" }],
+        artwork: [
+          {
+            src: poster,
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
       });
 
       navigator.mediaSession.setActionHandler("play", () => {
@@ -71,7 +74,9 @@ export default function MoviePlayer({ src, title, poster }) {
         video.currentTime = Math.max(0, video.currentTime - 10);
       });
       navigator.mediaSession.setActionHandler("seekforward", () => {
-        video.currentTime = Math.min(video.duration || 0, video.currentTime + 10);
+        if (video.duration) {
+          video.currentTime = Math.min(video.duration, video.currentTime + 10);
+        }
       });
     }
 
@@ -98,7 +103,7 @@ export default function MoviePlayer({ src, title, poster }) {
     };
   }, [src, title, poster]);
 
-  // Quét thời gian hiển thị nút "Bỏ qua quảng cáo"
+  // Kiểm tra thời gian hiển thị nút Bỏ qua quảng cáo
   useEffect(() => {
     const interval = setInterval(() => {
       const video = videoRef.current;
@@ -110,7 +115,7 @@ export default function MoviePlayer({ src, title, poster }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Khôi phục mức âm lượng cũ và vị trí lịch sử xem phim
+  // Khôi phục âm lượng & thời gian đã lưu
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -131,33 +136,16 @@ export default function MoviePlayer({ src, title, poster }) {
     }
   }, [isMobile, storageKey]);
 
-  // Định kỳ tự động lưu tiến độ xem sau mỗi 2 giây
+  // Tự động lưu tiến độ xem sau mỗi 2 giây
   useEffect(() => {
     const interval = setInterval(() => {
       const video = videoRef.current;
-      if (!video?.duration) return;
+      if (!video || !video.duration) return;
       localStorage.setItem(storageKey, video.currentTime);
     }, 2000);
 
     return () => clearInterval(interval);
   }, [storageKey]);
-
-  // Đồng bộ trạng thái State khi bật/tắt Fullscreen gốc trên hệ điều hành iOS
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const onEnterFullscreen = () => setIsFullscreen(true);
-    const onExitFullscreen = () => setIsFullscreen(false);
-
-    video.addEventListener("webkitbeginfullscreen", onEnterFullscreen);
-    video.addEventListener("webkitendfullscreen", onExitFullscreen);
-
-    return () => {
-      video.removeEventListener("webkitbeginfullscreen", onEnterFullscreen);
-      video.removeEventListener("webkitendfullscreen", onExitFullscreen);
-    };
-  }, []);
 
   const formatTime = (seconds) => {
     if (isNaN(seconds)) return "00:00";
@@ -176,28 +164,29 @@ export default function MoviePlayer({ src, title, poster }) {
       } else {
         video.pause();
       }
+      showCenterIcon();
     } catch (err) {
-      console.error("Lỗi điều khiển phát video:", err);
+      console.log("Play/Pause bị chặn:", err);
     }
-    showCenterIcon();
   }, []);
 
   const skip = useCallback((sec) => {
     const video = videoRef.current;
-    if (!video) return;
-    video.currentTime = Math.max(0, Math.min(video.duration || 0, video.currentTime + sec));
+    if (!video || !video.duration) return;
+    video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + sec));
   }, []);
 
   const updateProgress = () => {
     const video = videoRef.current;
     if (!video) return;
+
     setProgress(video.duration ? (video.currentTime / video.duration) * 100 : 0);
     setCurrentTime(formatTime(video.currentTime));
   };
 
   const handleSeek = (e) => {
     const video = videoRef.current;
-    if (!video?.duration) return;
+    if (!video || !video.duration) return;
 
     const value = e.target.value;
     const newTime = (value / 100) * video.duration;
@@ -246,38 +235,55 @@ export default function MoviePlayer({ src, title, poster }) {
     return "🔊";
   };
 
-  // Tối ưu hóa cơ chế Fullscreen phục vụ riêng biệt cho Mobile iOS/Android và Desktop
   const handleFullscreen = async () => {
     const player = playerRef.current;
-    const video = videoRef.current;
-    if (!player || !video) return;
+    if (!player) return;
 
     if (isMobile) {
-      if (video.webkitEnterFullscreen) {
-        // Kích hoạt giao diện Fullscreen native chuẩn Apple giúp loại bỏ lỗi liệt phím cảm ứng
-        video.webkitEnterFullscreen();
-      } else if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else {
-        setIsFullscreen((prev) => !prev);
-      }
+      setIsFullscreen((prev) => !prev);
       return;
     }
 
     try {
       if (!document.fullscreenElement) {
-        if (player.requestFullscreen) await player.requestFullscreen();
-        else if (player.webkitRequestFullscreen) await player.webkitRequestFullscreen();
-        else if (player.msRequestFullscreen) await player.msRequestFullscreen();
+        if (player.requestFullscreen) {
+          await player.requestFullscreen();
+        } else if (player.mozRequestFullScreen) {
+          await player.mozRequestFullScreen();
+        } else if (player.webkitRequestFullscreen) {
+          await player.webkitRequestFullscreen();
+        }
+        setIsFullscreen(true);
       } else {
-        if (document.exitFullscreen) await document.exitFullscreen();
-        else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
-        else if (document.msExitFullscreen) await document.msExitFullscreen();
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          await document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          await document.webkitExitFullscreen();
+        }
+        setIsFullscreen(false);
       }
     } catch (err) {
-      console.error("Lỗi thay đổi kích thước Fullscreen:", err);
+      console.log(err);
     }
   };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      } else {
+        setIsFullscreen(true);
+      }
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+    };
+  }, []);
 
   const handlePreview = (e) => {
     const video = videoRef.current;
@@ -295,11 +301,9 @@ export default function MoviePlayer({ src, title, poster }) {
   const showControls = () => {
     setControlsVisible(true);
     clearTimeout(hideTimeout.current);
-
     hideTimeout.current = setTimeout(() => {
       const video = videoRef.current;
-      if (!video) return;
-      if (!video.paused) {
+      if (video && !video.paused) {
         setControlsVisible(false);
       }
     }, 3000);
@@ -332,42 +336,38 @@ export default function MoviePlayer({ src, title, poster }) {
         }
       }
     } catch (err) {
-      console.error("Lỗi xử lý Picture in Picture:", err);
+      console.log(err);
     }
   };
 
-  // Sao lưu khẩn cấp tiến độ xem phim khi người dùng tắt hoặc tải lại trang web bất ngờ
   useEffect(() => {
     const saveProgress = () => {
       const video = videoRef.current;
       if (!video) return;
       localStorage.setItem(storageKey, video.currentTime);
     };
-
     window.addEventListener("beforeunload", saveProgress);
-    return () => {
-      window.removeEventListener("beforeunload", saveProgress);
-    };
+    return () => window.removeEventListener("beforeunload", saveProgress);
   }, [storageKey]);
 
-  // Khóa cuộn trang khi kích hoạt chế độ xem Fullscreen giả lập CSS trên Mobile
   useEffect(() => {
-    const header = document.querySelector(".header");
     if (isFullscreen && isMobile) {
       document.body.style.overflow = "hidden";
+      const header = document.querySelector(".header");
       if (header) header.style.display = "none";
     } else {
       document.body.style.overflow = "";
+      const header = document.querySelector(".header");
       if (header) header.style.display = "";
     }
 
     return () => {
       document.body.style.overflow = "";
+      const header = document.querySelector(".header");
       if (header) header.style.display = "";
     };
   }, [isFullscreen, isMobile]);
 
-  // Thiết lập phím tắt không gian làm việc (Space/Arrow) cho Desktop
   useEffect(() => {
     const handleKey = (e) => {
       if (
@@ -413,11 +413,15 @@ export default function MoviePlayer({ src, title, poster }) {
       ref={playerRef}
       onMouseMove={showControls}
       onClick={(e) => {
-        if (e.target.closest(".skip-ads-btn")) return;
+        if (e.target.closest(".skip-ads-btn") || e.target.closest(".controls")) {
+          return;
+        }
         showControls();
       }}
       onTouchStart={(e) => {
-        if (e.target.closest(".skip-ads-btn")) return;
+        if (e.target.closest(".skip-ads-btn") || e.target.closest(".controls")) {
+          return;
+        }
         showControls();
       }}
     >
@@ -435,7 +439,7 @@ export default function MoviePlayer({ src, title, poster }) {
           setDuration(formatTime(video.duration));
         }}
         onClick={(e) => {
-          e.stopPropagation(); // Cắt đứt hiện tượng nổi bọt sự kiện lên container chính
+          e.stopPropagation();
           if (isMobile) {
             if (controlsVisible) {
               setControlsVisible(false);
@@ -486,30 +490,7 @@ export default function MoviePlayer({ src, title, poster }) {
         </div>
       )}
 
-      {showSkip && (
-        <button
-          type="button"
-          className="skip-ads-btn"
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-
-            const video = videoRef.current;
-            if (!video) return;
-
-            video.currentTime = 15 * 60 + 33;
-            setShowSkip(false);
-            setControlsVisible(false);
-            clearTimeout(hideTimeout.current);
-          }}
-        >
-          Bỏ qua quảng cáo
-        </button>
-      )}
-
-      {/* BLOCK CONTROLS ĐÃ ĐƯỢC CÔ LẬP VÀ FIX LỖI CẢM ỨNG TRÊN IPHONE */}
+      {/* THANH CONTROLS ĐƯỢC ĐƯA LÊN TRÊN NÚT SKIP QUẢNG CÁO */}
       <div
         className={`controls ${!controlsVisible ? "hide" : ""}`}
         onClick={(e) => e.stopPropagation()}
@@ -530,6 +511,8 @@ export default function MoviePlayer({ src, title, poster }) {
           onChange={handleSeek}
           onMouseMove={handlePreview}
           onMouseLeave={() => setShowPreview(false)}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
         />
 
         <div
@@ -544,16 +527,36 @@ export default function MoviePlayer({ src, title, poster }) {
 
         <div className="bottom-controls">
           <div className="left-controls">
-            <button type="button" onClick={togglePlay}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePlay();
+              }}
+            >
               {isPlaying ? <FaPause /> : <FaPlay />}
             </button>
 
-            <button type="button" className="seek-btn" onClick={() => skip(-10)}>
+            <button
+              type="button"
+              className="seek-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                skip(-10);
+              }}
+            >
               <span className="seek-icon">«</span>
               <span className="seek-text">10</span>
             </button>
 
-            <button type="button" className="seek-btn" onClick={() => skip(10)}>
+            <button
+              type="button"
+              className="seek-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                skip(10);
+              }}
+            >
               <span className="seek-icon">»</span>
               <span className="seek-text">10</span>
             </button>
@@ -563,7 +566,13 @@ export default function MoviePlayer({ src, title, poster }) {
             </span>
 
             <div className="volume-wrapper">
-              <button type="button" onClick={toggleMute}>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleMute();
+                }}
+              >
                 {getVolumeIcon()}
               </button>
 
@@ -572,9 +581,9 @@ export default function MoviePlayer({ src, title, poster }) {
                   type="range"
                   className="volume"
                   min="0"
-                  max="1"
-                  step="0.01"
-                  value={volume}
+                  max="100"
+                  step="1"
+                  value={volume * 100}
                   onInput={handleVolume}
                 />
               )}
@@ -585,7 +594,9 @@ export default function MoviePlayer({ src, title, poster }) {
             <select
               className="speed-select"
               value={playbackRate}
+              onClick={(e) => e.stopPropagation()}
               onChange={(e) => {
+                e.stopPropagation();
                 const value = parseFloat(e.target.value);
                 setPlaybackRate(value);
                 if (videoRef.current) {
@@ -600,16 +611,51 @@ export default function MoviePlayer({ src, title, poster }) {
               <option value="2">2x</option>
             </select>
 
-            <button id="pipBtn" type="button" onClick={handlePip}>
+            <button
+              id="pipBtn"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePip();
+              }}
+            >
               ⧉
             </button>
 
-            <button type="button" onClick={handleFullscreen}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFullscreen();
+              }}
+            >
               ⛶
             </button>
           </div>
         </div>
       </div>
+
+      {/* NÚT QUẢNG CÁO ĐƯỢC ĐƯA XUỐNG DƯỚI CÙNG DOM ĐỂ LUÔN NẰM Ở LỚP TRÊN CÙNG */}
+      {showSkip && (
+        <button
+          type="button"
+          className="skip-ads-btn"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const video = videoRef.current;
+            if (!video) return;
+
+            video.currentTime = 15 * 60 + 33;
+            setShowSkip(false);
+            setControlsVisible(false);
+            clearTimeout(hideTimeout.current);
+          }}
+        >
+          Bỏ qua quảng cáo
+        </button>
+      )}
     </div>
   );
 }
