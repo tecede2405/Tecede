@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback} from "react";
+
 import Hls from "hls.js";
 import {
   FaPlay,
@@ -31,9 +32,21 @@ export default function MoviePlayer({
   const [isFullscreen, setIsFullscreen] =
   useState(false);
   const hideTimeout = useRef(null);
+  const centerTimeout = useRef(null);
 
+  
   const storageKey = `movie-progress-${src}`;
   const VOLUME_KEY = "movie-volume";
+
+  const showCenterIcon = () => {
+  setShowCenter(true);
+
+  clearTimeout(centerTimeout.current);
+
+  centerTimeout.current = setTimeout(() => {
+    setShowCenter(false);
+  }, 600);
+};
 
   useEffect(() => {
     setProgress(0);
@@ -133,21 +146,11 @@ export default function MoviePlayer({
   useEffect(() => {
   const interval = setInterval(() => {
     const video = videoRef.current;
-
     if (!video) return;
 
     const current = video.currentTime;
 
-    const triggerTime = 14 * 60 + 59;
-
-    if (
-      current >= triggerTime &&
-      current <= triggerTime + 30
-    ) {
-      setShowSkip(true);
-    } else {
-      setShowSkip(false);
-    }
+    setShowSkip(current >= 899 && current <= 929);
   }, 500);
 
   return () => clearInterval(interval);
@@ -213,49 +216,34 @@ export default function MoviePlayer({
     )}:${String(secs).padStart(2, "0")}`;
   };
 
-  const togglePlay = () => {
-    const video = videoRef.current;
+ const togglePlay = useCallback(async () => {
+  const video = videoRef.current;
+  if (!video) return;
 
-    if (!video) return;
+  if (video.paused) await video.play();
+  else video.pause();
 
-    if (video.paused) {
-      video.play();
+  showCenterIcon();
+}, []);
 
-      setIsPlaying(true);
-    } else {
-      video.pause();
+const skip = useCallback((sec) => {
+  const video = videoRef.current;
+  if (!video) return;
 
-      setIsPlaying(false);
-    }
+  video.currentTime += sec;
+}, []);
 
-    setShowCenter(true);
+const updateProgress = () => {
+  const video = videoRef.current;
+  if (!video) return;
 
-    setTimeout(() => {
-      setShowCenter(false);
-    }, 600);
-  };
-
-  const updateProgress = () => {
-    const video = videoRef.current;
-
-    if (!video) return;
-
-    const percent = video.duration
+  setProgress(video.duration
     ? (video.currentTime / video.duration) * 100
-    : 0;
+    : 0
+  );
 
-    setProgress(percent);
-
-    setCurrentTime(
-      formatTime(video.currentTime)
-    );
-
-    setDuration(
-      formatTime(video.duration || 0)
-    );
-
-    
-  };
+  setCurrentTime(formatTime(video.currentTime));
+};
 
   const handleSeek = (e) => {
   const video = videoRef.current;
@@ -363,9 +351,6 @@ export default function MoviePlayer({
   }
 };
 
-  const skip = (sec) => {
-    videoRef.current.currentTime += sec;
-  };
 
   const handlePreview = (e) => {
     const rect =
@@ -479,6 +464,40 @@ useEffect(() => {
   };
 }, [storageKey]);
 
+
+  useEffect(() => {
+  if (isFullscreen && isMobile) {
+    document.body.style.overflow = "hidden";
+
+    const header =
+      document.querySelector(".header");
+
+    if (header) {
+      header.style.display = "none";
+    }
+  } else {
+    document.body.style.overflow = "";
+
+    const header =
+      document.querySelector(".header");
+
+    if (header) {
+      header.style.display = "";
+    }
+  }
+
+  return () => {
+    document.body.style.overflow = "";
+
+    const header =
+      document.querySelector(".header");
+
+    if (header) {
+      header.style.display = "";
+    }
+  };
+}, [isFullscreen, isMobile]);
+
   useEffect(() => {
   const handleKey = (e) => {
     if (
@@ -486,19 +505,12 @@ useEffect(() => {
       e.target.tagName === "TEXTAREA" ||
       e.target.tagName === "SELECT" ||
       e.target.isContentEditable
-    ) {
-      return;
-    }
+    ) return;
 
-    // chỉ hoạt động khi player còn trong màn hình
-    const player =
-      playerRef.current;
-
+    const player = playerRef.current;
     if (!player) return;
 
-    const rect =
-      player.getBoundingClientRect();
-
+    const rect = player.getBoundingClientRect();
     const isVisible =
       rect.top < window.innerHeight &&
       rect.bottom > 0;
@@ -506,38 +518,29 @@ useEffect(() => {
     if (!isVisible) return;
 
     switch (e.code) {
-      case "Space":
-        e.preventDefault();
-        togglePlay();
-        break;
+  case "Space":
+    e.preventDefault();
+    togglePlay();
+    break;
 
-      case "ArrowLeft":
-        e.preventDefault();
-        skip(-10);
-        break;
+  case "ArrowLeft":
+    e.preventDefault();
+    skip(-10);
+    break;
 
-      case "ArrowRight":
-        e.preventDefault();
-        skip(10);
-        break;
+  case "ArrowRight":
+    e.preventDefault();
+    skip(10);
+    break;
 
-      default:
-        break;
-    }
+  default:
+    break;
+}
   };
 
-  document.addEventListener(
-    "keydown",
-    handleKey
-  );
-
-  return () => {
-    document.removeEventListener(
-      "keydown",
-      handleKey
-    );
-  };
-}, []);
+  document.addEventListener("keydown", handleKey);
+  return () => document.removeEventListener("keydown", handleKey);
+}, [togglePlay, skip]);
 
   return (
     <div
@@ -546,8 +549,26 @@ useEffect(() => {
       }`}
       ref={playerRef}
       onMouseMove={showControls}
-      onClick={showControls}
-      onTouchStart={showControls}
+      onClick={(e) => {
+        // nếu click vào skip ads thì bỏ qua
+        if (
+          e.target.closest(".skip-ads-btn")
+        ) {
+          return;
+        }
+
+        showControls();
+      }}
+      onTouchStart={(e) => {
+        // mobile
+        if (
+          e.target.closest(".skip-ads-btn")
+        ) {
+          return;
+        }
+
+        showControls();
+      }}
     >
       <video
       ref={videoRef}
@@ -556,7 +577,20 @@ useEffect(() => {
       x5PlaysInline
       preload="auto"
       poster={poster}
+
+
       onTimeUpdate={updateProgress}
+
+      onLoadedMetadata={() => {
+        const video = videoRef.current;
+
+        if (!video) return;
+
+        setDuration(
+          formatTime(video.duration)
+        );
+      }}
+
       onClick={() => {
       // MOBILE
       if (isMobile) {
@@ -565,11 +599,7 @@ useEffect(() => {
         } else {
           showControls();
 
-          setShowCenter(true);
-
-          setTimeout(() => {
-            setShowCenter(false);
-          }, 600);
+          showCenterIcon();
         }
 
         return;
@@ -646,11 +676,28 @@ useEffect(() => {
         <button
           type="button"
           className="skip-ads-btn"
-          onClick={() => {
-            videoRef.current.currentTime =
-              15 * 60 + 33;
+          onTouchStart={(e) => {
+            e.stopPropagation();
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const video = videoRef.current;
+
+            if (!video) return;
+
+            video.currentTime = 15 * 60 + 33;
 
             setShowSkip(false);
+
+            // KHÔNG cho controls hiện lại
+            setControlsVisible(false);
+
+            clearTimeout(hideTimeout.current);
           }}
         >
           Bỏ qua quảng cáo

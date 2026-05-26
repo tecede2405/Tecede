@@ -400,17 +400,30 @@ input {
 .skip-ads-btn {
   position: absolute;
   right: 20px;
-  bottom: calc(env(safe-area-inset-bottom) + 90px);
-  padding: 10px 16px;
-  background: #fff;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  z-index: 9999;
-}
 
+  bottom: calc(
+    env(safe-area-inset-bottom) + 90px
+  );
+
+  padding: 10px 16px;
+
+  background: rgba(255,255,255,.95);
+
+  color: #000;
+
+  border: none;
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  z-index: 999999999;
+
+  pointer-events: auto;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+}
 /* ================= FULLSCREEN ================= */
 
 .player-container:fullscreen {
@@ -428,17 +441,19 @@ input {
   position: fixed;
   inset: 0;
 
-  width: 100vw;
-  height: 100vh;
-
+  width: 100dvw;
+  height: 100dvh;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
   background: #000;
 
-  z-index: 999999;
+  z-index: 2147483647;
 
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .player-container.mobile-fullscreen video {
   width: 100%;
   height: 100%;
