@@ -130,6 +130,30 @@ export default function MoviePlayer({
   }, [src, title, poster]);
 
   useEffect(() => {
+  const interval = setInterval(() => {
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    const current = video.currentTime;
+
+    const triggerTime = 14 * 60 + 59;
+
+    if (
+      current >= triggerTime &&
+      current <= triggerTime + 30
+    ) {
+      setShowSkip(true);
+    } else {
+      setShowSkip(false);
+    }
+  }, 500);
+
+  return () => clearInterval(interval);
+}, []);
+
+
+  useEffect(() => {
     const video = videoRef.current;
 
     if (!video) return;
@@ -229,19 +253,7 @@ export default function MoviePlayer({
       formatTime(video.duration || 0)
     );
 
-    const current = video.currentTime;
-
-    const triggerTime =
-      14 * 60 + 59;
-
-    if (
-      current >= triggerTime &&
-      current <= triggerTime + 30
-    ) {
-      setShowSkip(true);
-    } else {
-      setShowSkip(false);
-    }
+    
   };
 
   const handleSeek = (e) => {
@@ -281,37 +293,53 @@ export default function MoviePlayer({
   };
 
   const toggleMute = () => {
-    const video = videoRef.current;
+  const video = videoRef.current;
 
-    if (video.volume > 0) {
-      video.dataset.lastVolume =
-        video.volume;
+  if (!video) return;
 
-      video.volume = 0;
+  // iPhone Safari
+  if (isMobile) {
+    video.muted = !video.muted;
 
-      setVolume(0);
-    } else {
-      const last =
-        video.dataset.lastVolume || 1;
+    setVolume(video.muted ? 0 : 1);
 
-      video.volume = parseFloat(last);
+    return;
+  }
 
-      setVolume(parseFloat(last));
-    }
+  // Desktop / Android
+  if (video.volume > 0) {
+    video.dataset.lastVolume =
+      video.volume;
 
-    localStorage.setItem(
-      VOLUME_KEY,
-      video.volume
-    );
-  };
+    video.volume = 0;
+
+    setVolume(0);
+  } else {
+    const last =
+      video.dataset.lastVolume || 1;
+
+    video.volume = parseFloat(last);
+
+    setVolume(parseFloat(last));
+  }
+
+  localStorage.setItem(
+    VOLUME_KEY,
+    video.volume
+  );
+};
 
   const getVolumeIcon = () => {
-    if (volume === 0) return "🔇";
+  const video = videoRef.current;
 
-    if (volume < 0.5) return "🔉";
+  if (video?.muted || volume === 0)
+    return "🔇";
 
-    return "🔊";
-  };
+  if (volume < 0.5)
+    return "🔉";
+
+  return "🔊";
+};
 
   const handleFullscreen = () => {
   const video = videoRef.current;
@@ -380,18 +408,46 @@ useEffect(() => {
 }, []);
 
   const handlePip = async () => {
-    try {
+  const video = videoRef.current;
+
+  if (!video) return;
+
+  try {
+    // Safari iPad / macOS
+    if (video.webkitSetPresentationMode) {
+      const mode =
+        video.webkitPresentationMode;
+
+      if (mode === "picture-in-picture") {
+        video.webkitSetPresentationMode(
+          "inline"
+        );
+      } else {
+        video.webkitSetPresentationMode(
+          "picture-in-picture"
+        );
+      }
+
+      return;
+    }
+
+    // Chrome / Edge / Android
+    if (
+      document.pictureInPictureEnabled &&
+      video.requestPictureInPicture
+    ) {
       if (
         document.pictureInPictureElement
       ) {
         await document.exitPictureInPicture();
       } else {
-        await videoRef.current.requestPictureInPicture();
+        await video.requestPictureInPicture();
       }
-    } catch (err) {
-      console.log(err);
     }
-  };
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   useEffect(() => {
   return () => {
@@ -585,6 +641,7 @@ useEffect(() => {
 
       {showSkip && (
         <button
+          type="button"
           className="skip-ads-btn"
           onClick={() => {
             videoRef.current.currentTime =
@@ -634,7 +691,7 @@ useEffect(() => {
 
         <div className="bottom-controls">
           <div className="left-controls">
-            <button onClick={togglePlay}>
+            <button type="button" onClick={togglePlay}>
               {isPlaying ? (
                 <FaPause />
               ) : (
@@ -643,6 +700,7 @@ useEffect(() => {
             </button>
 
             <button
+              type="button"
               className="seek-btn"
               onClick={() => skip(-10)}
             >
@@ -654,6 +712,7 @@ useEffect(() => {
             </button>
 
             <button
+              type="button"
               className="seek-btn"
               onClick={() => skip(10)}
             >
@@ -671,6 +730,7 @@ useEffect(() => {
 
             <div className="volume-wrapper">
               <button
+                type="button"
                 onClick={toggleMute}
               >
                 {getVolumeIcon()}
@@ -731,12 +791,14 @@ useEffect(() => {
 
             <button
               id="pipBtn"
+              type="button"
               onClick={handlePip}
             >
               ⧉
             </button>
 
             <button
+              type="button"
               onClick={handleFullscreen}
             >
               ⛶

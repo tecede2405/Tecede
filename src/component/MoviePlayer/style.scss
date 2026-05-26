@@ -82,6 +82,8 @@ input[type="range"] {
   cursor: pointer;
 }
 
+
+
 /* ===== VIDEO PROGRESS ===== */
 
 .video-progress {
@@ -377,7 +379,7 @@ input[type="range"] {
 .skip-ads-btn {
   position: absolute;
   right: 20px;
-  bottom: 200px;
+  bottom: calc(env(safe-area-inset-bottom) + 90px);
   padding: 10px 16px;
   background: #fff;
   color: #000;
@@ -385,7 +387,7 @@ input[type="range"] {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  z-index: 999;
+  z-index: 9999;
 }
 
 /* ================= FULLSCREEN ================= */
