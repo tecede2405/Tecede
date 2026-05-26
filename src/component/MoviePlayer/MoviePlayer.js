@@ -116,25 +116,32 @@ export default function MoviePlayer({ src, title, poster }) {
   }, []);
 
   // Khôi phục âm lượng & thời gian đã lưu
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+  // Khôi phục âm lượng & thời gian đã lưu
+useEffect(() => {
+  const video = videoRef.current;
+  if (!video) return;
 
-    const savedVolume = localStorage.getItem(VOLUME_KEY);
-    if (isMobile) {
-      video.volume = 1;
-      setVolume(1);
-    } else if (savedVolume !== null) {
-      const parsedVolume = parseFloat(savedVolume);
-      video.volume = parsedVolume;
-      setVolume(parsedVolume);
+  const savedVolume = localStorage.getItem(VOLUME_KEY);
+  if (isMobile) {
+    video.volume = 1;
+    setVolume(1);
+  } else if (savedVolume !== null) {
+    let parsedVolume = parseFloat(savedVolume);
+    
+    // PHÒNG HỜ: Nếu giá trị đã lưu trước đó lớn hơn 1, tự động chuẩn hóa về khoảng 0 -> 1
+    if (parsedVolume > 1) {
+      parsedVolume = parsedVolume / 100;
     }
+    
+    video.volume = parsedVolume;
+    setVolume(parsedVolume);
+  }
 
-    const savedTime = localStorage.getItem(storageKey);
-    if (savedTime && !isNaN(savedTime)) {
-      video.currentTime = parseFloat(savedTime);
-    }
-  }, [isMobile, storageKey]);
+  const savedTime = localStorage.getItem(storageKey);
+  if (savedTime && !isNaN(savedTime)) {
+    video.currentTime = parseFloat(savedTime);
+  }
+}, [isMobile, storageKey]);
 
   // Tự động lưu tiến độ xem sau mỗi 2 giây
   useEffect(() => {
@@ -197,14 +204,16 @@ export default function MoviePlayer({ src, title, poster }) {
   };
 
   const handleVolume = (e) => {
-    const video = videoRef.current;
-    if (!video) return;
+  const video = videoRef.current;
+  if (!video) return;
 
-    const value = parseFloat(e.target.value);
-    video.volume = value;
-    setVolume(value);
-    localStorage.setItem(VOLUME_KEY, value);
-  };
+  // Lấy giá trị từ 0 -> 100 và chia cho 100 để đưa về khoảng 0.0 -> 1.0
+  const value = parseFloat(e.target.value) / 100; 
+  
+  video.volume = value;
+  setVolume(value); // State volume vẫn giữ từ 0 -> 1
+  localStorage.setItem(VOLUME_KEY, value);
+};
 
   const toggleMute = () => {
     const video = videoRef.current;
@@ -411,18 +420,9 @@ export default function MoviePlayer({ src, title, poster }) {
     <div
       className={`player-container ${isFullscreen ? "mobile-fullscreen" : ""}`}
       ref={playerRef}
-      onMouseMove={showControls}
-      onClick={(e) => {
-        if (e.target.closest(".skip-ads-btn") || e.target.closest(".controls")) {
-          return;
-        }
-        showControls();
-      }}
-      onTouchStart={(e) => {
-        if (e.target.closest(".skip-ads-btn") || e.target.closest(".controls")) {
-          return;
-        }
-        showControls();
+      onMouseMove={showControls} // Dành cho máy tính khi di chuột
+      onClick={() => {
+        if (!isMobile) showControls(); // Chỉ kích hoạt click này trên Desktop
       }}
     >
       <video
@@ -440,6 +440,8 @@ export default function MoviePlayer({ src, title, poster }) {
         }}
         onClick={(e) => {
           e.stopPropagation();
+          
+          // Xử lý riêng cho Điện thoại / Máy tính bảng
           if (isMobile) {
             if (controlsVisible) {
               setControlsVisible(false);
@@ -449,6 +451,8 @@ export default function MoviePlayer({ src, title, poster }) {
             }
             return;
           }
+          
+          // Xử lý cho Máy tính (Desktop)
           togglePlay();
         }}
         onWaiting={() => setIsBuffering(true)}
