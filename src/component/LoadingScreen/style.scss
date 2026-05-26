@@ -1,0 +1,169 @@
+.loading-screen {
+  position: fixed;
+  inset: 0;
+
+  background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/VN-vi-20260105-TRIFECTA-perspective_ec5c484f-840e-4d19-9f35-b9e6a0eef2c7_medium.jpg");
+
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+
+  overflow: hidden;
+}
+/* lớp mờ overlay */
+.loading-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* độ tối */
+  backdrop-filter: blur(10px);      /* độ mờ */
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 0;
+}
+
+/* đảm bảo content nằm trên overlay */
+.loading-screen > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* LOGO */
+.logo {
+  position: relative;
+}
+
+.logo img {
+  width: 900px;
+  max-width: 92vw;
+
+  object-fit: contain;
+
+  transition: all 0.6s ease;
+
+  transform: scale(0.6);
+
+  margin-bottom: -40px;
+}
+
+/* khi done → zoom in */
+.logo.zoom-in img {
+  transform: scale(1.3);
+  opacity: 0;
+}
+.loading-text2 {
+  color: rgba(255,255,255,0.82);
+
+  font-size: 14px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  animation: blink 1.2s infinite;
+
+  margin-bottom: 14px;
+
+  margin-top: -70px;
+}
+
+/* nhấp nháy */
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+/* BAR nền */
+.bar {
+  width: 320px;
+  max-width: 75vw;
+
+  height: 4px;
+
+  background: rgba(255,255,255,0.08);
+
+  border-radius: 999px;
+
+  overflow: hidden;
+
+  position: relative;
+
+  margin-top: -4px;
+}
+
+/* thanh chạy */
+.progress {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #d1d5db,
+    #ffffff
+  );
+  width: 0%;
+  transition: width 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+  0 0 10px rgba(255,255,255,0.4),
+  0 0 20px rgba(255,255,255,0.15);
+}
+
+/* hiệu ứng ánh sáng chạy */
+.progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: shine 1s linear infinite;
+}
+
+@keyframes shine {
+  0% { left: -50%; }
+  100% { left: 100%; }
+}
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .logo img {
+    width: 95vw;
+
+    transform: scale(0.82);
+
+    margin-bottom: -10px;
+  }
+
+  .logo.zoom-in img {
+    transform: scale(1.08);
+  }
+
+  .loading-text2 {
+    font-size: 12px;
+
+    letter-spacing: 2px;
+
+    margin-top: -12px;
+
+    margin-bottom: 12px;
+  }
+
+  .bar {
+    width: 72vw;
+
+    height: 3px;
+  }
+}

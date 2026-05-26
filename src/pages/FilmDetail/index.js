@@ -6,6 +6,7 @@ import { MdOutlineStorage } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import {VerifiedBadge} from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
+import MoviePlayer from "../../component/MoviePlayer/MoviePlayer";
 import "./style.scss";
 
 export default function FilmDetail() {
@@ -411,16 +412,15 @@ useEffect(() => {
         </h5>
 
         {/* Player: Sử dụng isVideoLoading để gỡ bỏ hoàn toàn iframe cũ khỏi DOM */}
-        <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
-            {!isVideoLoading ? (
-            <iframe
-              key={`${currentServer}-${currentVideo?.slug}-${currentVideo?.link_embed}`}
-              src={currentVideo?.link_embed}
-              title="Movie Player"
-              allow="autoplay; encrypted-media; picture-in-picture;"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-              frameBorder="0"
+        <div className="movie-page__player mb-4 mx-auto">
+          {!isVideoLoading ? (
+            <MoviePlayer
+              key={`${currentServer}-${currentVideo?.slug}`}
+              src={currentVideo?.link_m3u8}
+              title={`${movie.name} - ${currentVideo.name}`}
+              poster={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
+                movie.thumb_url
+              )}`}
             />
           ) : (
             <div className="video-loading-preview">

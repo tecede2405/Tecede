@@ -13,6 +13,7 @@
     "cra-template": "1.2.0",
     "dotenv": "^17.2.3",
     "font-awesome": "^4.7.0",
+    "hls.js": "^1.6.16",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.0.0",
