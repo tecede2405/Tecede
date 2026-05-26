@@ -30,7 +30,6 @@ export default function MoviePlayer({
   useState(false);
   const [isFullscreen, setIsFullscreen] =
   useState(false);
-  const bufferTimeout = useRef(null);
   const hideTimeout = useRef(null);
 
   const storageKey = `movie-progress-${src}`;
@@ -453,11 +452,7 @@ useEffect(() => {
   }
 };
 
-  useEffect(() => {
-  return () => {
-    clearTimeout(bufferTimeout.current);
-  };
-}, []);
+  
 
   useEffect(() => {
   const saveProgress = () => {
@@ -589,22 +584,24 @@ useEffect(() => {
       }}
 
       onSeeking={() => {
-        clearTimeout(bufferTimeout.current);
+        const video = videoRef.current;
 
-        bufferTimeout.current = setTimeout(() => {
+        // chỉ hiện loading nếu video thật sự chưa đủ data
+        if (video?.readyState < 3) {
           setIsBuffering(true);
-        }, 180);
+        }
       }}
 
       onPlaying={() => {
-        clearTimeout(bufferTimeout.current);
-
         setIsBuffering(false);
       }}
 
-      onCanPlay={() => {
-        clearTimeout(bufferTimeout.current);
 
+      onCanPlay={() => {
+        setIsBuffering(false);
+      }}
+
+      onSeeked={() => {
         setIsBuffering(false);
       }}
 

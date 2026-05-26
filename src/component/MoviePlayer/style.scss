@@ -424,7 +424,26 @@ input {
   height: 100%;
   object-fit: contain;
 }
+.player-container.mobile-fullscreen {
+  position: fixed;
+  inset: 0;
 
+  width: 100vw;
+  height: 100vh;
+
+  background: #000;
+
+  z-index: 999999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-container.mobile-fullscreen video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
