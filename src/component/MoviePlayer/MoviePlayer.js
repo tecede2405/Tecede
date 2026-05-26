@@ -28,7 +28,7 @@ export default function MoviePlayer({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isBuffering, setIsBuffering] =
   useState(false);
-
+  const bufferTimeout = useRef(null);
   const hideTimeout = useRef(null);
 
   const storageKey = `movie-progress-${src}`;
@@ -97,7 +97,21 @@ export default function MoviePlayer({
     let hls;
 
     if (Hls.isSupported()) {
-      hls = new Hls();
+      hls = new Hls({
+      enableWorker: true,
+      lowLatencyMode: true,
+
+      backBufferLength: 90,
+
+      maxBufferLength: 30,
+      maxMaxBufferLength: 60,
+
+      capLevelToPlayerSize: true,
+
+      startLevel: -1,
+
+      abrEwmaDefaultEstimate: 5000000,
+    });
 
       hls.loadSource(src);
 
@@ -201,9 +215,9 @@ export default function MoviePlayer({
 
     if (!video) return;
 
-    const percent =
-      (video.currentTime / video.duration) *
-      100;
+    const percent = video.duration
+    ? (video.currentTime / video.duration) * 100
+    : 0;
 
     setProgress(percent);
 
@@ -240,7 +254,7 @@ export default function MoviePlayer({
   const newTime =
     (value / 100) * video.duration;
 
-    setProgress(value);
+    setProgress(Number(value));
 
     // update time ngay lập tức
     setCurrentTime(
@@ -300,12 +314,23 @@ export default function MoviePlayer({
   };
 
   const handleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      playerRef.current.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  };
+  const video = videoRef.current;
+
+  if (!video) return;
+
+  // iPhone Safari
+  if (video.webkitEnterFullscreen) {
+    video.webkitEnterFullscreen();
+    return;
+  }
+
+  // Browser thường
+  if (!document.fullscreenElement) {
+    playerRef.current?.requestFullscreen?.();
+  } else {
+    document.exitFullscreen();
+  }
+};
 
   const skip = (sec) => {
     videoRef.current.currentTime += sec;
@@ -367,6 +392,12 @@ useEffect(() => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+  return () => {
+    clearTimeout(bufferTimeout.current);
+  };
+}, []);
 
   useEffect(() => {
   const saveProgress = () => {
@@ -462,58 +493,69 @@ useEffect(() => {
       onTouchStart={showControls}
     >
       <video
-  ref={videoRef}
-  playsInline
-  poster={poster}
-  onTimeUpdate={updateProgress}
-  onClick={() => {
-  // MOBILE
-  if (isMobile) {
-    if (controlsVisible) {
-      setControlsVisible(false);
-    } else {
-      showControls();
+      ref={videoRef}
+      playsInline
+      webkitPlaysInline
+      x5PlaysInline
+      preload="auto"
+      poster={poster}
+      onTimeUpdate={updateProgress}
+      onClick={() => {
+      // MOBILE
+      if (isMobile) {
+        if (controlsVisible) {
+          setControlsVisible(false);
+        } else {
+          showControls();
 
-      setShowCenter(true);
+          setShowCenter(true);
 
-      setTimeout(() => {
-        setShowCenter(false);
-      }, 600);
-    }
+          setTimeout(() => {
+            setShowCenter(false);
+          }, 600);
+        }
 
-    return;
-  }
+        return;
+      }
 
-  // DESKTOP
-  togglePlay();
-}}
+      // DESKTOP
+      togglePlay();
+    }}
 
-  onWaiting={() => {
-    setIsBuffering(true);
-  }}
+      onWaiting={() => {
+        setIsBuffering(true);
+      }}
 
-  onSeeking={() => {
-    setIsBuffering(true);
-  }}
+      onSeeking={() => {
+        clearTimeout(bufferTimeout.current);
 
-  onCanPlay={() => {
-    setIsBuffering(false);
-  }}
+        bufferTimeout.current = setTimeout(() => {
+          setIsBuffering(true);
+        }, 180);
+      }}
 
-  onPlaying={() => {
-    setIsBuffering(false);
-  }}
+      onPlaying={() => {
+        clearTimeout(bufferTimeout.current);
 
-  onPause={() => {
-    setIsPlaying(false);
+        setIsBuffering(false);
+      }}
 
-    setControlsVisible(true);
+      onCanPlay={() => {
+        clearTimeout(bufferTimeout.current);
 
-    localStorage.setItem(
-      storageKey,
-      videoRef.current.currentTime
-    );
-  }}
+        setIsBuffering(false);
+      }}
+
+      onPause={() => {
+        setIsPlaying(false);
+
+        setControlsVisible(true);
+
+        localStorage.setItem(
+          storageKey,
+          videoRef.current.currentTime
+        );
+      }}
 
   onPlay={() => {
     setIsPlaying(true);
@@ -571,7 +613,7 @@ useEffect(() => {
           style={{
             "--progress": `${progress}%`,
           }}
-          onInput={handleSeek}
+          onChange={handleSeek}
           onMouseMove={handlePreview}
           onMouseLeave={() =>
             setShowPreview(false)
