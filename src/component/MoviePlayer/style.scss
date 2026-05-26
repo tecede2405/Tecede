@@ -2,7 +2,6 @@
   width: 100%;
   position: relative;
   background: #000;
-  border-radius: 16px;
   overflow: hidden;
   aspect-ratio: 16 / 9;
 }
@@ -199,7 +198,6 @@ input[type="range"] {
 
   animation: spin 0.8s linear infinite;
 
-  backdrop-filter: blur(6px);
 }
 
 @keyframes spin {
@@ -287,19 +285,29 @@ input[type="range"] {
 
 .preview-time {
   position: absolute;
-  bottom: 70px;
+  bottom: 90px;
   left: 0;
-  transform: translateX(0);
-  background: rgba(0,0,0,0.85);
+
+  transform: translateX(-50%);
+
+  background: rgba(0,0,0,0.9);
   color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
+
+  padding: 5px 10px;
+  border-radius: 8px;
+
   font-size: 12px;
+  font-weight: 600;
+
   pointer-events: none;
   opacity: 0;
-  transition: 0.15s;
-}
 
+  transition: 0.15s;
+
+  z-index: 9999;
+
+  white-space: nowrap;
+}
 /* ================= SPEED SELECT ================= */
 
 .speed-select {
@@ -354,7 +362,7 @@ input[type="range"] {
   font-size: 42px;
   cursor: pointer;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: auto;
   transition: 0.25s ease;
   z-index: 999;
 }
@@ -437,8 +445,9 @@ input[type="range"] {
   }
 
   .preview-time {
-    bottom: 55px;
-    font-size: 11px;
+    bottom: 75px;
+    font-size: 10px;
+    padding: 4px 8px;
   }
 
   .skip-ads-btn {

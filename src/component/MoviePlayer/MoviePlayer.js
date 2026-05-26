@@ -453,50 +453,71 @@ useEffect(() => {
       onTouchStart={showControls}
     >
       <video
-        ref={videoRef}
-        playsInline
-        poster={poster}
-        onTimeUpdate={updateProgress}
-        onClick={togglePlay}
+  ref={videoRef}
+  playsInline
+  poster={poster}
+  onTimeUpdate={updateProgress}
+  onClick={() => {
+  // MOBILE
+  if (isMobile) {
+    if (controlsVisible) {
+      setControlsVisible(false);
+    } else {
+      showControls();
 
-        onWaiting={() => {
-          setIsBuffering(true);
-        }}
+      setShowCenter(true);
 
-        onSeeking={() => {
-          setIsBuffering(true);
-        }}
+      setTimeout(() => {
+        setShowCenter(false);
+      }, 600);
+    }
 
-        onCanPlay={() => {
-          setIsBuffering(false);
-        }}
+    return;
+  }
 
-        onPlaying={() => {
-          setIsBuffering(false);
-        }}
+  // DESKTOP
+  togglePlay();
+}}
 
-        onPause={() => {
-          setIsPlaying(false);
+  onWaiting={() => {
+    setIsBuffering(true);
+  }}
 
-          setControlsVisible(true);
+  onSeeking={() => {
+    setIsBuffering(true);
+  }}
 
-          localStorage.setItem(
-            storageKey,
-            videoRef.current.currentTime
-          );
-        }}
+  onCanPlay={() => {
+    setIsBuffering(false);
+  }}
 
-        onPlay={() => {
-          setIsPlaying(true);
+  onPlaying={() => {
+    setIsBuffering(false);
+  }}
 
-          showControls();
-        }}
-      />
+  onPause={() => {
+    setIsPlaying(false);
+
+    setControlsVisible(true);
+
+    localStorage.setItem(
+      storageKey,
+      videoRef.current.currentTime
+    );
+  }}
+
+  onPlay={() => {
+    setIsPlaying(true);
+
+    showControls();
+  }}
+/>
 
       <div
           className={`center-play ${
             showCenter ? "show" : ""
           }`}
+          onClick={togglePlay}
         >
           {isPlaying ? (
             <FaPause />
