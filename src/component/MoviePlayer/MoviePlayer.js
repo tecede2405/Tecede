@@ -388,9 +388,27 @@ useEffect(() => {
   const handleKey = (e) => {
     if (
       e.target.tagName === "INPUT" ||
-      e.target.tagName === "SELECT"
-    )
+      e.target.tagName === "TEXTAREA" ||
+      e.target.tagName === "SELECT" ||
+      e.target.isContentEditable
+    ) {
       return;
+    }
+
+    // chỉ hoạt động khi player còn trong màn hình
+    const player =
+      playerRef.current;
+
+    if (!player) return;
+
+    const rect =
+      player.getBoundingClientRect();
+
+    const isVisible =
+      rect.top < window.innerHeight &&
+      rect.bottom > 0;
+
+    if (!isVisible) return;
 
     switch (e.code) {
       case "Space":
