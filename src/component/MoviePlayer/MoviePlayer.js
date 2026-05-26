@@ -231,14 +231,23 @@ export default function MoviePlayer({
   };
 
   const handleSeek = (e) => {
-    const video = videoRef.current;
+  const video = videoRef.current;
 
-    const value = e.target.value;
+  if (!video?.duration) return;
+
+  const value = e.target.value;
+
+  const newTime =
+    (value / 100) * video.duration;
 
     setProgress(value);
 
-    video.currentTime =
-      (value / 100) * video.duration;
+    // update time ngay lập tức
+    setCurrentTime(
+      formatTime(newTime)
+    );
+
+    video.currentTime = newTime;
   };
 
   const handleVolume = (e) => {

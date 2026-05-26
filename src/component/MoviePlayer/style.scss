@@ -420,12 +420,13 @@ input[type="range"] {
   }
 
   .time {
-    font-size: 9px;
+    width: 50px;
+    font-size: 8px;
   }
 
   .seek-btn {
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
   }
 
   .seek-text {
@@ -434,7 +435,7 @@ input[type="range"] {
   }
 
   .speed-select {
-    padding: 3px 5px;
+    padding: 3px 3px;
     font-size: 11px;
   }
 
@@ -454,7 +455,7 @@ input[type="range"] {
     bottom: 70px;
   }
   #pipBtn {
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
   }
 }
