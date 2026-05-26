@@ -28,6 +28,8 @@ export default function MoviePlayer({
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isBuffering, setIsBuffering] =
   useState(false);
+  const [isFullscreen, setIsFullscreen] =
+  useState(false);
   const bufferTimeout = useRef(null);
   const hideTimeout = useRef(null);
 
@@ -341,22 +343,24 @@ export default function MoviePlayer({
   return "🔊";
 };
 
-  const handleFullscreen = () => {
-  const video = videoRef.current;
-
-  if (!video) return;
-
-  // iPhone Safari
-  if (video.webkitEnterFullscreen) {
-    video.webkitEnterFullscreen();
+  const handleFullscreen = async () => {
+  if (isMobile) {
+    setIsFullscreen(prev => !prev);
     return;
   }
 
-  // Browser thường
-  if (!document.fullscreenElement) {
-    playerRef.current?.requestFullscreen?.();
-  } else {
-    document.exitFullscreen();
+  const player = playerRef.current;
+
+  if (!player) return;
+
+  try {
+    if (!document.fullscreenElement) {
+      await player.requestFullscreen?.();
+    } else {
+      await document.exitFullscreen?.();
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -542,7 +546,9 @@ useEffect(() => {
 
   return (
     <div
-      className="player-container"
+      className={`player-container ${
+        isFullscreen ? "mobile-fullscreen" : ""
+      }`}
       ref={playerRef}
       onMouseMove={showControls}
       onClick={showControls}

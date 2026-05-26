@@ -327,6 +327,12 @@ input[type="range"] {
   background: #111;
 }
 
+button,
+select,
+input {
+  touch-action: manipulation;
+}
+
 /* ================= PIP ================= */
 
 #pipBtn {
@@ -372,6 +378,21 @@ input[type="range"] {
 .center-play.show {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+}
+
+.mobile-fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  background: #000;
+}
+
+.mobile-fullscreen video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* ================= SKIP BUTTON ================= */
