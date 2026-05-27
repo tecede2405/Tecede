@@ -435,124 +435,171 @@
     }
   }
 }
+/* Nguồn (source) tabs */
+.source-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+
+  button {
+    padding: 4px 14px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #222;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #333;
+      border-color: #666;
+    }
+
+    &.active {
+      background-color: #0ebe1f;
+      border-color: #0ebe1f;
+      color: #fff;
+    }
+  }
+}
+
+/* Server tabs */
+.server-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+
+  button {
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid #555;
+    background-color: #2a2a2a;
+    color: #ddd;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #3a3a3a;
+      color: #fff;
+    }
+
+    &.active {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #fff;
+    }
+  }
+}
+
+/* Episode buttons */
+.episode-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .episode-card {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #1c1c1c;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #333;
+      color: #fff;
+    }
+  }
+}
+
 // skeleton
-/* =========================
-   SKELETON DETAIL PAGE
-========================= */
-.dark-swal-popup {
-  border: 1px solid #333;
-  border-radius: 16px;
-}
-.skeleton * {
-  pointer-events: none;
-}
-.movie-detail-container.skeleton {
-  min-height: 100vh;
-  background: #121212;
-}
-.skeleton .episodes-section {
-  background: #121212;
+/* =========================================
+   SKELETON LOADING ANIMATION (CHUẨN LAYOUT)
+========================================= */
+
+.skeleton-animate {
+  background: linear-gradient(90deg, #2a2a2a 25%, #3e3e3e 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
 }
 
-@mixin skeleton-loading {
-  background: linear-gradient(
-    90deg,
-    #1a1a1a 25%,
-    #2a2a2a 37%,
-    #1a1a1a 63%
-  );
-
-  background-size: 400% 100%;
-  animation: detailShimmer 1.4s infinite linear;
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-/* poster */
-.skeleton-poster {
-  width: 150px;
-  height: 220px;
+/* Định hình các khối giả lập */
+/* Đảm bảo thẻ bọc poster luôn giữ đúng không gian */
+.poster-wrapper {
+  flex-shrink: 0; 
+}
+
+.sk-poster {
+  width: 180px; /* Độ rộng ngang của ảnh */
+  min-height: 250px; /* ÉP CỨNG CHIỀU CAO (240 x 1.5) để khung không bị tàng hình */
+  max-width: 100%;
   border-radius: 12px;
-  @include skeleton-loading;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(90deg, #2a2a2a 25%, #3e3e3e 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
 }
 
-/* text */
-.skeleton-text {
-  border-radius: 6px;
-  margin-bottom: 10px;
-  @include skeleton-loading;
-}
-
-.skeleton-text.title {
-  width: 300px;
-  height: 22px;
-}
-
-.skeleton-text.subtitle {
-  width: 200px;
-  height: 14px;
-}
-
-.skeleton-text.desc {
-  width: 100%;
-  height: 12px;
-}
-
-.skeleton-text.desc.short {
-  width: 70%;
-}
-
-.skeleton-text.header {
-  width: 180px;
-  height: 16px;
-}
-
-/* tag */
-.skeleton-tag {
-  height: 22px;
-  border-radius: 6px;
-  flex: 0 0 auto; /* không stretch */
-  @include skeleton-loading;
-}
-
-/* tạo độ random cho giống thật */
-.skeleton-tag:nth-child(1) { width: 60px; }
-.skeleton-tag:nth-child(2) { width: 80px; }
-.skeleton-tag:nth-child(3) { width: 90px; }
-.skeleton-tag:nth-child(4) { width: 120px; }
-.skeleton-tag:nth-child(5) { width: 100px; }
-.skeleton-tag:nth-child(6) { width: 140px; }
-
-/* button */
-.skeleton-btn {
-  width: 140px;
+.sk-title-vn {
   height: 36px;
-  border-radius: 999px;
-  margin: 15px 0;
-  @include skeleton-loading;
-}
-
-/* server */
-.skeleton-pill {
-  width: 120px;
-  height: 28px;
+  width: 60%;
+  margin-bottom: 10px;
   border-radius: 6px;
-  @include skeleton-loading;
 }
 
-/* episode */
-.skeleton-episode {
-  height: 40px;
-  border-radius: 8px;
-  @include skeleton-loading;
+.sk-title-en {
+  height: 20px;
+  width: 40%;
+  margin-bottom: 20px;
+  border-radius: 4px;
 }
 
-/* shimmer animation */
-@keyframes detailShimmer {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: 0 0;
-  }
+.sk-tag {
+  width: 85px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.sk-btn-play {
+  width: 140px;
+  height: 42px;
+  border-radius: 30px; /* Nút Xem ngay bo tròn nhiều dạng viên thuốc */
+}
+
+.sk-desc .sk-line {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+/* Các khối Tab và Tập phim */
+.sk-source-tab {
+  width: 90px;
+  height: 38px;
+  border-radius: 4px;
+}
+
+.sk-server-tab {
+  width: 110px;
+  height: 34px;
+  border-radius: 20px; /* Nút server bo tròn */
+}
+
+.sk-ep-btn {
+  width: 100%; 
+  height: 42px;
+  border-radius: 4px;
 }
 /* ===============================
    RESPONSIVE
@@ -602,4 +649,42 @@
       margin-left: auto;
       margin-right: auto;
     }
+    /* Căn giữa khung thông tin trên mobile */
+  .skeleton-mode .info-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ép tất cả các khối con nằm giữa */
+  }
+
+  .sk-poster {
+    width: 140px; 
+    min-height: 210px; /* Tỉ lệ 2:3 */
+    margin: 0 auto 20px auto; /* Căn giữa ảnh poster và đẩy cách phần tên ở dưới */
+  }
+
+  /* Căn giữa tiêu đề chính và phụ */
+  .sk-title-vn,
+  .sk-title-en {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Căn giữa cụm Tags */
+  .skeleton-mode .tag-container {
+    justify-content: center !important;
+  }
+
+  /* Căn giữa nút Xem Ngay */
+  .sk-btn-play {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Căn giữa luôn các dòng gạch mô tả cho đồng bộ */
+  .sk-desc {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
  }

@@ -2,291 +2,287 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaPlay } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
-import "./style.scss"; 
+import "./style.scss";
 
 export default function MovieDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
-  const [servers, setServers] = useState([]);
+  const [sources, setSources] = useState([]);
+  const [currentSource, setCurrentSource] = useState(0);
   const [currentServer, setCurrentServer] = useState(0);
   const [loading, setLoading] = useState(true);
-  const currentServerName = servers[currentServer]?.server_name || "";
-  
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_FILM_API_URL}/phim/${slug}`)
+    const url = `${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`;
+
+    fetch(url)
       .then(res => res.json())
       .then(data => {
-        setMovie(data.movie || null);
-        setServers(data.episodes || []);
+        setMovie(data.data?.movie || null);
+        
+        let rawSources = data.data?.episodes || [];
+        rawSources.sort((a, b) => {
+          if (a.source === "nc") return -1;
+          if (b.source === "nc") return 1;
+          return 0;
+        });
+        
+        setSources(rawSources);
+        setCurrentSource(0);
+        setCurrentServer(0);
       })
-      .catch(() => setMovie(null))
+      .catch(err => {
+        console.error("❌ Fetch error:", err);
+        setMovie(null);
+      })
       .finally(() => setLoading(false));
   }, [slug]);
 
-  function MovieDetailSkeleton() {
-    return (
-      <div className="movie-detail-container skeleton">
-        {/* HERO */}
-        <div className="hero-section">
+  const sourceObj = sources[currentSource];
+  const serverList = sourceObj?.episodes || [];
+  const currentServerObj = serverList[currentServer];
+  const episodes = currentServerObj?.server_data || currentServerObj?.items || [];
+  const currentServerName = currentServerObj?.server_name || "";
 
-          <div className="hero-bg skeleton-bg"></div>
-          <div className="hero-overlay" />
+  function getImageUrl(url, isKkphim) {
+    if (!url) return ""; 
+    let fullUrl = url;
 
-          <div className="hero-content">
+    if (!url.startsWith("http")) {
+      const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+      fullUrl = `https://phimimg.com/${cleanUrl}`;
+    }
 
-            {/* POSTER */}
-            <div className="poster-wrapper">
-              <div className="skeleton-poster"></div>
-            </div>
+    if (isKkphim) {
+      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
+    }
 
-            {/* INFO */}
-            <div className="info-wrapper">
-
-              <div className="skeleton-text title"></div>
-              <div className="skeleton-text subtitle"></div>
-
-              {/* TAG */}
-              <div className="tag-container">
-                <div className="skeleton-tag"></div>
-                <div className="skeleton-tag"></div>
-                <div className="skeleton-tag"></div>
-                <div className="skeleton-tag"></div>
-                <div className="skeleton-tag"></div>
-                <div className="skeleton-tag"></div>
-              </div>
-
-              {/* BUTTON */}
-              <div className="skeleton-btn"></div>
-
-              {/* DESCRIPTION */}
-              <div className="skeleton-text desc"></div>
-              <div className="skeleton-text desc"></div>
-              <div className="skeleton-text desc"></div>
-              <div className="skeleton-text desc short"></div>
-
-            </div>
-          </div>
-        </div>
-
-        {/* EPISODES */}
-        <div className="episodes-section">
-
-          <div className="section-header">
-            <div className="skeleton-text header"></div>
-
-            <div className="server-tabs">
-              <div className="skeleton-pill"></div>
-              <div className="skeleton-pill"></div>
-            </div>
-          </div>
-
-          <div className="episode-grid">
-            {[...Array(18)].map((_, i) => (
-              <div key={i} className="episode-card skeleton-episode"></div>
-            ))}
-          </div>
-
-        </div>
-      </div>
-    );
+    return fullUrl;
   }
-  
 
-  const episodes = servers[currentServer]?.server_data || [];
+  const isKkphim = sources.some(s => s.source === "kk" || s.source === "kkphim");
   
+  let posterRaw = "";
+  let thumbRaw = "";
+
+  if (isKkphim) {
+    posterRaw = movie?.poster_url;
+    thumbRaw = movie?.thumb_url;
+  } else {
+    posterRaw = movie?.thumb_url;
+    thumbRaw = movie?.poster_url;
+  }
+
+  if (!posterRaw) posterRaw = thumbRaw;
+  if (!thumbRaw) thumbRaw = posterRaw;
+
+  const posterUrl = getImageUrl(posterRaw, isKkphim);
+  const thumbUrl = getImageUrl(thumbRaw, isKkphim);
 
   return (
-  <>
-    <Helmet>
-      <title>
-        {movie?.name
-          ? `${movie.name} Vietsub HD | Xem phim miễn phí - Tecede`
-          : "Đang tải phim... - Tecede"}
-      </title>
+    <>
+      <Helmet>
+        <title>
+          {movie?.name
+            ? `${movie.name} Vietsub HD | Xem phim miễn phí - Tecede`
+            : "Đang tải phim... - Tecede"}
+        </title>
+      </Helmet>
 
-      <meta
-        name="description"
-        content={
-          movie?.content
-            ?.replace(/<\/?[^>]+(>|$)/g, "")
-            ?.slice(0, 150) ||
-          "Xem phim miễn phí, cập nhật nhanh tại Tecede"
-        }
-      />
-
-      {/* Open Graph */}
-      <meta
-        property="og:title"
-        content={
-          movie?.name
-            ? `${movie.name} - Xem phim miễn phí`
-            : "Tecede - Xem phim miễn phí"
-        }
-      />
-
-      <meta
-        property="og:description"
-        content={
-          movie?.content
-            ?.replace(/<\/?[^>]+(>|$)/g, "")
-            ?.slice(0, 150) ||
-          "Xem phim miễn phí tại Tecede"
-        }
-      />
-
-      <meta
-        property="og:image"
-        content={
-          movie?.thumb_url
-            ? `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-                movie.thumb_url
-              )}`
-            : ""
-        }
-      />
-    </Helmet>
-
-    {loading ? (
-      <MovieDetailSkeleton />
-    ) : !movie ? (
-      <div className="error-screen">Không tải được dữ liệu phim!</div>
-    ) : (
-      <div className="movie-detail-container">
-        {/* HERO SECTION */}
-        <div className="hero-section">
-          <div
-            className="hero-bg"
-            style={{
-              backgroundImage: `url(${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-                movie.thumb_url
-              )})`,
-            }}
-          />
-          <div className="hero-overlay" />
-
-          <div className="hero-content">
-            <div className="poster-wrapper">
-              <img
-                src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-                  movie.poster_url
-                )}`}
-                alt={movie.name}
-                loading="lazy"
-              />
-            </div>
-
-            <div className="info-wrapper">
-              <h1 className="title-vn">{movie.name}</h1>
-              <h2 className="title-en">
-                {movie.origin_name} ({movie.year})
-              </h2>
-
-              <div className="tag-container">
-                <Tag text={movie.quality} color="#e50914" />
-                <Tag text={movie.lang} color="#007bff" />
-                <Tag text={movie.time} color="#9D4EDD" />
-                <Tag
-                  text={`Trạng thái: ${movie.episode_current}`}
-                  color="#FF8500"
-                />
-                <Tag
-                  text={`Tổng : ${movie.episode_total} tập`}
-                  color="#28a745"
-                />
-
-                {movie.country?.map((c) => (
-                  <Tag
-                    key={c.id}
-                    text={`Quốc gia: ${c.name}`}
-                    color="#ffc107"
-                  />
-                ))}
+      {loading ? (
+        <div className="movie-detail-container skeleton-mode">
+          <div className="hero-section">
+            <div className="hero-bg skeleton-animate" style={{ backgroundImage: 'none', background: '#1a1a1a' }} />
+            <div className="hero-overlay" />
+            
+            <div className="hero-content">
+              <div className="poster-wrapper">
+                <div className="sk-poster skeleton-animate"></div>
               </div>
 
-              <div className="action-buttons">
-                <button
-                  className="btn-play"
-                  onClick={() => {
-                    if (!servers.length || !episodes.length) return;
+              <div className="info-wrapper">
+                <div className="sk-title-vn skeleton-animate"></div>
+                <div className="sk-title-en skeleton-animate"></div>
+                
+                <div className="tag-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="sk-tag skeleton-animate"></div>
+                  ))}
+                </div>
 
-                    const firstServer =
-                      servers[currentServer]?.server_name;
-                    const firstEp = episodes[0]?.slug;
+                <div className="action-buttons mb-4">
+                  <div className="sk-btn-play skeleton-animate"></div>
+                </div>
 
-                    if (!firstServer || !firstEp) return;
-
-                    navigate(
-                      `/xem-phim/${slug}/${encodeURIComponent(
-                        firstServer
-                      )}/${firstEp}`
-                    );
-                  }}
-                >
-                  <FaPlay className="me-1 mb-1" /> XEM NGAY
-                </button>
+                <div className="sk-desc">
+                  <div className="sk-line skeleton-animate"></div>
+                  <div className="sk-line skeleton-animate" style={{ width: '90%' }}></div>
+                  <div className="sk-line skeleton-animate" style={{ width: '60%' }}></div>
+                </div>
               </div>
-
-              <p className="movie_description">
-                {movie.content
-                  ?.replace(/<\/?[^>]+(>|$)/g, "")
-                  ?.replace(/&quot;/g, '"') ||
-                  "Đang cập nhật nội dung..."}
-              </p>
             </div>
           </div>
-        </div>
 
-        {/* EPISODES */}
-        <div className="episodes-section mt-3">
-          <h3 className="mb-3 fst-italic">Danh Sách Tập</h3>
+          <div className="episodes-section mt-3">
+            <h5 className="mb-3 fst-italic">Danh Sách Nguồn</h5>
+            <div className="source-tabs d-flex gap-2">
+              <div className="sk-source-tab skeleton-animate"></div>
+              <div className="sk-source-tab skeleton-animate"></div>
+            </div>
 
-          <div className="section-header">
-            <div className="server-tabs">
-              {servers.map((s, i) => (
-                <button
-                  key={i}
-                  className={i === currentServer ? "active" : ""}
-                  onClick={() => setCurrentServer(i)}
-                >
-                  {s.server_name}
-                </button>
+            <h5 className="mt-3 fst-italic">Danh Sách Server</h5>
+            <div className="server-tabs d-flex gap-2">
+              <div className="sk-server-tab skeleton-animate"></div>
+            </div>
+
+            <h5 className="mt-3 fst-italic">Danh Sách Tập</h5>
+            <div className="episode-grid">
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="sk-ep-btn skeleton-animate"></div>
               ))}
             </div>
           </div>
+        </div>
+      ) : !movie ? (
+        <div className="error-screen">Không tải được dữ liệu phim!</div>
+      ) : (
+        <div className="movie-detail-container">
+          <div className="hero-section">
+            <div
+              className="hero-bg"
+              style={{
+                backgroundImage: `url(${thumbUrl})`,
+              }}
+            />
+            <div className="hero-overlay" />
 
-          <div className="episode-grid">
-            {episodes.length === 0 ? (
-              <p className="empty-msg">Sắp ra mắt...</p>
-            ) : (
-              episodes.map((ep) => (
+            <div className="hero-content">
+              <div className="poster-wrapper">
+                <img
+                  src={posterUrl}
+                  alt={movie.name}
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="info-wrapper">
+                <h1 className="title-vn">{movie.name}</h1>
+                {movie.origin_name && (
+                  <h2 className="title-en">
+                    {movie.origin_name} {movie.year ? `(${movie.year})` : ""}
+                  </h2>
+                )}
+
+                <div className="tag-container">
+                  <Tag text={movie.quality} color="#e50914" />
+                  <Tag text={movie.lang} color="#007bff" />
+                  <Tag text={movie.time} color="#9D4EDD" />
+                  {movie.episode_current && (
+                    <Tag text={`Trạng thái: ${movie.episode_current}`} color="#FF8500" />
+                  )}
+                  {movie.episode_total && (
+                    <Tag text={`Tổng: ${movie.episode_total} tập`} color="#28a745" />
+                  )}
+                  {Array.isArray(movie.country)
+                    ? movie.country.map(c => (
+                        <Tag key={c.id} text={`Quốc gia: ${c.name}`} color="#ffc107" />
+                      ))
+                    : null}
+                </div>
+
+                <div className="action-buttons">
+                  <button
+                    className="btn-play"
+                    onClick={() => {
+                      if (!episodes.length) return;
+                      const firstEp = episodes[0]?.slug;
+                      if (!currentServerName || !firstEp) return;
+                      // TRUYỀN DATA SANG FILE 2 QUA STATE
+                      navigate(
+                        `/xem-phim/${slug}/${encodeURIComponent(currentServerName)}/${firstEp}`,
+                        { state: { movieData: movie, sourcesData: sources } }
+                      );
+                    }}
+                  >
+                    <FaPlay className="me-1 mb-1" /> XEM NGAY
+                  </button>
+                </div>
+
+                <p className="movie_description">
+                  {movie.content?.replace(/<\/?[^>]+(>|$)/g, "")?.replace(/&quot;/g, '"') ||
+                    "Đang cập nhật nội dung..."}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="episodes-section mt-3">
+            <h5 className="mb-3 fst-italic">Danh Sách Nguồn</h5>
+            <div className="source-tabs">
+              {sources.map((src, i) => (
                 <button
-                  key={ep.slug}
-                  className="episode-card"
+                  key={i}
+                  className={i === currentSource ? "active" : ""}
                   onClick={() => {
-                    if (!ep?.slug) return;
-                    navigate(
-                      `/xem-phim/${slug}/${encodeURIComponent(
-                        currentServerName
-                      )}/${ep.slug}`
-                    );
+                    setCurrentSource(i);
+                    setCurrentServer(0);
                   }}
                 >
-                  <div className="ep-info">
-                    <span className="ep-name">{ep.name}</span>
-                  </div>
+                  {src.source.toUpperCase()}
                 </button>
-              ))
+              ))}
+            </div>
+
+            {serverList.length > 0 && (
+              <>
+                <h5 className="mt-3 fst-italic">Danh Sách Server</h5>
+                <div className="server-tabs">
+                  {serverList.map((s, i) => (
+                    <button
+                      key={i}
+                      className={i === currentServer ? "active" : ""}
+                      onClick={() => setCurrentServer(i)}
+                    >
+                      {s.server_name}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {episodes.length > 0 && (
+              <>
+                <h5 className="mt-3 fst-italic">Danh Sách Tập</h5>
+                <div className="episode-grid">
+                  {episodes.map(ep => (
+                    <button
+                      key={ep.slug}
+                      className="episode-card"
+                      onClick={() => {
+                        if (!ep?.slug) return;
+                        // TRUYỀN DATA SANG FILE 2 QUA STATE
+                        navigate(
+                          `/xem-phim/${slug}/${encodeURIComponent(currentServerName)}/${ep.slug}`,
+                          { state: { movieData: movie, sourcesData: sources } }
+                        );
+                      }}
+                    >
+                      <div className="ep-info">
+                        <span className="ep-name">{ep.name}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>
-      </div>
-    )}
-  </>
-);
+      )}
+    </>
+  );
 }
 
 function Tag({ text, color }) {

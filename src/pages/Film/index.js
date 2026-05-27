@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { GoChevronLeft } from "react-icons/go";
 import "./style.scss";
 
-/* ====== BLOCK KEYWORDS :)) ====== */
+/* ====== BLOCK KEYWORDS ====== */
 const BLOCKED_KEYWORDS = [
   "18",
   "18+",
@@ -47,7 +47,6 @@ export default function FilmListBySlug() {
 
   const keyword = filmSlug.replace(/-/g, " ");
 
-
   useEffect(() => {
     if (isBlockedKeyword(keyword)) {
       setResults([]);
@@ -66,14 +65,93 @@ export default function FilmListBySlug() {
     async function fetchData() {
       try {
         setLoading(true);
-        const url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(
-          keyword
-        )}&limit=50`;
-        const res = await fetch(url);
-        const data = await res.json();
-        setResults(data.data.items || []);
+
+        const fetchAllPages = async (baseUrl) => {
+          try {
+            const firstUrl = `${baseUrl}&page=1`;
+            const firstRes = await fetch(firstUrl);
+            const firstData = await firstRes.json();
+
+            const items = firstData?.data?.items || firstData?.items || [];
+            const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || 1;
+
+            let allItems = [...items];
+
+            if (totalPage > 1) {
+              const fetchPromises = [];
+              for (let i = 2; i <= totalPage; i++) {
+                fetchPromises.push(fetch(`${baseUrl}&page=${i}`).then(res => res.json()));
+              }
+              const remainingPagesData = await Promise.all(fetchPromises);
+              
+              remainingPagesData.forEach(data => {
+                const pageItems = data?.data?.items || data?.items || [];
+                allItems = [...allItems, ...pageItems];
+              });
+            }
+            return allItems;
+          } catch (error) {
+            console.error("Lỗi khi fetch nguồn:", baseUrl, error);
+            return []; 
+          }
+        };
+
+        // 1. GỌI API 1 (KKPhim)
+        const nguon1url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        let rawResults = await fetchAllPages(nguon1url);
+        let isKkphim = true;
+
+        // 2. FALLBACK API 2 (Nguồn C)
+        if (rawResults.length === 0) {
+          const nguon2url = `${process.env.REACT_APP_FILM_API_URL_2}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
+          rawResults = await fetchAllPages(nguon2url);
+          isKkphim = false; 
+        }
+
+        // 3. XỬ LÝ DATA
+        const normalizedResults = rawResults.map(film => {
+          if (isKkphim) {
+            return {
+              ...film,
+              isKkphim: true,
+              name: film.name,
+              original_name: film.origin_name || film.original_name, 
+              poster_url: film.poster_url, 
+              thumb_url: film.thumb_url,   
+              slug: film.slug,
+              path: film.slug,
+              episode_total: film.episode_total,
+              current_episode: film.episode_current, 
+              language: film.lang || "N/A",
+              time: film.time || "N/A",
+              quality: film.quality || "N/A",
+              year: film.year || "N/A"
+            };
+          } else {
+            return {
+              ...film,
+              isKkphim: false,
+              name: film.name,
+              original_name: film.original_name,
+              poster_url: film.thumb_url,  
+              thumb_url: film.poster_url,  
+              slug: film.slug,
+              path: film.slug,
+              episode_total: film.total_episodes, 
+              current_episode: film.current_episode, 
+              language: film.language || "N/A",
+              time: film.time || "N/A",
+              quality: film.quality || "N/A",
+              year: film.year || "N/A"
+            };
+          }
+        });
+
+        setResults(normalizedResults);
+
       } catch (err) {
-        console.error(err);
+        console.error("Lỗi tổng quát:", err);
+        setResults([]);
       } finally {
         setLoading(false);
       }
@@ -111,24 +189,25 @@ export default function FilmListBySlug() {
     return () => window.removeEventListener("resize", handleResize);
   }, [hoverFilm]);
 
-  function getPoster(url) {
-    if (!url) return "";
+  function getPoster(url, isKkphim) {
+    if (!url) return ""; 
 
-    // Chuẩn hóa URL gốc
-    let originalUrl = url;
-    if (!originalUrl.startsWith("http")) {
-      if (!originalUrl.startsWith("/")) originalUrl = "/" + originalUrl;
-      originalUrl = `https://phimimg.com${originalUrl}`;
+    let fullUrl = url;
+
+    if (!url.startsWith("http")) {
+      const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+      fullUrl = `https://phimimg.com/${cleanUrl}`;
     }
 
-    // Convert sang WEBP qua phimapi
-    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-      originalUrl
-    )}`;
+    // Proxy ảnh bằng biến môi trường nếu là của KKPhim
+    if (isKkphim) {
+      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
+    }
+
+    return fullUrl;
   }
 
-
-  /* ====== SEARCH (CHỈ THÊM CHẶN) ====== */
+  /* ====== SEARCH ====== */
   function handleKeyPress(e) {
     if (e.key === "Enter") {
       if (isBlockedKeyword(search)) {
@@ -174,7 +253,7 @@ export default function FilmListBySlug() {
     if (!enablePreview) return;
     hoverTimerRef.current = setTimeout(() => {
       setHoverFilm(film);
-    }, 5000);
+    }, 5000); 
   };
 
   const handleMouseLeave = () => {
@@ -201,7 +280,6 @@ export default function FilmListBySlug() {
       </div>
     );
 
- 
   return (
     <div className="film-container">
       <div className="input-search-film">
@@ -221,14 +299,14 @@ export default function FilmListBySlug() {
         <GoChevronLeft 
           onClick={handleBack} 
           style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }} 
-          />
+        />
         <i className="ms-2">Kết quả cho: {keyword}</i>
       </h3>
 
       {results.length === 0 && (
         <p className="no-result">
           Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên,
-           lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim , tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
+           lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim, tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
         </p>
       )}
 
@@ -241,28 +319,14 @@ export default function FilmListBySlug() {
             className="film-card"
             onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined}
             onMouseLeave={enablePreview ? handleMouseLeave : undefined}
-            
           >
             <div className="film-poster-wrapper">
               <img
-                src={film.poster_url ? getPoster(film.poster_url) : ""}
+                src={film.poster_url ? getPoster(film.poster_url, film.isKkphim) : ""}
                 alt={film.name}
                 className="film-poster"
                 loading="lazy"
               />
-
-              <span className="film-episodes">
-                {film.episode_total === 1
-                  ? "Full"
-                  : film.episode_total && film.episode_current
-                  ? film.status?.toLowerCase().includes("hoàn tất") &&
-                    film.episode_total === film.episode_current
-                    ? `${film.episode_total}`
-                    : `${film.episode_current}/${film.episode_total}`
-                  : film.episode_current
-                  ? `${film.episode_current}`
-                  : null}
-              </span>
 
               <div className="film-overlay">
                 <h6 className="film-name">{film.name}</h6>
@@ -274,57 +338,57 @@ export default function FilmListBySlug() {
       </div>
 
       {/* PREVIEW */}
-      {/* PREVIEW */}
-{enablePreview && hoverFilm && (
-  <div className="hover-preview-backdrop">
-    <div
-      className="hover-preview-card"
-      onMouseLeave={() => setHoverFilm(null)}
-      ref={previewRef}
-      style={{
-        backgroundImage: `url(${getPoster(
-          hoverFilm.thumb_url || hoverFilm.poster_url
-        )})`
-      }}
-    >
-      <div className="preview-info">
-  <div className="preview-left">
-    <h5 className="preview-name">{hoverFilm.name}</h5>
-    <div className="preview-origin">{hoverFilm.origin_name}</div>
+      {enablePreview && hoverFilm && (
+        <div className="hover-preview-backdrop">
+          <div
+            className="hover-preview-card"
+            onMouseLeave={() => setHoverFilm(null)}
+            ref={previewRef}
+            style={{
+              backgroundImage: `url(${getPoster(
+                hoverFilm.thumb_url || hoverFilm.poster_url, 
+                hoverFilm.isKkphim
+              )})`
+            }}
+          >
+            <div className="preview-info">
+              <div className="preview-left">
+                <h5 className="preview-name">{hoverFilm.name}</h5>
+                <div className="preview-origin">{hoverFilm.original_name}</div>
 
-    <div className="preview-meta">
-      <span className="preview-tag">{hoverFilm.quality}</span>
-      <span className="preview-tag">{hoverFilm.lang}</span>
-      <span className="preview-tag">{hoverFilm.year}</span>
-    </div>
+                <div className="preview-meta">
+                  <span className="preview-tag">{hoverFilm.quality}</span>
+                  <span className="preview-tag">{hoverFilm.language}</span>
+                  <span className="preview-tag">{hoverFilm.year}</span>
+                </div>
 
-    <div className="preview-actions">
-      <Link to={`/chi-tiet/${hoverFilm.path}`} className="btn-watch">
-        ▶ Xem ngay
-      </Link>
-      <Link to={`/film/${hoverFilm.slug}`} className="btn-detail">
-        Chi tiết
-      </Link>
-    </div>
-  </div>
+                <div className="preview-actions">
+                  <Link to={`/chi-tiet/${hoverFilm.path}`} className="btn-watch">
+                    ▶ Xem ngay
+                  </Link>
+                  <Link to={`/chi-tiet/${hoverFilm.slug}`} className="btn-detail">
+                    Chi tiết
+                  </Link>
+                </div>
+              </div>
 
-  <div className="preview-right">
-    <div className="preview-box blue">
-      <b>Tập:</b> {hoverFilm.episode_current || "N/A"}
-    </div>
+              <div className="preview-right">
+                <div className="preview-box blue">
+                  <b>Tập:</b> {hoverFilm.current_episode || "N/A"}
+                </div>
 
-    <div className="preview-box yellow">
-      <b>Thời lượng:</b> {hoverFilm.time || "N/A"}
-    </div>
+                <div className="preview-box yellow">
+                  <b>Thời lượng:</b> {hoverFilm.time || "N/A"}
+                </div>
 
-    <div className="preview-box green">
-      <b>Ngôn ngữ:</b> {hoverFilm.lang || "N/A"}
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-)}
+                <div className="preview-box green">
+                  <b>Ngôn ngữ:</b> {hoverFilm.language || "N/A"}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
