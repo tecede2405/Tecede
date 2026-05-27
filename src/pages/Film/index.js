@@ -59,53 +59,74 @@ export default function FilmListBySlug() {
         confirmButtonText: "OK"
       });
 
-      return; 
+      return;
     }
 
     async function fetchData() {
       try {
         setLoading(true);
 
-        const fetchAllPages = async (baseUrl) => {
+        const fetchAllPages = async (baseUrl, sourceName) => {
           try {
-            const firstUrl = `${baseUrl}&page=1`;
+            // Xử lý cẩn thận tham số page để không bị lỗi URL
+            const hasQuery = baseUrl.includes("?");
+            const firstUrl = `${baseUrl}${hasQuery ? "&" : "?"}page=1`;
+            
             const firstRes = await fetch(firstUrl);
-            const firstData = await firstRes.json();
+            
+            if (!firstRes.ok) {
+              console.warn(`[${sourceName}] Lỗi HTTP: ${firstRes.status}`);
+              return [];
+            }
 
+            const firstData = await firstRes.json();
             const items = firstData?.data?.items || firstData?.items || [];
-            const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || 1;
+            
+            // Xử lý lấy tổng số trang cho cả 2 loại API
+            const totalPage = 
+              firstData?.data?.params?.pagination?.totalPages || 
+              firstData?.paginate?.total_page || 
+              firstData?.totalPages || 
+              1;
 
             let allItems = [...items];
 
             if (totalPage > 1) {
               const fetchPromises = [];
               for (let i = 2; i <= totalPage; i++) {
-                fetchPromises.push(fetch(`${baseUrl}&page=${i}`).then(res => res.json()));
+                const pageUrl = `${baseUrl}${hasQuery ? "&" : "?"}page=${i}`;
+                fetchPromises.push(
+                  fetch(pageUrl)
+                    .then(res => res.ok ? res.json() : null)
+                    .catch(() => null)
+                );
               }
               const remainingPagesData = await Promise.all(fetchPromises);
               
               remainingPagesData.forEach(data => {
-                const pageItems = data?.data?.items || data?.items || [];
-                allItems = [...allItems, ...pageItems];
+                if (data) {
+                  const pageItems = data?.data?.items || data?.items || [];
+                  allItems = [...allItems, ...pageItems];
+                }
               });
             }
             return allItems;
           } catch (error) {
-            console.error("Lỗi khi fetch nguồn:", baseUrl, error);
-            return []; 
+            console.error(`[${sourceName}] Lỗi fetch/parse:`, error);
+            return [];
           }
         };
 
         // 1. GỌI API 1 (KKPhim)
         const nguon1url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
-        let rawResults = await fetchAllPages(nguon1url);
+        let rawResults = await fetchAllPages(nguon1url, "KKPhim");
         let isKkphim = true;
 
-        // 2. FALLBACK API 2 (Nguồn C)
-        if (rawResults.length === 0) {
+        // 2. FALLBACK API 2 (Nguồn C) nếu KKPhim trả về mảng rỗng
+        if (!rawResults || rawResults.length === 0) {
           const nguon2url = `${process.env.REACT_APP_FILM_API_URL_2}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
-          rawResults = await fetchAllPages(nguon2url);
-          isKkphim = false; 
+          rawResults = await fetchAllPages(nguon2url, "NguonC");
+          isKkphim = false;
         }
 
         // 3. XỬ LÝ DATA
@@ -115,13 +136,13 @@ export default function FilmListBySlug() {
               ...film,
               isKkphim: true,
               name: film.name,
-              original_name: film.origin_name || film.original_name, 
-              poster_url: film.poster_url, 
-              thumb_url: film.thumb_url,   
+              original_name: film.origin_name || film.original_name,
+              poster_url: film.poster_url,
+              thumb_url: film.thumb_url,
               slug: film.slug,
               path: film.slug,
               episode_total: film.episode_total,
-              current_episode: film.episode_current, 
+              current_episode: film.episode_current,
               language: film.lang || "N/A",
               time: film.time || "N/A",
               quality: film.quality || "N/A",
@@ -133,13 +154,14 @@ export default function FilmListBySlug() {
               isKkphim: false,
               name: film.name,
               original_name: film.original_name,
-              poster_url: film.thumb_url,  
-              thumb_url: film.poster_url,  
+              // Tùy thuộc vào data Nguồn C, có thể thumb/poster bị ngược với KKPhim
+              poster_url: film.thumb_url || film.poster_url,
+              thumb_url: film.poster_url || film.thumb_url,
               slug: film.slug,
               path: film.slug,
-              episode_total: film.total_episodes, 
-              current_episode: film.current_episode, 
-              language: film.language || "N/A",
+              episode_total: film.total_episodes || film.episode_total,
+              current_episode: film.current_episode || film.episode_current,
+              language: film.language || film.lang || "N/A",
               time: film.time || "N/A",
               quality: film.quality || "N/A",
               year: film.year || "N/A"
@@ -150,7 +172,7 @@ export default function FilmListBySlug() {
         setResults(normalizedResults);
 
       } catch (err) {
-        console.error("Lỗi tổng quát:", err);
+        console.error("Lỗi tổng quát component:", err);
         setResults([]);
       } finally {
         setLoading(false);
@@ -159,7 +181,6 @@ export default function FilmListBySlug() {
 
     fetchData();
   }, [keyword]);
-
 
   useEffect(() => {
     if (!hoverFilm) return;
@@ -190,16 +211,17 @@ export default function FilmListBySlug() {
   }, [hoverFilm]);
 
   function getPoster(url, isKkphim) {
-    if (!url) return ""; 
+    if (!url) return "";
 
     let fullUrl = url;
 
+    // Fix lỗi đường dẫn tương đối (thiếu https://)
     if (!url.startsWith("http")) {
       const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
       fullUrl = `https://phimimg.com/${cleanUrl}`;
     }
 
-    // Proxy ảnh bằng biến môi trường nếu là của KKPhim
+    // Proxy ảnh nếu là KKPhim và bạn có file image.php trên server
     if (isKkphim) {
       return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
     }
@@ -210,25 +232,15 @@ export default function FilmListBySlug() {
   /* ====== SEARCH ====== */
   function handleKeyPress(e) {
     if (e.key === "Enter") {
-      if (isBlockedKeyword(search)) {
-        Swal.fire({
-          icon: "warning",
-          title: "Từ khóa không hợp lệ",
-          text: "Không hỗ trợ tìm kiếm nội dung 18+.",
-          confirmButtonText: "OK"
-        });
-        setSearch("");
-        return;
-      }
-
-      const slug = search.trim().toLowerCase().replace(/\s+/g, "-");
-      navigate(`/search/${slug}`);
-      setSearch("");
-      inputRef.current.focus();
+      executeSearch();
     }
   }
 
   const handleSearch = () => {
+    executeSearch();
+  };
+
+  const executeSearch = () => {
     if (search.trim() !== "") {
       if (isBlockedKeyword(search)) {
         Swal.fire({
@@ -253,7 +265,7 @@ export default function FilmListBySlug() {
     if (!enablePreview) return;
     hoverTimerRef.current = setTimeout(() => {
       setHoverFilm(film);
-    }, 5000); 
+    }, 5000);
   };
 
   const handleMouseLeave = () => {
@@ -296,9 +308,9 @@ export default function FilmListBySlug() {
       </div>
 
       <h3 className="result-title fst-italic ms-3">
-        <GoChevronLeft 
-          onClick={handleBack} 
-          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }} 
+        <GoChevronLeft
+          onClick={handleBack}
+          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }}
         />
         <i className="ms-2">Kết quả cho: {keyword}</i>
       </h3>
@@ -306,7 +318,7 @@ export default function FilmListBySlug() {
       {results.length === 0 && (
         <p className="no-result">
           Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên,
-           lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim, tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
+          lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim, tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
         </p>
       )}
 
@@ -346,7 +358,7 @@ export default function FilmListBySlug() {
             ref={previewRef}
             style={{
               backgroundImage: `url(${getPoster(
-                hoverFilm.thumb_url || hoverFilm.poster_url, 
+                hoverFilm.thumb_url || hoverFilm.poster_url,
                 hoverFilm.isKkphim
               )})`
             }}

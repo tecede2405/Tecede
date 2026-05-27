@@ -303,11 +303,7 @@ return (
                   >
                     <td className="ps-2 py-2">
                       <img
-                        src={
-                          displayImage
-                            ? `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(displayImage)}`
-                            : "/default-poster.jpg"
-                        }
+                        src={displayImage || "/default-poster.jpg"}
                         alt={item.title}
                         width="60"
                         height="85"
@@ -315,6 +311,7 @@ return (
                         style={{ objectFit: "cover", borderRadius: "8px" }}
                         className="shadow"
                         onError={(e) => {
+                          e.target.onerror = null; // Tránh loop vô hạn nếu ảnh default cũng lỗi
                           e.target.src = "/default-poster.jpg";
                         }}
                       />
