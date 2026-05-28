@@ -598,7 +598,7 @@ const thumbUrl = getImageUrl(thumbRaw);
                   <i style={{ fontSize: 11, color: "#999" }}>{c.created_at}</i>
                 </div>
               </div>
-              <p style={{ margin: "6px 0", color: "#ccc" }}>{c.content}</p>
+              <p style={{ margin: "6px 0", color: "#ccc",fontSize: 14 }}>{c.content}</p>
               <button
                 onClick={() => {
                   if (replyBox === c.id) {
@@ -716,7 +716,7 @@ const thumbUrl = getImageUrl(thumbRaw);
 
                         <b
                           style={{
-                            fontSize: 13,
+                            fontSize: 10,
                             display: "flex",
                             alignItems: "center"
                           }}
@@ -740,7 +740,7 @@ const thumbUrl = getImageUrl(thumbRaw);
                       <p
                         style={{
                           margin: "4px 0",
-                          fontSize: 14,
+                          fontSize: 11,
                           color: "#ddd",
                           lineHeight: 1.5
                         }}

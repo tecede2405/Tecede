@@ -215,7 +215,7 @@
   background:transparent;
 
   color:#fff;
-  font-size:14px;
+  font-size:12px;
 
   transition:all .25s ease;
 }
@@ -262,7 +262,7 @@
       background-size: cover;
       background-color: #121212;
       background-position: center;
-      filter: blur(2px) brightness(0.4);
+      filter: blur(4px) brightness(0.4);
       transform: scale(1.1);
       z-index: 1;
     }
@@ -435,35 +435,7 @@
     }
   }
 }
-/* Nguồn (source) tabs */
-.source-tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
 
-  button {
-    padding: 4px 14px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background-color: #222;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background-color: #333;
-      border-color: #666;
-    }
-
-    &.active {
-      background-color: #0ebe1f;
-      border-color: #0ebe1f;
-      color: #fff;
-    }
-  }
-}
 
 /* Server tabs */
 .server-tabs {
@@ -488,8 +460,8 @@
     }
 
     &.active {
-      background-color: #007bff;
-      border-color: #007bff;
+      background-color: #0ebe1f;
+      border-color: #0ebe1f;
       color: #fff;
     }
   }
