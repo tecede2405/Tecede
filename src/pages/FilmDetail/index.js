@@ -25,6 +25,7 @@ export default function FilmDetail() {
   const [servers, setServers] = useState([]);
   const [currentServer, setCurrentServer] = useState(0);
   const [episodes, setEpisodes] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [isKkphim, setIsKkphim] = useState(false); // Thêm state kiểm tra nguồn KK
   
   const [comments, setComments] = useState([]);
@@ -187,41 +188,40 @@ export default function FilmDetail() {
   }, [episodes, currentVideo]);
 
   // ==================== XỬ LÝ ẢNH ====================
-  function getImageUrl(url, isKk) {
-    if (!url) return ""; 
-    let fullUrl = url;
-
-    // Chuẩn hóa đường dẫn tương đối thành tuyệt đối nếu cần
-    if (!url.startsWith("http")) {
-      const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
-      fullUrl = `https://phimimg.com/${cleanUrl}`;
-    }
-
-    // Proxy ảnh bằng biến môi trường nếu là nguồn KKPhim (sang WebP)
-    if (isKk) {
-      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
-    }
-
-    return fullUrl; // Giữ nguyên cho Nguồn C
+  function getImageUrl(url) {
+  if (!url) return "";
+  
+  // Nếu url chứa domain của nguồn C thì trả về ngay (không proxy)
+  if (url.includes("phim.nguonc.com")) {
+    return url;
   }
+  
+  // Các domain còn lại (phimimg.com, phimapi.com...) thì gắn proxy
+  return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
+}
 
-  let posterRaw = "";
-  let thumbRaw = "";
+  const isNguonC = movie?.poster_url?.includes("phim.nguonc.com") || movie?.thumb_url?.includes("phim.nguonc.com");
 
-  if (isKkphim) {
-    posterRaw = movie?.poster_url;
-    thumbRaw = movie?.thumb_url;
-  } else {
-    // Nếu là Nguồn C: Đảo ngược lại 2 key ảnh
-    posterRaw = movie?.thumb_url;
-    thumbRaw = movie?.poster_url;
-  }
+let posterRaw = "";
+let thumbRaw = "";
 
-  if (!posterRaw) posterRaw = thumbRaw;
-  if (!thumbRaw) thumbRaw = posterRaw;
+if (isNguonC) {
+  // Nguồn C: Đảo ngược key
+  posterRaw = movie?.thumb_url;
+  thumbRaw = movie?.poster_url;
+} else {
+  // KKPhim: Giữ nguyên key
+  posterRaw = movie?.poster_url;
+  thumbRaw = movie?.thumb_url;
+}
 
-  const posterUrl = getImageUrl(posterRaw, isKkphim);
-  const thumbUrl = getImageUrl(thumbRaw, isKkphim);
+// Fallback an toàn
+if (!posterRaw) posterRaw = thumbRaw;
+if (!thumbRaw) thumbRaw = posterRaw;
+
+// Gọi hàm lấy ảnh (Không cần truyền isKk nữa vì hàm đã tự check domain)
+const posterUrl = getImageUrl(posterRaw);
+const thumbUrl = getImageUrl(thumbRaw);
   // ===================================================
 
   const handleChangeServer = (serverIndex) => {

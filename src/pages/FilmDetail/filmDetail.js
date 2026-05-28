@@ -13,30 +13,30 @@ export default function MovieDetail() {
   const [currentSource, setCurrentSource] = useState(0);
   const [currentServer, setCurrentServer] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [imgConfig, setImgConfig] = useState({ isKk: false, poster: "", thumb: "" });
 
   useEffect(() => {
     setLoading(true);
-    const url = `${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`;
-
-    fetch(url)
+    fetch(`${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`)
       .then(res => res.json())
       .then(data => {
-        setMovie(data.data?.movie || null);
+        const m = data.data?.movie || {};
+        setMovie(m);
         
-        let rawSources = data.data?.episodes || [];
-        rawSources.sort((a, b) => {
-          if (a.source === "nc") return -1;
-          if (b.source === "nc") return 1;
-          return 0;
-        });
+        // KIỂM TRA DOMAIN TRONG URL ĐỂ PHÂN LOẠI (Dùng poster_url làm mốc)
+        // Nếu chứa "phimimg.com" là KK, nếu chứa "phim.nguonc.com" là NC
+        const isKk = m.poster_url?.includes("phimimg.com");
+
+        // Logic đảo ngược: Nếu là NC thì đảo ngược, KK thì giữ nguyên
+        let p = isKk ? m.poster_url : m.thumb_url;
+        let t = isKk ? m.thumb_url : m.poster_url;
         
-        setSources(rawSources);
-        setCurrentSource(0);
-        setCurrentServer(0);
-      })
-      .catch(err => {
-        console.error("❌ Fetch error:", err);
-        setMovie(null);
+        // Fallback
+        if (!p) p = t;
+        if (!t) t = p;
+
+        setImgConfig({ isKk, poster: p, thumb: t });
+        setSources(data.data?.episodes || []);
       })
       .finally(() => setLoading(false));
   }, [slug]);
@@ -47,40 +47,20 @@ export default function MovieDetail() {
   const episodes = currentServerObj?.server_data || currentServerObj?.items || [];
   const currentServerName = currentServerObj?.server_name || "";
 
-  function getImageUrl(url, isKkphim) {
+  function getImageUrl(url) {
     if (!url) return ""; 
-    let fullUrl = url;
-
-    if (!url.startsWith("http")) {
-      const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
-      fullUrl = `https://phimimg.com/${cleanUrl}`;
+    
+    // Nếu là domain của KKPhim thì nối proxy
+    if (url.includes("phimimg.com")) {
+      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
     }
-
-    if (isKkphim) {
-      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
-    }
-
-    return fullUrl;
+    
+    // Nếu là domain của Nguồn C thì trả về trực tiếp
+    return url;
   }
 
-  const isKkphim = sources.some(s => s.source === "kk" || s.source === "kkphim");
-  
-  let posterRaw = "";
-  let thumbRaw = "";
-
-  if (isKkphim) {
-    posterRaw = movie?.poster_url;
-    thumbRaw = movie?.thumb_url;
-  } else {
-    posterRaw = movie?.thumb_url;
-    thumbRaw = movie?.poster_url;
-  }
-
-  if (!posterRaw) posterRaw = thumbRaw;
-  if (!thumbRaw) thumbRaw = posterRaw;
-
-  const posterUrl = getImageUrl(posterRaw, isKkphim);
-  const thumbUrl = getImageUrl(thumbRaw, isKkphim);
+  const posterUrl = getImageUrl(imgConfig.poster);
+  const thumbUrl = getImageUrl(imgConfig.thumb);
 
   return (
     <>

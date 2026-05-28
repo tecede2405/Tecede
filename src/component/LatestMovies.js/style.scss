@@ -78,7 +78,15 @@
   font-size: 13px;
   color: #ccc;
 }
-
+.pagination-controls {
+  button {
+    padding: 5px 15px;
+    color: #000;
+    background: rgb(236, 14, 14);
+    border: 0;
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}
 /* ===================== MOBILE ===================== */
 @media (max-width: 768px) {
   .movie-table {
