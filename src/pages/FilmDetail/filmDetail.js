@@ -4,6 +4,15 @@ import { FaPlay } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
 import "./style.scss";
 
+// TỪ ĐIỂN ĐỂ ĐỒNG BỘ TÊN SERVER VỚI TRANG XEM PHIM (FilmDetail)
+const SOURCE_NAMES = {
+  kk: "KK",
+  kkphim: "KK",
+  op: "OP",
+  nc: "NC",
+  nguonc: "NC"
+};
+
 export default function MovieDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -16,16 +25,24 @@ export default function MovieDetail() {
 
   useEffect(() => {
     setLoading(true);
+    // Reset server về 0 khi chuyển phim khác
+    setCurrentServer(0);
     fetch(`${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`)
       .then(res => res.json())
       .then(data => {
         const m = data.data?.movie || {};
         setMovie(m);
         
-        // Khôi phục logic đảo poster/thumb cũ
-        const isKk = m.poster_url?.includes("phimimg.com");
-        let p = isKk ? m.poster_url : m.thumb_url;
-        let t = isKk ? m.thumb_url : m.poster_url;
+        // KIỂM TRA NGUỒN C VÀ OPHIM ĐỂ ĐẢO CHIỀU ẢNH NGAY TỪ LÚC FETCH
+        const isNguonC_or_OPhim = 
+          m.poster_url?.includes("phim.nguonc.com") || 
+          m.thumb_url?.includes("phim.nguonc.com") ||
+          m.poster_url?.includes("ophim") ||
+          m.thumb_url?.includes("ophim");
+
+        let p = isNguonC_or_OPhim ? m.thumb_url : m.poster_url;
+        let t = isNguonC_or_OPhim ? m.poster_url : m.thumb_url;
+        
         if (!p) p = t;
         if (!t) t = p;
 
@@ -35,17 +52,36 @@ export default function MovieDetail() {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  // GỘP TẤT CẢ SERVER VÀO 1 DANH SÁCH DUY NHẤT
+  // GỘP, ĐỔI TÊN SERVER VÀ SẮP XẾP ƯU TIÊN (OP -> KK -> NC)
   const allServers = useMemo(() => {
     let list = [];
     sources.forEach(src => {
+      const sourceLabel = SOURCE_NAMES[src.source] || src.source?.toUpperCase() || "Server";
+      
       (src.episodes || []).forEach(srv => {
         list.push({
           ...srv,
-          sourceName: src.source
+          // Đặt tên server giống hệt logic bên FilmDetail để URL map trúng 100%
+          server_name: `${sourceLabel} - ${srv.server_name}`,
+          original_name: srv.server_name, // Giữ lại tên gốc nếu cần
+          sourceName: sourceLabel
         });
       });
     });
+
+    // Mức độ ưu tiên càng nhỏ càng được xếp lên đầu
+    const priority = {
+      "OP": 1,
+      "KK": 2,
+      "NC": 3
+    };
+
+    list.sort((a, b) => {
+      const rankA = priority[a.sourceName] || 99;
+      const rankB = priority[b.sourceName] || 99;
+      return rankA - rankB;
+    });
+
     return list;
   }, [sources]);
 
@@ -53,13 +89,13 @@ export default function MovieDetail() {
   const episodes = currentServerObj?.server_data || currentServerObj?.items || [];
   const currentServerName = currentServerObj?.server_name || "";
 
+  // KHÔNG CHẠY PROXY CHO OPHIM VÀ NGUỒN C
   function getImageUrl(url) {
     if (!url) return "";
-    // Nếu là domain của KKPhim thì nối proxy
-    if (url.includes("phimimg.com")) {
-      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
+    if (url.includes("phim.nguonc.com") || url.includes("ophim")) {
+      return url;
     }
-    return url;
+    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
   }
 
   const posterUrl = getImageUrl(imgConfig.poster);
@@ -114,7 +150,6 @@ export default function MovieDetail() {
                   <Tag text={movie.quality} color="#e50914" />
                   <Tag text={movie.lang} color="#007bff" />
                   <Tag text={movie.time} color="#9D4EDD" />
-                  {/* CÁC TAG BỊ THIẾU ĐÃ ĐƯỢC KHÔI PHỤC */}
                   {movie.episode_current && (
                     <Tag text={`Trạng thái: ${movie.episode_current}`} color="#FF8500" />
                   )}
@@ -124,10 +159,11 @@ export default function MovieDetail() {
                   {Array.isArray(movie.country) && movie.country.map(c => (
                     <Tag key={c.id} text={`Quốc gia: ${c.name}`} color="#ffc107" />
                   ))}
-                 
+                  
                 </div>
                 <button className="btn-play" onClick={() => {
                   if (!episodes.length) return;
+                  // Truyền đúng tên Server đã được nối chữ và có mức độ ưu tiên sang URL
                   navigate(`/xem-phim/${slug}/${encodeURIComponent(currentServerName)}/${episodes[0].slug}`, 
                     { state: { movieData: movie, sourcesData: sources } });
                 }}>
@@ -145,7 +181,7 @@ export default function MovieDetail() {
                 <div className="server-tabs">
                   {allServers.map((s, i) => (
                     <button key={i} className={i === currentServer ? "active" : ""} onClick={() => setCurrentServer(i)}>
-                      {s.server_name} <small style={{opacity: 0.6}}>({s.sourceName.toUpperCase()})</small>
+                      {s.server_name}
                     </button>
                   ))}
                 </div>

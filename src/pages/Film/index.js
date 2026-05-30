@@ -45,7 +45,9 @@ export default function FilmListBySlug() {
             const firstRes = await fetch(`${baseUrl}${hasQuery ? "&" : "?"}page=1`);
             if (!firstRes.ok) return [];
             const firstData = await firstRes.json();
-            const items = firstData?.data?.items || firstData?.items || [];
+            
+            // Bắt chuẩn đường dẫn mảng data của cả 3 API
+            const items = firstData?.data?.items || firstData?.items || firstData?.data || [];
             const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || firstData?.totalPages || 1;
 
             let allItems = [...items];
@@ -56,7 +58,7 @@ export default function FilmListBySlug() {
               }
               const remainingPagesData = await Promise.all(fetchPromises);
               remainingPagesData.forEach(data => {
-                if (data) allItems = [...allItems, ...(data?.data?.items || data?.items || [])];
+                if (data) allItems = [...allItems, ...(data?.data?.items || data?.items || data?.data || [])];
               });
             }
             return allItems;
@@ -66,76 +68,69 @@ export default function FilmListBySlug() {
           }
         };
 
-        const url1 = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
-        const url2 = `${process.env.REACT_APP_FILM_API_URL_2}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
+        const urlKk = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        const urlOp = `${process.env.REACT_APP_FILM_API_URL_2}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        const urlNc = `${process.env.REACT_APP_FILM_API_URL_3}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
 
-        // Fetch song song cả 2 nguồn
-        const [res1, res2] = await Promise.all([
-          fetchAllPages(url1, "KKPhim"),
-          fetchAllPages(url2, "NguonC")
+        // Fetch song song 3 nguồn
+        const [resKk, resOp, resNc] = await Promise.all([
+          fetchAllPages(urlKk, "KK"),
+          fetchAllPages(urlOp, "OP"),
+          fetchAllPages(urlNc, "NC")
         ]);
 
-        // Hàm helper dùng chung để lấy năm từ cả 2 nguồn
-const getYearFromData = (f) => {
-  if (f.year) return f.year; // Nếu có sẵn thì lấy luôn
-
-  // Quét toàn bộ object category
-  if (f.category && typeof f.category === 'object') {
-    const categories = Object.values(f.category);
-    for (let cat of categories) {
-      if (cat.list && Array.isArray(cat.list)) {
-        for (let item of cat.list) {
-          // Kiểm tra nếu name là số có 4 chữ số (ví dụ: "2025")
-          const name = String(item.name);
-          if (/^\d{4}$/.test(name)) {
-            return name;
+        const getYearFromData = (f) => {
+          if (f.year) return f.year; 
+          if (f.category && typeof f.category === 'object') {
+            const categories = Object.values(f.category);
+            for (let cat of categories) {
+              if (cat.list && Array.isArray(cat.list)) {
+                for (let item of cat.list) {
+                  const name = String(item.name);
+                  if (/^\d{4}$/.test(name)) return name;
+                }
+              }
+            }
           }
-        }
-      }
-    }
-  }
-  return "N/A";
-};
+          return "N/A";
+        };
 
-// Áp dụng cho cả 2 nguồn
-const norm1 = res1.map(f => ({ 
-  ...f, 
-  isKkphim: true, 
-  name: f.name, 
-  original_name: f.origin_name || f.original_name, 
-  poster_url: f.poster_url, 
-  thumb_url: f.thumb_url, 
-  slug: f.slug, 
-  path: f.slug, 
-  episode_total: f.episode_total, 
-  current_episode: f.episode_current, 
-  language: f.lang || "N/A", 
-  time: f.time || "N/A", 
-  quality: f.quality || "N/A", 
-  year: getYearFromData(f) // Dùng hàm lấy năm
-}));
+        // Format data: Gắn tên nguồn và đảo ngược ảnh thumb/poster cho Ophim & Nguồn C
+        const normKk = resKk.map(f => ({ 
+          ...f, sourceName: "KK", isKkphim: true, 
+          name: f.name, original_name: f.origin_name || f.original_name, 
+          poster_url: f.poster_url, thumb_url: f.thumb_url, 
+          slug: f.slug, path: f.slug, 
+          episode_total: f.episode_total, current_episode: f.episode_current, 
+          language: f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
+        }));
 
-const norm2 = res2.map(f => ({ 
-  ...f, 
-  isKkphim: false, 
-  name: f.name, 
-  original_name: f.original_name, 
-  poster_url: f.thumb_url || f.poster_url, 
-  thumb_url: f.poster_url || f.thumb_url, 
-  slug: f.slug, 
-  path: f.slug, 
-  episode_total: f.total_episodes || f.episode_total, 
-  current_episode: f.current_episode || f.episode_current, 
-  language: f.language || f.lang || "N/A", 
-  time: f.time || "N/A", 
-  quality: f.quality || "N/A", 
-  year: getYearFromData(f) // Dùng hàm lấy năm
-}));
+        const normOp = resOp.map(f => ({ 
+          ...f, sourceName: "OP", isKkphim: false, 
+          name: f.name, original_name: f.origin_name || f.original_name, 
+          poster_url: f.thumb_url || f.poster_url, thumb_url: f.poster_url || f.thumb_url, 
+          slug: f.slug, path: f.slug, 
+          episode_total: f.episode_total, current_episode: f.episode_current, 
+          language: f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
+        }));
 
-        // Gộp và loại bỏ trùng lặp dựa trên slug
-        const combined = [...norm1, ...norm2];
-        const uniqueResults = Array.from(new Map(combined.map(item => [item.slug, item])).values());
+        const normNc = resNc.map(f => ({ 
+          ...f, sourceName: "NC", isKkphim: false, 
+          name: f.name, original_name: f.original_name || f.origin_name, 
+          poster_url: f.thumb_url || f.poster_url, thumb_url: f.poster_url || f.thumb_url, 
+          slug: f.slug, path: f.slug, 
+          episode_total: f.total_episodes || f.episode_total, current_episode: f.current_episode || f.episode_current, 
+          language: f.language || f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
+        }));
 
+        // ĐÃ SỬA Ở ĐÂY: Xếp theo thứ tự cục KK -> OP -> NC và không dùng hàm .reverse() nữa
+        const combined = [...normKk, ...normOp, ...normNc];
+        
+        // Lọc trùng lặp bằng cách nối slug và sourceName. Cách này đảm bảo cả 3 nguồn đều hiện ra.
+        const uniqueResults = Array.from(new Map(combined.map(item => [`${item.slug}-${item.sourceName}`, item])).values());
+
+        // Gán thẳng mảng kết quả, lúc này dữ liệu sẽ xếp y hệt như ý bạn: 
+        // Danh sách KK (giữ nguyên Mới->Cũ) -> Danh sách OP -> Danh sách NC
         setResults(uniqueResults);
       } catch (err) {
         setResults([]);
@@ -146,7 +141,6 @@ const norm2 = res2.map(f => ({
     fetchData();
   }, [keyword]);
 
-  // Các useEffect xử lý Preview, Resize, Search... (giữ nguyên logic cũ của bạn)
   useEffect(() => {
     function handleClickOutside(e) { if (previewRef.current && !previewRef.current.contains(e.target)) setHoverFilm(null); }
     document.addEventListener("mousedown", handleClickOutside);
@@ -163,10 +157,25 @@ const norm2 = res2.map(f => ({
     return () => window.removeEventListener("resize", handleResize);
   }, [hoverFilm]);
 
-  function getPoster(url, isKkphim) {
+  function getPoster(url, sourceName) {
     if (!url) return "";
-    let fullUrl = url.startsWith("http") ? url : `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
-    return isKkphim ? `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}` : fullUrl;
+    
+    // Nếu URL đã là link hoàn chỉnh (thường gặp ở Nguồn C)
+    if (url.startsWith("http")) return url;
+
+    // Xử lý riêng cho OPhim
+    if (sourceName === "OP") {
+      return `https://img.ophim.live/uploads/movies/${url.startsWith("/") ? url.slice(1) : url}`;
+    }
+
+    // Xử lý cho KKPhim
+    if (sourceName === "KK") {
+      let fullUrl = `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
+    }
+
+    // Fallback mặc định
+    return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
   }
 
   const executeSearch = () => {
@@ -202,25 +211,45 @@ const norm2 = res2.map(f => ({
 
       <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
         {results.map((film) => (
-          <Link to={`/chi-tiet/${film.slug}`} key={film.slug} className="film-card" onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} onMouseLeave={enablePreview ? handleMouseLeave : undefined}>
+          <Link to={`/chi-tiet/${film.slug}`} key={`${film.slug}-${film.sourceName}`} className="film-card" onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} onMouseLeave={enablePreview ? handleMouseLeave : undefined}>
             <div className="film-poster-wrapper">
-              <img src={getPoster(film.poster_url, film.isKkphim)} alt={film.name} className="film-poster" loading="lazy" />
-              <div className="film-overlay"><h6 className="film-name">{film.name}</h6><span className="film-year">{film.year}</span></div>
+              {/* LABEL HIỂN THỊ NGUỒN PHIM */}
+              <div style={{
+                position: "absolute", top: "5px", left: "5px", 
+                backgroundColor: film.sourceName === "KK" ? "#e50914" : film.sourceName === "OP" ? "#ff9800" : "#2196f3", 
+                color: "white", padding: "3px 8px", fontSize: "11px", fontWeight: "bold", 
+                borderRadius: "4px", zIndex: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.5)"
+              }}>
+                {film.sourceName}
+              </div>
+
+              {/* Gọi getPoster truyền vào sourceName */}
+              <img src={getPoster(film.poster_url, film.sourceName)} alt={film.name} className="film-poster" loading="lazy" />
+              <div className="film-overlay">
+                <h6 className="film-name">{film.name}</h6>
+                <span className="film-year">{film.year}</span>
+              </div>
             </div>
           </Link>
         ))}
       </div>
 
-      {/* Phần Preview giữ nguyên cấu trúc cũ của bạn */}
       {enablePreview && hoverFilm && (
         <div className="hover-preview-backdrop">
-          <div className="hover-preview-card" onMouseLeave={() => setHoverFilm(null)} ref={previewRef} style={{ backgroundImage: `url(${getPoster(hoverFilm.thumb_url || hoverFilm.poster_url, hoverFilm.isKkphim)})` }}>
+          {/* Truyền hoverFilm.sourceName thay vì isKkphim */}
+          <div className="hover-preview-card" onMouseLeave={() => setHoverFilm(null)} ref={previewRef} style={{ backgroundImage: `url(${getPoster(hoverFilm.thumb_url || hoverFilm.poster_url, hoverFilm.sourceName)})` }}>
             <div className="preview-info">
               <div className="preview-left">
                 <h5 className="preview-name">{hoverFilm.name}</h5>
                 <div className="preview-origin">{hoverFilm.original_name}</div>
-                <div className="preview-meta"><span className="preview-tag">{hoverFilm.quality}</span><span className="preview-tag">{hoverFilm.language}</span><span className="preview-tag">{hoverFilm.year}</span></div>
-                <div className="preview-actions"><Link to={`/chi-tiet/${hoverFilm.path}`} className="btn-watch">▶ Xem ngay</Link></div>
+                <div className="preview-meta">
+                  <span className="preview-tag">{hoverFilm.quality}</span>
+                  <span className="preview-tag">{hoverFilm.language}</span>
+                  <span className="preview-tag">{hoverFilm.year}</span>
+                </div>
+                <div className="preview-actions">
+                  <Link to={`/chi-tiet/${hoverFilm.path}`} className="btn-watch">▶ Xem ngay</Link>
+                </div>
               </div>
             </div>
           </div>

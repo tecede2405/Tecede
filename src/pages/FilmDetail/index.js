@@ -12,6 +12,15 @@ import "./style.scss";
 const filmCache = {};
 const commentCache = {};
 
+// BỘ TỪ ĐIỂN ĐỂ ĐỔI TÊN NGUỒN NGẮN GỌN VÀ CHỐNG TRÙNG SERVER
+const SOURCE_NAMES = {
+  kk: "KK",
+  kkphim: "KK",
+  op: "OP",
+  nc: "NC",
+  nguonc: "NC"
+};
+
 export default function FilmDetail() {
   const { slug, server, episodeSlug } = useParams();
   const navigate = useNavigate();
@@ -95,6 +104,9 @@ export default function FilmDetail() {
 
         const mergedServers = [];
         episodesDataToUse.forEach(src => {
+          // Ánh xạ tên nguồn, nếu không có trong từ điển thì lấy chữ hoa
+          const sourceLabel = SOURCE_NAMES[src.source] || src.source?.toUpperCase() || "Server";
+
           (src.episodes || []).forEach(srv => {
             const serverData = srv.server_data || srv.items || [];
             const normalized = serverData.map(ep => ({
@@ -103,8 +115,12 @@ export default function FilmDetail() {
               embedUrl: ep.link_embed || ep.embed,
               m3u8Url: ep.link_m3u8 || ep.m3u8,
             }));
+
+            // Ghép tên nguồn vào tên server để tạo tên độc nhất (VD: "OP - Vietsub #1")
+            const uniqueServerName = `${sourceLabel} - ${srv.server_name}`;
+
             mergedServers.push({
-              server_name: srv.server_name,
+              server_name: uniqueServerName,
               server_data: normalized,
             });
           });
@@ -189,39 +205,44 @@ export default function FilmDetail() {
 
   // ==================== XỬ LÝ ẢNH ====================
   function getImageUrl(url) {
-  if (!url) return "";
-  
-  // Nếu url chứa domain của nguồn C thì trả về ngay (không proxy)
-  if (url.includes("phim.nguonc.com")) {
-    return url;
+    if (!url) return "";
+    
+    // Nếu url chứa domain của nguồn C hoặc OPhim thì trả về ngay (không proxy)
+    if (url.includes("phim.nguonc.com") || url.includes("ophim")) {
+      return url;
+    }
+    
+    // Các domain còn lại (phimimg.com, phimapi.com...) thì gắn proxy
+    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
   }
-  
-  // Các domain còn lại (phimimg.com, phimapi.com...) thì gắn proxy
-  return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
-}
 
-  const isNguonC = movie?.poster_url?.includes("phim.nguonc.com") || movie?.thumb_url?.includes("phim.nguonc.com");
+  // Kiểm tra xem phim này thuộc Nguồn C hoặc OPhim để đảo chiều ảnh
+  const isNguonC_or_OPhim = 
+    movie?.poster_url?.includes("phim.nguonc.com") || 
+    movie?.thumb_url?.includes("phim.nguonc.com") ||
+    movie?.poster_url?.includes("ophim") ||
+    movie?.thumb_url?.includes("ophim");
 
-let posterRaw = "";
-let thumbRaw = "";
+  let posterRaw = "";
+  let thumbRaw = "";
 
-if (isNguonC) {
-  // Nguồn C: Đảo ngược key
-  posterRaw = movie?.thumb_url;
-  thumbRaw = movie?.poster_url;
-} else {
-  // KKPhim: Giữ nguyên key
-  posterRaw = movie?.poster_url;
-  thumbRaw = movie?.thumb_url;
-}
+  if (isNguonC_or_OPhim) {
+    // Nguồn C & OPhim: Đảo ngược key
+    posterRaw = movie?.thumb_url;
+    thumbRaw = movie?.poster_url;
+  } else {
+    // KKPhim: Giữ nguyên key
+    posterRaw = movie?.poster_url;
+    thumbRaw = movie?.thumb_url;
+  }
 
-// Fallback an toàn
-if (!posterRaw) posterRaw = thumbRaw;
-if (!thumbRaw) thumbRaw = posterRaw;
+  // Fallback an toàn
+  if (!posterRaw) posterRaw = thumbRaw;
+  if (!thumbRaw) thumbRaw = posterRaw;
 
-// Gọi hàm lấy ảnh (Không cần truyền isKk nữa vì hàm đã tự check domain)
-const posterUrl = getImageUrl(posterRaw);
-const thumbUrl = getImageUrl(thumbRaw);
+  // Gọi hàm lấy ảnh (Không cần truyền isKk nữa vì hàm đã tự check domain)
+  const posterUrl = getImageUrl(posterRaw);
+  const thumbUrl = getImageUrl(thumbRaw);
   // ===================================================
 
   const handleChangeServer = (serverIndex) => {
@@ -466,7 +487,7 @@ const thumbUrl = getImageUrl(thumbRaw);
         </div>
 
         <p className="film-policy border-top pt-2 mt-3 fst-italic">
-          Nếu bạn không load được phim hãy thử bật 1.1.1.1 tải ở CH play hoặc App store rồi thử lại nha.
+          Nếu bạn không load được phim hãy đổi server khác, 1 số phim sẽ bị match sai kết quả cứ đổi server khác sẽ xem được nha.
         </p>
 
         {/* Navigation buttons */}
@@ -525,9 +546,9 @@ const thumbUrl = getImageUrl(thumbRaw);
           Danh sách tập – {servers[currentServer]?.server_name}
         </h2>
         <div className="movie-page__episodes d-flex flex-wrap gap-2 mb-3">
-          {episodes.map((video) => (
+          {episodes.map((video, index) => (
             <button
-              key={video.slug}
+              key={`${video.slug}-${index}`}
               onClick={() => {
                 navigate(`/xem-phim/${slug}/${encodeURIComponent(server)}/${video.slug}`);
               }}
