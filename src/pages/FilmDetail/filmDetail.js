@@ -53,19 +53,29 @@ export default function MovieDetail() {
   }, [slug]);
 
   // GỘP, ĐỔI TÊN SERVER VÀ SẮP XẾP ƯU TIÊN (OP -> KK -> NC)
+  // GỘP, ĐỔI TÊN SERVER VÀ SẮP XẾP ƯU TIÊN (OP -> KK -> NC)
   const allServers = useMemo(() => {
     let list = [];
     sources.forEach(src => {
       const sourceLabel = SOURCE_NAMES[src.source] || src.source?.toUpperCase() || "Server";
       
       (src.episodes || []).forEach(srv => {
-        list.push({
-          ...srv,
-          // Đặt tên server giống hệt logic bên FilmDetail để URL map trúng 100%
-          server_name: `${sourceLabel} - ${srv.server_name}`,
-          original_name: srv.server_name, // Giữ lại tên gốc nếu cần
-          sourceName: sourceLabel
-        });
+        // Lấy danh sách tập phim của server này
+        const epList = srv.server_data || srv.items || [];
+        
+        // Kiểm tra xem server có data thực sự không (phải có ít nhất 1 tập chứa slug hợp lệ)
+        const hasValidData = epList.some(ep => ep.slug && ep.slug.trim() !== "");
+
+        // Chỉ đưa vào danh sách nếu server có dữ liệu
+        if (hasValidData) {
+          list.push({
+            ...srv,
+            // Đặt tên server giống hệt logic bên FilmDetail để URL map trúng 100%
+            server_name: `${sourceLabel} - ${srv.server_name}`,
+            original_name: srv.server_name, // Giữ lại tên gốc nếu cần
+            sourceName: sourceLabel
+          });
+        }
       });
     });
 
