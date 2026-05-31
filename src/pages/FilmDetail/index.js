@@ -116,14 +116,29 @@ export default function FilmDetail() {
               m3u8Url: ep.link_m3u8 || ep.m3u8,
             }));
 
-            // Ghép tên nguồn vào tên server để tạo tên độc nhất (VD: "OP - Vietsub #1")
-            const uniqueServerName = `${sourceLabel} - ${srv.server_name}`;
+            // BỘ LỌC CHỐNG RỖNG DATA (Giống hệt MovieDetail)
+            const hasValidData = normalized.some(ep => ep.slug && ep.slug.trim() !== "");
 
-            mergedServers.push({
-              server_name: uniqueServerName,
-              server_data: normalized,
-            });
+            // Chỉ đưa vào mảng hiển thị nếu server thực sự có data
+            if (hasValidData) {
+              // Ghép tên nguồn vào tên server để tạo tên độc nhất (VD: "OP - Vietsub #1")
+              const uniqueServerName = `${sourceLabel} - ${srv.server_name}`;
+
+              mergedServers.push({
+                server_name: uniqueServerName,
+                server_data: normalized,
+                sourceName: sourceLabel // Giữ lại thuộc tính này để dùng cho thuật toán Sort bên dưới
+              });
+            }
           });
+        });
+
+        // SẮP XẾP ƯU TIÊN SERVER CHO ĐỒNG BỘ VỚI MOVIEDETAIL (OP -> KK -> NC)
+        const priority = { "OP": 1, "KK": 2, "NC": 3 };
+        mergedServers.sort((a, b) => {
+          const rankA = priority[a.sourceName] || 99;
+          const rankB = priority[b.sourceName] || 99;
+          return rankA - rankB;
         });
 
         // Xác định nguồn phim có phải KKPhim không
