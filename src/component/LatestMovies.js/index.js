@@ -47,7 +47,7 @@ export default function LatestMoviesTable() {
     <>
       <div className="mb-1">
         <h2 className="film-category pt-4 pb-2 border-top" id="latest-movies">
-          Phim mới cập nhật
+          Phim mới cập nhật (KK)
         </h2>
       </div>
       <div className="movie-table-wrapper">

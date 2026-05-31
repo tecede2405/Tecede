@@ -16,7 +16,7 @@ function SupportPage() {
 
         <p className="support-description">
         <span className="support-bank">
-            STK: 7624052005 MB Bank
+            STK: 0779459442 MB Bank
         </span>{" "}
         hoặc quét mã bên dưới để donate.
         </p>

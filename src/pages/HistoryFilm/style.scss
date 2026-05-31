@@ -1,3 +1,23 @@
+.history-page {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.history-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8); // độ mờ 50%
+  z-index: 1;
+}
+
+.history-page > * {
+  position: relative;
+  z-index: 2;
+}
 .history-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
