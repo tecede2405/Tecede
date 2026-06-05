@@ -151,55 +151,55 @@ function Tabbar({ isOpen, onClose }) {
           <ul className="tab-child">
             <li>
               {/* /music/nhac-tre */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}> 
+              <NavLink to="/music/nhac-tre" className="tab-link" onClick={handleLinkClick}> 
                 Nhạc Trẻ
               </NavLink>
             </li>
             <li>
               {/* /music/usuk */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/usuk" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Âu Mỹ
               </NavLink>
             </li>
             <li>
               {/* /music/trung-quoc */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/trung-quoc" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Trung Quốc
               </NavLink>
             </li>
             <li>
               {/* /music/nhactre-remix */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/nhactre-remix" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Remix
               </NavLink>
             </li>
             <li>
               {/* /music/edm */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/edm" className="tab-link" onClick={handleLinkClick}>
                 Nhạc EDM
               </NavLink>
             </li>
             <li>
               {/* /music/phonk */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/phonk" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Phonk
               </NavLink>
             </li>
             <li>
               {/* /music/mood */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/mood" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Không Lời
               </NavLink>
             </li>
             <li>
               {/* /music/nhac-douyin */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/nhac-douyin" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Douyin
               </NavLink>
             </li>
             <li>
               {/* /music/nhac-lofi */}
-              <NavLink to="/404closed" className="tab-link" onClick={handleLinkClick}>
+              <NavLink to="/music/nhac-lofi" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Lofi
               </NavLink>
             </li>

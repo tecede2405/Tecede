@@ -1,7 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./layout.scss";
 import Tabbar from "../../component/tabar/index";
-import AdminAuth from "../../component/AdminAuth/index";
 import { useState, useEffect } from "react";
 import {
   FaPhoneVolume,
@@ -47,6 +46,10 @@ function Layout() {
   setShowUserMenu(false);
   setShowTabbar(false);
 }, [location.pathname]);
+
+useEffect(() => {
+  console.log("USER CHANGED:", user);
+}, [user]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -291,9 +294,6 @@ function Layout() {
             <div className="col-12 col-md-3 col-sm-5">
               <h6 className="footer-subtitle">Thông tin</h6>
               <ul className="footer-list">
-                <li>
-                  <AdminAuth />
-                </li>
                 <li>
                   <a href="/sitemap.xml">Sitemap</a>
                 </li>

@@ -23,7 +23,7 @@ const avatarList = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6H1FpSpU4CzUnPE0cdcaiIOO1z0suxFo9hQ&s",
   "https://mautranhve.vn/wp-content/uploads/2025/10/anh-shinichi-ngau.jpg",
   "https://i.pinimg.com/originals/d2/fa/fb/d2fafb40987889bd6b18652a63d23de9.jpg",
-  "https://anhnail.com/wp-content/uploads/2024/11/hinh-haibara-ngau.jpg",
+  "https://khoanhdep.com/wp-content/uploads/2026/02/meme-do-mixi-14.jpg",
   "https://avatarfiles.alphacoders.com/340/thumb-1920-340900.jpg",
   "https://avatarfiles.alphacoders.com/377/thumb-1920-377502.jpg",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoOH6gbxP9do4-RtkDzHyFZ0nzReVghLx96A&s",
@@ -37,7 +37,7 @@ const avatarList = [
   "https://thuvienavatar.edu.vn/wp-content/uploads/2025/12/furina-avatar-5.jpg",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Mv4CCFN_8_wUofMu5KDBm6z7Av4euzL_DQ&s",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIw7hBiNu0H_VdOi2l80p8ADoGZXp9WDHjng&s",
-  "https://upload-os-bbs.hoyolab.com/upload/2024/07/28/128158442/353f2c3621c35ae82a736a1408923afb_695093514664558998.jpg?x-oss-process=image%2Fresize%2Cs_1000%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNqjq2FopGKPtVXgDT_dFIcCPsmZs35BzbFw&s",
   "https://pbs.twimg.com/profile_images/1503610917442924544/vTiyQEri_400x400.jpg",
 ];
 

@@ -122,14 +122,14 @@ function DonateLeaderboard() {
             className="support-btn"
             onClick={() => navigate("/ung-ho")}
           >
-            Donate ở đây
+            Donate giúp ad duy trì web
           </button>
 
           <button
             className="view-more-btn"
             onClick={() => navigate("/donates")}
           >
-            Xem thêm
+            Xem danh sách
           </button>
         </div>
       </div>

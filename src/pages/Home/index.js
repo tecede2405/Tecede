@@ -16,7 +16,6 @@ import China3dFilms from "../../component/HomeFilm/china3dFilm";
 // import MovieCarousel from "../../component/MovieCarousel/index";
 import MovieRow from "../../component/MovieRow/index";
 import ComicHero from "../../component/Banner/mangaBanner";
-import AnnouncementBar from "../../component/Marquee/AnnouncementBar";
 import Donate from "../../component/Donate/index";
 import { Helmet } from "react-helmet-async";
 import "./style.scss";
@@ -73,7 +72,6 @@ function Home() {
             <Tabbar />
             {/* main */}
             <div className="Home__main">
-              <AnnouncementBar />
                <div className="Home__music"> 
                 <MovieRow />
               </div>

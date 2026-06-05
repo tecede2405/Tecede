@@ -1,5 +1,5 @@
 // src/context/AuthContext.js
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -9,6 +9,12 @@ export function AuthProvider({ children }) {
     return saved ? JSON.parse(saved) : null;
   });
 
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  }, [user]);
+  
   const login = (userData) => {
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("isLoggedIn", "true");

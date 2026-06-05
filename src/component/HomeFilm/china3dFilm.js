@@ -28,7 +28,7 @@ function China3dFilms() {
       <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
           <FaFilm className="film-category__icon" />
-          <span>Hoạt Hình 3D Trung Quốc</span>
+          <span>3D Trung Của</span>
         </h2>
         <div className="watch-more" onClick={() => navigate("/detail/china3d-film")}>
           <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
