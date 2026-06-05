@@ -96,6 +96,8 @@ const MovieRow = () => {
               speed={400}
               grabCursor
               slideToClickedSlide={isMobile}
+              observer={true}
+              observeParents={true}
               coverflowEffect={{
                 rotate: 0,
                 stretch: 30,
