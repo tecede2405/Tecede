@@ -256,8 +256,13 @@ export default function MoviePlayer({ src, title, poster, thumb, hasAds = false 
 
     const rect = e.currentTarget.getBoundingClientRect();
 
-    const percent =
-      (e.clientX - rect.left) / rect.width;
+    const clientX =
+      e.touches?.[0]?.clientX ?? e.clientX;
+
+    const percent = Math.max(
+      0,
+      Math.min(1, (clientX - rect.left) / rect.width)
+    );
 
     const newTime = percent * video.duration;
 
@@ -563,6 +568,10 @@ export default function MoviePlayer({ src, title, poster, thumb, hasAds = false 
           showControls();
         }}
       >
+        <div
+            className="timeline-wrapper"
+            onClick={handleSeekClick}
+          >
         <input
           type="range"
           className="video-progress"
@@ -573,13 +582,12 @@ export default function MoviePlayer({ src, title, poster, thumb, hasAds = false 
             "--progress": `${progress}%`,
           }}
           onChange={handleSeek}
-          onClick={handleSeekClick}
           onMouseMove={handlePreview}
           onMouseLeave={() => setShowPreview(false)}
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
         />
-
+        </div>
         <div
           className="preview-time"
           style={{
