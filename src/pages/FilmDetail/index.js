@@ -5,6 +5,7 @@ import { GoChevronLeft } from "react-icons/go";
 import { MdOutlineStorage } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
+import MoviePlayer from "../../component/MoviePlayer/MoviePlayer";
 import Swal from "sweetalert2";
 import "./style.scss";
 
@@ -467,23 +468,51 @@ export default function FilmDetail() {
         </h5>
 
         {/* Player */}
-        <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
-          {currentVideo?.embedUrl ? (
-            <iframe
-              key={currentVideo.embedUrl} 
-              src={currentVideo.embedUrl}
-              title={`Phim ${movie.name} - ${currentVideo.name}`}
-              className="w-100 h-100" 
-              allow="autoplay; encrypted-media; picture-in-picture;"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-              frameBorder="0"
-            />
-          ) : (
-            <div className="d-flex align-items-center justify-content-center bg-dark text-white">
-              Đang tải video...
-            </div>
-          )}
+        {/* Player */}
+        <div className="movie-page__player mb-4 mx-auto">
+          {/* Lấy tên nguồn của server hiện tại đang chọn (OP, KK hoặc NC) */}
+          {(() => {
+            const currentSourceName = servers[currentServer]?.sourceName;
+
+            // NẾU LÀ OP HOẶC KK VÀ CÓ LINK M3U8 -> Dùng MoviePlayer
+            if ((currentSourceName === "OP" || currentSourceName === "KK") && currentVideo?.m3u8Url) {
+              return (
+                <MoviePlayer
+                  key={currentVideo.m3u8Url}
+                  src={currentVideo.m3u8Url}
+                  title={`Phim ${movie?.name || ""} - ${currentVideo?.name || ""}`}
+                  thumb={thumbUrl}
+                  hasAds={currentSourceName === "KK"}
+                />
+              );
+            } 
+            
+            // NẾU LÀ NC (HOẶC OP/KK MÀ BỊ THIẾU M3U8 CHỈ CÓ EMBED) -> Dùng Iframe
+            if (currentVideo?.embedUrl) {
+              return (
+                // Thêm div bọc ngoài này để ép iframe bung ra khung 16:9
+                <div className="ratio ratio-16x9 w-100">
+                  <iframe
+                    key={currentVideo.embedUrl}
+                    src={currentVideo.embedUrl}
+                    title={`Phim ${movie?.name || ""} - ${currentVideo?.name || ""}`}
+                    className="w-100 h-100"
+                    allow="autoplay; encrypted-media; picture-in-picture;"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    frameBorder="0"
+                  />
+                </div>
+              );
+            }
+
+            // TRƯỜNG HỢP CHƯA LOAD XONG HOẶC LỖI DATA
+            return (
+              <div className="d-flex align-items-center justify-content-center bg-dark text-white w-100 h-100">
+                Đang tải video...
+              </div>
+            );
+          })()}
         </div>
 
         {/* Server selector */}

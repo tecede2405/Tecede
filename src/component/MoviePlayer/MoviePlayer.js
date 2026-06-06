@@ -3,7 +3,7 @@ import Hls from "hls.js";
 import { FaPlay, FaPause } from "react-icons/fa";
 import "./style.scss";
 
-export default function MoviePlayer({ src, title, poster }) {
+export default function MoviePlayer({ src, title, poster, thumb, hasAds = false }) {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
 
@@ -45,7 +45,7 @@ export default function MoviePlayer({ src, title, poster }) {
     setDuration("00:00");
   }, [src]);
 
-  // HLS & Media Session Setup
+  // HLS & Media Session Setup - ĐÃ TỐI ƯU CHO TUA PHIM
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !src) return;
@@ -55,13 +55,7 @@ export default function MoviePlayer({ src, title, poster }) {
         title: title || "Movie",
         artist: "Tecede",
         album: "Movie Player",
-        artwork: [
-          {
-            src: poster,
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
+        artwork: thumb ? [{ src: thumb, sizes: "512x512", type: "image/png" }] : [],
       });
 
       navigator.mediaSession.setActionHandler("play", () => {
@@ -81,19 +75,61 @@ export default function MoviePlayer({ src, title, poster }) {
     }
 
     let hls;
+
     if (Hls.isSupported()) {
       hls = new Hls({
         enableWorker: true,
-        lowLatencyMode: true,
-        backBufferLength: 90,
-        maxBufferLength: 30,
-        maxMaxBufferLength: 60,
-        capLevelToPlayerSize: true,
+        lowLatencyMode: false,
+
+        // TỐI ƯU BUFFER: Đủ dài để tua 10s mượt mà
+        backBufferLength: 60,
+        maxBufferLength: 60,
+        maxMaxBufferLength: 120,
+
+        // TỐI ƯU ABR: Khởi động nhanh
         startLevel: -1,
-        abrEwmaDefaultEstimate: 5000000,
+        capLevelToPlayerSize: true,
+        abrEwmaDefaultEstimate: 500000, 
+
+        // TỐI ƯU TIMEOUT
+        manifestLoadingTimeOut: 10000,
+        manifestLoadingMaxRetry: 4,
+        levelLoadingTimeOut: 10000,
+        levelLoadingMaxRetry: 4,
+        fragLoadingTimeOut: 15000,
+        fragLoadingMaxRetry: 6,
+
+        // FIX LỖI KẸT KHI TUA
+        maxFragLookUpTolerance: 0.2,
+        maxBufferHole: 0.5,
+        nudgeOffset: 0.1,
+        nudgeMaxRetry: 5,
       });
+
       hls.loadSource(src);
       hls.attachMedia(video);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        console.log("HLS Manifest loaded");
+      });
+
+      hls.on(Hls.Events.ERROR, (_, data) => {
+        if (!data.fatal) return;
+
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            console.log("Recover NETWORK_ERROR");
+            hls.startLoad();
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            console.log("Recover MEDIA_ERROR");
+            hls.recoverMediaError();
+            break;
+          default:
+            hls.destroy();
+            break;
+        }
+      });
     } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = src;
     }
@@ -101,47 +137,53 @@ export default function MoviePlayer({ src, title, poster }) {
     return () => {
       if (hls) hls.destroy();
     };
-  }, [src, title, poster]);
+  }, [src, title, thumb]);
 
-  // Kiểm tra thời gian hiển thị nút Bỏ qua quảng cáo
+// showSkip nếu server là KK
   useEffect(() => {
-    const interval = setInterval(() => {
-      const video = videoRef.current;
-      if (!video) return;
-      const current = video.currentTime;
-      setShowSkip(current >= 899 && current <= 929);
-    }, 500);
+  if (!hasAds) {
+    setShowSkip(false);
+    return;
+  }
 
-    return () => clearInterval(interval);
-  }, []);
+  const interval = setInterval(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const current = video.currentTime;
+
+    setShowSkip(current >= 899 && current <= 929);
+  }, 500);
+
+  return () => clearInterval(interval);
+}, [hasAds]);
 
   // Khôi phục âm lượng & thời gian đã lưu
-  // Khôi phục âm lượng & thời gian đã lưu
-useEffect(() => {
-  const video = videoRef.current;
-  if (!video) return;
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
-  const savedVolume = localStorage.getItem(VOLUME_KEY);
-  if (isMobile) {
-    video.volume = 1;
-    setVolume(1);
-  } else if (savedVolume !== null) {
-    let parsedVolume = parseFloat(savedVolume);
-    
-    // PHÒNG HỜ: Nếu giá trị đã lưu trước đó lớn hơn 1, tự động chuẩn hóa về khoảng 0 -> 1
-    if (parsedVolume > 1) {
-      parsedVolume = parsedVolume / 100;
+    const savedVolume = localStorage.getItem(VOLUME_KEY);
+    if (isMobile) {
+      video.volume = 1;
+      setVolume(1);
+    } else if (savedVolume !== null) {
+      let parsedVolume = parseFloat(savedVolume);
+
+      // PHÒNG HỜ: Nếu giá trị đã lưu trước đó lớn hơn 1, tự động chuẩn hóa về khoảng 0 -> 1
+      if (parsedVolume > 1) {
+        parsedVolume = parsedVolume / 100;
+      }
+
+      video.volume = parsedVolume;
+      setVolume(parsedVolume);
     }
-    
-    video.volume = parsedVolume;
-    setVolume(parsedVolume);
-  }
 
-  const savedTime = localStorage.getItem(storageKey);
-  if (savedTime && !isNaN(savedTime)) {
-    video.currentTime = parseFloat(savedTime);
-  }
-}, [isMobile, storageKey]);
+    const savedTime = localStorage.getItem(storageKey);
+    if (savedTime && !isNaN(savedTime)) {
+      video.currentTime = parseFloat(savedTime);
+    }
+  }, [isMobile, storageKey]);
 
   // Tự động lưu tiến độ xem sau mỗi 2 giây
   useEffect(() => {
@@ -189,6 +231,11 @@ useEffect(() => {
 
     setProgress(video.duration ? (video.currentTime / video.duration) * 100 : 0);
     setCurrentTime(formatTime(video.currentTime));
+
+    // Ép tắt hiệu ứng xoay xoay (buffering) nếu phim đang thực sự chạy
+    if (video.readyState >= 3 && isBuffering) {
+      setIsBuffering(false);
+    }
   };
 
   const handleSeek = (e) => {
@@ -204,16 +251,16 @@ useEffect(() => {
   };
 
   const handleVolume = (e) => {
-  const video = videoRef.current;
-  if (!video) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-  // Lấy giá trị từ 0 -> 100 và chia cho 100 để đưa về khoảng 0.0 -> 1.0
-  const value = parseFloat(e.target.value) / 100; 
-  
-  video.volume = value;
-  setVolume(value); // State volume vẫn giữ từ 0 -> 1
-  localStorage.setItem(VOLUME_KEY, value);
-};
+    // Lấy giá trị từ 0 -> 100 và chia cho 100 để đưa về khoảng 0.0 -> 1.0
+    const value = parseFloat(e.target.value) / 100;
+
+    video.volume = value;
+    setVolume(value); // State volume vẫn giữ từ 0 -> 1
+    localStorage.setItem(VOLUME_KEY, value);
+  };
 
   const toggleMute = () => {
     const video = videoRef.current;
@@ -420,9 +467,9 @@ useEffect(() => {
     <div
       className={`player-container ${isFullscreen ? "mobile-fullscreen" : ""}`}
       ref={playerRef}
-      onMouseMove={showControls} // Dành cho máy tính khi di chuột
+      onMouseMove={showControls}
       onClick={() => {
-        if (!isMobile) showControls(); // Chỉ kích hoạt click này trên Desktop
+        if (!isMobile) showControls();
       }}
     >
       <video
@@ -430,8 +477,8 @@ useEffect(() => {
         playsInline
         webkitPlaysInline
         x5PlaysInline
-        preload="auto"
-        poster={poster}
+        preload="metadata" // Tùy chọn: đổi thành "autoPlay" và "muted={isMobile}" nếu muốn chạy ngay
+        poster={thumb}
         onTimeUpdate={updateProgress}
         onLoadedMetadata={() => {
           const video = videoRef.current;
@@ -440,8 +487,7 @@ useEffect(() => {
         }}
         onClick={(e) => {
           e.stopPropagation();
-          
-          // Xử lý riêng cho Điện thoại / Máy tính bảng
+
           if (isMobile) {
             if (controlsVisible) {
               setControlsVisible(false);
@@ -451,8 +497,7 @@ useEffect(() => {
             }
             return;
           }
-          
-          // Xử lý cho Máy tính (Desktop)
+
           togglePlay();
         }}
         onWaiting={() => setIsBuffering(true)}
@@ -494,7 +539,6 @@ useEffect(() => {
         </div>
       )}
 
-      {/* THANH CONTROLS ĐƯỢC ĐƯA LÊN TRÊN NÚT SKIP QUẢNG CÁO */}
       <div
         className={`controls ${!controlsVisible ? "hide" : ""}`}
         onClick={(e) => e.stopPropagation()}
@@ -533,6 +577,7 @@ useEffect(() => {
           <div className="left-controls">
             <button
               type="button"
+              className="playfilm-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 togglePlay();
@@ -542,27 +587,17 @@ useEffect(() => {
             </button>
 
             <button
-              type="button"
-              className="seek-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                skip(-10);
-              }}
+              className="seek-btn netflix"
+              onClick={() => skip(-10)}
             >
-              <span className="seek-icon">«</span>
-              <span className="seek-text">10</span>
+              <span>−10s</span>
             </button>
 
             <button
-              type="button"
-              className="seek-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                skip(10);
-              }}
+              className="seek-btn netflix"
+              onClick={() => skip(10)}
             >
-              <span className="seek-icon">»</span>
-              <span className="seek-text">10</span>
+              <span>+10s</span>
             </button>
 
             <span className="time">
@@ -586,8 +621,10 @@ useEffect(() => {
                   className="volume"
                   min="0"
                   max="100"
-                  step="1"
                   value={volume * 100}
+                  style={{
+                    "--volume": `${volume * 100}%`,
+                  }}
                   onInput={handleVolume}
                 />
               )}
@@ -639,7 +676,6 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* NÚT QUẢNG CÁO ĐƯỢC ĐƯA XUỐNG DƯỚI CÙNG DOM ĐỂ LUÔN NẰM Ở LỚP TRÊN CÙNG */}
       {showSkip && (
         <button
           type="button"
