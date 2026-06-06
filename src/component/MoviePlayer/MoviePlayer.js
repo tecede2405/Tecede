@@ -250,6 +250,21 @@ export default function MoviePlayer({ src, title, poster, thumb, hasAds = false 
     video.currentTime = newTime;
   };
 
+  const handleSeekClick = (e) => {
+    const video = videoRef.current;
+    if (!video || !video.duration) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    const percent =
+      (e.clientX - rect.left) / rect.width;
+
+    const newTime = percent * video.duration;
+
+    video.currentTime = newTime;
+    setProgress(percent * 100);
+  };
+
   const handleVolume = (e) => {
     const video = videoRef.current;
     if (!video) return;
@@ -424,6 +439,7 @@ export default function MoviePlayer({ src, title, poster, thumb, hasAds = false 
     };
   }, [isFullscreen, isMobile]);
 
+  
   useEffect(() => {
     const handleKey = (e) => {
       if (
@@ -557,6 +573,7 @@ export default function MoviePlayer({ src, title, poster, thumb, hasAds = false 
             "--progress": `${progress}%`,
           }}
           onChange={handleSeek}
+          onClick={handleSeekClick}
           onMouseMove={handlePreview}
           onMouseLeave={() => setShowPreview(false)}
           onTouchStart={(e) => e.stopPropagation()}
