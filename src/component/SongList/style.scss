@@ -1,9 +1,121 @@
-.badge-new {
-  background: #e74c3c;
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
+/* --- LƯỚI CHIA 2 CỘT CHO BÀI HÁT --- */
+.song-list-grid {
+  display: grid;
+  /* ĐÃ FIX: Dùng minmax(0, 1fr) để cột tuyệt đối không được bành trướng */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  gap: 20px; 
+  max-width: 1100px; 
+  width: 100%; /* Đảm bảo luôn nằm gọn trong khung cha */
+  margin: 0 auto; 
+}
+
+
+
+/* --- KHUNG TỪNG BÀI HÁT --- */
+.music-card {
+  background-color: rgba(43, 43, 60, 0.4); 
+  border: 1px solid rgba(255, 255, 255, 0.05); 
+  border-radius: 12px; 
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 70px; 
+  margin-bottom: 0 !important; 
+
+  &:hover {
+    background-color: rgba(43, 43, 60, 0.8);
+  }
+
+  &.active {
+    border-color: #a855f7; 
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.1);
+    background-color: rgba(168, 85, 247, 0.08);
+  }
+}
+
+.song-img {
+  border-radius: 8px;
+}
+
+.custom-badge-new {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  background: linear-gradient(135deg, #a855f7, #ec4899); 
+  color: white;
+  font-size: 10px;
   font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.6);
+  z-index: 2; 
+}
+
+/* --- FIX LỖI TÀNG HÌNH CHỮ --- */
+.song-info-center {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.song-title-new {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff; /* Ép màu trắng */
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist-new {
+  font-size: 12px;
+  color: #a0a0ab; /* Màu xám sáng dễ nhìn */
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-listens-new {
+  font-size: 12px;
+  color: #a0a0ab; /* Màu xám sáng */
+  min-width: 80px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+  .song-list-grid {
+    max-width: 100%; 
+    gap: 15px;
+  }
+}
+@media (max-width: 850px){
+  .song-list-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 576px) {
+  .song-list-grid {
+    grid-template-columns: minmax(0, 1fr); /* ĐÃ FIX cho mobile */
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  .music-card {
+    height: auto; 
+    padding: 10px 12px; 
+  }
+  .song-title-new{
+    font-size: 12px;
+  }
+  .song-artist-new {
+    font-size: 10px;
+  }
+  .song-listens-new{
+    font-size: 9px;
+    min-width: 60px;
+    text-align: right;
+  }
 }

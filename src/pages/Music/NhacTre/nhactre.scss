@@ -1,223 +1,289 @@
-.music-card {
-    height: 70px;
-    display: flex;
-    align-items: center;
-    background-color: #8f85852e;
-    color: #ddd;
-    padding: 12px;
-    border-radius: 8px;
-    // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
-  .music-container-box{
-    display:flex;
-  }
-  .music-container{
-    flex:1;
-    position: relative;
-    background: #212121;
-  }
-  .music-card img {
-    border-radius: 8px;
-  }
-  .title-box-music{
-    margin-bottom:10px;
-  }
+/* MÀU NỀN TỔNG THỂ */
+.dark-theme {
+  background-color: #1a1a24; /* Màu nền tối giống ảnh */
+  color: #fff;
+  min-height: 100vh;
+}
 
-  .music-card .card-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-left: 10px;
-    background: #f8f9fa;
-  }
-  
-  .music-card .card-title {
-    font-size: 13px;
-    font-weight: bold;
-  }
-  
-  .music-card .card-text {
-    text-align: center;
-    font-size: 11px;
-    color: #fff;
-  }
-
-  .profile {
-  background: #212121;
+.music-container-box {
   display: flex;
-  padding: 30px 150px;
- }
- 
- .profile .profile-image {
+}
+
+.music-container {
+  flex: 1;
+  position: relative;
+  background: #1a1a24;
+}
+
+/* KHU VỰC HEADER (PROFILE) */
+.profile {
+  margin-left: 70px;
+  background: transparent;
+  display: flex;
+  padding: 40px 50px 20px 50px;
+}
+
+.profile-image {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   object-fit: cover;
-  animation: spin 10s linear infinite;
- }
- .profile .profile-info {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.profile-info {
   margin-left: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
- }
- .profile .profile-title {
+}
+
+.profile-title {
   font-weight: 700;
-  color: #ddd;
+  color: #fff;
   margin: 0;
- }
- .profile .profile-desc {
-  color: #ddd;
-  margin: 0;
+  font-size: 22px;
+}
+
+.profile-desc {
+  color: #a0a0ab;
+  margin: 5px 0 15px 0;
+  font-size: 13px;
+}
+
+.section-subtitle {
+  color: #a0a0ab;
   font-size: 14px;
- }
-
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  margin-bottom: 10px;
 }
 
-
-  .audio-container {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 120px;
-    border-top: 1px solid #333333;
-    padding: 10px;
-    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    transition: bottom 0.3s; /* Thêm hiệu ứng khi thay đổi vị trí */
-    background-color: #2e2e3e;
-  }
+/* NÚT SHUFFLE GRADIENT VIỀN (GIỐNG ẢNH) */
+.shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 8px 24px;
+  border-radius: 30px;
+  background: rgba(43, 43, 60, 0.6);
+  color: #c084fc;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid #7c3aed;
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
   
-  .custom-audio {
-    width: 100%;
-    height: 30px;
-  }
-
-  .img-audio{
-    border-radius: 50%!important;
-    animation: spin 10s linear infinite;
-  }
-  .card-music-body{
-    justify-content: center;
-    width: 100%;
-    height: 50px;
-  }
-  .music-card{
-    height: 60px;
-    margin-bottom: 5px;
-  }
-  .change-song{
-    color: #ddd;
-    border:none;
-    background: none;
-    padding:0;
-    font-size: 18px;
-    margin-left: 10px;  
-  }
-
-  .card-render-title{
-    font-size: 13px;
-    font-weight: 650;
-    text-align:center;
-  }
-
-  .card-render-text{
-    font-size: 10px;
-    text-align: center;
+  &:hover {
+    background: #7c3aed;
     color: #fff;
-    text-align:center;
   }
-
-  .suggestions-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ccc;
-  border-top: none;
-  z-index: 10;
-  padding-left: 0;
-  margin-top: 0;
-  list-style: none;
-  border-radius: 0 0 4px 4px;
 }
 
-.suggestion-item {
+/* KHU VỰC DANH SÁCH BÀI HÁT KHOẢNG TRỐNG CHO BOTTOM PLAYER */
+.music-scroll-area {
+  padding-bottom: 130px; /* Nhường chỗ cho thanh player ở dưới cùng */
+}
+
+/* ------------------------------------- */
+/* CUSTOM BOTTOM PLAYER (NHƯ HÌNH CHUẨN)  */
+/* ------------------------------------- */
+.custom-bottom-player {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1000px;
+  height: 80px;
+  background: rgba(35, 35, 48, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
-  padding: 8px 10px;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Kéo thanh player ra cho di động */
+@media (max-width: 768px) {
+  .custom-bottom-player {
+    width: 95%;
+    padding: 10px 10px;
+    flex-direction: column;
+    height: auto;
+    
+    .player-center{
+      width: 100%;
+    }
+    .player-left {
+      width: 100%;
+      justify-content: center;
+    }
+    .song-name{
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    .song-artist{
+      font-size: 10px;
+    }
+  }
+
+}
+
+.player-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 25%;
+}
+
+.player-thumb {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.spinning {
+  animation: spin 8s linear infinite;
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #c084fc;
+  }
 }
 
-.suggestion-item:hover {
-  background-color: #f0f0f0;
+.play-pause-btn {
+  font-size: 20px;
 }
 
-.shuffle{
-  margin-top: 10px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #0b80d9, #b425dc);
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+/* KHOẢNG GIỮA (THÔNG TIN & PROGRESS BAR) */
+.player-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.song-name {
   font-size: 14px;
   font-weight: 600;
-  border: none;
-  color: #ddd;
+  color: #fff;
+  margin: 0;
+  text-transform: capitalize;
 }
 
-.shuffle:hover{
-  background: #fff;
+.song-artist {
+  font-size: 11px;
+  color: #a0a0ab;
+  margin: 2px 0 5px 0;
 }
-  @media (max-width: 880px){
-    .profile {
-      padding: 30px 100px;
-    }
-    .profile .profile-title {
-    font-size: 15px;
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.time-text {
+  font-size: 11px;
+  color: #a0a0ab;
+  min-width: 35px;
+  text-align: center;
+}
+
+/* CUSTOM THANH KÉO RANGE INPUT */
+.custom-range {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #4b4b5c;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #a855f7; /* Nút tím */
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(168, 85, 247, 0.5);
+  }
+}
+
+.player-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 25%;
+  justify-content: flex-end;
+}
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100px; /* Độ dài thanh chỉnh volume */
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #4b4b5c;
+  border-radius: 2px;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #a855f7;
+  }
+}
+/* ANIMATION XOAY ĐĨA */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Đảm bảo thẻ audio mặc định bị ẩn đi */
+.d-none {
+  display: none !important;
+}
+
+/* Responsive cơ bản */
+@media (max-width: 768px) {
+  .profile {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+    margin-left: 0;
   }
   
+  .shuffle-btn{
+    margin: 0 auto;
   }
-   @media (max-width: 768px) {
-  .profile {
-    justify-content: start;
-    margin-left: 100px;
-    padding: 10px; 
-  }
-  .profile .profile-image {
-    width: 80px;
-    height: 80px;
-  }
-  .profile .profile-title {
-    font-size: 15px;
-  }
-  .profile .profile-desc {
-    font-size: 12px;
-  }
-  .music-container{
-    flex:1;
-  }
+  .player-left { gap: 10px; width: auto; }
+  .player-right { display: none; } /* Ẩn bớt nút volume trên đt */
 }
-
- @media (max-width: 540px){
-  .profile {
-    margin-left: 20px;
-  }
-    .music-container-box{
-      flex-direction: column;
-    }
-  }

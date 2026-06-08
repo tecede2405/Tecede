@@ -1,77 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./searchBox.scss";
 
 export default function SearchBar({ songs, onSelectSong }) {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const wrapperRef = useRef(null);
 
-  const filterSongs = (keyword) => {
-    const lowerKeyword = keyword.toLowerCase();
-    if (!keyword.trim()) return [];
-    return songs.filter(
-      (song) =>
-        song.title.toLowerCase().startsWith(lowerKeyword) ||
-        song.artist.toLowerCase().startsWith(lowerKeyword)
-    );
-  };
+  // Đóng list gợi ý khi click ra ngoài
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setSuggestions([]);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearch(value);
-    const filtered = filterSongs(value);
+    if (!value.trim()) {
+      setSuggestions([]);
+      return;
+    }
+    const filtered = songs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(value.toLowerCase()) ||
+        song.artist.toLowerCase().includes(value.toLowerCase())
+    );
     setSuggestions(filtered);
   };
 
   const handleSelect = (song) => {
-    const index = songs.indexOf(song);
+    const index = songs.findIndex((s) => s._id === song._id);
     onSelectSong(index);
     setSearch("");
     setSuggestions([]);
   };
 
   return (
-    <>
-      <h6 className="search-song">Tìm nhạc ở đây nè</h6>
-      <div className="search-box mb-3 position-relative">
-      <input
-        type="text"
-        placeholder="Tìm bài hát hoặc nghệ sĩ..."
-        value={search}
-        onChange={handleSearchChange}
-        className="form-control"
-        autoComplete="off"
-      />
-      {suggestions.length > 0 && (
-        <ul className="suggestions-list">
-          {suggestions.map((song, index) => (
-            <li
-              key={song.id || index}
-              className="suggestion-item"
-              onClick={() => handleSelect(song)}
-            >
-              <img
-                src={song.image}
-                alt={song.title}
-                style={{
-                  width: 40,
-                  height: 40,
-                  objectFit: "cover",
-                  borderRadius: 4,
-                  marginRight: 10,
-                }}
-              />
-              <div>
-                <div>
-                  <strong className="suggestion-song-title">{song.title}</strong>
+    <div className="search-wrapper" ref={wrapperRef}>
+      <h6 className="search-label">Tìm nhạc ở đây nè</h6>
+      <div className="search-input-group">
+        <input
+          type="text"
+          placeholder="Tìm bài hát hoặc nghệ sĩ..."
+          value={search}
+          onChange={handleSearchChange}
+          className="search-input"
+          autoComplete="off"
+        />
+        {suggestions.length > 0 && (
+          <ul className="suggestions-list">
+            {suggestions.map((song) => (
+              <li key={song._id} className="suggestion-item" onClick={() => handleSelect(song)}>
+                <img src={song.image} alt={song.title} className="suggestion-img" />
+                <div className="suggestion-info">
+                  <strong className="suggestion-title">{song.title}</strong>
+                  <span className="suggestion-artist">{song.artist}</span>
                 </div>
-                <small className="suggestion-song-text">{song.artist}</small>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
-    </>
-
   );
 }
