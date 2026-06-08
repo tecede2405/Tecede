@@ -11,13 +11,12 @@ function shuffleArray(arr) {
 }
 
 export default function useMusicPlayer(initialSongs) {
-  const [originalPlaylist, setOriginalPlaylist] = useState(initialSongs); // ✅ giữ nguyên bản gốc
-  const [currentPlaylist, setCurrentPlaylist] = useState(initialSongs);   // ✅ dùng để phát
+  const [originalPlaylist, setOriginalPlaylist] = useState(initialSongs);
+  const [currentPlaylist, setCurrentPlaylist] = useState(initialSongs);
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isShuffle, setIsShuffle] = useState(false);
   const audioRef = useRef(null);
 
-  // Cập nhật playlist khi fetch từ API
   const updatePlaylist = useCallback((songs) => {
     setOriginalPlaylist(songs);
     setCurrentPlaylist(songs);
@@ -25,7 +24,6 @@ export default function useMusicPlayer(initialSongs) {
     setIsShuffle(false);
   }, []);
 
-  // Phát bài theo index
   const handlePlay = (index) => {
     const song = currentPlaylist[index];
     if (song?._id) {
@@ -46,7 +44,7 @@ export default function useMusicPlayer(initialSongs) {
     });
   };
 
-  // Preload (tải trước) bài hát tiếp theo
+  // 🛠 ĐÃ FIX LỖI PRELOADER TỰ HỦY
   useEffect(() => {
     if (currentPlaylist.length > 0 && currentIndex !== null) {
       const nextIndex = (currentIndex + 1) % currentPlaylist.length;
@@ -57,15 +55,12 @@ export default function useMusicPlayer(initialSongs) {
         audioPreloader.preload = "auto";
         audioPreloader.src = nextSongUrl;
 
-        return () => {
-          audioPreloader.src = ""; 
-          audioPreloader.load();
-        };
+        // BỎ HOÀN TOÀN HÀM RETURN DỌN DẸP Ở ĐÂY!
+        // Không được set src = "" vì nó sẽ cắt đứt luồng tải mạng của bài hát tiếp theo
       }
     }
   }, [currentIndex, currentPlaylist]);
 
-  // Xáo trộn hoặc trở lại danh sách gốc
   const handleShufflePlaylist = () => {
     if (!isShuffle) {
       const shuffled = shuffleArray(originalPlaylist);
@@ -78,13 +73,17 @@ export default function useMusicPlayer(initialSongs) {
     setIsShuffle(!isShuffle);
   };
 
-  // Hàm ép trình duyệt đổi link và phát ngay lập tức (vượt rào tiết kiệm pin)
+  // 🛠 ĐÃ FIX: CHỐNG SPAM MẠNG KHI ÉP PHÁT
   const forcePlayAudio = (index) => {
     const song = currentPlaylist[index];
     if (!song) return;
 
     if (audioRef.current) {
-      audioRef.current.src = song.file; 
+      // Chỉ gán và load lại nếu thực sự là link mới
+      if (audioRef.current.getAttribute("src") !== song.file) {
+        audioRef.current.src = song.file;
+        audioRef.current.load(); // Bắt buộc phải có để thiết lập luồng mạng ngầm
+      }
       audioRef.current.play().catch((err) => console.log("Lỗi autoplay nền:", err));
     }
 
@@ -113,7 +112,7 @@ export default function useMusicPlayer(initialSongs) {
     forcePlayAudio(nextIndex);
   };
 
-  // Auto phát khi đổi bài (ĐÃ FIX: Xử lý gán src độc lập với React)
+  // 🛠 ĐÃ FIX: ĐỒNG BỘ AUTO PLAY CHUẨN XÁC
   useEffect(() => {
     if (currentIndex !== null && audioRef.current) {
       const audio = audioRef.current;
@@ -121,11 +120,12 @@ export default function useMusicPlayer(initialSongs) {
 
       if (!currentSongUrl) return;
 
-      // Nếu chưa có src hoặc src khác bài hiện tại thì mới gán
-      if (!audio.src.includes(currentSongUrl)) {
+      // Dùng getAttribute để lấy URL gốc chuẩn xác 100%, tránh lỗi nhận diện sai
+      if (audio.getAttribute("src") !== currentSongUrl) {
         audio.src = currentSongUrl;
+        audio.load();
       } else if (!audio.paused) {
-         // Nhạc đang phát bằng forcePlayAudio rồi thì thoát
+        // Nhạc đang phát rồi thì thoát ngay
         return; 
       }
 
@@ -146,7 +146,6 @@ export default function useMusicPlayer(initialSongs) {
     }
   }, [currentIndex, currentPlaylist]);
 
-  // Phục hồi audio khi mở lại tab
   useEffect(() => {
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
