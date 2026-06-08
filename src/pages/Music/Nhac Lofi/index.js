@@ -3,7 +3,6 @@ import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
 import SongList from "../../../component/SongList/SongList";
-
 import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
@@ -39,6 +38,34 @@ function NhacLofi() {
   }, [updatePlaylist]);
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
+
+  // ⚡ Tích hợp Media Session API giữ control chạy nền
+  useEffect(() => {
+    if ("mediaSession" in navigator && playlist[currentIndex]) {
+      const song = playlist[currentIndex];
+      const defaultImage = "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/b865a58f5977be30a5a2094a8ad71c6c";
+      
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title || "Đang phát nhạc...",
+        artist: song.artist || "Nhạc Lofi",
+        album: "My Music Player",
+        artwork: [
+          { src: song.image || defaultImage, sizes: "96x96", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "256x256", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "512x512", type: "image/jpeg" }
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+      navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+    }
+  }, [currentIndex, playlist, handleNext, handlePrev, audioRef]);
 
   return (
     <div className="music-container-box">
@@ -100,13 +127,10 @@ function NhacLofi() {
                   </div>
 
                   <audio
-                    key={currentIndex}
                     ref={audioRef}
-                    src={playlist[currentIndex]?.file}
                     controls
                     playsInline
-                    autoPlay
-                    preload="metadata"
+                    preload="auto"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}

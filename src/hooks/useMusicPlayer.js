@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
-//  Hàm xáo trộn mảng
+// Hàm xáo trộn mảng
 function shuffleArray(arr) {
   const newArr = [...arr];
   for (let i = newArr.length - 1; i > 0; i--) {
@@ -17,56 +17,55 @@ export default function useMusicPlayer(initialSongs) {
   const [isShuffle, setIsShuffle] = useState(false);
   const audioRef = useRef(null);
 
-  //  Cập nhật playlist khi fetch từ API
+  // Cập nhật playlist khi fetch từ API
   const updatePlaylist = useCallback((songs) => {
-  setOriginalPlaylist(songs);
-  setCurrentPlaylist(songs);
-  setCurrentIndex(null);
-  setIsShuffle(false);
-}, []);
+    setOriginalPlaylist(songs);
+    setCurrentPlaylist(songs);
+    setCurrentIndex(null);
+    setIsShuffle(false);
+  }, []);
 
-  //  Phát bài theo index
+  // Phát bài theo index
   const handlePlay = (index) => {
-  const song = currentPlaylist[index];
-  if (song?._id) {
-    fetch(`${process.env.REACT_APP_API_URL}/api/songs/${song._id}/listen`, {
-      method: "PUT",
-    }).catch((err) => console.error("Lỗi tăng lượt nghe:", err));
-  }
-  setCurrentIndex(index);
-  setCurrentPlaylist((prev) => {
-  const updated = [...prev];
-  if (updated[index]) {
-    updated[index] = {
-      ...updated[index],
-      listens: (updated[index].listens || 0) + 1,
-    };
-  }
-  return updated;
-});
-};
-
-  // useEffect dùng để Preload (tải trước) bài hát tiếp theo
-useEffect(() => {
-  if (currentPlaylist.length > 0 && currentIndex !== null) {
-    const nextIndex = (currentIndex + 1) % currentPlaylist.length;
-    const nextSongUrl = currentPlaylist[nextIndex]?.file;
-
-    if (nextSongUrl) {
-      const audioPreloader = new Audio();
-      audioPreloader.preload = "auto";
-      audioPreloader.src = nextSongUrl;
-
-      // Hàm dọn dẹp khi useEffect chạy lại hoặc component unmount
-      return () => {
-        audioPreloader.src = ""; // Xóa nguồn để trình duyệt dừng tải ngầm file cũ
-        audioPreloader.load();
-      };
+    const song = currentPlaylist[index];
+    if (song?._id) {
+      fetch(`${process.env.REACT_APP_API_URL}/api/songs/${song._id}/listen`, {
+        method: "PUT",
+      }).catch((err) => console.error("Lỗi tăng lượt nghe:", err));
     }
-  }
-}, [currentIndex, currentPlaylist]);
+    setCurrentIndex(index);
+    setCurrentPlaylist((prev) => {
+      const updated = [...prev];
+      if (updated[index]) {
+        updated[index] = {
+          ...updated[index],
+          listens: (updated[index].listens || 0) + 1,
+        };
+      }
+      return updated;
+    });
+  };
 
-  //  Xáo trộn hoặc trở lại danh sách gốc
+  // Preload (tải trước) bài hát tiếp theo
+  useEffect(() => {
+    if (currentPlaylist.length > 0 && currentIndex !== null) {
+      const nextIndex = (currentIndex + 1) % currentPlaylist.length;
+      const nextSongUrl = currentPlaylist[nextIndex]?.file;
+
+      if (nextSongUrl) {
+        const audioPreloader = new Audio();
+        audioPreloader.preload = "auto";
+        audioPreloader.src = nextSongUrl;
+
+        return () => {
+          audioPreloader.src = ""; 
+          audioPreloader.load();
+        };
+      }
+    }
+  }, [currentIndex, currentPlaylist]);
+
+  // Xáo trộn hoặc trở lại danh sách gốc
   const handleShufflePlaylist = () => {
     if (!isShuffle) {
       const shuffled = shuffleArray(originalPlaylist);
@@ -84,57 +83,57 @@ useEffect(() => {
     const song = currentPlaylist[index];
     if (!song) return;
 
-    // Can thiệp trực tiếp vào DOM Audio thay vì đợi React render
     if (audioRef.current) {
-      audioRef.current.src = song.file; // Gán cứng link mới
+      audioRef.current.src = song.file; 
       audioRef.current.play().catch((err) => console.log("Lỗi autoplay nền:", err));
     }
 
-    // Vẫn gọi hàm gốc để cập nhật State UI và gọi API tăng view
     handlePlay(index);
   };
 
-  // Phát bài tiếp theo
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentPlaylist.length === 0) return;
     const nextIndex = currentIndex === null ? 0 : (currentIndex + 1) % currentPlaylist.length;
-    forcePlayAudio(nextIndex); // SỬA Ở ĐÂY
-  };
+    forcePlayAudio(nextIndex);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, currentPlaylist]);
 
-  // Quay lại bài trước
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (currentPlaylist.length === 0) return;
     const prevIndex = currentIndex === null
         ? 0
         : (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
-    forcePlayAudio(prevIndex); // SỬA Ở ĐÂY
-  };
+    forcePlayAudio(prevIndex);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, currentPlaylist]);
 
-  // Tự động phát bài tiếp khi bài hiện tại kết thúc (Quan trọng nhất cho phát nền)
   const handleEnded = () => {
     if (currentIndex === null) return;
     const nextIndex = (currentIndex + 1) % currentPlaylist.length;
-    forcePlayAudio(nextIndex); // SỬA Ở ĐÂY
+    forcePlayAudio(nextIndex);
   };
 
-  // Auto phát khi đổi bài
+  // Auto phát khi đổi bài (ĐÃ FIX: Xử lý gán src độc lập với React)
   useEffect(() => {
     if (currentIndex !== null && audioRef.current) {
       const audio = audioRef.current;
       const currentSongUrl = currentPlaylist[currentIndex]?.file;
 
-      // QUAN TRỌNG: Nếu bài hát đã được forcePlayAudio gán src và đang phát nền,
-      // ta thoát ngay (return) để không gọi lại audio.play() hay audio.load() làm ngắt nhạc.
-      if (currentSongUrl && audio.src.includes(currentSongUrl)) {
-        return;
+      if (!currentSongUrl) return;
+
+      // Nếu chưa có src hoặc src khác bài hiện tại thì mới gán
+      if (!audio.src.includes(currentSongUrl)) {
+        audio.src = currentSongUrl;
+      } else if (!audio.paused) {
+         // Nhạc đang phát bằng forcePlayAudio rồi thì thoát
+        return; 
       }
 
-      // Khúc này sẽ chạy ở lần đầu tiên người dùng bấm vào bài hát (khi audioRef vừa mount)
       const playAudio = async () => {
         try {
           await audio.play();
         } catch (err) {
-          console.warn("Autoplay bị chặn");
+          console.warn("Autoplay bị chặn", err);
           const resume = () => {
             audio.play().catch(() => {});
             document.removeEventListener("click", resume);
@@ -147,22 +146,22 @@ useEffect(() => {
     }
   }, [currentIndex, currentPlaylist]);
 
-
+  // Phục hồi audio khi mở lại tab
   useEffect(() => {
-  const handleVisibility = () => {
-    if (document.visibilityState === "visible") {
-      if (audioRef.current && currentIndex !== null) {
-        audioRef.current.play().catch(() => {});
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        if (audioRef.current && currentIndex !== null && audioRef.current.paused) {
+          audioRef.current.play().catch(() => {});
+        }
       }
-    }
-  };
+    };
 
-  document.addEventListener("visibilitychange", handleVisibility);
+    document.addEventListener("visibilitychange", handleVisibility);
 
-  return () => {
-    document.removeEventListener("visibilitychange", handleVisibility);
-  };
-}, [currentIndex]);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [currentIndex]);
 
   return {
     playlist: currentPlaylist,

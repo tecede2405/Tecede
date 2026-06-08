@@ -40,6 +40,33 @@ function NhacDouyin() {
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
+  // ⚡ Tích hợp Media Session API giữ control chạy nền giống Zing MP3
+  useEffect(() => {
+    if ("mediaSession" in navigator && playlist[currentIndex]) {
+      const song = playlist[currentIndex];
+      
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title || "Đang phát nhạc...",
+        artist: song.artist || "Nhạc Douyin",
+        album: "My Music Player",
+        artwork: [
+          { src: song.image || "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/bb95fae35b14b87ed5d6d2d15791e3f2", sizes: "96x96", type: "image/jpeg" },
+          { src: song.image || "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/bb95fae35b14b87ed5d6d2d15791e3f2", sizes: "256x256", type: "image/jpeg" },
+          { src: song.image || "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/bb95fae35b14b87ed5d6d2d15791e3f2", sizes: "512x512", type: "image/jpeg" }
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+      navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+    }
+  }, [currentIndex, playlist, handleNext, handlePrev, audioRef]);
+
   return (
     <div className="music-container-box">
       <Tabbar />
@@ -105,14 +132,12 @@ function NhacDouyin() {
                     </button>
                   </div>
 
+                  {/* ĐÃ FIX: Bỏ key, bỏ src tĩnh, bỏ autoPlay để Hook JS tự quản lý */}
                   <audio
-                    key={currentIndex}
                     ref={audioRef}
-                    src={playlist[currentIndex]?.file}
                     controls
                     playsInline
-                    autoPlay
-                    preload="metadata"
+                    preload="auto"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}

@@ -39,6 +39,34 @@ function NhacEDM() {
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
+  // ⚡ Tích hợp Media Session API giữ control chạy nền giống Zing MP3
+  useEffect(() => {
+    if ("mediaSession" in navigator && playlist[currentIndex]) {
+      const song = playlist[currentIndex];
+      const defaultImage = "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6659861e5f2cb99d7a210d2b258ec8f5";
+      
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title || "Đang phát nhạc...",
+        artist: song.artist || "Nhạc EDM",
+        album: "My Music Player",
+        artwork: [
+          { src: song.image || defaultImage, sizes: "96x96", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "256x256", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "512x512", type: "image/jpeg" }
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+      navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+    }
+  }, [currentIndex, playlist, handleNext, handlePrev, audioRef]);
+
   return (
     <div className="music-container-box">
       <Tabbar />
@@ -98,14 +126,12 @@ function NhacEDM() {
                     </button>
                   </div>
 
+                  {/* ĐÃ FIX: Bỏ key, bỏ src tĩnh, bỏ autoPlay để Hook JS tự quản lý */}
                   <audio
-                    key={currentIndex}
                     ref={audioRef}
-                    src={playlist[currentIndex]?.file}
                     controls
                     playsInline
-                    autoPlay
-                    preload="metadata"
+                    preload="auto"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}

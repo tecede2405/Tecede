@@ -39,6 +39,34 @@ function NhacMood() {
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
+  // ⚡ Tích hợp Media Session API giữ control chạy nền ổn định
+  useEffect(() => {
+    if ("mediaSession" in navigator && playlist[currentIndex]) {
+      const song = playlist[currentIndex];
+      const defaultImage = "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/85ea2a41bcba853ca1656f17b54d6a71";
+      
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title || "Đang phát nhạc...",
+        artist: song.artist || "Nhạc Mood",
+        album: "My Music Player",
+        artwork: [
+          { src: song.image || defaultImage, sizes: "96x96", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "256x256", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "512x512", type: "image/jpeg" }
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+      navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+    }
+  }, [currentIndex, playlist, handleNext, handlePrev, audioRef]);
+
   return (
     <div className="music-container-box">
       <Tabbar />
@@ -97,14 +125,12 @@ function NhacMood() {
                     </button>
                   </div>
 
+                  {/* ĐÃ FIX: Gỡ bỏ hoàn toàn key, src tĩnh và autoPlay để đảm bảo chạy ngầm thông suốt */}
                   <audio
-                    key={currentIndex}
                     ref={audioRef}
-                    src={playlist[currentIndex]?.file}
                     controls
                     playsInline
-                    autoPlay
-                    preload="metadata"
+                    preload="auto"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}

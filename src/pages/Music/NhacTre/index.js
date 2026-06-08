@@ -9,6 +9,7 @@ import { FaStepBackward, FaStepForward } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
 import "../../../component/HomeMusic/homemusic.scss";
+
 function NhacTre() {
   const {
     playlist,
@@ -40,6 +41,34 @@ function NhacTre() {
   }, [updatePlaylist]);
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
+
+  // ⚡ Tích hợp Media Session API giữ control chạy nền ổn định trên màn hình khóa
+  useEffect(() => {
+    if ("mediaSession" in navigator && playlist[currentIndex]) {
+      const song = playlist[currentIndex];
+      const defaultImage = "https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/f8067e4d176cf42261c0b2789a1a1035";
+      
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title || "Đang phát nhạc...",
+        artist: song.artist || "Nhạc Trẻ Việt Nam",
+        album: "My Music Player",
+        artwork: [
+          { src: song.image || defaultImage, sizes: "96x96", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "256x256", type: "image/jpeg" },
+          { src: song.image || defaultImage, sizes: "512x512", type: "image/jpeg" }
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () => {
+        audioRef.current?.play().catch(() => {});
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        audioRef.current?.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+      navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+    }
+  }, [currentIndex, playlist, handleNext, handlePrev, audioRef]);
 
   return (
     <div className="music-container-box">
@@ -106,14 +135,12 @@ function NhacTre() {
                     </button>
                   </div>
 
+                  {/* ĐÃ FIX: Gỡ bỏ key, src tĩnh và autoPlay để nhường quyền điều khiển nguồn nhạc ngầm hoàn toàn cho file Hook */}
                   <audio
-                    key={currentIndex}
                     ref={audioRef}
-                    src={playlist[currentIndex]?.file}
                     controls
                     playsInline
-                    autoPlay
-                    preload="metadata"
+                    preload="auto"
                     controlsList="nodownload"
                     className="custom-audio"
                     onEnded={handleEnded}
