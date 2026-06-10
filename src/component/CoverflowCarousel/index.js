@@ -1,7 +1,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, FreeMode } from "swiper/modules";
+
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/free-mode";
+
 import "./index.scss";
 
 export default function FilmCarousel({ items = [], renderItem }) {
@@ -12,9 +15,24 @@ export default function FilmCarousel({ items = [], renderItem }) {
       <Swiper
         slidesPerView={3.2}
         spaceBetween={12}
-        speed={500}
+
+        speed={350}
+
+        freeMode={{
+          enabled: true,
+          momentum: true,
+          momentumRatio: 1,
+          momentumVelocityRatio: 1,
+        }}
+
+        touchRatio={1.3}
+
+        longSwipes={true}
+        longSwipesRatio={0.3}
+
         navigation
-        grabCursor
+        grabCursor={window.innerWidth > 768}
+
         breakpoints={{
           480: {
             slidesPerView: 3.5,
@@ -37,10 +55,11 @@ export default function FilmCarousel({ items = [], renderItem }) {
             spaceBetween: 28
           }
         }}
-        modules={[Navigation]}
+
+        modules={[Navigation, FreeMode]}
       >
         {items.map((item, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={item?.path || index}>
             {renderItem(item)}
           </SwiperSlide>
         ))}

@@ -66,6 +66,8 @@ function HighRateFilms() {
                     src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
                     alt={item.title}
                     loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
                     className="film-card__img"
                   />
 

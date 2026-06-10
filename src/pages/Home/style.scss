@@ -10,6 +10,18 @@
         min-width: 0;
     }
 
+    &__music {
+        width: 100%;
+
+        // tối ưu scroll
+        content-visibility: auto;
+        contain-intrinsic-size: 400px;
+
+        // giảm repaint
+        contain: layout paint style;
+        transform: translateZ(0);
+    }
+
     .container {
         width: 100%;
         display: flex;
@@ -17,7 +29,6 @@
         flex-wrap: wrap;
         padding: 0;
     }
-
 
     &__note {
         margin-left: 15px;

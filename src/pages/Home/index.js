@@ -18,6 +18,7 @@ import MovieRow from "../../component/MovieRow/index";
 import ComicHero from "../../component/Banner/mangaBanner";
 import Donate from "../../component/Donate/index";
 import { Helmet } from "react-helmet-async";
+import LazySection from "../../component/LazySection/index";
 import "./style.scss";
 
 function Home() {
@@ -79,53 +80,53 @@ function Home() {
               <div className="Home__music"> 
                 <GenreCarousel />
               </div>
-              <div className="Home__music"> 
+              <LazySection> 
                 <Donate />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <HighRateFilm />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <KoreaFilms />
-              </div>
+              </LazySection>
 
-              <div className="Home__music"> 
+              <LazySection> 
                 <ChinaFilms />
-              </div>
+              </LazySection>
               
               {/* <div className="Home__music"> 
                 <PopularFilm />
               </div> */}
               
-              <div className="Home__music"> 
+              <LazySection> 
                 <China3dFilms />
-              </div>
+              </LazySection>
               
               {/* <div className="Home__music"> 
                 <MovieCarousel />
               </div> */}
-              <div className="Home__music"> 
+              <LazySection> 
                 <Film />
-              </div>
+              </LazySection>
 
-              <div className="Home__music"> 
+              <LazySection> 
                 <NewAnimes />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <NewFilm />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <HomeFilm />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <CinematicFilm />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <SieuNhan />
-              </div>
-              <div className="Home__music"> 
+              </LazySection>
+              <LazySection> 
                 <HomeMusic />
-              </div>
+              </LazySection>
               <ComicHero />
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>

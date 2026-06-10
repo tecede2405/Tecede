@@ -1,0 +1,51 @@
+// Định nghĩa các biến màu sắc (Variables) theo tone Tecede nếu cần quản lý tập trung
+$primary-gradient: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+$hover-gradient: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+$shadow-color: rgba(34, 197, 94, 0.2);
+$shadow-hover: rgba(34, 197, 94, 0.4);
+
+.tecede-pwa-container {
+  display: block; // Chuyển từ flex thành block để nó xếp hàng dọc cùng các nút khác trong modal
+
+  .tecede-btn-pwa {
+    // Thêm các thuộc tính này để nút PWA hoạt động như một menu-action-btn thực thụ
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%; // Chiếm trọn chiều ngang modal
+    background: transparent; // Để nền trong suốt giống các nút cũ
+    color: #22c55e; // Đổi thành màu xanh lá làm điểm nhấn nổi bật trong modal!
+    border: none;
+    padding: 10px 16px; // Điều chỉnh lại padding cho bằng các nút khác
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+
+    .pwa-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05); // Hover đổi nền xám mờ giống các nút kia
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Xử lý Responsive trên thiết bị di động màn hình nhỏ dưới 576px
+@media (max-width: 576px) {
+  .tecede-pwa-container {
+    .tecede-btn-pwa {
+      padding: 8px;
+      border-radius: 50%;
+
+      .btn-text {
+        display: none; // Ẩn chữ đi để tránh vỡ bố cục, giữ lại icon tròn cực gọn
+      }
+    }
+  }
+}
