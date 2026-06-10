@@ -55,7 +55,7 @@ import Donates from "./pages/Donate/index";
 import Support from "./pages/Support/index";
 import TemporaryClosed404 from "./pages/Error/index";
 // UI
-import Squares from "./component/SquaresBackgound/index";
+// import Squares from "./component/SquaresBackgound/index";
 
 // Utils
 import { subscribeUser } from "./utils/pushNotification";
@@ -86,19 +86,19 @@ function App() {
         <Loading />
       ) : (
         <>
-          <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+          <div className="app-wrapper">
             {/* Background */}
-            <Squares
+            {/* <Squares
               speed={0.5}
               squareSize={40}
               direction="diagonal"
               borderColor="#444"
               hoverFillColor="#222"
               className="bg-layer"
-            />
+            /> */}
 
             {/* Main content */}
-            <div style={{ position: "relative", zIndex: 1 }}>
+            <div className="app-content">
               <ScrollToTop />
 
               <Routes>

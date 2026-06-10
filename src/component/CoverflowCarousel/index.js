@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, FreeMode } from "swiper/modules";
+import {FreeMode } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -21,14 +21,14 @@ export default function FilmCarousel({ items = [], renderItem }) {
         freeMode={{
           enabled: true,
           momentum: true,
-          momentumRatio: 1,
-          momentumVelocityRatio: 1,
+          momentumRatio: 0.6,
+          momentumVelocityRatio: 0.6,
         }}
 
-        touchRatio={1.3}
+        touchRatio={1.1}
 
         longSwipes={true}
-        longSwipesRatio={0.3}
+        longSwipesRatio={0.45}
 
         navigation
         grabCursor={window.innerWidth > 768}
@@ -56,7 +56,7 @@ export default function FilmCarousel({ items = [], renderItem }) {
           }
         }}
 
-        modules={[Navigation, FreeMode]}
+        modules={[FreeMode]}
       >
         {items.map((item, index) => (
           <SwiperSlide key={item?.path || index}>
