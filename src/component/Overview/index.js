@@ -99,7 +99,7 @@ const OverView = () => {
           }, {});
 
           const targetCategories = [
-            "nhactre", "nhacusuk", "nhactrungquoc", "nhacedm", "nhacphonk", "nhacdouyin", "nhackhongloi", "nhactreremix", "nhaclofi"
+            "nhactre", "nhacusuk", "nhactrungquoc", "nhacedm", "nhacphonk", "nhacdouyin", "nhackhongloi", "nhactreremix", "nhac-lofi"
           ];
 
           const formattedPieData = targetCategories.map((cat) => ({
