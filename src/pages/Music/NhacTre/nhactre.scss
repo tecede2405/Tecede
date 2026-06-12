@@ -124,11 +124,12 @@
       justify-content: center;
     }
     .song-name{
-      margin-top: 10px;
       font-size: 12px;
+      margin: 0;
     }
     .song-artist{
       font-size: 10px;
+      margin: 0;
     }
   }
 
@@ -139,6 +140,9 @@
   align-items: center;
   gap: 15px;
   width: 25%;
+}
+.audio-controls{
+  display: flex;
 }
 
 .player-thumb {
@@ -275,15 +279,27 @@
 /* Responsive cơ bản */
 @media (max-width: 768px) {
   .profile {
-    flex-direction: column;
     padding: 20px;
     text-align: center;
     margin-left: 0;
+    justify-content: center;
+  }
+  .profile-title{
+    font-size: 17px;
+  }
+  .profile-desc{
+    font-size: 12px!important;
   }
   
   .shuffle-btn{
     margin: 0 auto;
   }
-  .player-left { gap: 10px; width: auto; }
+  .player-left{
+    .audio-controls{
+      flex:1;
+      margin-right: 50px;
+      justify-content: space-between;
+    }
+  }
   .player-right { display: none; } /* Ẩn bớt nút volume trên đt */
 }

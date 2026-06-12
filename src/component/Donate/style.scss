@@ -28,7 +28,7 @@
   @media (max-width: 640px) {
     flex-direction: column; // Chuyển thành hàng dọc trên màn hình mobile nhỏ
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
   }
 }
 
@@ -41,27 +41,31 @@
 .donate-goal-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex: 1;
+  gap: 12px;
+  /* Giới hạn chiều rộng tối đa tổng thể để thanh bar ngắn lại, trông cân đối hơn */
+  max-width: 320px; 
   width: 100%;
   justify-content: flex-end;
 
   @media (max-width: 640px) {
     justify-content: flex-start; // Căn lề trái hoàn toàn trên mobile
+    max-width: 100%; // Trên mobile cho phép co giãn theo chiều rộng màn hình
   }
 }
 
 .donate-goal-bar {
-  max-width: 250px;
+  /* Ngắn lại một chút (Cũ là max-width: 250px) */
+  max-width: 180px; 
   width: 100%;
   height: 8px;
   background: #252525;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid #333;
+  flex-shrink: 1; // Cho phép thanh bar chủ động co lại trước để nhường chỗ cho chữ
 
   @media (max-width: 640px) {
-    max-width: 100%; // Giãn full chiều rộng thanh bar khi ở mobile
+    max-width: 70%; // Giới hạn thanh bar chiếm tối đa 70% trên mobile để không lấn chỗ của chữ
   }
 }
 
@@ -76,7 +80,10 @@
   font-size: 13px;
   font-weight: 700;
   color: #00d26a;
-  min-width: 35px;
+  /* KHÓA CỨNG: Tuyệt đối không cho chữ tự xuống dòng */
+  white-space: nowrap; 
+  /* Đảm bảo layout không bóp nghẹt block chứa chữ */
+  flex-shrink: 0; 
 }
 /* ======================================================= */
 
@@ -131,12 +138,27 @@
   min-width: 0;
 }
 
+.nickname-container {
+  display: flex;
+  align-items: center; // Căn giữa tên và ngày theo trục dọc
+  gap: 8px; // Tạo khoảng cách vừa phải giữa tên và ngày
+  width: 100%;
+}
+
 .nickname {
   font-size: 13px;
   font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 150px; // Giới hạn chiều rộng của tên để không đè lên ngày trên mobile
+}
+
+.donate-date {
+  font-size: 10px; // Cho chữ ngày tháng nhỏ lại tinh tế hơn
+  color: #7a7a7a; // Màu xám mờ chuẩn phong cách dark mode
+  font-weight: 400;
+  white-space: nowrap; // Không cho ngày tháng bị xuống dòng
 }
 
 .message {

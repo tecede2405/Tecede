@@ -72,7 +72,7 @@ function DonateLeaderboard() {
             <div className="donate-goal-bar">
               <div className="donate-goal-fill" style={{ width: `${goalPercentage}%` }} />
             </div>
-            <span className="donate-goal-percent">{goalPercentage}%</span>
+            <span className="donate-goal-percent">Tiến độ: {goalPercentage}%</span>
           </div>
         </div>
 
@@ -90,8 +90,14 @@ function DonateLeaderboard() {
                 </div>
 
                 <div className="donate-info">
-                  <div className="nickname">
-                    {item.nickname}
+                  <div className="nickname-container">
+                    <span className="nickname">{item.nickname}</span>
+                    {item.created_at && (
+                      <span className="donate-date">
+                        {/* Cắt chuỗi lấy YYYY-MM-DD rồi lật ngược thành DD/MM/YYYY */}
+                        {item.created_at.split(" ")[0].split("-").reverse().join("/")}
+                      </span>
+                    )}
                   </div>
 
                   {item.message && (

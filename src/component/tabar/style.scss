@@ -49,8 +49,10 @@
 .tab-child {
   list-style: none;
   padding-left: 10px;
+  margin-left: 15px;
   margin-top: 6px;
   display: none;
+  border-left: 1px solid #aaaaaa40;
 }
 
 .tab-parent.open .tab-child {

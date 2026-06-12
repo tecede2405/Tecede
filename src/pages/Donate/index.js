@@ -91,9 +91,15 @@ function DonatePage() {
             </div>
 
             <div className="donate-content">
-              <div className="nickname">
-                {item.nickname}
-              </div>
+              <div className="nickname-container">
+                    <span className="nickname">{item.nickname}</span>
+                    {item.created_at && (
+                      <span className="donate-date">
+                        {/* Cắt chuỗi lấy YYYY-MM-DD rồi lật ngược thành DD/MM/YYYY */}
+                        {item.created_at.split(" ")[0].split("-").reverse().join("/")}
+                      </span>
+                    )}
+                  </div>
 
               <div className="message">
                 <span className={

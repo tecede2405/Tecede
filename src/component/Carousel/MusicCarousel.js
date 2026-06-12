@@ -1,28 +1,23 @@
-import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "animate.css";
 
-
-
-const AutoSlideInfinite = ({ items }) => {
-  const navigate = useNavigate();
-
+// Đã xóa import useNavigate ở trên và dòng const navigate = useNavigate(); ở dưới
+const AutoSlideInfinite = ({ items, onItemClick }) => {
   return (
-    <div style={{ maxWidth: '100vw', overflow: 'hidden', margin: 'auto',
-     paddingLeft: '10px', paddingRight: '0px' }}>
+    <div style={{ maxWidth: '100vw', overflow: 'hidden', margin: 'auto', paddingLeft: '10px', paddingRight: '0px' }}>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={15}
         slidesPerView={8}
-        loop={true}               // Vô tận
+        loop={true}
         autoplay={{
-          delay: 2000,            // 2 giây tự chuyển slide
-          disableOnInteraction: false, // Tương tác vẫn chạy tiếp
-          pauseOnMouseEnter: true,      // Hover tạm dừng
+          delay: 2000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
-        speed={800}               // Tốc độ chuyển slide mượt
+        speed={800}
         breakpoints={{
           1170: { slidesPerView: 5.5 },
           960: { slidesPerView: 4.5 },
@@ -32,21 +27,15 @@ const AutoSlideInfinite = ({ items }) => {
           0: { slidesPerView: 2.5 },
         }} 
       >
-        {items.map((items ) => (
-          <SwiperSlide key={items.image} className="card-music">
+        {items.map((item) => (
+          <SwiperSlide key={item.image} className="card-music">
             <img
-              src={items.image}
-              alt={items.title}
+              src={item.image}
+              alt={item.title}
               loading="lazy"
-              style={{
-                width: "100%",
-                aspectRatio: "1 / 1",
-                objectFit: "cover",
-                cursor: "pointer",
-              }}
+              style={{ width: "100%", aspectRatio: "1 / 1", objectFit: "cover", cursor: "pointer" }}
               className="card-img animate__animated animate__fadeIn"
-              // /music/${items.path}
-              onClick={() => navigate(`/music/${items.path}`)} ///music/${items.path}
+              onClick={() => onItemClick?.(item.path)}
             />
           </SwiperSlide>
         ))}
