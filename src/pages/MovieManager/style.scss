@@ -1,6 +1,5 @@
 .movie-manager {
-  /* Tông màu nền tối tệp với Dashboard ở trên */
-  padding: 24px;
+
   background: #111827; // Slate-900
   color: #f3f4f6;
   border-radius: 12px;
@@ -9,7 +8,7 @@
   h2 {
     margin-top: 0;
     margin-bottom: 24px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: #ffffff;
   }
@@ -167,7 +166,7 @@
     @media (max-width: 768px) {
       /* BẮT BUỘC ĐỂ TRÌNH DUYỆT TÔN TRỌNG KÍCH THƯỚC CỘT */
       table-layout: fixed; 
-
+     
       th, td {
         padding: 10px 8px; /* Ép mỏng padding lại trên mobile */
       }
@@ -208,6 +207,7 @@
       .btn-edit {
         padding: 5px 10px;
       }
+      
     }
   }
 
