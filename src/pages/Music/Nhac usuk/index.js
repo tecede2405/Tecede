@@ -109,7 +109,7 @@ function Nhacusuk() {
           ) : (
             <div className="music-scroll-area">
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/1a5d4aca0654d716f9ec965dbafc8bf2" alt="nhạc âu mỹ" className="profile-image" />
+                <img src="https://i.ibb.co/V0Cc13KY/1a5d4aca0654d716f9ec965dbafc8bf2.webp" alt="nhạc âu mỹ" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Âu Mỹ 🎵</h4>
                   <p className="profile-desc">

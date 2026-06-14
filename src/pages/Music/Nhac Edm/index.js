@@ -108,7 +108,7 @@ function NhacEDM() {
             <div className="music-scroll-area">
               {/* HEADER PROFILE GIỐNG ẢNH MẪU */}
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/6659861e5f2cb99d7a210d2b258ec8f5" alt="nhạc edm" className="profile-image" />
+                <img src="https://i.ibb.co/F4z8B0ST/6659861e5f2cb99d7a210d2b258ec8f5.webp" alt="nhạc edm" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc EDM 🎧</h4>
                   <p className="profile-desc">Dành cho game thủ và gymer.</p>
@@ -139,11 +139,14 @@ function NhacEDM() {
                       alt={playlist[currentIndex].title}
                       className={`player-thumb ${isPlaying ? "spinning" : ""}`}
                     />
-                    <button onClick={handlePrev} className="ctrl-btn"><FaStepBackward /></button>
-                    <button onClick={togglePlay} className="ctrl-btn play-pause-btn">
-                      {isPlaying ? <FaPause /> : <FaPlay />}
-                    </button>
-                    <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
+                    <div className="audio-controls">
+                      <button onClick={handlePrev} className="ctrl-btn"><FaStepBackward /></button>
+                      <button onClick={togglePlay} className="ctrl-btn play-pause-btn">
+                        {isPlaying ? <FaPause /> : <FaPlay />}
+                      </button>
+                      <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
+                    </div>
+                    
                   </div>
 
                   <div className="player-center">

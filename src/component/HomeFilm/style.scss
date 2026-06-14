@@ -67,7 +67,7 @@
     color: #c084fc;
     font-size: 18px;
     flex-shrink: 0;
-    filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.5));
+    text-shadow: 0 0 6px rgba(192, 132, 252, 0.5);
   }
 }
 
@@ -126,9 +126,8 @@
   right: 8px;
   z-index: 3;
 
-  background: rgba(9, 113, 231, 0.689);
-  backdrop-filter: blur(4px);
-
+  
+  background: rgba(135, 9, 231, 0.708);
   padding: 3px 8px;
   border-radius: 999px;
 
@@ -146,8 +145,7 @@
   transform: translateX(-50%);
   z-index: 3;
 
-  background: rgba(230, 10, 10, 0.819);
-  backdrop-filter: blur(4px);
+  background: rgba(46, 231, 9, 0.74);
 
   color: #fff;
   font-size: 11px;

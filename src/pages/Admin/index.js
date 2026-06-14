@@ -7,7 +7,8 @@ import {
   Music,
   ListMusic,
   HeartHandshake,
-  ChevronDown
+  ChevronDown,
+  Clapperboard
 } from "lucide-react";
 
 import Tabbar from "../../component/tabar";
@@ -22,10 +23,11 @@ function Admin() {
   const navItems = [
     { path: "/admin", label: "Tổng quan", icon: LayoutDashboard },
     { path: "/admin/users", label: "Người dùng", icon: Users },
+    { path: "/admin/manage-movie", label: "Sửa Movie", icon: Clapperboard },
     { path: "/admin/add-film", label: "Thêm phim", icon: Film },
     { path: "/admin/add-song", label: "Thêm bài hát", icon: Music },
     { path: "/admin/manage", label: "Quản lý bài hát", icon: ListMusic },
-    { path: "/admin/donate", label: "Donate", icon: HeartHandshake }
+    { path: "/admin/donate", label: "Donate", icon: HeartHandshake },
   ];
 
   // Tìm item hiện tại dựa trên url để hiển thị nhãn trên nút Dropdown mobile
@@ -55,7 +57,7 @@ function Admin() {
       <div className="admin-layout">
         <div className="admin-topbar">
           <div className="admin-topbar-left">
-            <h2>Dashboard</h2>
+            <h2>Dash Board</h2>
             <p>Hệ thống quản lý nội dung</p>
           </div>
 

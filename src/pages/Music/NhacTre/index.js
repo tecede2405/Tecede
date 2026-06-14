@@ -109,7 +109,7 @@ function NhacTre() {
             <div className="music-scroll-area">
               {/* HEADER PROFILE GIỐNG ẢNH */}
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/f8067e4d176cf42261c0b2789a1a1035" alt="nhạc trẻ" className="profile-image" />
+                <img src="https://i.ibb.co/KcWRC4Xr/f8067e4d176cf42261c0b2789a1a1035.webp" alt="nhạc trẻ" className="profile-image" />
                 <div className="profile-info text-center text-md-start">
                   <h4 className="profile-title">Nhạc Trẻ Việt Nam 🎵</h4>
                   <p className="profile-desc">Nhạc Việt thì còn chê vào đâu được.</p>
@@ -140,11 +140,14 @@ function NhacTre() {
                       alt={playlist[currentIndex].title}
                       className={`player-thumb ${isPlaying ? "spinning" : ""}`}
                     />
-                    <button onClick={handlePrev} className="ctrl-btn"><FaStepBackward /></button>
-                    <button onClick={togglePlay} className="ctrl-btn play-pause-btn">
-                      {isPlaying ? <FaPause /> : <FaPlay />}
-                    </button>
-                    <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
+                    <div className="audio-controls">
+                      <button onClick={handlePrev} className="ctrl-btn"><FaStepBackward /></button>
+                      <button onClick={togglePlay} className="ctrl-btn play-pause-btn">
+                        {isPlaying ? <FaPause /> : <FaPlay />}
+                      </button>
+                      <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
+                    </div>
+                    
                   </div>
 
                   <div className="player-center">

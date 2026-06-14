@@ -85,7 +85,7 @@ useEffect(() => {
 
           {/* LOGO */}
           <img
-            src="https://p16-sg.tiktokcdn.com/obj/tos-alisg-avt-0068/2c06afde0ebca0c687b0d3add5f4b1f2"
+            src="https://i.ibb.co/C3PLG9T9/2c06afde0ebca0c687b0d3add5f4b1f2.webp"
             alt="logo-Page"
             className="header__image"
             onClick={() => navigate("/")}

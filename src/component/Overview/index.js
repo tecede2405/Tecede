@@ -1,9 +1,10 @@
 import "./index.scss";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Film, Music4, Headphones, BarChart3, UsersRound, DollarSign } from "lucide-react";
+// IMPORT THÊM ChevronLeft, ChevronRight
+import { Film, Music4, Headphones, BarChart3, UsersRound, DollarSign, ChevronLeft, ChevronRight } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { useDonates } from "../../context/DonateContext"; // Đường dẫn đến file DonateContext của bạn
+import { useDonates } from "../../context/DonateContext";
 
 const COLORS = ["#7c3aed", "#2563eb", "#16a34a", "#ca8a04", "#db2672", "#0891b2", "#ea580c", "#ec4899", "#f97316"];
 
@@ -20,7 +21,6 @@ const CATEGORY_NAMES = {
 };
 
 const OverView = () => {
-  // Lấy dữ liệu từ Donate Context
   const { donates } = useDonates();
 
   const [totalSongs, setTotalSongs] = useState(0);
@@ -28,61 +28,74 @@ const OverView = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [user, setUser] = useState(null); 
 
-  // States quản lý thống kê quyên góp
+  // STATE: Quản lý tháng đang xem (mặc định là tháng hiện tại)
+  const [viewDate, setViewDate] = useState(new Date());
+
   const [monthlyDonateData, setMonthlyDonateData] = useState([]);
   const [currentMonthTotal, setCurrentMonthTotal] = useState(0);
-  const donateGoal = 500000; // Mục tiêu tháng: 500,000 VND
+  const donateGoal = 500000; 
 
   const location = useLocation();
 
   /* ========================================================= */
-  /* LOGIC XỬ LÝ DỮ LIỆU DONATE THEO THÁNG HIỆN TẠI */
+  /* LOGIC XỬ LÝ DỮ LIỆU DONATE THEO THÁNG ĐƯỢC CHỌN (viewDate) */
   /* ========================================================= */
   useEffect(() => {
-    if (!donates || donates.length === 0) return;
+    // Luôn render biểu đồ (kể cả 0đ) thay vì return sớm nếu mảng donates rỗng
+    const safeDonates = donates || [];
 
-    // Lấy mốc thời gian hiện tại hệ thống (Năm 2026)
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0 - 11
+    const currentYear = viewDate.getFullYear();
+    const currentMonth = viewDate.getMonth(); // 0 - 11
 
-    // 1. Lọc tất cả các lượt donate thuộc tháng và năm hiện tại
-    const currentMonthDonates = donates.filter((item) => {
+    // 1. Lọc donate theo tháng/năm của viewDate
+    const currentMonthDonates = safeDonates.filter((item) => {
+      if (!item.created_at) return false;
       const donateDate = new Date(item.created_at.replace(" ", "T"));
       return donateDate.getFullYear() === currentYear && donateDate.getMonth() === currentMonth;
     });
 
-    // 2. Tính tổng tiền donate trong tháng hiện tại
+    // 2. Tính tổng tiền
     const totalMonthAmount = currentMonthDonates.reduce((sum, item) => sum + (item.amount || 0), 0);
     setCurrentMonthTotal(totalMonthAmount);
 
-    // 3. Gom nhóm số tiền quyên góp theo từng ngày trong tháng để vẽ biểu đồ mượt mà
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Số ngày của tháng hiện tại
+    // 3. Gom nhóm theo ngày
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const dailyMap = {};
     
-    // Khởi tạo mốc 0đ cho tất cả các ngày trong tháng để biểu đồ không bị đứt đoạn
     for (let d = 1; d <= daysInMonth; d++) {
       dailyMap[d] = 0;
     }
 
-    // Cộng dồn tiền vào các ngày có giao dịch thực tế
     currentMonthDonates.forEach((item) => {
       const donateDate = new Date(item.created_at.replace(" ", "T"));
       const day = donateDate.getDate();
       dailyMap[day] += item.amount || 0;
     });
 
-    // Chuyển đổi sang mảng cấu trúc cung cấp cho Recharts
     const chartDataFormatted = Object.keys(dailyMap).map((day) => ({
       date: `Ngày ${day}`,
       amount: dailyMap[day],
     }));
 
     setMonthlyDonateData(chartDataFormatted);
-  }, [donates]);
+  }, [donates, viewDate]); // Thêm viewDate vào dependencies
 
-  /* ===== FETCH SONGS & USERS TỔNG QUAN ===== */
+  /* ===== HÀM CHUYỂN THÁNG ===== */
+  const handlePrevMonth = () => {
+    setViewDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setViewDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  // Kiểm tra xem có đang ở tháng hiện tại của thực tế không (để disable nút Next đi tới tương lai)
+  const today = new Date();
+  const isCurrentMonth = viewDate.getMonth() === today.getMonth() && viewDate.getFullYear() === today.getFullYear();
+
+  /* ===== FETCH SONGS & USERS ===== */
   useEffect(() => {
+    // ... (Giữ nguyên đoạn code fetch users và songs của bạn)
     setUser(null);
 
     fetch(`${process.env.REACT_APP_API_URL}/api/songs`)
@@ -126,8 +139,6 @@ const OverView = () => {
 
   const avgListen = totalSongs > 0 ? Math.round(totalListens / totalSongs) : 0;
   const totalCategoryListens = categoryData.reduce((sum, item) => sum + item.value, 0);
-
-  // Tính toán phần trăm tiến độ đạt mục tiêu donate
   const donatePercentage = Math.min(((currentMonthTotal / donateGoal) * 100), 100).toFixed(1);
 
   const stats = [
@@ -140,7 +151,6 @@ const OverView = () => {
 
   return (
     <div className="overview-page">
-      {/* Grid thẻ thống kê tổng quan */}
       <div className="stats-grid">
         {stats.map((item, index) => (
           <div className={`stat-card ${item.color}`} key={index}>
@@ -157,15 +167,23 @@ const OverView = () => {
         ))}
       </div>
 
-      {/* KHU VỰC BIỂU ĐỒ CHÍNH */}
       <div className="charts-wrapper">
-        
-        {/* CHART THỐNG KÊ DONATE TRONG THÁNG */}
         <div className="chart-card donate-chart-card">
           <div className="chart-header-donate">
             <div className="header-left">
               <h3>Thống kê quỹ quyên góp</h3>
-              <p className="sub-title">Tháng {new Date().getMonth() + 1} / {new Date().getFullYear()}</p>
+              
+              {/* KHU VỰC CHUYỂN THÁNG MỚI */}
+              <div className="month-navigation">
+                <button className="nav-btn" onClick={handlePrevMonth}>
+                  <ChevronLeft size={16} />
+                </button>
+                <p className="sub-title">Tháng {viewDate.getMonth() + 1} / {viewDate.getFullYear()}</p>
+                <button className="nav-btn" onClick={handleNextMonth} disabled={isCurrentMonth}>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+
             </div>
             <div className="header-right-total">
               <DollarSign size={18} className="money-icon" />
@@ -173,7 +191,6 @@ const OverView = () => {
             </div>
           </div>
 
-          {/* THANH TIẾN ĐỘ DONATE TIỀN WEBSITE */}
           <div className="donate-progress-container">
             <div className="progress-text-info">
               <span>Tiến độ duy trì server: <strong>{donatePercentage}%</strong></span>
@@ -184,7 +201,6 @@ const OverView = () => {
             </div>
           </div>
 
-          {/* Đồ thị diện tích của Recharts */}
           <div className="chart-content">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={monthlyDonateData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>

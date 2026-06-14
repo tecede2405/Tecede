@@ -31,6 +31,7 @@ import EditSong from "./pages/EditSong/index";
 import ManageUsers from "./pages/ManageUsers/index";
 import AddFilms from "./component/AddFilms/index";
 import AddDonate from "./component/AddDonate/index";
+import MovieManager from "./pages/MovieManager/index";
 // Other pages
 import UsingApp from "./pages/using-app/index";
 import UsingAppIos from "./pages/using-app/ios";
@@ -126,21 +127,21 @@ function App() {
 
                   <Route path="/history" element={<HistoryFilm />} />
                   {/* Music */}
-                  <Route path="music/nhac-tre" element={<NhacTre />} />
-                  <Route path="music/usuk" element={<NhacUSUK />} />
-                  <Route path="music/trung-quoc" element={<NhacTrungQuoc />} />
-                  <Route path="music/edm" element={<NhacEDM />} />
-                  <Route path="music/mood" element={<NhacTamTrang />} />
-                  <Route path="music/phonk" element={<NhacPhonk />} />
+                  <Route path="music/nhac-tre" element={<RequireAuth><NhacTre /></RequireAuth>} />
+                  <Route path="music/usuk" element={<RequireAuth><NhacUSUK /></RequireAuth>} />
+                  <Route path="music/trung-quoc" element={<RequireAuth><NhacTrungQuoc /></RequireAuth>} />
+                  <Route path="music/edm" element={<RequireAuth><NhacEDM /></RequireAuth>} />
+                  <Route path="music/mood" element={<RequireAuth><NhacTamTrang /></RequireAuth>} />
+                  <Route path="music/phonk" element={<RequireAuth><NhacPhonk /></RequireAuth>} />
                   <Route path="music/nhac-lofi" element={<NhacLofi />} />
                   <Route path="/404" element={<NotFound />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/404closed" element={<TemporaryClosed404 />} />
                   <Route
                     path="music/nhactre-remix"
-                    element={<NhacTreRemix />}
+                    element={<RequireAuth><NhacTreRemix /></RequireAuth>}
                   />
-                  <Route path="music/nhac-douyin" element={<NhacDouyin />} />
+                  <Route path="music/nhac-douyin" element={<RequireAuth><NhacDouyin /></RequireAuth>} />
 
                   {/* Anime */}
                   <Route path="anime" element={<Anime />} />
@@ -167,7 +168,7 @@ function App() {
 
                     <Route path="manage" element={<ManageSongs />} />
 
-
+                    <Route path="manage-movie" element={<MovieManager />} />
                     {/* USERS */}
                     <Route path="users" element={<ManageUsers />} />
 

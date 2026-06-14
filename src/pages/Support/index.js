@@ -23,7 +23,7 @@ function SupportPage() {
 
         <div className="support-image-wrapper">
           <img
-            src="https://i.ibb.co/b5MqbxDR/IMG-0583.jpg"
+            src="https://i.ibb.co/PRyPjQ8/IMG-0583.webp"
             alt="Donate QR"
             className="support-image"
           />
