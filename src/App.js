@@ -12,16 +12,7 @@ import Loading from "./component/LoadingScreen/index";
 import ScrollToTop from "./component/ScrollToTop/index";
 
 // Music pages
-import NhacTre from "./pages/Music/NhacTre/index";
-import NhacUSUK from "./pages/Music/Nhac usuk/index";
-import NhacTrungQuoc from "./pages/Music/NhacTrung/index";
-import NhacEDM from "./pages/Music/Nhac Edm/index";
-import NhacTamTrang from "./pages/Music/NhacTamTrang/index";
-import NhacPhonk from "./pages/Music/Nhac Phonk/index";
-import NhacTreRemix from "./pages/Music/NhacTreRemix/index";
-import NhacDouyin from "./pages/Music/Nhac Douyin/index";
-import NhacLofi from "./pages/Music/Nhac Lofi/index";
-import NotFound from "./pages/page404/index";
+import MusicCategory  from "./pages/Music/MusicCategory/index";
 // Admin
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
@@ -55,6 +46,7 @@ import ProfilePage from "./pages/ProfilePage/index";
 import Donates from "./pages/Donate/index";
 import Support from "./pages/Support/index";
 import TemporaryClosed404 from "./pages/Error/index";
+import NotFound from "./pages/page404/index";
 // UI
 // import Squares from "./component/SquaresBackgound/index";
 
@@ -127,21 +119,10 @@ function App() {
 
                   <Route path="/history" element={<HistoryFilm />} />
                   {/* Music */}
-                  <Route path="music/nhac-tre" element={<RequireAuth><NhacTre /></RequireAuth>} />
-                  <Route path="music/usuk" element={<RequireAuth><NhacUSUK /></RequireAuth>} />
-                  <Route path="music/trung-quoc" element={<RequireAuth><NhacTrungQuoc /></RequireAuth>} />
-                  <Route path="music/edm" element={<RequireAuth><NhacEDM /></RequireAuth>} />
-                  <Route path="music/mood" element={<RequireAuth><NhacTamTrang /></RequireAuth>} />
-                  <Route path="music/phonk" element={<RequireAuth><NhacPhonk /></RequireAuth>} />
-                  <Route path="music/nhac-lofi" element={<NhacLofi />} />
+                  <Route path="music/:categorySlug" element={<MusicCategory />} />
                   <Route path="/404" element={<NotFound />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/404closed" element={<TemporaryClosed404 />} />
-                  <Route
-                    path="music/nhactre-remix"
-                    element={<RequireAuth><NhacTreRemix /></RequireAuth>}
-                  />
-                  <Route path="music/nhac-douyin" element={<RequireAuth><NhacDouyin /></RequireAuth>} />
 
                   {/* Anime */}
                   <Route path="anime" element={<Anime />} />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
+import { useParams } from "react-router-dom"; // Lấy đuôi URL
 import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import SearchBar from "../../../component/SearchBox/SearchBox";
@@ -8,8 +9,31 @@ import SongList from "../../../component/SongList/SongList";
 import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaEllipsisV } from "react-icons/fa";
 import useAudioManager from "../../../hooks/useAudioManager";
 import Loading from "../../../component/Loading";
+import "./style.scss";
 
-function NhacPhonk() {
+// CẤU HÌNH GIAO DIỆN THEO URL
+const CATEGORY_CONFIG = {
+  "mood": { dbType: "nhackhongloi", title: "Nhạc Tâm Trạng 🎵", desc: "Chữa lành tâm hồn", img: "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp" },
+  "nhac-douyin": { dbType: "nhacdouyin", title: "Nhạc Douyin 🎵", desc: "Trend TikTok Trung Quốc", img: "https://i.ibb.co/XZBqqxPT/bb95fae35b14b87ed5d6d2d15791e3f2.webp" },
+  "nhac-tre": { dbType: "nhactre", title: "Nhạc Trẻ 🎧", desc: "Top Hits V-Pop", img: "https://i.ibb.co/KcWRC4Xr/f8067e4d176cf42261c0b2789a1a1035.webp" },
+  "usuk": { dbType: "nhacusuk", title: "Nhạc US-UK 🗽", desc: "Bảng xếp hạng Billboard", img: "https://i.ibb.co/V0Cc13KY/1a5d4aca0654d716f9ec965dbafc8bf2.webp" },
+  "trung-quoc": { dbType: "nhactrungquoc", title: "Nhạc Trung Quốc 🎵", desc: "Nhạc Hoa Ngữ hay nhất", img: "https://i.ibb.co/20Jr4KNf/9cb9409ff6db5a3e70ca628f2be2b3ee.webp" },
+  "nhactre-remix": { dbType: "nhactreremix", title: "Nhạc Trẻ Remix 🎵", desc: "Quẩy tung nóc nhà", img: "https://i.ibb.co/nNXDCBDW/z6742344336920-1eae53132a29744632a92d96486d4a9c.webp" },
+  "edm": { dbType: "nhacedm", title: "Nhạc EDM ⚡", desc: "Electronic Dance Music", img: "https://i.ibb.co/F4z8B0ST/6659861e5f2cb99d7a210d2b258ec8f5.webp" },
+  "phonk": { dbType: "nhacphonk", title: "Nhạc Phonk 🎵", desc: "Nhạc cháy như FreeFire.", img: "https://i.ibb.co/YBKJGt8X/z6731791091720-ce92821376e7f43bbbf76879ac9f07e3.webp" },
+  "nhac-lofi": { dbType: "nhac-lofi", title: "Nhạc Lofi 🎵", desc: "Chill and Study", img: "https://i.ibb.co/rjFJn7H/z7604161484626-99ee66797819706db71be74a68b02785.webp" },
+};
+
+function MusicCategory() {
+  const { categorySlug } = useParams(); 
+  
+  const currentInfo = CATEGORY_CONFIG[categorySlug] || {
+    dbType: categorySlug,
+    title: "Danh sách phát 🎵",
+    desc: "Cùng thưởng thức âm nhạc",
+    img: "https://i.ibb.co/YBKJGt8X/z6731791091720-ce92821376e7f43bbbf76879ac9f07e3.webp"
+  };
+
   const {
     playlist,
     currentIndex,
@@ -47,9 +71,79 @@ function NhacPhonk() {
     setIsMuted(newVol === 0);
   };
 
+  // VŨ KHÍ BÍ MẬT: HÀM KÍCH BASS (WEB AUDIO API)
+  const enableBassBoost = () => {
+    const audioEl = audioRef.current;
+    
+    // Nếu chưa có thẻ audio hoặc đã gắn Bass rồi thì bỏ qua để tránh lỗi đè luồng
+    if (!audioEl || audioEl.bassBoosted) return;
+
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioContext();
+      
+      // Lấy luồng âm thanh từ thẻ <audio>
+      const source = audioCtx.createMediaElementSource(audioEl);
+      
+      // Tạo bộ lọc Bass (Lowshelf)
+      const bassFilter = audioCtx.createBiquadFilter();
+      bassFilter.type = "lowshelf";
+      bassFilter.frequency.value = 150; // Tập trung kích các âm trầm dưới 150Hz
+      bassFilter.gain.value = 6; // Tăng lên 6-12 dB (Đủ đập mạnh mà không bị rè)
+
+      // Nối dây: Nguồn Audio -> Bộ lọc Bass -> Loa đầu ra
+      source.connect(bassFilter);
+      bassFilter.connect(audioCtx.destination);
+      
+      // Đánh dấu là đã gắn Bass để lần sau không chạy lại hàm này nữa
+      audioEl.bassBoosted = true;
+    } catch (error) {
+      console.warn("Không thể khởi tạo Web Audio API:", error);
+    }
+  };
+
+  //  GIỮ MÀN HÌNH LUÔN SÁNG NGAY KHI VÀO TRANG (KHÔNG PHỤ THUỘC TRẠNG THÁI PLAY)
+  useEffect(() => {
+    let wakeLock = null;
+
+    const requestWakeLock = async () => {
+      try {
+        if ("wakeLock" in navigator) {
+          wakeLock = await navigator.wakeLock.request("screen");
+          console.log("💡 Wake Lock đã kích hoạt: Màn hình luôn sáng!");
+        }
+      } catch (err) {
+        console.warn(`⚠️ Wake Lock không thành công: ${err.message}`);
+      }
+    };
+
+    // Khi component mount, xin quyền giữ sáng màn hình
+    requestWakeLock();
+
+    // Lắng nghe sự kiện để xin lại quyền nếu người dùng chuyển tab rồi quay lại
+    const handleVisibilityChange = () => {
+      if (wakeLock !== null && document.visibilityState === 'visible') {
+        requestWakeLock();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+      }
+    };
+  }, []); // Chỉ chạy 1 lần duy nhất khi vào trang
+
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/songs/category/nhacphonk`)
+    const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+    
+    // Gọi API động theo dbType lấy từ Từ điển
+    fetch(`${baseUrl}/api/songs/category/${currentInfo.dbType}`)
       .then((res) => res.json())
       .then((data) => {
         updatePlaylist(data);
@@ -60,10 +154,9 @@ function NhacPhonk() {
       .catch(() => {
         setTimeout(() => setLoading(false), 3000);
       });
-  }, [updatePlaylist]);
+  }, [categorySlug, currentInfo.dbType, updatePlaylist]);
 
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
-
 
   // ---- HÀM XỬ LÝ THANH TIMELINE ----
   const togglePlay = () => {
@@ -109,10 +202,10 @@ function NhacPhonk() {
             <div className="music-scroll-area">
               {/* HEADER PROFILE GIỐNG ẢNH MẪU */}
               <div className="profile d-flex flex-wrap flex-md-row align-items-center gap-3">
-                <img src="https://i.ibb.co/YBKJGt8X/z6731791091720-ce92821376e7f43bbbf76879ac9f07e3.webp" alt="nhạc phonk" className="profile-image" />
+                <img src={currentInfo.img} alt={currentInfo.title} className="profile-image" />
                 <div className="profile-info text-center text-md-start">
-                  <h4 className="profile-title">Nhạc Phonk 🎵</h4>
-                  <p className="profile-desc">Nhạc cháy như FreeFire.</p>
+                  <h4 className="profile-title">{currentInfo.title}</h4>
+                  <p className="profile-desc">{currentInfo.desc}</p>
                   <button onClick={handleShufflePlaylist} className="shuffle-btn">
                     <FaRandom className="me-2" /> Phát Ngẫu Nhiên
                   </button>
@@ -147,7 +240,6 @@ function NhacPhonk() {
                       </button>
                       <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
                     </div>
-                    
                   </div>
 
                   <div className="player-center">
@@ -190,11 +282,15 @@ function NhacPhonk() {
                   {/* THẺ AUDIO ẨN NẰM NGẦM BÊN DƯỚI ĐỂ HOOK TỰ ĐIỀU KHIỂN CHẠY NỀN */}
                   <audio
                     ref={audioRef}
+                    crossOrigin="anonymous" /* BẮT BUỘC CÓ DÒNG NÀY ĐỂ KÍCH BASS KHÔNG BỊ LỖI BẢO MẬT CORS */
                     playsInline
                     preload="auto"
                     onTimeUpdate={handleTimeUpdate}
                     onLoadedData={handleLoadedData}
-                    onPlay={() => setIsPlaying(true)}
+                    onPlay={() => {
+                      setIsPlaying(true);
+                      enableBassBoost(); // GỌI KÍCH BASS NGAY KHI BẮT ĐẦU HÁT
+                    }}
                     onPause={() => setIsPlaying(false)}
                     onEnded={handleEnded}
                     className="d-none" 
@@ -209,4 +305,4 @@ function NhacPhonk() {
   );
 }
 
-export default NhacPhonk;
+export default MusicCategory;

@@ -8,37 +8,11 @@ import {
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./style.scss";
-// 1. Import hook useAuth và Swal để phục vụ chặn quyền truy cập
-import { useAuth } from "../../context/AuthContext";
-import Swal from "sweetalert2";
 
 function Tabbar({ isOpen, onClose }) {
   const [openTab, setOpenTab] = useState("genre");
   const [genres, setGenres] = useState([]);
   const [countries, setCountries] = useState([]);
-  
-  // 2. Lấy thông tin user từ AuthContext
-  const { user } = useAuth();
-
-  // 3. Cấu hình SweetAlert dạng tối (Dark Mode) giống như bên Layout của bạn
-  const DarkSwal = Swal.mixin({
-    background: "#1f1f1f",
-    color: "#fff",
-    confirmButtonColor: "#e50914",
-    cancelButtonColor: "#444",
-    customClass: {
-      popup: "swal-dark",
-      title: "swal-title",
-      htmlContainer: "swal-text",
-      confirmButton: "swal-confirm",
-    },
-    showClass: {
-      popup: "animate__animated animate__fadeInDown"
-    },
-    hideClass: {
-      popup: "animate__animated animate__fadeOutUp"
-    }
-  });
 
   const toggleTab = (key) => {
     setOpenTab(openTab === key ? null : key);
@@ -88,27 +62,6 @@ function Tabbar({ isOpen, onClose }) {
     onClose?.(); // Đóng drawer khi click link thành công
   };
 
-  // 4. Hàm kiểm tra quyền admin cho các link nhạc
-  const handleMusicLinkClick = (e) => {
-    if (!user || user.role !== "admin") {
-      // Chặn không cho NavLink chuyển trang
-      e.preventDefault(); 
-      
-      // Hiển thị thông báo lỏ lỏ màu tối uy tín
-      DarkSwal.fire({
-        icon: "error",
-        title: "Oh no!",
-        text: "Chỉ có Admin truy cập được trang này.",
-        confirmButtonText: "OK sếp !",
-        timer: 5000,
-        showConfirmButton: true
-      });
-    } else {
-      // Nếu là Admin thì cho phép đóng drawer và chuyển trang bình thường
-      handleLinkClick();
-    }
-  };
-
   return (
     <>
       {/* TABBAR DRAWER */}
@@ -125,49 +78,49 @@ function Tabbar({ isOpen, onClose }) {
           </button>
 
           <ul className="tab-child">
-            {/* Tất cả các link nhạc ở đây đều được bọc bởi hàm kiểm tra quyền handleMusicLinkClick */}
+            {/* Đã gỡ bỏ hàm block và dùng handleLinkClick để đóng drawer sau khi chọn */}
             <li>
-              <NavLink to="/music/nhac-tre" className="tab-link" onClick={handleMusicLinkClick}> 
+              <NavLink to="/music/nhac-tre" className="tab-link" onClick={handleLinkClick}> 
                 Nhạc Trẻ
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/usuk" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/usuk" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Âu Mỹ
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/trung-quoc" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/trung-quoc" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Trung Quốc
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/nhactre-remix" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/nhactre-remix" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Remix
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/edm" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/edm" className="tab-link" onClick={handleLinkClick}>
                 Nhạc EDM
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/phonk" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/phonk" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Phonk
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/mood" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/mood" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Không Lời
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/nhac-douyin" className="tab-link" onClick={handleMusicLinkClick}>
+              <NavLink to="/music/nhac-douyin" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Douyin
               </NavLink>
             </li>
             <li>
-              <NavLink to="/music/nhac-lofi" className="tab-link">
+              <NavLink to="/music/nhac-lofi" className="tab-link" onClick={handleLinkClick}>
                 Nhạc Lofi
               </NavLink>
             </li>

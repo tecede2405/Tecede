@@ -128,11 +128,11 @@ function AddSongs() {
 
         <div className="form-group">
           <label>Thể loại</label>
-
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
+            {/* Đã đồng bộ chuẩn 100% với dbType mới */}
             <option value="nhactre">Nhạc trẻ</option>
             <option value="nhacusuk">US UK</option>
             <option value="nhactrungquoc">Trung Quốc</option>
@@ -140,7 +140,7 @@ function AddSongs() {
             <option value="nhactreremix">Remix</option>
             <option value="nhacedm">EDM</option>
             <option value="nhacphonk">Phonk</option>
-            <option value="nhackhongloi">Không lời</option>
+            <option value="nhackhongloi">Tâm Trạng / Không lời</option>
             <option value="nhac-lofi">Lofi</option>
           </select>
         </div>
