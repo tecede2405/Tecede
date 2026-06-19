@@ -30,8 +30,30 @@ export default function useMusicPlayer(initialSongs) {
     const song = currentPlaylist[index];
     if (song?._id) {
       const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+      
+      // 🚀 BÍ QUYẾT CHẠY NỀN: Ép thẻ Audio nhận bài mới và Play NGAY LẬP TỨC (Bỏ qua thời gian chờ React Render)
+      if (audioRef.current) {
+        const streamUrl = `${baseUrl}/api/songs/stream/${song._id}`;
+        audioRef.current.src = streamUrl;
+        audioRef.current.play().catch((err) => console.warn("Lỗi auto-play:", err));
+
+        // 🎵 CẬP NHẬT MEDIA SESSION: Giữ giao diện nghe nhạc trên màn hình khóa luôn sống
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: song.title || "Unknown Title",
+            artist: song.artist || "Unknown Artist",
+            // Đảm bảo truyền đúng URL ảnh, kích thước tiêu chuẩn 512x512
+            artwork: [
+              { src: song.image || 'https://via.placeholder.com/512', sizes: '512x512', type: 'image/jpeg' }
+            ]
+          });
+        }
+      }
+
+      // Vẫn gọi API tăng view như bình thường
       fetch(`${baseUrl}/api/songs/${song._id}/listen`, { method: "PUT" }).catch(()=>{});
       
+      // Để cho React từ từ cập nhật UI sau, không ảnh hưởng tới luồng nhạc
       setCurrentPlaylist((prev) => {
         const updated = [...prev];
         updated[index] = { ...updated[index], listens: (updated[index].listens || 0) + 1 };
@@ -56,7 +78,7 @@ export default function useMusicPlayer(initialSongs) {
   const handleNext = () => {
     if (currentPlaylist.length === 0) return;
     const nextIndex = currentIndex === null ? 0 : (currentIndex + 1) % currentPlaylist.length;
-    handlePlay(nextIndex);
+    handlePlay(nextIndex); // Gọi thẳng vào handlePlay để kích hoạt cơ chế phát lập tức
   };
 
   const handlePrev = () => {
@@ -67,20 +89,15 @@ export default function useMusicPlayer(initialSongs) {
     handlePlay(prevIndex);
   };
 
-  // 🚀 TỐI ƯU CỰC ĐỘ: Auto-play ngay khi đổi Index
+  // Giữ lại useEffect này làm phương án dự phòng (Fallback) nếu việc khởi tạo bị trễ
   useEffect(() => {
     if (currentIndex !== null && currentPlaylist[currentIndex] && audioRef.current) {
       const song = currentPlaylist[currentIndex];
-      const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-      const streamUrl = `${baseUrl}/api/songs/stream/${song._id}`;
-      
       const audio = audioRef.current;
       
-      // Gán link 1 lần duy nhất ở đây!
       if (!audio.src.includes(song._id)) {
-        audio.src = streamUrl;
-        
-        // Hứa play ngay lập tức
+        const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+        audio.src = `${baseUrl}/api/songs/stream/${song._id}`;
         audio.play().catch(err => {
             console.warn("Trình duyệt chặn Auto-play hoặc mạng lỗi:", err);
         });

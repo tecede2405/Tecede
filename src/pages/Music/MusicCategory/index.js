@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import React from "react";
 import { useParams } from "react-router-dom"; // Lấy đuôi URL
 import Tabbar from '../../../component/tabar/index';
@@ -55,6 +55,11 @@ function MusicCategory() {
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1); // 1 = 100%
 
+  const [showMenu, setShowMenu] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1); // Tốc độ mặc định 1x
+  const [sleepTimer, setSleepTimer] = useState(null); // Thời gian hẹn giờ tắt
+  const menuRef = useRef(null);
+  const sleepTimerRef = useRef(null);
   // Hàm xử lý Mute
   const toggleMute = () => {
     if (!audioRef.current) return;
@@ -71,31 +76,53 @@ function MusicCategory() {
     setIsMuted(newVol === 0);
   };
 
-  // VŨ KHÍ BÍ MẬT: HÀM KÍCH BASS (WEB AUDIO API)
+// VŨ KHÍ BÍ MẬT: CHUỖI XỬ LÝ ÂM THANH ẤM ÁP & LỰC
   const enableBassBoost = () => {
     const audioEl = audioRef.current;
     
-    // Nếu chưa có thẻ audio hoặc đã gắn Bass rồi thì bỏ qua để tránh lỗi đè luồng
     if (!audioEl || audioEl.bassBoosted) return;
 
     try {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       const audioCtx = new AudioContext();
       
-      // Lấy luồng âm thanh từ thẻ <audio>
       const source = audioCtx.createMediaElementSource(audioEl);
       
-      // Tạo bộ lọc Bass (Lowshelf)
-      const bassFilter = audioCtx.createBiquadFilter();
-      bassFilter.type = "lowshelf";
-      bassFilter.frequency.value = 150; // Tập trung kích các âm trầm dưới 150Hz
-      bassFilter.gain.value = 6; // Tăng lên 6-12 dB (Đủ đập mạnh mà không bị rè)
-
-      // Nối dây: Nguồn Audio -> Bộ lọc Bass -> Loa đầu ra
-      source.connect(bassFilter);
-      bassFilter.connect(audioCtx.destination);
+      // 1. TẠO LỰC PUNCH (65Hz - Tiếng trống đập căng, gọn)
+      const punchEQ = audioCtx.createBiquadFilter();
+      punchEQ.type = "peaking";
+      punchEQ.frequency.value = 65; 
+      punchEQ.Q.value = 1.2; 
+      punchEQ.gain.value = 4.5; // Hạ một xíu so với bản trước để nhường không gian cho độ ấm
       
-      // Đánh dấu là đã gắn Bass để lần sau không chạy lại hàm này nữa
+      // 2. TẠO ĐỘ ẤM WARMTH (200Hz - Làm dày giọng hát và nhạc cụ, cảm giác ôm tai)
+      const warmthEQ = audioCtx.createBiquadFilter();
+      warmthEQ.type = "peaking";
+      warmthEQ.frequency.value = 200; // Tần số của sự ấm áp
+      warmthEQ.Q.value = 0.8; // Bắt dải rộng hơn một chút để mượt mà
+      warmthEQ.gain.value = 3.5; // Kích lên 3.5dB để bài hát đầy đặn hơn
+      
+      // 3. TẠO ĐỘ SÁNG MƯỢT (8000Hz - Vẫn giữ độ trong nhưng không gắt)
+      const trebleEQ = audioCtx.createBiquadFilter();
+      trebleEQ.type = "highshelf";
+      trebleEQ.frequency.value = 8000;
+      trebleEQ.gain.value = 1.5; // Giảm Gain ở Treble xuống một chút để tổng thể nghe ấm hơn
+      
+      // 4. BỘ NÉN COMPRESSOR (Vẫn giữ nguyên để chống rè tuyệt đối)
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -12; 
+      compressor.knee.value = 15; 
+      compressor.ratio.value = 3; 
+      compressor.attack.value = 0.003; 
+      compressor.release.value = 0.25; 
+
+      // NỐI DÂY: Nguồn -> Lực (Punch) -> Ấm (Warmth) -> Sáng (Treble) -> Chống rè (Compressor) -> Loa
+      source.connect(punchEQ);
+      punchEQ.connect(warmthEQ);
+      warmthEQ.connect(trebleEQ);
+      trebleEQ.connect(compressor);
+      compressor.connect(audioCtx.destination);
+      
       audioEl.bassBoosted = true;
     } catch (error) {
       console.warn("Không thể khởi tạo Web Audio API:", error);
@@ -159,14 +186,14 @@ function MusicCategory() {
   useAudioManager({ currentIndex, playlist, audioRef, handleNext, handlePrev });
 
   // ---- HÀM XỬ LÝ THANH TIMELINE ----
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     if (!audioRef.current) return;
     if (audioRef.current.paused) {
       audioRef.current.play().catch(() => {});
     } else {
       audioRef.current.pause();
     }
-  };
+  }, [audioRef]);
 
   const handleTimeUpdate = () => {
     setCurrentTime(audioRef.current.currentTime);
@@ -188,6 +215,81 @@ function MusicCategory() {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
+
+  // Đóng menu khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Hàm thay đổi tốc độ
+  const changeSpeed = (rate) => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = rate;
+      setPlaybackRate(rate);
+    }
+  };
+
+  // Hàm hẹn giờ tắt nhạc
+  const handleSleepTimer = (minutes) => {
+    // Xóa bộ đếm cũ nếu có
+    if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
+    
+    if (minutes === 0) {
+      setSleepTimer(null); // Tắt chế độ hẹn giờ
+    } else {
+      setSleepTimer(minutes);
+      // Đặt timeout (đổi phút sang mili-giây)
+      sleepTimerRef.current = setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+          setSleepTimer(null);
+          console.log("Đã tự động tắt nhạc vì hết thời gian hẹn giờ!");
+        }
+      }, minutes * 60 * 1000);
+    }
+  };
+
+  // DỌN DẸP BỘ ĐẾM GIỜ KHI NGƯỜI DÙNG RỜI KHỎI TRANG (UNMOUNT)
+  useEffect(() => {
+    return () => {
+      if (sleepTimerRef.current) {
+        clearTimeout(sleepTimerRef.current);
+        console.log("Đã dọn dẹp bộ đếm giờ ngầm!");
+      }
+    };
+  }, []);
+
+  // LẮNG NGHE SỰ KIỆN BÀN PHÍM (BẤM SPACE ĐỂ PLAY/PAUSE)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // 1. Nếu người dùng đang gõ phím trong ô input (thanh tìm kiếm), bỏ qua không làm gì cả
+      const activeTag = document.activeElement.tagName;
+      if (activeTag === "INPUT" || activeTag === "TEXTAREA") {
+        return;
+      }
+
+      // 2. Bắt sự kiện phím Space
+      if (e.code === "Space") {
+        e.preventDefault(); // Ngăn chặn trình duyệt cuộn trang xuống
+        togglePlay();       // Gọi hàm Play/Pause đã có sẵn của bạn
+      }
+    };
+
+    // Gắn bộ lắng nghe sự kiện vào toàn bộ cửa sổ (window)
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Dọn dẹp khi component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [togglePlay]); // Cứ để mảng rỗng [] vì togglePlay chỉ gọi đến audioRef (không bị stale closure)
 
   return (
     <div className="music-container-box dark-theme">
@@ -276,7 +378,55 @@ function MusicCategory() {
                         onChange={handleVolumeChange}
                       />
                     </div>
-                    <button className="ctrl-btn"><FaEllipsisV /></button>
+
+                    {/* MENU TÙY CHỌN 3 CHẤM */}
+                    <div className="options-container position-relative" ref={menuRef}>
+                      <button 
+                        className={`ctrl-btn ${showMenu ? "active-menu" : ""}`} 
+                        onClick={() => setShowMenu(!showMenu)}
+                      >
+                        <FaEllipsisV />
+                      </button>
+
+                      {/* POPUP MENU */}
+                      {showMenu && (
+                        <div className="custom-options-popup">
+                          {/* Section 1: Tốc độ phát */}
+                          <div className="option-section">
+                            <p className="option-title">Tốc độ phát ({playbackRate}x)</p>
+                            <div className="d-flex gap-2">
+                              {[0.75, 1, 1.25, 1.5].map((rate) => (
+                                <button
+                                  key={rate}
+                                  className={`option-btn ${playbackRate === rate ? "active" : ""}`}
+                                  onClick={() => changeSpeed(rate)}
+                                >
+                                  {rate}x
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <hr className="menu-divider" />
+
+                          {/* Section 2: Hẹn giờ tắt */}
+                          <div className="option-section">
+                            <p className="option-title">Hẹn giờ tắt {sleepTimer ? `(${sleepTimer}p)` : ""}</p>
+                            <div className="d-flex gap-2 flex-wrap">
+                              {[0, 2, 30, 60, 180].map((mins) => (
+                                <button
+                                  key={mins}
+                                  className={`option-btn ${sleepTimer === mins ? "active" : ""}`}
+                                  onClick={() => handleSleepTimer(mins)}
+                                >
+                                  {mins === 0 ? "Tắt" : `${mins}p`}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* THẺ AUDIO ẨN NẰM NGẦM BÊN DƯỚI ĐỂ HOOK TỰ ĐIỀU KHIỂN CHẠY NỀN */}

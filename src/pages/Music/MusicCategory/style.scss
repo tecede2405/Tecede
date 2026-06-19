@@ -138,11 +138,14 @@
 .player-left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
   width: 25%;
 }
 .audio-controls{
   display: flex;
+  flex:1;
+  margin-right: 20px;
+  justify-content:space-between;
 }
 
 .player-thumb {
@@ -160,7 +163,7 @@
   background: none;
   border: none;
   color: #fff;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -274,6 +277,75 @@
 /* Đảm bảo thẻ audio mặc định bị ẩn đi */
 .d-none {
   display: none !important;
+}
+
+/* --- STYLE CHO POPUP 3 CHẤM --- */
+.options-container {
+  display: flex;
+  align-items: center;
+
+  .active-menu {
+    color: #1ed760; /* Sáng màu khi mở menu */
+  }
+
+  .custom-options-popup {
+    position: absolute;
+    bottom: 55px; /* Đẩy lên trên thanh player */
+    right: 0;
+    width: max-content;
+    background-color: #282828; /* Màu nền dark mode */
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0px -4px 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-in-out;
+
+    .option-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .option-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #b3b3b3;
+        margin: 0;
+      }
+
+      .option-btn {
+        background: #3e3e3e;
+        border: none;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #555;
+        }
+
+        &.active {
+          background: #1ed760; /* Xanh Spotify hoặc màu chủ đạo của app */
+          color: black;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .menu-divider {
+      border-top: 1px solid #444;
+      margin: 12px 0;
+      opacity: 0.5;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive cơ bản */
