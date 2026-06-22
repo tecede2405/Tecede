@@ -1,5 +1,5 @@
 import Tabbar from '../../component/tabar';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
@@ -15,21 +15,21 @@ import HomeMusic from "../../component/HomeMusic/index";
 import China3dFilms from "../../component/HomeFilm/china3dFilm";
 // import MovieCarousel from "../../component/MovieCarousel/index";
 import MovieRow from "../../component/MovieRow/index";
-import ComicHero from "../../component/Banner/mangaBanner";
+// import ComicHero from "../../component/Banner/mangaBanner";
 import Donate from "../../component/Donate/index";
 import { Helmet } from "react-helmet-async";
 import LazySection from "../../component/LazySection/index";
 import "./style.scss";
 
 function Home() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleAppClick = () => {
-    navigate("/using-app");
-  };
-  const handleIosClick = () => {
-    navigate("/using-app-ios");
-  };
+  // const handleAppClick = () => {
+  //   navigate("/using-app");
+  // };
+  // const handleIosClick = () => {
+  //   navigate("/using-app-ios");
+  // };
     return (
         <>
         <Helmet>
@@ -127,7 +127,7 @@ function Home() {
               <LazySection> 
                 <HomeMusic />
               </LazySection>
-              <ComicHero />
+              {/* <ComicHero />
               <div className="Home__note">
                 <p className="Home__note-text">Lưu ý nhỏ:</p>
                 <ul>
@@ -137,7 +137,7 @@ function Home() {
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 4. Có thể sử dụng dạng app, đối với android xem hướng dẫn <span onClick={handleAppClick}>ở đây</span>. Đối với IOS xem hướng dẫn <span onClick={handleIosClick}>ở đây</span>.</i></li>
                   <li className="Home__note-path"><i className="fas fa-mobile-alt"> 5. Nếu bạn không cài web ở lưu ý số 4 thì nên reload lại trang chủ ở mỗi lần truy cập nhé! Tại mình thường xuyên update trang.</i></li>
                 </ul>
-              </div>
+              </div> */}
               
             </div>
         </div>
