@@ -1,23 +1,36 @@
 .Home {
     display: flex;
-    width: 100%;
-    height: 100%;
+    width: 100vw;    // Dùng vw để đảm bảo đúng chiều rộng màn hình
+    height: 150vh;   // RẤT QUAN TRỌNG: Phải fix cứng chiều cao bằng viewport
     color: #ddd;
     background: #121212;
+    overflow: hidden; // Khóa cuộn của cả trang Home
+
+    // Giả định Tabbar của bạn có class .tabbar-container
+    // Tabbar đứng yên, không cần flex gì cả
+    .tabbar-container {
+        width: 240px; // Hoặc độ rộng bạn mong muốn
+        flex-shrink: 0; // Không cho Tabbar bị co lại
+        height: 100%;
+        overflow-y: auto; // Nếu Tabbar quá dài thì cho nó cuộn riêng
+    }
 
     &__main {
         flex: 1;
         min-width: 0;
+        height: 100%;    // Phải bằng 100% của .Home
+        overflow-y: auto; // CHỈ PHẦN NÀY ĐƯỢC CUỘN
+        
+        // Cấu hình scrollbar cho đẹp
+        &::-webkit-scrollbar { width: 6px; }
+        &::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     }
 
     &__music {
         width: 100%;
-
-        // tối ưu scroll
+        // Giữ nguyên các tối ưu của bạn
         content-visibility: auto;
         contain-intrinsic-size: 400px;
-
-        // giảm repaint
         contain: layout paint style;
         transform: translateZ(0);
     }
