@@ -11,8 +11,8 @@ import "./style.scss";
 const CATEGORY_CONFIG = {
   "mood": { dbType: "nhackhongloi", title: "Nhạc Tâm Trạng 🎵", desc: "Chữa lành tâm hồn", img: "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp" },
   "nhac-douyin": { dbType: "nhacdouyin", title: "Nhạc Douyin 🎵", desc: "Trend TikTok Trung Quốc", img: "https://i.ibb.co/XZBqqxPT/bb95fae35b14b87ed5d6d2d15791e3f2.webp" },
-  "nhac-tre": { dbType: "nhactre", title: "Nhạc Trẻ Remix 🎵", desc: "Quẩy tung nóc nhà 🔥", img: "https://i.ibb.co/KcWRC4Xr/f8067e4d176cf42261c0b2789a1a1035.webp" },
-  "usuk": { dbType: "nhacusuk", title: "Nhạc US-UK 🗽", desc: "Tổng hợp hot hit", img: "https://i.ibb.co/V0Cc13KY/1a5d4aca0654d716f9ec965dbafc8bf2.webp" },
+  "nhac-tre": { dbType: "nhactre", title: "Nhạc Trẻ🎵", desc: "V-hit thập cẩm 🔥", img: "https://i.ibb.co/KcWRC4Xr/f8067e4d176cf42261c0b2789a1a1035.webp" },
+  "usuk": { dbType: "nhacusuk", title: "Nhạc Âu Mỹ 🗽", desc: "Tổng hợp hot hit", img: "https://i.ibb.co/V0Cc13KY/1a5d4aca0654d716f9ec965dbafc8bf2.webp" },
   "trung-quoc": { dbType: "nhactrungquoc", title: "Nhạc Trung Quốc 🎵", desc: "Nhạc Hoa Ngữ hay nhất", img: "https://i.ibb.co/20Jr4KNf/9cb9409ff6db5a3e70ca628f2be2b3ee.webp" },
   "nhactre-remix": { dbType: "nhactreremix", title: "Nhạc Trẻ Remix 🎵", desc: "Quẩy tung nóc nhà 🔥", img: "https://i.ibb.co/nNXDCBDW/z6742344336920-1eae53132a29744632a92d96486d4a9c.webp" },
   "edm": { dbType: "nhacedm", title: "Nhạc EDM ⚡", desc: "Electronic Dance Music", img: "https://i.ibb.co/F4z8B0ST/6659861e5f2cb99d7a210d2b258ec8f5.webp" },
@@ -241,6 +241,44 @@ function MusicCategory() {
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
   const volPercent = (isMuted ? 0 : volume) * 100;
 
+
+  const isNewSong = (createdAt) => {
+    if (!createdAt) return false;
+
+    const createdDate = new Date(createdAt);
+    const now = new Date();
+
+    const diffDays = (now - createdDate) / (1000 * 60 * 60 * 24);
+
+    return diffDays <= 7;
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Không xử lý khi đang gõ trong input, textarea...
+      const tag = document.activeElement?.tagName;
+
+      if (
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        document.activeElement?.isContentEditable
+      ) {
+        return;
+      }
+
+      if (e.code === "Space") {
+        e.preventDefault(); // tránh scroll trang
+        togglePlay();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [togglePlay]);
+
   return (
     <div className="music-container-box dark-theme">
       <Tabbar />
@@ -286,9 +324,8 @@ function MusicCategory() {
                   <div className="playlist-table-container">
                     <div className="playlist-tabs d-flex justify-content-between align-items-center">
                       <div className="tabs-left d-flex gap-4">
-                        <span className="tab-item active">Tông quan</span>
+                        <span className="tab-item active">Tổng quan</span>
                         <span className="tab-item active">Bài hát<span className="badge">{playlist.length}</span></span>
-                        <span className="tab-item active">Nghệ sĩ</span>
                       </div>
                     </div>
 
@@ -337,8 +374,22 @@ function MusicCategory() {
                                   <img src={song.image} alt={song.title} className="song-thumb flex-shrink-0" />
                                   <div className="d-flex flex-column w-100 overflow-hidden">
                                     <div className="song-name-box w-100 overflow-hidden text-truncate">
-                                      <span className="song-name-text text-truncate d-inline-block align-middle" style={{maxWidth: '85%'}}>{song.title}</span>
-                                      <span className="song-badge flex-shrink-0 ms-2 align-middle">HQ</span>
+                                      <span
+                                        className="song-name-text text-truncate d-inline-block align-middle"
+                                        style={{ maxWidth: "85%" }}
+                                      >
+                                        {song.title}
+                                      </span>
+                                    <div>
+                                      {isNewSong(song.createdAt) && (
+                                        <span className="new-badge ms-2">Mới</span>
+                                      )}
+
+                                      <span className="song-badge flex-shrink-0 ms-2 align-middle">
+                                        HQ
+                                      </span>
+                                    </div>
+                                      
                                     </div>
                                     {/* 🌟 HIỆN TÊN CA SĨ & VIEW TRÊN MOBILE (SẼ BỊ ẨN TRÊN PC BỞI d-md-none) */}
                                     <div className="d-md-none text-truncate mt-1" style={{fontSize: '11px', color: '#a0a0ab'}}>
@@ -461,9 +512,9 @@ function MusicCategory() {
                   </div>
 
                   <div className="player-center">
-                    <div className="song-info text-center w-100 overflow-hidden">
-                      <h5 className="song-name text-truncate w-100">{playlist[currentIndex].title}</h5>
-                      <p className="song-artist text-truncate w-100">{playlist[currentIndex].artist}</p>
+                    <div className="song-info">
+                      <h5 className="song-name">{playlist[currentIndex].title}</h5>
+                      <p className="song-artist">{playlist[currentIndex].artist}</p>
                     </div>
                     <div className="progress-container">
                       <span className="time-text">{formatTime(currentTime)}</span>
@@ -527,7 +578,7 @@ function MusicCategory() {
                           <div className="option-section">
                             <p className="option-title">Hẹn giờ tắt {sleepTimer ? `(${sleepTimer}p)` : ""}</p>
                             <div className="d-flex gap-2 flex-wrap">
-                              {[0, 2, 30, 60, 180].map((mins) => (
+                              {[0, 15, 30, 60, 180].map((mins) => (
                                 <button
                                   key={mins}
                                   className={`option-btn ${sleepTimer === mins ? "active" : ""}`}
