@@ -11,10 +11,10 @@ import "./style.scss";
 const CATEGORY_CONFIG = {
   "mood": { dbType: "nhackhongloi", title: "Nhạc Tâm Trạng 🎵", desc: "Chữa lành tâm hồn", img: "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp" },
   "nhac-douyin": { dbType: "nhacdouyin", title: "Nhạc Douyin 🎵", desc: "Trend TikTok Trung Quốc", img: "https://i.ibb.co/XZBqqxPT/bb95fae35b14b87ed5d6d2d15791e3f2.webp" },
-  "nhac-tre": { dbType: "nhactre", title: "Nhạc Trẻ🎵", desc: "V-hit thập cẩm 🔥", img: "https://i.ibb.co/KcWRC4Xr/f8067e4d176cf42261c0b2789a1a1035.webp" },
+  "nhac-tre": { dbType: "nhactre", title: "Nhạc Trẻ🎵", desc: "V-hit thập cẩm", img: "https://i.ibb.co/KcWRC4Xr/f8067e4d176cf42261c0b2789a1a1035.webp" },
   "usuk": { dbType: "nhacusuk", title: "Nhạc Âu Mỹ 🗽", desc: "Tổng hợp hot hit", img: "https://i.ibb.co/V0Cc13KY/1a5d4aca0654d716f9ec965dbafc8bf2.webp" },
   "trung-quoc": { dbType: "nhactrungquoc", title: "Nhạc Trung Quốc 🎵", desc: "Nhạc Hoa Ngữ hay nhất", img: "https://i.ibb.co/20Jr4KNf/9cb9409ff6db5a3e70ca628f2be2b3ee.webp" },
-  "nhactre-remix": { dbType: "nhactreremix", title: "Nhạc Trẻ Remix 🎵", desc: "Quẩy tung nóc nhà 🔥", img: "https://i.ibb.co/nNXDCBDW/z6742344336920-1eae53132a29744632a92d96486d4a9c.webp" },
+  "nhactre-remix": { dbType: "nhactreremix", title: "Nhạc Remix 🎵", desc: "Quẩy tung nóc nhà", img: "https://i.ibb.co/nNXDCBDW/z6742344336920-1eae53132a29744632a92d96486d4a9c.webp" },
   "edm": { dbType: "nhacedm", title: "Nhạc EDM ⚡", desc: "Electronic Dance Music", img: "https://i.ibb.co/F4z8B0ST/6659861e5f2cb99d7a210d2b258ec8f5.webp" },
   "phonk": { dbType: "nhacphonk", title: "Nhạc Phonk 🎵", desc: "Nhạc cháy như FreeFire.", img: "https://i.ibb.co/YBKJGt8X/z6731791091720-ce92821376e7f43bbbf76879ac9f07e3.webp" },
   "nhac-lofi": { dbType: "nhac-lofi", title: "Nhạc Lofi 🎵", desc: "Chill and Study", img: "https://i.ibb.co/rjFJn7H/z7604161484626-99ee66797819706db71be74a68b02785.webp" },
@@ -279,6 +279,59 @@ function MusicCategory() {
     };
   }, [togglePlay]);
 
+  const wakeLockRef = useRef(null);
+
+useEffect(() => {
+  const requestWakeLock = async () => {
+  try {
+    if ("wakeLock" in navigator) {
+      console.log("Requesting Wake Lock...");
+
+      wakeLockRef.current =
+        await navigator.wakeLock.request("screen");
+
+      console.log("Wake Lock acquired");
+
+      wakeLockRef.current.addEventListener("release", () => {
+        console.log("Wake Lock released");
+        wakeLockRef.current = null;
+      });
+    } else {
+      console.log("Wake Lock API not supported");
+    }
+  } catch (err) {
+    console.error("Wake Lock error:", err);
+  }
+};
+
+  requestWakeLock();
+
+  const handleVisibilityChange = async () => {
+    if (
+      document.visibilityState === "visible" &&
+      !wakeLockRef.current
+    ) {
+      await requestWakeLock();
+    }
+  };
+
+  document.addEventListener(
+    "visibilitychange",
+    handleVisibilityChange
+  );
+
+  return () => {
+    document.removeEventListener(
+      "visibilitychange",
+      handleVisibilityChange
+    );
+
+    wakeLockRef.current?.release().catch(() => {});
+    wakeLockRef.current = null;
+  };
+}, []);
+
+
   return (
     <div className="music-container-box dark-theme">
       <Tabbar />
@@ -429,7 +482,7 @@ function MusicCategory() {
                           className="np-large-img" 
                           onError={(e) => { e.target.onerror = null; e.target.src = currentInfo.img; }}
                         />
-                        <div className="np-info d-flex justify-content-between align-items-center mt-3">
+                        <div className="np-info d-flex justify-content-between align-items-center">
                           <div className="overflow-hidden pe-2">
                             <h6 className="np-title m-0 text-truncate">{playlist[currentIndex].title}</h6>
                             <p className="np-artist m-0 text-truncate">{playlist[currentIndex].artist}</p>
