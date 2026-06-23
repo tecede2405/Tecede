@@ -24,27 +24,35 @@
 }
 
 .donate-page-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* 2 cột trên Desktop */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 12px;
 
-  gap: 10px;
+  /* Mobile: 1 cột */
+  @media (max-width: 950px) {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .donate-row {
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   padding: 12px;
-
   border-radius: 14px;
-
   background: rgba(255,255,255,0.04);
-
   border: 1px solid rgba(255,255,255,0.05);
-
   transition: 0.2s ease;
+  width: 100%; // Đảm bảo full chiều rộng trong ô grid
+  min-width: 0; // Quan trọng: tránh vỡ grid khi text dài
+
+  &:hover {
+    background: rgba(255,255,255,0.06);
+  }
 }
 
 .donate-row:hover {

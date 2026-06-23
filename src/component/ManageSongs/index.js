@@ -78,7 +78,7 @@ const handleDelete = async (song) => {
         <div className="row">
           {songs.map((song) => (
             <div className="col-xxl-3 col-xl-3 col-lg-5 col-md-5 col-sm-5 col-12 mb-3" key={song._id}>
-              <div className="music-card d-flex align-items-center justify-content-between p-3 song-item">
+              <div className="music-card1 d-flex align-items-center justify-content-between p-3 song-item">
               <div className="d-flex align-items-center">
                 <img
                   src={song.image}

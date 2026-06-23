@@ -1,34 +1,41 @@
 .Home {
     display: flex;
-    width: 100vw;    // Dùng vw để đảm bảo đúng chiều rộng màn hình
-    height: 150vh;   // RẤT QUAN TRỌNG: Phải fix cứng chiều cao bằng viewport
+    width: 100%; // Dùng 100% thay cho vw để tránh lỗi thanh cuộn ngang
     color: #ddd;
     background: #121212;
-    overflow: hidden; // Khóa cuộn của cả trang Home
+    
+    // Cực kỳ quan trọng để tabbar bên trái có thể "sticky" (bám dính)
+    align-items: flex-start; 
 
-    // Giả định Tabbar của bạn có class .tabbar-container
-    // Tabbar đứng yên, không cần flex gì cả
+    // Tabbar bên trái
     .tabbar-container {
-        width: 240px; // Hoặc độ rộng bạn mong muốn
-        flex-shrink: 0; // Không cho Tabbar bị co lại
-        height: 100%;
-        overflow-y: auto; // Nếu Tabbar quá dài thì cho nó cuộn riêng
+        width: 240px; 
+        flex-shrink: 0; 
+        
+        /* Cố định Tabbar trượt theo màn hình Desktop */
+        position: sticky;
+        top: 70px; /* Cách mép trên đúng bằng chiều cao của Header */
+        height: calc(100vh - 70px); 
+        overflow-y: auto; // Chỉ cuộn menu nếu menu quá nhiều mục
+        
+        // Ẩn tabbar cứng trên mobile (vì mobile bạn đã có Menu Hamburger rồi)
+        @media (max-width: 768px) {
+            display: none;
+        }
+
+        &::-webkit-scrollbar { width: 4px; }
+        &::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
     }
 
     &__main {
         flex: 1;
         min-width: 0;
-        height: 100%;    // Phải bằng 100% của .Home
-        overflow-y: auto; // CHỈ PHẦN NÀY ĐƯỢC CUỘN
-        
-        // Cấu hình scrollbar cho đẹp
-        &::-webkit-scrollbar { width: 6px; }
-        &::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        /* KHÔNG CẦN set height hay overflow-y ở đây nữa */
+        /* Danh sách phim dài bao nhiêu thì phần main sẽ tự động dài bấy nhiêu, đẩy Footer xuống dưới cùng */
     }
 
     &__music {
         width: 100%;
-        // Giữ nguyên các tối ưu của bạn
         content-visibility: auto;
         contain-intrinsic-size: 400px;
         contain: layout paint style;
@@ -56,10 +63,7 @@
 
             li {
                 margin: 5px 0;
-
-                i {
-                    font-size: 14px;
-                }
+                i { font-size: 14px; }
             }
         }
 

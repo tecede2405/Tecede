@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Howler } from "howler"; 
 import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
-import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaHeadphones } from "react-icons/fa";
+import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch } from "react-icons/fa";
 import Loading from "../../../component/Loading";
 import "./style.scss";
 
@@ -458,7 +458,10 @@ useEffect(() => {
                               <td className="td-time text-center">
                                 <div className="d-flex align-items-center justify-content-center gap-3">
                                   <FaRegHeart className="row-action-icon heart-icon d-none d-md-block" />
-                                  <span>{song.listens ? song.listens.toLocaleString() : "0"}</span>
+                                  <span className="d-flex justify-content-center align-items-center gap-2">
+                                    <FaPlay style={{ fontSize: '10px' }} /> 
+                                    {song.listens ? song.listens.toLocaleString() : "0"}
+                                  </span>
                                   <FaEllipsisV className="row-action-icon ms-2 d-none d-md-block" />
                                 </div>
                               </td>
@@ -517,7 +520,10 @@ useEffect(() => {
                             <h6 className="un-title text-truncate m-0">{song.title}</h6>
                             <p className="un-artist text-truncate m-0">{song.artist}</p>
                           </div>
-                          <span className="un-time flex-shrink-0"><FaHeadphones className="me-1"/> {song.listens ? song.listens.toLocaleString() : "0"}</span>
+                          <span className="un-time  flex-shrink-0 d-flex justify-content-center align-items-center gap-2">
+                            <FaPlay style={{ fontSize: '8px' }} /> 
+                            {song.listens ? song.listens.toLocaleString() : "0"}
+                          </span>
                         </div>
                       ))}
                       {currentIndex + 1 >= playlist.length && (

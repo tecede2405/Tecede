@@ -94,36 +94,55 @@
   padding: 16px 0;
 }
 
+/* ======================================================= */
+/* DANH SÁCH BẢNG XẾP HẠNG - CẤU HÌNH GRID */
+/* ======================================================= */
 .donate-list {
-  display: flex;
-  flex-direction: column;
+  display: grid !important; /* Thêm !important để ép trình duyệt nhận Grid */
+  grid-template-columns: repeat(3, 1fr) !important; 
   gap: 14px;
+  width: 100%;
+
+  @media (max-width: 1160px) {
+     grid-template-columns: repeat(2, 1fr) !important; 
+  }
+   @media (max-width: 860px) {
+    grid-template-columns: 1fr !important;
+   }
 }
 
 .donate-item {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 14px;
+  align-items: center; 
+  gap: 12px;
+  padding: 12px;
   border-radius: 12px;
   background: #1d1d1d;
   transition: 0.2s;
-
+  min-width: 0; 
+  
   &:hover {
     background: #252525;
   }
 }
 
+.donate-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden; 
+}
+
 .rank {
-  min-width: 46px;
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
+  flex-shrink: 0; // Đảm bảo rank không bị co lại
 }
 
 .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: black; }
@@ -131,17 +150,10 @@
 .rank-3 { background: linear-gradient(135deg, #cd7f32, #b96a1f); color: white; }
 .rank-4, .rank-5 { background: #323232; color: #a8a8a8; }
 
-.donate-info {
-  flex: 1;
-  max-height: 50px;
-  margin-left: 15px;
-  min-width: 0;
-}
-
 .nickname-container {
   display: flex;
-  align-items: center; // Căn giữa tên và ngày theo trục dọc
-  gap: 8px; // Tạo khoảng cách vừa phải giữa tên và ngày
+  align-items: center;
+  gap: 8px;
   width: 100%;
 }
 
@@ -151,46 +163,36 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 150px; // Giới hạn chiều rộng của tên để không đè lên ngày trên mobile
+  max-width: 120px; // Giảm nhẹ max-width để fit 2 cột
 }
 
 .donate-date {
-  font-size: 10px; // Cho chữ ngày tháng nhỏ lại tinh tế hơn
-  color: #7a7a7a; // Màu xám mờ chuẩn phong cách dark mode
+  font-size: 10px;
+  color: #7a7a7a;
   font-weight: 400;
-  white-space: nowrap; // Không cho ngày tháng bị xuống dòng
+  white-space: nowrap;
 }
 
 .message {
-  margin-top: 6px;
+  margin-top: 4px;
   overflow: hidden;
-  padding: 2px !important;
   white-space: nowrap;
   width: 100%;
+  padding: 0!important;
 
   span {
     display: inline-block;
     font-size: 10px;
     color: #a8a8a8;
-    line-height: 1.5;
-    will-change: transform;
   }
 }
 
-.scroll-text {
-  animation: donate-scroll 12s linear infinite;
-}
-
-@keyframes donate-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
 .amount {
-  font-size: 18px;
+  font-size: 15px; // Giảm font size một chút để không bị quá to trong 2 cột
   font-weight: 700;
   color: #00d26a;
   white-space: nowrap;
+  margin-left: auto; // Đẩy tiền sang phải
 }
 
 .donate-actions {
