@@ -395,7 +395,7 @@
 .footer-list a { color: #8b899b; text-decoration: none; transition: 0.3s; }
 .footer-list a:hover { color: #fff; padding-left: 5px; }
 .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; font-size: 13px; color: #5c5c70; }
-.layout-main { width: 100%; min-height: 80vh; background-color: #07070a; }
+.layout-main { width: 100%; min-height: 80vh; }
 
 /* ================= MISC ================= */
 .text-container { margin-top: 10px; flex: 1; height: 80px; display: flex; flex-direction: column; justify-content: start; align-items: center; }

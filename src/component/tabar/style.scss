@@ -1,58 +1,79 @@
-/* ===== BASE ===== */
+/* ===== BASE CONTAINER ===== */
 .tabbar {
-  background: #0F0F0F;
-  border: 1px solid #30363d;
-  border-radius: 12px;
-  padding: 12px;
-  color: #c9d1d9;
+  background: #090610; // Đổi sang tone tím đen cực sâu mượt mà
+  border: 1px solid rgba(147, 51, 234, 0.15); // Viền tím mờ ẩn hiện
+  border-radius: 20px;
+  padding: 15px 10px;
+  color: #a1a1aa;
   width: 200px;
+  box-shadow: 0 0 40px rgba(147, 51, 234, 0.05); // Đổ bóng phủ màu Neon tím nhẹ xung quanh card
 }
+
 
 .tab-parent {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  position: relative;
 }
 
+/* ===== NÚT DANH MỤC CHA ===== */
 .tab-parent button {
   width: 100%;
-  background: none;
+  background: transparent;
   border: none;
-  color: #c9d1d9;
+  color: #d4d4d8;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+  }
 }
 
-.tab-parent button:hover {
-  background: #161b22;
+/* Trạng thái Hoạt động (Được mở ra giống "Thể loại nhạc" trong ảnh) */
+.tab-parent button.active-btn {
+  background: rgba(147, 51, 234, 0.15); // Nền tím mờ huyền ảo
+  color: #fff;
+  font-weight: 600;
+
+
+
+  .title svg {
+    color: #a855f7; // Icon sáng lên theo màu chủ đạo
+  }
 }
 
 .title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 500;
+  gap: 12px;
+  
+  svg {
+    font-size: 16px;
+    color: #71717a;
+    transition: color 0.2s ease;
+  }
 }
 
 .arrow {
-  transition: transform 0.2s ease;
+  font-size: 16px;
+  color: #71717a;
 }
 
-.tab-parent.open .arrow {
-  transform: rotate(180deg);
-}
-
-/* ===== TAB CON ===== */
+/* ===== DANH SÁCH CON (TAB-CHILD) ===== */
 .tab-child {
   list-style: none;
-  padding-left: 10px;
-  margin-left: 15px;
+  padding-left: 12px;
+  margin-left: 20px;
   margin-top: 6px;
   display: none;
-  border-left: 1px solid #aaaaaa40;
+  border-left: 1px solid rgba(255, 255, 255, 0.06); // Đường gióng dọc mảnh tinh tế
 }
 
 .tab-parent.open .tab-child {
@@ -60,100 +81,96 @@
 }
 
 .tab-label {
-    font-size: 12px;
+  font-size: 13px;
 }
-.tab-child li a,
-.genre-btn {
+
+.tab-child li a {
   width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 6px;
-  color: #8b949e;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #71717a; // Màu chữ trầm mặc định cho text con
   text-decoration: none;
-  font-size: 12px!important;
-  background: none;
-  border: none;
-  cursor: pointer;
+  font-size: 12px !important;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #e4e4e7;
+    padding-left: 16px; // Hiệu ứng dịch sang phải nhẹ khi hover vào text con
+  }
+
+  /* Khi Route trùng khớp trang hiện tại đang xem */
+  &.active {
+    color: #a855f7;
+    font-weight: 500;
+  }
 }
 
-.tab-child li a:hover,
-.genre-btn:hover {
-  background: #21262d;
-  color: #58a6ff;
-}
-
-/* ===== DESKTOP (>=1170px) ===== */
+/* ===== DESKTOP RESPONSIVE (>=1170px) ===== */
 @media (min-width: 1170px) {
   .tabbar {
     width: 200px;
     position: sticky;
     top: 20px;
   }
-
-  .tab-parent button {
-    font-size: 14px;
-    padding: 10px 12px;
-  }
-
-  .tab-child li a,
-  .genre-btn {
-    padding: 8px 10px;
-    font-size: 13px;
-  }
 }
 
-.tabbar-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #1f6feb;
-  color: #fff;
-  border: none;
-  font-size: 20px;
-  display: none;
-  z-index: 2000;
-  cursor: pointer;
-}
 /* ===== TABLET (768px – 1169px) ===== */
 @media (min-width: 768px) and (max-width: 1169px) {
   .tabbar {
-    max-width: 370px;
+    max-width: 200px;
   }
 }
+
 /* ===== MOBILE (<768px) ===== */
 @media (max-width: 767px) {
   .tabbar {
     position: fixed;
-    top: 50px;
-    left: 0;
-    width: 30% !important; /* 🔥 FIX CHÍNH */
-    height: calc(100vh - 70px);
-    transform: translateY(100%);
+    top: 60px;
+    width: 200px !important;
+    height: calc(100vh - 90px);
+    transform: translateX(-110%);
     opacity: 0;
-
-    border-radius: 16px 16px 0 0;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+    border-radius: 16px;
+    
+    /* ===== CẤU HÌNH OVERFLOW-Y MƯỢT MÀ ===== */
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Giúp vuốt chạm trên iOS/Safari cực mượt, không bị khựng */
+    padding-right: 8px; /* Tránh nội dung bị dính sát vào thanh cuộn */
+
+    /* Tùy chỉnh Scrollbar cho các trình duyệt Webkit (Chrome, Safari, Edge,...) */
+    &::-webkit-scrollbar {
+      width: 4px; /* Độ rộng thanh cuộn dọc (bản mỏng cho tinh tế) */
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent; /* Để nền trong suốt cho tệp với backdrop-filter */
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(168, 85, 247, 0.2); /* Màu tím neon mờ đồng bộ với giao diện */
+      border-radius: 99px;
+      
+      &:hover {
+        background: rgba(168, 85, 247, 0.5); /* Sáng lên khi tương tác */
+      }
+    }
+
+    /* Giữ nguyên các thuộc tính cũ của bạn */
     z-index: 1500;
+    background: #090610f2; 
+    backdrop-filter: blur(10px);
   }
 
   .tabbar.show {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
-  }
-  .tabbar-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 
 @media (max-width: 620px) {
-  .tabbar{
-    width: 70% !important; 
+  .tabbar {
+    width: 200px !important;
   }
 }

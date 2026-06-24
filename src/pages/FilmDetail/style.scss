@@ -573,6 +573,60 @@
   height: 42px;
   border-radius: 4px;
 }
+
+// định dạng như youtube
+// Thêm đoạn này vào file style.scss của bạn
+
+.movie-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 24px; // Khoảng cách giữa 2 cột giống Youtube
+  width: 100%;
+  margin-top: 15px;
+
+  // Cột bên trái (Phần xem phim) chiếm 70% đến 75% độ rộng
+  .movie-page__main {
+    flex: 1;
+    min-width: 0; // Tránh lỗi vỡ layout với iframe/flexbox
+  }
+
+  // Cột bên phải (Danh sách phim đề xuất) chiếm khoảng 350px - 400px
+  .movie-page__sidebar {
+    width: 400px;
+    flex-shrink: 0;
+
+  }
+
+  // Responsive: Trên màn hình máy tính bảng và mobile, chuyển thành 1 hàng dọc
+  @media (max-width: 992px) {
+    flex-direction: column;
+
+    .movie-page__sidebar {
+      width: 100%; // Chiếm hết chiều rộng khi xuống hàng
+      padding-top: 20px;
+    }
+  }
+}
+
+// Giữ lại hoặc bổ sung CSS cho các phần cũ của bạn bên dưới...
+.movie-page {
+  min-height: 100vh;
+  position: relative;
+  color: #fff;
+  background-image: var(--bg-url);
+  background-size: cover;      
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  z-index: 0;
+}
+.movie-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7); // Tăng opacity một chút để dễ đọc text ở giao diện mới  
+  backdrop-filter: blur(6px);    
+  z-index: -1;                 
+}
 /* ===============================
    RESPONSIVE
 ================================= */

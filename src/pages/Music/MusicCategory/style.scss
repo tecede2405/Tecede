@@ -184,7 +184,13 @@
 .np-large-img {
   width: 100%;
   aspect-ratio: 16/9;
-  object-fit: cover;
+  
+  /* ĐỔI THÀNH CONTAIN ĐỂ GIỮ NGUYÊN TỈ LỆ VÀ CHẤT LƯỢNG ẢNH */
+  object-fit: contain; 
+  
+  /* THÊM BACKGROUND ĐỂ KHI ẢNH 1:1 NẰM GIỮA SẼ KHÔNG BỊ LỘ NỀN NGOÀI */
+  background-color: #0b0b0b; 
+  
   border-radius: 14px 14px 0 0;
   display: block;
 

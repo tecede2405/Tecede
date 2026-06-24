@@ -1,12 +1,31 @@
 .movie-table-wrapper {
   width: 100%;
   overflow-x: auto;
+  
+  /* Hỗ trợ vuốt chạm mượt mà trên iOS/Safari Mobile */
+  -webkit-overflow-scrolling: touch; 
+  
+  /* Tùy chỉnh thanh cuộn cho đẹp và đỡ thô hơn (Webkit như Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    height: 5px; /* Độ dày thanh cuộn ngang */
+  }
+  &::-webkit-scrollbar-track {
+    background: #111; /* Màu nền đường ray */
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #560450; /* Màu của cục cuộn */
+    border-radius: 4px;
+    &:hover {
+      background: rgb(236, 14, 228); /* Đổi màu khi hover giống nút pagination */
+    }
+  }
 }
 
 .movie-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px;
+  /* RẤT QUAN TRỌNG: Giữ min-width để ép bảng rộng hơn màn hình, kích hoạt overflow-x */
+  min-width: 600px; 
   color: #eee;
 
   th,
@@ -23,7 +42,7 @@
     color: #aaa;
   }
   tr{
-    background:#0dcaf036;
+    background:#a0c2c90b;
   }
 }
 
@@ -45,14 +64,14 @@
     color: #fff;
     font-weight: 600;
     text-decoration: none;
-
+    font-size: 13px;
     &:hover {
       color: #0dcaf0;
     }
   }
 
   .origin {
-    font-size: 12px;
+    font-size: 11px;
     color: #999;
   }
 }
