@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Howl } from "howler";
 
 function shuffleArray(arr) {
   const newArr = [...arr];
@@ -10,6 +9,16 @@ function shuffleArray(arr) {
   return newArr;
 }
 
+const globalAudio = new Audio();
+globalAudio.preload = "auto";
+globalAudio.crossOrigin = "anonymous";
+globalAudio.playsInline = true;
+
+let audioCtx;
+let source;
+let isDspInitialized = false;
+let bass, mid, treble, delay, feedback, wetGain, dryGain, compressor;
+
 export default function useMusicPlayer(initialSongs) {
   const [originalPlaylist, setOriginalPlaylist] = useState(initialSongs);
   const [currentPlaylist, setCurrentPlaylist] = useState(initialSongs);
@@ -17,21 +26,139 @@ export default function useMusicPlayer(initialSongs) {
   const [isShuffle, setIsShuffle] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false); 
-  
-  const soundRef = useRef(null);
-  
-  // 🌟 VŨ KHÍ MỚI: Trạm chờ cho bài hát tiếp theo
-  const nextSoundRef = useRef(null); 
-  const nextSongIdRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  // Mặc định PC Bật, Mobile Tắt
+  const [isVibeEnabled, setIsVibeEnabled] = useState(() => {
+    if (typeof window !== "undefined") {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      return !isMobile; 
+    }
+    return false;
+  });
 
   const stateRef = useRef({ playlist: initialSongs, index: null });
+  const actionsRef = useRef({ next: null, prev: null });
+
+  const soundRef = useRef({
+    seek: (time) => {
+      if (time !== undefined) {
+        globalAudio.currentTime = time;
+        setCurrentTime(time);
+      }
+      return globalAudio.currentTime || 0;
+    },
+    duration: () => globalAudio.duration || 0,
+    pause: () => globalAudio.pause(),
+    play: () => globalAudio.play(),
+    rate: (speed) => { globalAudio.playbackRate = speed; }
+  });
 
   useEffect(() => {
     stateRef.current.playlist = currentPlaylist;
     stateRef.current.index = currentIndex;
   }, [currentPlaylist, currentIndex]);
 
-  const actionsRef = useRef({ next: null, prev: null });
+  useEffect(() => {
+    const handleTimeUpdate = () => setCurrentTime(globalAudio.currentTime);
+    const handleLoadedMetadata = () => setDuration(globalAudio.duration);
+
+    globalAudio.addEventListener("timeupdate", handleTimeUpdate);
+    globalAudio.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    return () => {
+      globalAudio.removeEventListener("timeupdate", handleTimeUpdate);
+      globalAudio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, []);
+
+  // 🎛️ KHỞI TẠO VÀ NỐI DÂY (Chạy 1 lần duy nhất)
+  const initAudioContext = useCallback(() => {
+    if (isDspInitialized) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+      source = audioCtx.createMediaElementSource(globalAudio);
+
+      bass = audioCtx.createBiquadFilter(); bass.type = "lowshelf"; bass.frequency.value = 110; bass.gain.value = 7;
+      mid = audioCtx.createBiquadFilter(); mid.type = "peaking"; mid.frequency.value = 400; mid.Q.value = 1.5; mid.gain.value = -2;
+      treble = audioCtx.createBiquadFilter(); treble.type = "peaking"; treble.frequency.value = 3000; treble.Q.value = 1; treble.gain.value = 3;
+      
+      delay = audioCtx.createDelay(); delay.delayTime.value = 0.08;
+      feedback = audioCtx.createGain(); feedback.gain.value = 0.25;
+      wetGain = audioCtx.createGain(); wetGain.gain.value = 0.2;
+      dryGain = audioCtx.createGain(); dryGain.gain.value = 1;
+      
+      compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -14; compressor.knee.value = 10; compressor.ratio.value = 4; compressor.attack.value = 0.005; compressor.release.value = 0.1;
+
+      isDspInitialized = true;
+      applyRouting(isVibeEnabled); // Cấp điện ngay khi khởi tạo
+    } catch (err) {
+      console.warn("Lỗi Audio API:", err);
+    }
+  }, [isVibeEnabled]);
+
+  // 🎛️ HÀM CẮM DÂY (ROUTING) - Tách ra riêng để dễ gọi
+  const applyRouting = (vibeOn) => {
+    if (!isDspInitialized || !source || !audioCtx) return;
+
+    // Phải resume context thì tiếng mới kêu
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+
+    try {
+      source.disconnect();
+      dryGain.disconnect();
+      wetGain.disconnect();
+      compressor.disconnect();
+    } catch (e) {} // Bỏ qua lỗi ngắt kết nối lần đầu
+
+    if (vibeOn) {
+      source.connect(delay);
+      delay.connect(feedback);
+      feedback.connect(delay);
+      delay.connect(wetGain);
+
+      source.connect(bass);
+      bass.connect(mid);
+      mid.connect(treble);
+      treble.connect(dryGain);
+
+      dryGain.connect(compressor);
+      wetGain.connect(compressor);
+      compressor.connect(audioCtx.destination);
+    } else {
+      source.connect(audioCtx.destination);
+    }
+  };
+
+  // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      initAudioContext();
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+    window.addEventListener('click', handleFirstInteraction);
+    window.addEventListener('touchstart', handleFirstInteraction);
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  }, [initAudioContext]);
+
+  // 🌟 SỬA LỖI NÚT BẤM: Gắn hàm toggleVibe ra ngoài thay vì setIsVibeEnabled
+  const toggleVibe = useCallback(() => {
+    if (!isDspInitialized) {
+        initAudioContext(); // Ép khởi tạo nếu chưa có
+    }
+    const newState = !isVibeEnabled;
+    setIsVibeEnabled(newState);
+    applyRouting(newState); // Ép đi dây lại ngay lập tức
+  }, [isVibeEnabled, initAudioContext]);
 
   const updatePlaylist = useCallback((songs) => {
     setOriginalPlaylist(songs);
@@ -42,103 +169,68 @@ export default function useMusicPlayer(initialSongs) {
 
   const handlePlay = useCallback((index, optionalPlaylist = null) => {
     const listToUse = optionalPlaylist || stateRef.current.playlist;
-    
     if (listToUse.length === 0 || index === null) return;
-
     const song = listToUse[index];
     if (!song?._id) return;
 
-    if (!optionalPlaylist && index === stateRef.current.index && soundRef.current) {
-        if (!soundRef.current.playing()) soundRef.current.play();
+    if (!optionalPlaylist && index === stateRef.current.index) {
+        if (globalAudio.paused) globalAudio.play();
         return;
     }
 
     const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-    
-    if (soundRef.current) {
-      soundRef.current.off(); 
-      soundRef.current.unload();
-    }
-
     setIsPlaying(true); 
     setIsLoading(true); 
 
-    const streamUrl = `${baseUrl}/api/songs/stream/${song._id}`;
-    let sound;
+    globalAudio.onplay = null;
+    globalAudio.onpause = null;
+    globalAudio.onended = null;
+    globalAudio.onerror = null;
 
-    // 🚀 LẤY HÀNG TỪ TRẠM CHỜ: Nếu bài người dùng muốn nghe đúng bằng bài đã tải ngầm
-    if (nextSoundRef.current && nextSongIdRef.current === song._id) {
-      sound = nextSoundRef.current;
-      nextSoundRef.current = null; // Xóa trạm chờ vì đã xài
-    } else {
-      // Nếu nhảy cóc (bấm bài bất kỳ không theo thứ tự), đành phải tải mới
-      sound = new Howl({
-        src: [streamUrl],
-        html5: true, 
-        format: ['mp3', 'm4a', 'aac']
-      });
-    }
+    globalAudio.src = `${baseUrl}/api/songs/stream/${song._id}`;
+    globalAudio.load();
 
-    // Đặt lại toàn bộ sự kiện cho an toàn (đề phòng hàng từ trạm chờ bị dính event cũ)
-    sound.off();
-    sound.on('loaderror', (id, err) => {
-      console.warn("Lỗi tải nhạc:", err);
-      setIsLoading(false);
-      setIsPlaying(false);
-    });
-    sound.on('playerror', (id, err) => {
-      sound.once('unlock', () => sound.play());
-      setIsLoading(false);
-    });
-    sound.on('play', () => {
+    globalAudio.onplay = () => {
       setIsLoading(false);
       setIsPlaying(true);
+      
+      // Đánh thức DSP mỗi khi nhạc bắt đầu phát
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
 
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: song.title || "Unknown Title",
           artist: song.artist || "Unknown Artist",
-          artwork: [
-            { src: song.image || 'https://via.placeholder.com/512', sizes: '512x512', type: 'image/jpeg' }
-          ]
+          artwork: [{ src: song.image || 'https://via.placeholder.com/512', sizes: '512x512', type: 'image/jpeg' }]
         });
-        navigator.mediaSession.setActionHandler('play', () => soundRef.current?.play());
-        navigator.mediaSession.setActionHandler('pause', () => soundRef.current?.pause());
+        navigator.mediaSession.setActionHandler('play', () => { globalAudio.play(); setIsPlaying(true); });
+        navigator.mediaSession.setActionHandler('pause', () => { globalAudio.pause(); setIsPlaying(false); });
         navigator.mediaSession.setActionHandler('previoustrack', () => actionsRef.current.prev && actionsRef.current.prev());
         navigator.mediaSession.setActionHandler('nexttrack', () => actionsRef.current.next && actionsRef.current.next());
       }
-    });
-    sound.on('pause', () => setIsPlaying(false));
-    sound.on('end', () => {
-      if (actionsRef.current.next) actionsRef.current.next(); 
-    });
-    sound.on('stop', () => setIsPlaying(false));
+    };
 
-    soundRef.current = sound;
-    sound.play();
-
-    // ==========================================
-    // ⚡ MẠ THUẬT TẢI TRƯỚC (PRE-FETCHING) TẠI ĐÂY
-    // Ngay khi bài hiện tại được play, ta nhét luôn bài tiếp theo vào trạm chờ
-    // ==========================================
-    const nextIdx = (index + 1) % listToUse.length;
-    const nextSong = listToUse[nextIdx];
+    globalAudio.onpause = () => setIsPlaying(false);
     
-    // Đảm bảo không tải ngầm chính bài đang hát (trường hợp list có 1 bài)
-    if (nextSong && nextSong._id !== song._id) {
-      if (nextSoundRef.current) {
-        nextSoundRef.current.unload(); // Vứt bài chờ cũ đi
-      }
-      
-      nextSongIdRef.current = nextSong._id;
-      nextSoundRef.current = new Howl({
-        src: [`${baseUrl}/api/songs/stream/${nextSong._id}`],
-        html5: true,
-        preload: true, // Ép trình duyệt kéo file từ server về lưu sẵn vào RAM/Cache
-        onloaderror: () => {} // Chặn lỗi báo rác console nếu pre-fetch xịt
-      });
-    }
-    // ==========================================
+    globalAudio.onended = () => {
+      if (actionsRef.current.next) actionsRef.current.next(); 
+    };
+    
+    globalAudio.onerror = (e) => {
+      console.warn("Lỗi nhạc:", e);
+      setIsLoading(false);
+      setIsPlaying(false);
+      setTimeout(() => {
+        if (actionsRef.current.next) actionsRef.current.next();
+      }, 2000);
+    };
+
+    globalAudio.play().catch(() => {
+      setIsLoading(false);
+      setIsPlaying(false);
+    });
 
     fetch(`${baseUrl}/api/songs/${song._id}/listen`, { method: "PUT" }).catch(()=>{});
     
@@ -174,32 +266,21 @@ export default function useMusicPlayer(initialSongs) {
   }, [handleNext, handlePrev]);
 
   const handleShufflePlaylist = useCallback(() => {
-    let newPlaylist;
-    if (!isShuffle) {
-      newPlaylist = shuffleArray(originalPlaylist);
-    } else {
-      newPlaylist = originalPlaylist;
-    }
+    let newPlaylist = !isShuffle ? shuffleArray(originalPlaylist) : originalPlaylist;
     setIsShuffle(!isShuffle);
     handlePlay(0, newPlaylist); 
   }, [isShuffle, originalPlaylist, handlePlay]);
 
   const togglePlay = useCallback(() => {
-    if (soundRef.current) {
-      if (soundRef.current.playing()) {
-        soundRef.current.pause();
-      } else {
-        soundRef.current.play();
-      }
+    if (globalAudio.paused) {
+      globalAudio.play().catch(()=>{});
+    } else {
+      globalAudio.pause();
     }
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (soundRef.current) soundRef.current.unload();
-      if (nextSoundRef.current) nextSoundRef.current.unload(); // Dọn dẹp trạm chờ khi thoát trang
-    };
-  }, []);
+  const setGlobalVolume = useCallback((vol) => { globalAudio.volume = vol; }, []);
+  const setGlobalMute = useCallback((isMuted) => { globalAudio.muted = isMuted; }, []);
 
   return {
     playlist: currentPlaylist,
@@ -208,11 +289,17 @@ export default function useMusicPlayer(initialSongs) {
     isPlaying, 
     isLoading, 
     isShuffle,
+    currentTime, 
+    duration,    
     togglePlay, 
     handlePlay,
     handleShufflePlaylist,
     handlePrev,
     handleNext,
     updatePlaylist,
+    setGlobalVolume,
+    setGlobalMute,
+    isVibeEnabled,
+    toggleVibe // XUẤT HÀM MỚI NÀY RA GIAO DIỆN
   };
 }

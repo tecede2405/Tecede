@@ -178,51 +178,89 @@
 .now-playing-card {
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
-.np-large-img {
-  width: 100%;
-  aspect-ratio: 16/9;
-  
-  /* ĐỔI THÀNH CONTAIN ĐỂ GIỮ NGUYÊN TỈ LỆ VÀ CHẤT LƯỢNG ẢNH */
-  object-fit: contain; 
-  
-  /* THÊM BACKGROUND ĐỂ KHI ẢNH 1:1 NẰM GIỮA SẼ KHÔNG BỊ LỘ NỀN NGOÀI */
-  background-color: #0b0b0b; 
-  
-  border-radius: 14px 14px 0 0;
-  display: block;
+/* Background ảnh blur */
+.now-playing-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
 
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.35),
-    0 0 30px rgba(192, 132, 252, 0.2);
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+
+  filter: blur(8px); /* giảm từ 30 -> 8 */
+  transform: scale(1.05);
+
+  opacity: 0.8; /* tăng độ hiện ảnh */
+
+  z-index: 0;
 }
 
 .now-playing-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
 
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,.12) 0%,
-      transparent 25%
-    ),
-    linear-gradient(
-      to top,
-      rgba(0,0,0,.45) 0%,
-      transparent 40%
-    );
+  background: rgba(0, 0, 0, 0.25); /* tối rất nhẹ */
+
+  z-index: 1;
+  pointer-events: none;
 }
-.np-info{
-  padding: 10px;
+
+/* Nội dung nằm trên background */
+.np-large-img,
+.np-info {
+  position: relative;
+  z-index: 2;
 }
-.np-title { font-size: 13px; font-weight: 600; color: #fff; padding-bottom: 8px; }
-.np-artist { font-size: 11px; color: #a0a0ab; }
-.np-heart-icon { color: #9b4de0; font-size: 18px; cursor: pointer; }
+.np-info {
+  padding: 10px 12px;
+  backdrop-filter: blur(8px);
+    background: linear-gradient(
+    135deg,
+    rgba(55, 25, 75, 0.9),
+    rgba(18, 18, 18, 0.95)
+  );
+  border-radius: 0 0 14px 14px;
+}
+.np-large-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+
+  /* Giữ nguyên tỷ lệ ảnh */
+  object-fit: contain;
+
+  /* Quan trọng: bỏ nền đen cũ */
+  background: transparent;
+
+  border-radius: 14px 14px 0 0;
+  display: block;
+}
+
+.np-info {
+  padding: 10px 12px;
+  backdrop-filter: blur(8px);
+}
+
+.np-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.np-artist {
+  font-size: 11px;
+  color: #a0a0ab;
+}
+
+.np-heart-icon {
+  color: #9b4de0;
+  font-size: 18px;
+  cursor: pointer;
+}
 
 .clear-queue-btn {
   font-size: 12px;
@@ -270,7 +308,7 @@
 .player-thumb { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #2a2238; }
 .spinning { animation: spin 10s linear infinite; }
 
-.audio-controls { display: flex; align-items: center; gap: 18px; width: 200px; justify-content: space-between; }
+.audio-controls { display: flex; align-items: center; gap: 18px; width: 220px; justify-content: space-between; }
 .ctrl-btn { background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; transition: all 0.2s ease; &:hover { color: #c084fc; } &:disabled { opacity: 0.5; } }
 .play-pause-btn { width: 40px; height: 40px; border-radius: 50%; background-color: #9b4de076; font-size: 14px; &:hover { background-color: #7c3aed; color: #fff; transform: scale(1.05); } }
 
@@ -350,64 +388,78 @@
 /* ========================================= */
 @media (max-width: 768px) {
 
-  .music-scroll-area{
-    padding: 0;
-  }
-  .main-content-area{
-    max-width: 100vw;
-  }
-  .playlist-tabs{
-    padding: 0 13px 10px 10px;
-  }
+  .music-scroll-area { padding: 0; }
+  .main-content-area { max-width: 100vw; }
+  .playlist-tabs { padding: 0 13px 10px 10px; }
   .main-layout-grid { flex-direction: column; }
   .left-column, .right-column { width: 100%; padding: 0; }
-  .song-name-box {
-    justify-content: space-between;
-  }
-  .album-header{
-    padding: 20px 10px;
-    justify-content: center;
-  }
-  .album-cover-img { width: 130px; height: 130px; } 
+  .song-name-box { justify-content: space-between; }
+  .album-header { padding: 20px 10px; justify-content: center; }
+  .album-cover-img { width: 130px; height: 130px; }
   .album-actions { justify-content: center; }
-  .album-title {
-    font-size: 18px;
-  }
+  .album-title { font-size: 18px; }
   .th-artist, .td-artist, .th-time, .td-time { display: none !important; }
   .th-number, .td-number { width: 40px !important; min-width: 40px !important; padding: 12px 0; }
   .th-title, .td-title { width: calc(100% - 40px) !important; padding-left: 10px; }
-  
-  /* --- THANH PLAYER TRÊN MOBILE --- */
-  .custom-bottom-player { 
-    height: auto; 
-    padding: 10px; 
-    bottom: 20px; 
-    background: #1e142ef2; 
-    flex-direction: column; /* Đổi sang cột để thanh kéo nhạc có chỗ nằm */
+  .btn-play-all { font-size: 13px; padding: 7px 15px; }
+  .action-icon-btn { display: none; }
+  /* PLAYER */
+  .custom-bottom-player {
+    height: auto;
+    padding: 10px;
+    bottom: 20px;
+    background: #1e142ef2;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed; /* cần để con absolute định vị đúng */
+  }
+
+  .player-left {
+    width: 100%;
+    justify-content: flex-start;
     gap: 10px;
   }
-  .btn-play-all {
-    font-size: 13px;
-    padding: 7px 15px;
+
+  /* audio-controls cần position: relative để popup con định vị đúng */
+  .audio-controls {
+    position: relative;
   }
-  .action-icon-btn{
-    display:none;
+
+  /* options-container mobile: nằm trong audio-controls, reset position */
+  .audio-controls .options-container {
+    position: static; /* không absolute nữa, nằm flow bình thường trong audio-controls */
+    display: flex;
+    align-items: center;
+
+    .custom-options-popup {
+      position: fixed;        /* fixed để thoát khỏi mọi overflow:hidden của cha */
+      bottom: 120px;  
+      width: 70%!important;        
+      right: 10px;            
+      width: auto;
+      z-index: 99999;
+    }
   }
-  /* Dòng 1: Ảnh + Nút điều khiển */
-  .player-left { 
-    width: 100%; 
-    justify-content: flex-start; 
-    gap: 10px; 
+
+  .player-center {
+    width: 100%;
+    max-width: 100%;
+    order: 2;
+    .song-info { display: none; }
   }
-  
-  /* Dòng 2: Thanh Progress Bar (Hiện lại ở đây) */
-  .player-center { 
-    width: 100%; 
-    max-width: 100%; 
-    order: 2; /* Đẩy xuống dưới cùng */
-    .song-info { display: none; } /* Ẩn info để lấy chỗ cho thanh kéo */
+
+  /* ẨN player-right (volume + nút ⋮ PC) — nút ⋮ mobile đã nằm trong audio-controls */
+  .player-right { display: none !important; }
+}
+@media (max-width: 440px) {
+  .mobile-song-info{
+    display: none;
   }
-  
-  /* Ẩn các thứ không cần thiết trên mobile */
-  .player-right { display: none; }
+  .player-left{
+    justify-content: space-around;
+  }
+  .audio-controls{
+    margin: 0!important;
+    justify-content: space-around;
+  }
 }

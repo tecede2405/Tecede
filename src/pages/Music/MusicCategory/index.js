@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Howler } from "howler"; 
 import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch } from "react-icons/fa";
@@ -36,17 +35,21 @@ function MusicCategory() {
     soundRef,
     isPlaying,
     isLoading,
+    currentTime, 
+    duration,    
     togglePlay, 
     handlePlay,
     handlePrev,
     handleNext,
     handleShufflePlaylist,
     updatePlaylist,
+    setGlobalVolume, 
+    setGlobalMute,
+    isVibeEnabled,
+    toggleVibe // 🌟 Gọi hàm toggle mới ở đây
   } = useMusicPlayer([]);
 
   const [loading, setLoading] = useState(true);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,129 +57,20 @@ function MusicCategory() {
   const [showMenu, setShowMenu] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1); 
   const [sleepTimer, setSleepTimer] = useState(null); 
-  const menuRef = useRef(null);
   const sleepTimerRef = useRef(null);
-
-  useEffect(() => {
-    let interval;
-    if (isPlaying && !isLoading) { 
-      interval = setInterval(() => {
-        if (soundRef.current) {
-          setCurrentTime(soundRef.current.seek() || 0);
-          setDuration(soundRef.current.duration() || 0);
-        }
-      }, 500); 
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, isLoading, soundRef]);
 
   const toggleMute = () => {
     const newMute = !isMuted;
-    Howler.mute(newMute);
+    setGlobalMute(newMute); 
     setIsMuted(newMute);
   };
 
   const handleVolumeChange = (e) => {
     const newVol = Number(e.target.value);
-    Howler.volume(newVol);
+    setGlobalVolume(newVol); 
     setVolume(newVol);
     setIsMuted(newVol === 0);
   };
-
-  const enableStudioMastering = useCallback(() => {
-    const audioEl = soundRef.current?._sounds[0]?._node;
-    if (!audioEl || audioEl.isMastered) return;
-
-    try {
-      audioEl.crossOrigin = "anonymous"; 
-      if (!window.globalAudioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        window.globalAudioCtx = new AudioContext();
-      }
-      const audioCtx = window.globalAudioCtx;
-
-      if (!audioEl._sourceNode) {
-        audioEl._sourceNode = audioCtx.createMediaElementSource(audioEl);
-      }
-      const source = audioEl._sourceNode;
-
-      const makeDistortionCurve = (amount) => {
-        const k = amount;
-        const n_samples = 44100;
-        const curve = new Float32Array(n_samples);
-        const deg = Math.PI / 180;
-        for (let i = 0; i < n_samples; ++i) {
-          const x = i * 2 / n_samples - 1;
-          curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
-        }
-        return curve;
-      };
-      const saturator = audioCtx.createWaveShaper();
-      saturator.curve = makeDistortionCurve(1.2); 
-      saturator.oversample = '4x'; 
-
-      const punchEQ = audioCtx.createBiquadFilter();
-      punchEQ.type = "peaking";
-      punchEQ.frequency.value = 85;
-      punchEQ.Q.value = 1.4; 
-      punchEQ.gain.value = 4.5; 
-
-      const mudCutEQ = audioCtx.createBiquadFilter();
-      mudCutEQ.type = "peaking";
-      mudCutEQ.frequency.value = 250;
-      mudCutEQ.Q.value = 1.2;
-      mudCutEQ.gain.value = -3.0; 
-
-      const vocalEQ = audioCtx.createBiquadFilter();
-      vocalEQ.type = "peaking";
-      vocalEQ.frequency.value = 2500;
-      vocalEQ.Q.value = 1.0;
-      vocalEQ.gain.value = 1.5;
-
-      const harshCutEQ = audioCtx.createBiquadFilter();
-      harshCutEQ.type = "peaking";
-      harshCutEQ.frequency.value = 4000;
-      harshCutEQ.Q.value = 1.5;
-      harshCutEQ.gain.value = -1.5; 
-
-      const airEQ = audioCtx.createBiquadFilter();
-      airEQ.type = "highshelf";
-      airEQ.frequency.value = 12000;
-      airEQ.gain.value = 2.0;
-
-      const compressor = audioCtx.createDynamicsCompressor();
-      compressor.threshold.value = -18; 
-      compressor.knee.value = 20;       
-      compressor.ratio.value = 3.5;     
-      compressor.attack.value = 0.008; 
-      compressor.release.value = 0.1;  
-
-      const limiter = audioCtx.createDynamicsCompressor();
-      limiter.threshold.value = -1.0; 
-      limiter.knee.value = 0;         
-      limiter.ratio.value = 20.0;     
-      limiter.attack.value = 0.001;   
-      limiter.release.value = 0.05;
-
-      source.connect(saturator);
-      saturator.connect(punchEQ);
-      punchEQ.connect(mudCutEQ);
-      mudCutEQ.connect(vocalEQ);
-      vocalEQ.connect(harshCutEQ);
-      harshCutEQ.connect(airEQ);
-      airEQ.connect(compressor);
-      compressor.connect(limiter); 
-      limiter.connect(audioCtx.destination);
-      
-      audioEl.isMastered = true;
-    } catch (error) {
-      console.warn("Lỗi khởi tạo DSP Engine:", error);
-    }
-  }, [soundRef]);
-
-  useEffect(() => {
-    if (isPlaying) enableStudioMastering();
-  }, [isPlaying, enableStudioMastering]);
 
   useEffect(() => {
     setLoading(true);
@@ -193,7 +87,6 @@ function MusicCategory() {
   const handleSeek = (e) => {
     const newTime = Number(e.target.value);
     if (soundRef.current) soundRef.current.seek(newTime);
-    setCurrentTime(newTime);
   };
 
   const formatTime = (time) => {
@@ -205,10 +98,18 @@ function MusicCategory() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) setShowMenu(false);
+      if (!event.target.closest('.options-container')) {
+        setShowMenu(false);
+      }
     };
+    
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, []);
 
   const changeSpeed = (rate) => {
@@ -241,96 +142,73 @@ function MusicCategory() {
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
   const volPercent = (isMuted ? 0 : volume) * 100;
 
-
   const isNewSong = (createdAt) => {
     if (!createdAt) return false;
-
     const createdDate = new Date(createdAt);
     const now = new Date();
-
     const diffDays = (now - createdDate) / (1000 * 60 * 60 * 24);
-
     return diffDays <= 7;
   };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Không xử lý khi đang gõ trong input, textarea...
       const tag = document.activeElement?.tagName;
-
-      if (
-        tag === "INPUT" ||
-        tag === "TEXTAREA" ||
-        document.activeElement?.isContentEditable
-      ) {
-        return;
-      }
-
+      if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement?.isContentEditable) return;
       if (e.code === "Space") {
-        e.preventDefault(); // tránh scroll trang
+        e.preventDefault(); 
         togglePlay();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [togglePlay]);
 
-  const wakeLockRef = useRef(null);
+  // 🌟 KHAI BÁO MENU DÙNG CHUNG CHO PC VÀ MOBILE
+  const renderMenuPopup = () => (
+    <div className="custom-options-popup">
+      <div className="option-section">
+        <p className="option-title">Hiệu ứng âm thanh</p>
+        <button 
+          className={`option-btn w-100 ${isVibeEnabled ? "active" : ""}`}
+          onClick={toggleVibe} // Gọi hàm toggleVibe ở đây
+        >
+          {isVibeEnabled ? "Tắt Bass" : "Bật Bass"}
+        </button>
+      </div>
+      
+      <hr className="menu-divider" />
+      <div className="option-section">
+        <p className="option-title">Tốc độ phát ({playbackRate}x)</p>
+        <div className="d-flex gap-2">
+          {[0.75, 1, 1.25, 1.5].map((rate) => (
+            <button
+              key={rate}
+              className={`option-btn ${playbackRate === rate ? "active" : ""}`}
+              onClick={() => changeSpeed(rate)}
+            >
+              {rate}x
+            </button>
+          ))}
+        </div>
+      </div>
 
-useEffect(() => {
-  const requestWakeLock = async () => {
-  try {
-    if ("wakeLock" in navigator) {
-      console.log("Requesting Wake Lock...");
-
-      wakeLockRef.current =
-        await navigator.wakeLock.request("screen");
-
-      console.log("Wake Lock acquired");
-
-      wakeLockRef.current.addEventListener("release", () => {
-        console.log("Wake Lock released");
-        wakeLockRef.current = null;
-      });
-    } else {
-      console.log("Wake Lock API not supported");
-    }
-  } catch (err) {
-    console.error("Wake Lock error:", err);
-  }
-};
-
-  requestWakeLock();
-
-  const handleVisibilityChange = async () => {
-    if (
-      document.visibilityState === "visible" &&
-      !wakeLockRef.current
-    ) {
-      await requestWakeLock();
-    }
-  };
-
-  document.addEventListener(
-    "visibilitychange",
-    handleVisibilityChange
+      <hr className="menu-divider" />
+      <div className="option-section">
+        <p className="option-title">Hẹn giờ tắt {sleepTimer ? `(${sleepTimer}p)` : ""}</p>
+        <div className="d-flex gap-2 flex-wrap">
+          {[0, 15, 30, 60, 180].map((mins) => (
+            <button
+              key={mins}
+              className={`option-btn ${sleepTimer === mins ? "active" : ""}`}
+              onClick={() => handleSleepTimer(mins)}
+            >
+              {mins === 0 ? "Tắt" : `${mins}p`}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
-
-  return () => {
-    document.removeEventListener(
-      "visibilitychange",
-      handleVisibilityChange
-    );
-
-    wakeLockRef.current?.release().catch(() => {});
-    wakeLockRef.current = null;
-  };
-}, []);
-
 
   return (
     <div className="music-container-box dark-theme">
@@ -346,7 +224,7 @@ useEffect(() => {
               
               <div className="main-layout-grid d-flex gap-4">
                 
-                {/* ---------- CỘT TRÁI ---------- */}
+                {/* CỘT TRÁI */}
                 <div className="left-column flex-grow-1">
                   
                   <div className="album-header d-flex align-items-center gap-4">
@@ -437,14 +315,11 @@ useEffect(() => {
                                       {isNewSong(song.createdAt) && (
                                         <span className="new-badge ms-2">Mới</span>
                                       )}
-
                                       <span className="song-badge flex-shrink-0 ms-2 align-middle">
                                         HQ
                                       </span>
                                     </div>
-                                      
                                     </div>
-                                    {/* 🌟 HIỆN TÊN CA SĨ & VIEW TRÊN MOBILE (SẼ BỊ ẨN TRÊN PC BỞI d-md-none) */}
                                     <div className="d-md-none text-truncate mt-1" style={{fontSize: '11px', color: '#a0a0ab'}}>
                                       {song.artist} • {song.listens ? song.listens.toLocaleString() : "0"} lượt nghe
                                     </div>
@@ -454,7 +329,6 @@ useEffect(() => {
                               <td className="td-artist">
                                 <div className="text-truncate" style={{maxWidth: '100%'}}>{song.artist}</div>
                               </td>
-                              {/* 🌟 CĂN GIỮA NỘI DUNG CỘT LƯỢT NGHE */}
                               <td className="td-time text-center">
                                 <div className="d-flex align-items-center justify-content-center gap-3">
                                   <FaRegHeart className="row-action-icon heart-icon d-none d-md-block" />
@@ -473,23 +347,37 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* ---------- CỘT PHẢI ---------- */}
+                {/* CỘT PHẢI */}
                 <div className="right-column">
                   {playlist[currentIndex] && (
                     <div className="now-playing-section mb-4">
                       <h5 className="right-panel-title mb-3">Đang phát</h5>
-                      <div className="now-playing-card">
-                        <img 
-                          src={playlist[currentIndex].image} 
-                          alt="now-playing" 
-                          className="np-large-img" 
-                          onError={(e) => { e.target.onerror = null; e.target.src = currentInfo.img; }}
+                     <div
+                        className="now-playing-card"
+                        style={{
+                          "--bg-image": `url(${playlist[currentIndex].image})`
+                        }}
+                      >
+                        <img
+                          src={playlist[currentIndex].image}
+                          alt="now-playing"
+                          className="np-large-img"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = currentInfo.img;
+                          }}
                         />
+
                         <div className="np-info d-flex justify-content-between align-items-center">
                           <div className="overflow-hidden pe-2">
-                            <h6 className="np-title m-0 text-truncate">{playlist[currentIndex].title}</h6>
-                            <p className="np-artist m-0 text-truncate">{playlist[currentIndex].artist}</p>
+                            <h6 className="np-title m-0 text-truncate">
+                              {playlist[currentIndex].title}
+                            </h6>
+                            <p className="np-artist m-0 text-truncate">
+                              {playlist[currentIndex].artist}
+                            </p>
                           </div>
+
                           <img
                             src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif"
                             style={{ height: "15px", width: "15px" }}
@@ -535,7 +423,7 @@ useEffect(() => {
                 </div>
               </div>
 
-              {/* ================= THANH PHÁT NHẠC BOTTOM PLAYER ================= */}
+              {/* BOTTOM PLAYER */}
               {playlist[currentIndex] && (
                 <div className="custom-bottom-player">
                   <div className="player-left">
@@ -551,8 +439,7 @@ useEffect(() => {
                       <p className="text-truncate m-0" style={{fontSize: '11px', color: '#aaa'}}>{playlist[currentIndex].artist}</p>
                     </div>
 
-                    <div className="audio-controls ms-auto ms-md-0 flex-shrink-0">
-                      {/* 🌟 ĐÃ XÓA CLASS D-NONE: Luôn hiện Nút Back trên Mobile */}
+                    <div className="audio-controls ms-auto ms-md-0 flex-shrink-0 d-flex align-items-center">
                       <button onClick={handlePrev} className="ctrl-btn"><FaStepBackward /></button>
                       
                       <button onClick={togglePlay} className="ctrl-btn play-pause-btn" disabled={isLoading}>
@@ -565,8 +452,22 @@ useEffect(() => {
                         )}
                       </button>
 
-                      {/* 🌟 ĐÃ XÓA CLASS D-NONE: Luôn hiện Nút Next trên Mobile */}
                       <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
+                      
+                      {/* NÚT 3 CHẤM BẢN MOBILE */}
+                      <div className="options-container position-relative d-md-none ms-3">
+                        <button 
+                          className={`ctrl-btn ${showMenu ? "active-menu" : ""}`} 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowMenu(!showMenu)
+                            }
+                          }
+                        >
+                          <FaEllipsisV />
+                        </button>
+                        {showMenu && renderMenuPopup()}
+                      </div>
                     </div>
                   </div>
 
@@ -607,49 +508,18 @@ useEffect(() => {
                       />
                     </div>
 
-                    <div className="options-container position-relative" ref={menuRef}>
+                    {/* NÚT 3 CHẤM BẢN PC */}
+                    <div className="options-container position-relative d-none d-md-block">
                       <button 
                         className={`ctrl-btn ${showMenu ? "active-menu" : ""}`} 
-                        onClick={() => setShowMenu(!showMenu)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowMenu(!showMenu)
+                        }}
                       >
                         <FaEllipsisV />
                       </button>
-
-                      {showMenu && (
-                        <div className="custom-options-popup">
-                          <div className="option-section">
-                            <p className="option-title">Tốc độ phát ({playbackRate}x)</p>
-                            <div className="d-flex gap-2">
-                              {[0.75, 1, 1.25, 1.5].map((rate) => (
-                                <button
-                                  key={rate}
-                                  className={`option-btn ${playbackRate === rate ? "active" : ""}`}
-                                  onClick={() => changeSpeed(rate)}
-                                >
-                                  {rate}x
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          <hr className="menu-divider" />
-
-                          <div className="option-section">
-                            <p className="option-title">Hẹn giờ tắt {sleepTimer ? `(${sleepTimer}p)` : ""}</p>
-                            <div className="d-flex gap-2 flex-wrap">
-                              {[0, 15, 30, 60, 180].map((mins) => (
-                                <button
-                                  key={mins}
-                                  className={`option-btn ${sleepTimer === mins ? "active" : ""}`}
-                                  onClick={() => handleSleepTimer(mins)}
-                                >
-                                  {mins === 0 ? "Tắt" : `${mins}p`}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      {showMenu && renderMenuPopup()}
                     </div>
                   </div>
                 </div>
