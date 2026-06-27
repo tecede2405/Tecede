@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
 import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch } from "react-icons/fa";
-import Loading from "../../../component/Loading";
+import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
 
 const CATEGORY_CONFIG = {
