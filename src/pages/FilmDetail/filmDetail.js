@@ -68,14 +68,17 @@ export default function MovieDetail() {
 
         // Chỉ đưa vào danh sách nếu server có dữ liệu
         if (hasValidData) {
-          list.push({
-            ...srv,
-            // Đặt tên server giống hệt logic bên FilmDetail để URL map trúng 100%
-            server_name: `${sourceLabel} - ${srv.server_name}`,
-            original_name: srv.server_name, // Giữ lại tên gốc nếu cần
-            sourceName: sourceLabel
-          });
-        }
+        const episodeCount = epList.length;
+
+        list.push({
+          ...srv,
+          server_name: `${sourceLabel} - ${srv.server_name}`, // giữ nguyên để URL không lỗi
+          display_name: `${sourceLabel} - ${srv.server_name} (${episodeCount} tập)`, // chỉ để hiển thị
+          original_name: srv.server_name,
+          sourceName: sourceLabel,
+          episodeCount
+        });
+      }
       });
     });
 
@@ -191,7 +194,7 @@ export default function MovieDetail() {
                 <div className="server-tabs">
                   {allServers.map((s, i) => (
                     <button key={i} className={i === currentServer ? "active" : ""} onClick={() => setCurrentServer(i)}>
-                      {s.server_name}
+                      {s.display_name}
                     </button>
                   ))}
                 </div>

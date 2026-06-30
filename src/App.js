@@ -23,6 +23,8 @@ import ManageUsers from "./pages/ManageUsers/index";
 import AddFilms from "./component/AddFilms/index";
 import AddDonate from "./component/AddDonate/index";
 import MovieManager from "./pages/MovieManager/index";
+import UploadFile from "./pages/Storage/upload/index";
+import Gallery from "./pages/Storage/gallery/index";
 // Other pages
 import UsingApp from "./pages/using-app/index";
 import UsingAppIos from "./pages/using-app/ios";
@@ -150,6 +152,10 @@ function App() {
                     <Route path="manage" element={<ManageSongs />} />
 
                     <Route path="manage-movie" element={<MovieManager />} />
+
+                    <Route path="upload-file" element={<UploadFile />} />
+
+                    <Route path="gallery" element={<Gallery />} />
                     {/* USERS */}
                     <Route path="users" element={<ManageUsers />} />
 

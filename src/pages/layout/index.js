@@ -195,7 +195,7 @@ function Layout() {
                         <FaClockRotateLeft className="icon-purple" /> <span>Lịch sử xem</span>
                       </button>
                       <button className="menu-action-btn" onClick={() => navigate("/profile")}>
-                        <MdOutlineAccountCircle className="icon-purple" /> <span>Sửa thông tin</span>
+                        <MdOutlineAccountCircle className="icon-purple" /> <span>Đổi tên / avatar</span>
                       </button>
                       <button
                         className="logout-btn"

@@ -116,10 +116,18 @@ export default function FilmDetail() {
 
             if (hasValidData) {
               const uniqueServerName = `${sourceLabel} - ${srv.server_name}`;
+              const episodeCount = normalized.length;
+
               mergedServers.push({
+                // Dùng cho URL và logic
                 server_name: uniqueServerName,
+
+                // Dùng để hiển thị
+                display_name: `${uniqueServerName} (${episodeCount} tập)`,
+
                 server_data: normalized,
-                sourceName: sourceLabel
+                sourceName: sourceLabel,
+                episodeCount
               });
             }
           });
@@ -463,7 +471,7 @@ export default function FilmDetail() {
                   onClick={() => handleChangeServer(idx)}
                 >
                   <MdOutlineStorage />
-                  {s.server_name}
+                  {s.display_name}
                 </button>
               ))}
             </div>

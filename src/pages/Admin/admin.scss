@@ -128,6 +128,9 @@
   &:nth-child(4) { background: rgba(6, 182, 212, 0.06); }
   &:nth-child(5) { background: rgba(168, 85, 247, 0.06); }
   &:nth-child(6) { background: rgba(34, 197, 94, 0.06); }
+  &:nth-child(7) { background: rgba(53, 127, 180, 0.06); }
+  &:nth-child(8) { background: rgba(210, 61, 200, 0.06); }
+  &:nth-child(9) { background: rgba(216, 92, 61, 0.06); }
 
   &:hover {
     color: white;
@@ -140,6 +143,9 @@
     color: white !important;
     border-color: transparent;
     box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+  }
+  span{
+    font-size: 12px;
   }
 }
 
@@ -237,6 +243,10 @@
       &.item-color-4 { svg { color: #06b6d4; } &:hover { background: rgba(6, 182, 212, 0.08); } }
       &.item-color-5 { svg { color: #a855f7; } &:hover { background: rgba(168, 85, 247, 0.08); } }
       &.item-color-6 { svg { color: #22c55e; } &:hover { background: rgba(34, 197, 94, 0.08); } }
+      &.item-color-7 { svg { color: #f7557b; } &:hover { background: rgba(168, 85, 247, 0.08); } }
+      &.item-color-8 { svg { color: #c522b8; } &:hover { background: rgba(34, 197, 94, 0.08); } }
+      &.item-color-9 { svg { color: #d1f755; } &:hover { background: rgba(168, 85, 247, 0.08); } }
+
 
       &:hover {
         color: white;

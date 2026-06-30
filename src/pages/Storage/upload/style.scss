@@ -1,0 +1,365 @@
+.storage-page {
+  color: white;
+}
+
+.storage-header {
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 13px;
+  }
+}
+
+/* ===== FORM ===== */
+.storage-form {
+  padding: 24px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.storage-form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #cbd5e1;
+  }
+
+  input {
+    width: 100%;
+    padding: 15px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: 0.25s ease;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    }
+  }
+}
+
+/* ===== UPLOAD BOX ===== */
+.storage-upload-box {
+  margin-top: 10px;
+  margin-bottom: 24px;
+  &.disabled {
+    opacity: 0.6;
+    
+    .storage-upload-area:hover {
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      background: rgba(255, 255, 255, 0.03) !important;
+    }
+  }
+}
+
+.storage-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px 20px;
+  border-radius: 22px;
+  border: 2px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    border-color: #06b6d4; // Đổi nhẹ tông màu sang Cyan để phân biệt với bên nhạc
+    background: rgba(6, 182, 212, 0.08);
+  }
+
+  span {
+    color: #94a3b8;
+    font-size: 13px;
+  }
+}
+
+.storage-upload-text {
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* ===== PROGRESS ===== */
+.storage-progress-wrapper {
+  margin-bottom: 22px;
+}
+
+.storage-progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.storage-progress-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.storage-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0284c7, #06b6d4); // Màu gradient đặc trưng cho Cloud Storage
+  transition: 0.3s ease;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.storage-submit-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0284c7, #015a84);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(2, 132, 199, 0.35);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+/* ===== MESSAGE ===== */
+.storage-message {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+
+  &.success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+
+  &.error {
+    background: rgba(239,68,68,0.15);
+    color: #f87171;
+  }
+}
+
+/* Hiển thị dung lượng file */
+.file-size-info {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+
+  &.normal {
+    color: #38bdf8; // Màu xanh cyan nhẹ nhàng khi file hợp lệ
+  }
+
+  &.danger {
+    color: #f87171; // Màu đỏ cảnh báo khi file > 50MB
+    font-weight: 700;
+  }
+}
+
+/* Đổi màu đường viền nét đứt khi lỗi kích thước */
+.storage-upload-box.size-error {
+  .storage-upload-area {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.03);
+
+    &:hover {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.06);
+    }
+  }
+}
+
+.storage-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 6px;
+
+  .storage-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0284c7, #06b6d4);
+    border-radius: 4px;
+    transition: width 0.2s ease;
+
+    /* Khi client tải lên xong và server đang nén ảnh/đẩy lên tele */
+    &.processing {
+      background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 40px 40px;
+      animation: progressMoveBg 1.5s linear infinite;
+    }
+  }
+}
+
+@keyframes progressMoveBg {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .storage-form {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .storage-header h2 {
+    font-size: 28px;
+  }
+
+  .storage-upload-area {
+    padding: 28px 16px;
+  }
+}
+
+@media (max-width: 540px) {
+  .storage-form {
+    padding: 14px;
+  }
+
+  .storage-form-group input {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .storage-submit-btn {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .storage-upload-text {
+    font-size: 14px;
+  }
+}
+.storage-file-list-wrapper {
+  margin-bottom: 20px;
+  text-align: left;
+
+  .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    
+    h3 { font-size: 16px; margin: 0; color: #e2e8f0; }
+    .total-size-badge {
+      font-size: 13px; color: #10b981; font-weight: 600;
+      &.danger { color: #ef4444; }
+    }
+  }
+}
+
+.storage-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 320px; // Giới hạn chiều cao nếu chọn quá nhiều file sẽ có thanh cuộn
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding-right: 4px;
+}
+
+.file-item-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+  gap: 12px;
+
+  &.error {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.02);
+  }
+
+  .file-icon {
+    font-size: 20px;
+    .icon-img { color: #38bdf8; }
+    .icon-video { color: #fbbf24; }
+  }
+
+  .file-info-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .input-group-name {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 2px 8px;
+
+      input {
+        flex: 1; background: none; border: none; color: #fff;
+        padding: 4px 0; font-size: 14px; outline: none;
+      }
+      .ext-label { font-size: 13px; color: #64748b; font-weight: 600; }
+    }
+
+    .file-raw-info {
+      font-size: 12px; color: #94a3b8;
+      .text-danger { color: #f87171; font-weight: bold; }
+    }
+  }
+
+  .remove-item-btn {
+    background: none; border: none; color: #64748b; cursor: pointer;
+    padding: 8px; font-size: 16px; transition: color 0.2s;
+    &:hover { color: #f87171; }
+  }
+}
+
+.add-more-files-btn {
+  display: block; text-align: center; background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 6px;
+  padding: 10px; font-size: 14px; color: #94a3b8; cursor: pointer;
+  transition: all 0.2s;
+  &:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+}

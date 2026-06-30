@@ -10,7 +10,8 @@ import {
   ChevronDown,
   Clapperboard
 } from "lucide-react";
-
+import { FaUpload} from "react-icons/fa";
+import { CiFileOn } from "react-icons/ci";
 import Tabbar from "../../component/tabar";
 import "./admin.scss";
 
@@ -28,6 +29,8 @@ function Admin() {
     { path: "/admin/add-song", label: "Thêm bài hát", icon: Music },
     { path: "/admin/manage", label: "Quản lý bài hát", icon: ListMusic },
     { path: "/admin/donate", label: "Donate", icon: HeartHandshake },
+    { path: "/admin/upload-file", label: "Upload File", icon: FaUpload  },
+    { path: "/admin/gallery", label: "Gallery", icon: CiFileOn },
   ];
 
   // Tìm item hiện tại dựa trên url để hiển thị nhãn trên nút Dropdown mobile

@@ -1,0 +1,286 @@
+/* ==========================================================================
+   KHO TÀI NGUYÊN DỮ LIỆU (GALLERY STYLE)
+   ========================================================================== */
+
+.gallery-page {
+  color: white;
+  padding: 10px 0;
+}
+
+/* ===== HEADER ===== */
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 15px;
+
+  h2 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 14px;
+  }
+
+  .refresh-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+      font-size: 14px;
+      
+      &.spin {
+        animation: storageRotation 1s infinite linear;
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* ===== GRID DANH SÁCH (TỐI ƯU NHỎ LẠI) ===== */
+.gallery-grid {
+  display: grid;
+  // Giảm kích thước minmax từ 280px xuống 210px để hiển thị được nhiều cột hơn, các thẻ nhỏ gọn hơn
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+/* ===== LAYOUT THẺ CARD ===== */
+.gallery-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* ===== KHUNG PREVIEW MEDIA (ĐÃ THU NHỎ CHIỀU CAO) ===== */
+.media-preview-box {
+  width: 100%;
+  // Hạ chiều cao từ 165px xuống 120px để cân bằng tỷ lệ thẻ nhỏ
+  height: 120px;
+  background: #090d16;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    outline: none;
+    background: #000;
+  }
+}
+
+/* ===== THÔNG TIN FILE TÀI NGUYÊN ===== */
+.card-info {
+  margin: 10px 0;
+
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #e2e8f0;
+  }
+
+  .file-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+
+    svg {
+      font-size: 11px;
+    }
+
+    &.image {
+      background: rgba(6, 182, 212, 0.12);
+      color: #22d3ee;
+    }
+
+    &.video {
+      background: rgba(236, 72, 153, 0.12);
+      color: #f472b6;
+    }
+  }
+  // Cấu hình hàng ngang chứa Badge và Dung lượng
+  .card-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 4px;
+      
+      &.image { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+      &.video { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+    }
+
+    .file-size-badge {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+/* ===== CÁC NÚT ĐIỀU KHIỂN CỦA CARD ===== */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    svg {
+      font-size: 13px;
+    }
+  }
+
+  .copy-btn {
+    padding: 10px;
+    background: linear-gradient(90deg, #0284c7, #06b6d4);
+    color: white;
+
+    &:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25);
+    }
+
+    &.copied {
+      background: #16a34a !important; // Chuyển xanh lá cây khi hoàn tất sao chép
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+    }
+  }
+
+  .delete-btn {
+    padding: 7px;
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #f87171;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+  }
+}
+
+/* ===== TRẠNG THÁI LOADING & KHO TRỐNG ===== */
+.gallery-loading,
+.gallery-empty {
+  text-align: center;
+  padding: 48px 0;
+  color: #64748b;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+/* ===== HIỆU ỨNG XOAY ICON REFRESH ===== */
+@keyframes storageRotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== MOBILE & TABLET RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .gallery-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    .refresh-btn {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+
+  .gallery-header h2 {
+    font-size: 26px;
+  }
+  
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); // Nhỏ hơn nữa trên điện thoại di động
+    gap: 12px;
+  }
+}
