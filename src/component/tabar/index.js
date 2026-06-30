@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFilm, FaMusic, FaGlobeAsia, FaBook } from "react-icons/fa";
+import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook } from "react-icons/fa"; // Thêm icon Facebook cho Fanpage
 import { GoChevronDown, GoChevronRight } from "react-icons/go"; 
 import { NavLink } from "react-router-dom";
 import "./style.scss";
@@ -83,6 +83,26 @@ function Tabbar({ isOpen, onClose }) {
           </ul>
         </div>
 
+        {/* FANPAGE */}
+        <div className={`tab-parent ${openTab === "fanpage" ? "open" : ""}`}>
+          <button onClick={() => toggleTab("fanpage")} className={openTab === "fanpage" ? "active-btn" : ""}>
+            <span className="title">
+              <FaFacebook />
+              <span className="tab-label">Follow Fanpage</span>
+            </span>
+            {openTab === "fanpage" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}
+          </button>
+
+          <ul className="tab-child">
+            <li>
+              {/* Nếu link Fanpage dẫn ra ngoài trang web (ví dụ facebook.com), nên dùng thẻ <a> thông thường */}
+              <a href="https://www.facebook.com/profile.php?id=100084710083595" target="_blank" rel="noopener noreferrer" className="tab-link" onClick={handleLinkClick}>
+                Fanpage
+              </a>
+            </li>
+          </ul>
+        </div>
+
         {/* COUNTRY */}
         <div className={`tab-parent ${openTab === "country" ? "open" : ""}`}>
           <button onClick={() => toggleTab("country")} className={openTab === "country" ? "active-btn" : ""}>
@@ -124,6 +144,7 @@ function Tabbar({ isOpen, onClose }) {
             ))}
           </ul>
         </div>
+
         
       </div>
     </>

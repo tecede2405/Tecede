@@ -30,8 +30,8 @@ function DonateLeaderboard() {
     .slice(0, 5);
 
   const formatMoney = (money) => {
-    return Number(money).toLocaleString("vi-VN") + "đ";
-  };
+  return `${Number(money).toLocaleString("vi-VN")}đ`;
+};
 
   const currentMonth = new Date().toLocaleString("vi-VN", {
     month: "long",

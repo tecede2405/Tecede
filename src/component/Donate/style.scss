@@ -106,12 +106,12 @@
   @media (max-width: 1160px) {
      grid-template-columns: repeat(2, 1fr) !important; 
   }
-   @media (max-width: 860px) {
+   @media (max-width: 490px) {
     grid-template-columns: 1fr !important;
    }
 }
 
-.donate-item {
+.donate-item {  
   display: flex;
   align-items: center; 
   gap: 12px;
