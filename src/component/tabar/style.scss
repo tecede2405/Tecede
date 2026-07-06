@@ -106,6 +106,34 @@
   }
 }
 
+/* ===== DIRECT LINK (Lọc phim) ===== */
+.tab-link-direct {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #d4d4d8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+  }
+
+  &.active {
+    background: rgba(147, 51, 234, 0.15);
+    color: #fff;
+    font-weight: 600;
+
+    .title svg {
+      color: #a855f7;
+    }
+  }
+}
+
 /* ===== DESKTOP RESPONSIVE (>=1170px) ===== */
 @media (min-width: 1170px) {
   .tabbar {

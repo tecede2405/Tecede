@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook } from "react-icons/fa"; // Thêm icon Facebook cho Fanpage
+import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter } from "react-icons/fa"; // Thêm icon Facebook cho Fanpage
 import { GoChevronDown, GoChevronRight } from "react-icons/go"; 
 import { NavLink } from "react-router-dom";
 import "./style.scss";
@@ -122,6 +122,16 @@ function Tabbar({ isOpen, onClose }) {
               </li>
             ))}
           </ul>
+        </div>
+
+        {/* LỌC PHIM */}
+        <div className="tab-parent">
+          <NavLink to="/loc-phim" className="tab-link-direct" onClick={handleLinkClick}>
+            <span className="title">
+              <FaFilter />
+              <span className="tab-label">Lọc phim</span>
+            </span>
+          </NavLink>
         </div>
 
         {/* FILM */}

@@ -38,6 +38,7 @@ import FilmListBySlug from "./pages/Film/index";
 import ListFilm from "./pages/ListFilm/index";
 import GenrePage from "./pages/genresFilm/index";
 import FilmListByCountry from "./pages/FilmByCountry/index";
+import FilterFilm from "./pages/FilterFilm/index";
 import Manga from "./pages/Manga/index";
 import MangaDetail from "./pages/Manga/mangaDetail";
 import MangaSearch from "./pages/Manga/mangaSearch";
@@ -113,6 +114,7 @@ function App() {
                   <Route path="/detail/:type" element={<ListFilm />} />
                   <Route path="/the-loai/:slug" element={<GenrePage />} />
                   <Route path="/quoc-gia/:slug" element={<FilmListByCountry />} />
+                  <Route path="/loc-phim" element={<FilterFilm />} />
                   {/* Manga */}
                   <Route path="truyen" element={<Manga />} />
                   <Route path="truyen/chi-tiet/:slug" element={<MangaDetail />} />
