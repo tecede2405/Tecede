@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
 import { FaFilm } from "react-icons/fa";
+
 function HighRateFilms() {
   const navigate = useNavigate();
 
@@ -63,7 +64,8 @@ function HighRateFilms() {
               >
                 <div className="film-card__poster">
                   <img
-                    src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
+                    // ĐÃ XÓA PROXY IMAGE.PHP - SỬ DỤNG TRỰC TIẾP LINK GỐC
+                    src={item.image}
                     alt={item.title}
                     loading="lazy"
                     decoding="async"

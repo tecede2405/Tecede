@@ -14,28 +14,47 @@ function Tabbar({ isOpen, onClose }) {
   };
 
   useEffect(() => {
-    const BLOCKED_KEYWORDS = ["18", "18+", "adult", "sex", "sexy", "erotic", "xxx"];
-    const isBlockedGenre = (genre) => {
-      const text = `${genre.slug} ${genre.name}`.toLowerCase();
-      return BLOCKED_KEYWORDS.some((k) => text.includes(k));
-    };
+  const BLOCKED_KEYWORDS = ["18", "18+", "adult", "sex", "sexy", "erotic", "xxx"];
+  const isBlockedGenre = (genre) => {
+    if (!genre) return false;
+    const text = `${genre.slug || ""} ${genre.name || ""}`.toLowerCase();
+    return BLOCKED_KEYWORDS.some((k) => text.includes(k));
+  };
 
-    fetch(`${process.env.REACT_APP_FILM_API_URL}/the-loai`)
-      .then((res) => res.json())
-      .then((data) => {
-        const safeGenres = data.filter((genre) => !isBlockedGenre(genre));
+  // 1. Fetch Thể loại phim
+  fetch(`${process.env.REACT_APP_FILM_API_URL}/the-loai`)
+    .then((res) => res.json())
+    .then((resData) => {
+      // API của phimapi.com trả về mảng thể loại nằm trong: resData.data.items hoặc resData.items
+      const rawGenres = resData?.data?.items || resData?.items || [];
+      
+      if (Array.isArray(rawGenres)) {
+        const safeGenres = rawGenres.filter((genre) => !isBlockedGenre(genre));
         setGenres(safeGenres);
-      })
-      .catch(console.error);
+      } else {
+        console.error("Dữ liệu thể loại không phải là mảng:", rawGenres);
+      }
+    })
+    .catch((err) => console.error("Lỗi fetch thể loại:", err));
 
-    fetch(`${process.env.REACT_APP_FILM_API_URL}/quoc-gia`)
-      .then((res) => res.json())
-      .then((data) => {
-        const filteredCountries = data.filter((country) => country.slug !== "ha-lan");
+  // 2. Fetch Quốc gia
+  fetch(`${process.env.REACT_APP_FILM_API_URL}/quoc-gia`)
+    .then((res) => res.json())
+    .then((resData) => {
+      // Tương tự thể loại, bóc tách chính xác từ data.items hoặc items trực tiếp
+      const rawCountries = resData?.data?.items || resData?.items || [];
+
+      if (Array.isArray(rawCountries)) {
+        const filteredCountries = rawCountries.filter(
+          (country) => country && country.slug !== "ha-lan"
+        );
         setCountries(filteredCountries);
-      })
-      .catch(console.error);
-  }, []);
+      } else {
+        console.error("Dữ liệu quốc gia không phải là mảng:", rawCountries);
+      }
+    })
+    .catch((err) => console.error("Lỗi fetch quốc gia:", err));
+}, []);
 
   const handleLinkClick = () => {
     onClose?.();

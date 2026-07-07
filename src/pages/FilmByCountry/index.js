@@ -8,6 +8,7 @@ export default function FilmListByCountry() {
   const navigate = useNavigate();
   const [pageInput, setPageInput] = useState(1);
   const [results, setResults] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]); // State lưu mảng og_image
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -15,6 +16,7 @@ export default function FilmListByCountry() {
   const [totalItems, setTotalItems] = useState(0);
 
   const [hoverFilm, setHoverFilm] = useState(null);
+  const [hoverFilmIndex, setHoverFilmIndex] = useState(null); // Lưu index để lấy đúng ảnh preview
   const [enablePreview, setEnablePreview] = useState(window.innerWidth >= 775);
 
   const inputRef = useRef(null);
@@ -22,6 +24,9 @@ export default function FilmListByCountry() {
   const hoverTimerRef = useRef(null);
 
   const title = slug.replace(/-/g, " ");
+
+  // Domain gốc của phimapi
+  const IMAGE_BASE_URL = "https://phimimg.com/";
 
   const handleBack = () => {
     navigate(-1);
@@ -34,21 +39,38 @@ export default function FilmListByCountry() {
         setLoading(true);
 
         const query = `page=${page}&limit=24`;
+        // Chú ý: Đảm bảo endpoint là /v1/api/quoc-gia/
         const url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/quoc-gia/${slug}?${query}`;
         const res = await fetch(url);
         const data = await res.json();
 
         if (data.status) {
+          // Lưu dữ liệu phim
           setResults(data.data?.items || []);
-          setTotalPages(data.data?.params?.pagination?.totalPages || 1);
-          setTotalItems(data.data?.params?.pagination?.totalItems || 0);
+          
+          // LẤY MẢNG ĐƯỜNG DẪN ẢNH ĐẦY ĐỦ TỪ seoOnPage
+          const ogImages = data.data?.seoOnPage?.og_image || [];
+          setImageUrls(ogImages);
+
+          // Tự tính totalPages dựa trên totalItems và totalItemsPerPage
+          const paginationData = data.data?.params?.pagination;
+          if (paginationData) {
+            const total = paginationData.totalItems || 0;
+            const perPage = paginationData.totalItemsPerPage || 24;
+            const calculatedTotalPages = Math.ceil(total / perPage);
+            
+            setTotalItems(total);
+            setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
+          }
         } else {
           console.error("API error:", data.msg);
           setResults([]);
+          setImageUrls([]);
         }
       } catch (err) {
         console.error("Fetch error:", err);
         setResults([]);
+        setImageUrls([]);
       } finally {
         setLoading(false);
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -56,7 +78,7 @@ export default function FilmListByCountry() {
     }
 
     fetchData();
-  }, [slug, page]); // Chỉ phụ thuộc slug và page
+  }, [slug, page]);
 
   /* RESET PAGE KHI SLUG THAY ĐỔI */
   useEffect(() => {
@@ -70,6 +92,7 @@ export default function FilmListByCountry() {
     function handleClickOutside(e) {
       if (previewRef.current && !previewRef.current.contains(e.target)) {
         setHoverFilm(null);
+        setHoverFilmIndex(null);
       }
     }
 
@@ -81,17 +104,21 @@ export default function FilmListByCountry() {
     const handleResize = () => {
       const enabled = window.innerWidth >= 775;
       setEnablePreview(enabled);
-      if (!enabled && hoverFilm) setHoverFilm(null);
+      if (!enabled && hoverFilm) {
+        setHoverFilm(null);
+        setHoverFilmIndex(null);
+      }
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [hoverFilm]);
 
-  const handleMouseEnter = (film) => {
+  const handleMouseEnter = (film, index) => {
     if (!enablePreview) return;
     hoverTimerRef.current = setTimeout(() => {
       setHoverFilm(film);
+      setHoverFilmIndex(index);
     }, 5000);
   };
 
@@ -111,21 +138,15 @@ export default function FilmListByCountry() {
   }, [hoverFilm]);
 
   /* ================= UTILS ================= */
-  function getPoster(url) {
-    if (!url) return "";
-
-    // Chuẩn hóa URL gốc
-    let originalUrl = url;
-    if (!originalUrl.startsWith("http")) {
-      if (!originalUrl.startsWith("/")) originalUrl = "/" + originalUrl;
-      originalUrl = `https://phimimg.com${originalUrl}`;
-    }
-
-    // Convert sang WEBP qua phimapi
-    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-      originalUrl
-    )}`;
-  }
+  // Lấy đường dẫn ảnh hoàn chỉnh dựa vào index
+  const getFullImageUrl = (index) => {
+    const path = imageUrls[index];
+    if (!path) return "";
+    
+    // Nếu path bắt đầu bằng '/', bỏ dấu '/' thừa trước khi ghép
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    return `${IMAGE_BASE_URL}${cleanPath}`;
+  };
 
   const handleSearch = () => {
     if (!search.trim()) return;
@@ -140,20 +161,16 @@ export default function FilmListByCountry() {
   }, [page]);
 
   const handlePageSubmit = () => {
-  if (!pageInput) return;
+    if (!pageInput) return;
+    let newPage = Number(pageInput);
+    if (isNaN(newPage)) return;
+    if (newPage < 1) newPage = 1;
+    if (newPage > totalPages) newPage = totalPages;
+    setPage(newPage);
+  };
 
-  let newPage = Number(pageInput);
-
-  if (isNaN(newPage)) return;
-
-  if (newPage < 1) newPage = 1;
-  if (newPage > totalPages) newPage = totalPages;
-
-  setPage(newPage);
-};
   const renderPagination = () => {
     if (totalPages <= 1) return null;
-
     const pages = [];
     const start = Math.max(1, page - 2);
     const end = Math.min(totalPages, page + 2);
@@ -171,47 +188,33 @@ export default function FilmListByCountry() {
     }
 
     return (
-       <div className="pagination">
-          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-            ‹
-          </button>
-
-          {start > 1 && <span>...</span>}
-          {pages}
-          {end < totalPages && <span>...</span>}
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            ›
-          </button>
-
-          {/* INPUT NHẬP TRANG */}
-          <div className="page-input-wrapper">
-            <input
-              type="number"
-              value={pageInput}
-              onChange={(e) => setPageInput(e.target.value)}
-              onBlur={handlePageSubmit}
-              onKeyDown={(e) => e.key === "Enter" && handlePageSubmit()}
-              min={1}
-              max={totalPages}
-            />
-            <span>/ {totalPages}</span>
-
-            <button onClick={handlePageSubmit}>Chuyển trang</button>
-          </div>
+      <div className="pagination">
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>‹</button>
+        {start > 1 && <span>...</span>}
+        {pages}
+        {end < totalPages && <span>...</span>}
+        <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>›</button>
+        <div className="page-input-wrapper">
+          <input
+            type="number"
+            value={pageInput}
+            onChange={(e) => setPageInput(e.target.value)}
+            onBlur={handlePageSubmit}
+            onKeyDown={(e) => e.key === "Enter" && handlePageSubmit()}
+            min={1}
+            max={totalPages}
+          />
+          <span>/ {totalPages}</span>
+          <button onClick={handlePageSubmit}>Chuyển trang</button>
         </div>
+      </div>
     );
   };
 
   if (loading) {
     return (
       <div className="container py-4">
-        <h4 className="result-title fst-italic">
-          Đang tải thể loại: {title}...
-        </h4>
+        <h4 className="result-title fst-italic">Đang tải quốc gia: {title}...</h4>
       </div>
     );
   }
@@ -233,30 +236,32 @@ export default function FilmListByCountry() {
       </div>
 
       <h3 className="result-title fst-italic">
-        <GoChevronLeft 
-          onClick={handleBack} 
-          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }} 
-          />
-        <i className="ms-2">Thể loại: {title} {totalItems > 0 ? `(${totalItems} phim)` : ""}</i>
+        <GoChevronLeft
+          onClick={handleBack}
+          style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "50%" }}
+        />
+        <i className="ms-2">Quốc gia: {title} {totalItems > 0 ? `(${totalItems} phim)` : ""}</i>
       </h3>
 
       {/* GRID */}
       <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
         {results.length === 0 ? (
-          <p>Không tìm thấy phim nào trong thể loại này.</p>
+          <p>Không tìm thấy phim nào của quốc gia này.</p>
         ) : (
-          results.map((film) => (
+          results.map((film, index) => (
             <Link
               to={`/chi-tiet/${film.slug}`}
               key={film.slug}
               className="film-card"
-              onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined}
+              onMouseEnter={enablePreview ? () => handleMouseEnter(film, index) : undefined}
               onMouseLeave={enablePreview ? handleMouseLeave : undefined}
             >
               <div className="film-poster-wrapper">
                 <img
-                  src={film.poster_url ? getPoster(film.poster_url) : ""}
+                  // Sử dụng hàm getFullImageUrl truyền vào index
+                  src={getFullImageUrl(index)}
                   alt={film.name}
+                  loading="lazy"
                   className="film-poster"
                 />
 
@@ -283,77 +288,46 @@ export default function FilmListByCountry() {
       {renderPagination()}
 
       {/* PREVIEW */}
-      {enablePreview && hoverFilm && (
-  <div className="hover-preview-backdrop">
-    <div
-      className="hover-preview-card"
-      onMouseLeave={() => setHoverFilm(null)}
-      ref={previewRef}
-      style={{
-        backgroundImage: `url(${getPoster(
-          hoverFilm.thumb_url || hoverFilm.poster_url
-        )})`,
-      }}
-    >
-      <div className="preview-info">
-        {/* LEFT */}
-        <div className="preview-left">
-          <h5 className="preview-name">{hoverFilm.name}</h5>
+      {enablePreview && hoverFilm && hoverFilmIndex !== null && (
+        <div className="hover-preview-backdrop">
+          <div
+            className="hover-preview-card"
+            onMouseLeave={() => {
+              setHoverFilm(null);
+              setHoverFilmIndex(null);
+            }}
+            ref={previewRef}
+            style={{
+              // Sử dụng lại hàm getFullImageUrl cho preview
+              backgroundImage: `url(${getFullImageUrl(hoverFilmIndex)})`,
+            }}
+          >
+            <div className="preview-info">
+              {/* LEFT */}
+              <div className="preview-left">
+                <h5 className="preview-name">{hoverFilm.name}</h5>
+                <div className="preview-origin">{hoverFilm.origin_name}</div>
+                <div className="preview-meta">
+                  <span className="preview-tag">{hoverFilm.quality || "N/A"}</span>
+                  <span className="preview-tag">{hoverFilm.lang || "N/A"}</span>
+                </div>
+                <div className="preview-actions">
+                  <Link to={`/chi-tiet/${hoverFilm.slug}`} className="btn-watch">▶ Xem ngay</Link>
+                  <Link to={`/chi-tiet/${hoverFilm.slug}`} className="btn-detail">Chi tiết</Link>
+                </div>
+              </div>
 
-          <div className="preview-origin">
-            {hoverFilm.origin_name}
-          </div>
-
-          {/* TAG NGẮN */}
-          <div className="preview-meta">
-            <span className="preview-tag">
-              {hoverFilm.quality || "N/A"}
-            </span>
-            <span className="preview-tag">
-              {hoverFilm.lang || "N/A"}
-            </span>
-          </div>
-
-          {/* BUTTON */}
-          <div className="preview-actions">
-            <Link
-              to={`/chi-tiet/${hoverFilm.slug}`}
-              className="btn-watch"
-            >
-              ▶ Xem ngay
-            </Link>
-
-            <Link
-              to={`/chi-tiet/${hoverFilm.slug}`}
-              className="btn-detail"
-            >
-              Chi tiết
-            </Link>
+              {/* RIGHT */}
+              <div className="preview-right">
+                <div className="preview-box blue"><b>Chất lượng:</b> {hoverFilm.quality || "N/A"}</div>
+                <div className="preview-box yellow"><b>Số tập:</b> {hoverFilm.episode_current || "N/A"}</div>
+                <div className="preview-box green"><b>Thời lượng:</b> {hoverFilm.time || "N/A"}</div>
+                <div className="preview-box blue"><b>Ngôn ngữ:</b> {hoverFilm.lang || "N/A"}</div>
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* RIGHT */}
-        <div className="preview-right">
-          <div className="preview-box blue">
-            <b>Chất lượng:</b> {hoverFilm.quality || "N/A"}
-          </div>
-
-          <div className="preview-box yellow">
-            <b>Số tập:</b> {hoverFilm.episode_current || "N/A"}
-          </div>
-
-          <div className="preview-box green">
-            <b>Thời lượng:</b> {hoverFilm.time || "N/A"}
-          </div>
-
-          <div className="preview-box blue">
-            <b>Ngôn ngữ:</b> {hoverFilm.lang || "N/A"}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
     </div>
   );
 }

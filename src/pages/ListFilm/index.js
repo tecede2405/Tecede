@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { GoChevronLeft} from "react-icons/go";
+import { GoChevronLeft } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
 import "./style.scss";
+
 export default function FilmListByType() {
   const { type } = useParams();
 
@@ -19,20 +20,20 @@ export default function FilmListByType() {
   const navigate = useNavigate();
 
   /* ===================== MAP DATA THEO TYPE ===================== */
-const { grouped, loading } = useMovies();
+  const { grouped, loading } = useMovies();
 
-const typeMap = {
-  cinematic: "phim-chieu-rap",
-  films: "phim-noi-bat",
-  anime: "anime",
-  "new-film": "phim-moi",
-  "new-anime": "anime-moi",
-  "sieu-nhan": "tokusatsu",
-  "high-rate-film": "high-rate-film",
-  "korea-film": "korea-film",
-  "china-film": "china-film",
-  "china3d-film": "china3d",
-};
+  const typeMap = {
+    cinematic: "phim-chieu-rap",
+    films: "phim-noi-bat",
+    anime: "anime",
+    "new-film": "phim-moi",
+    "new-anime": "anime-moi",
+    "sieu-nhan": "tokusatsu",
+    "high-rate-film": "high-rate-film",
+    "korea-film": "korea-film",
+    "china-film": "china-film",
+    "china3d-film": "china3d",
+  };
 
   const category = typeMap[type] || "phim-noi-bat";
   const results = grouped?.[category] || [];    
@@ -147,9 +148,8 @@ const typeMap = {
               >
                 <div className="film-poster-wrapper">
                   <img
-                    src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(
-                      film.image || film.thumb || ""
-                    )}`}
+                    // Đã loại bỏ proxy image.php, sử dụng trực tiếp link gốc từ context
+                    src={film.image || film.thumb || ""}
                     alt={film.title}
                     loading="lazy"
                     className="film-poster"
@@ -211,22 +211,6 @@ const typeMap = {
                     </Link>
                   </div>
                 </div>
-
-                {/* RIGHT */}
-                {/* <div className="preview-right">
-                  {hoverFilm.episode_current && (
-                    <div className="preview-box blue">
-                      {hoverFilm.episode_current}
-                    </div>
-                  )}
-
-                  {hoverFilm.time && (
-                    <div className="preview-box yellow">
-                      <strong>Thời lượng:</strong> {hoverFilm.time}
-                    </div>
-                  )}
-                </div> */}
-
               </div>
             </div>
           </div>

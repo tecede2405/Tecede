@@ -18,7 +18,7 @@ export default function LatestMoviesTable() {
         const data = await res.json();
         
         setMovies(data.items || []);
-        // Lấy tổng số trang từ API (điều chỉnh key dựa trên cấu trúc API thực tế của bạn)
+        // Lấy tổng số trang từ API
         setTotalPages(data.pagination?.totalPages || 10); 
       } catch (err) {
         console.error(err);
@@ -41,6 +41,15 @@ export default function LatestMoviesTable() {
     }
   };
 
+  /* ================= UTILS ================= */
+  const getPoster = (url) => {
+    if (!url) return "";
+    // Nếu API đã trả về link http thì dùng luôn
+    if (url.startsWith("http")) return url;
+    // Nối thẳng vào domain CDN, bỏ qua proxy image.php
+    return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+  };
+
   if (loading) return <p>Đang tải dữ liệu...</p>;
 
   return (
@@ -52,7 +61,13 @@ export default function LatestMoviesTable() {
       </div>
       <div className="movie-table-wrapper">
         <table className="movie-table">
-          {/* ... (Phần thead và tbody giữ nguyên như cũ) ... */}
+          <thead>
+            <tr>
+              <th className="col-name text-start">Tên phim</th>
+              <th>Tình trạng</th>
+              <th>Ngày cập nhật</th>
+            </tr>
+          </thead>
           <tbody>
             {movies.map((movie) => {
               // Khôi phục logic status gốc của bạn
@@ -66,7 +81,8 @@ export default function LatestMoviesTable() {
                   {/* TÊN - Khôi phục cột Tên + Origin Name */}
                   <td className="col-name">
                     <img
-                      src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(movie.poster_url)}`}
+                      // Sử dụng hàm getPoster thay cho đoạn gọi proxy cũ
+                      src={getPoster(movie.thumb_url || movie.poster_url)}
                       alt={movie.name}
                       loading="lazy"
                     />

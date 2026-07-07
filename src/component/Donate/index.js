@@ -84,7 +84,7 @@ function DonateLeaderboard() {
             </div>
           ) : (
             topDonates.map((item, index) => (
-              <div className="donate-item" key={item.id}>
+              <div className={`donate-item item-rank-${index + 1}`} key={item.id}>
                 <div className={`rank rank-${index + 1}`}>
                   #{index + 1}
                 </div>
@@ -103,7 +103,13 @@ function DonateLeaderboard() {
                   {item.message && (
                     <div className="message">
                       <span className={item.message.length > 35 ? "scroll-text" : ""}>
-                        “{item.message}”
+                        {item.message.length > 35 ? (
+                          // Nếu tin nhắn dài, nhân đôi chuỗi và cách nhau bằng khoảng trống (hoặc dấu gạch)
+                          <>“{item.message}” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “{item.message}”</>
+                        ) : (
+                          // Nếu tin nhắn ngắn thì hiển thị bình thường
+                          <>“{item.message}”</>
+                        )}
                       </span>
                     </div>
                   )}

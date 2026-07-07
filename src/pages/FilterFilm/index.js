@@ -55,23 +55,29 @@ export default function FilterFilm() {
   }
 
   /* ================= FETCH FILTER OPTIONS ================= */
+  /* ================= FETCH FILTER OPTIONS ================= */
   useEffect(() => {
     async function fetchOptions() {
       try {
         const [catRes, countryRes] = await Promise.all([
-          fetch(`${process.env.REACT_APP_FILM_API_URL}/the-loai`),
-          fetch(`${process.env.REACT_APP_FILM_API_URL}/quoc-gia`),
+          fetch("https://phimapi.com/the-loai"),
+          fetch("https://phimapi.com/quoc-gia"),
         ]);
-        const catData = await catRes.json();
-        const countryData = await countryRes.json();
         
-        // Filter out any 18+ categories
-        const safeCategories = (Array.isArray(catData) ? catData : []).filter(
+        const catJson = await catRes.json();
+        const countryJson = await countryRes.json();
+        
+        // CẬP NHẬT: Trích xuất mảng từ .data.items thay vì chỉ .data
+        const catArray = catJson?.data?.items || [];
+        const countryArray = countryJson?.data?.items || [];
+        
+        // Lọc các thể loại 18+
+        const safeCategories = catArray.filter(
           (cat) => !isBlocked(cat.slug) && !isBlocked(cat.name)
         );
         
         setCategories(safeCategories);
-        setCountries(Array.isArray(countryData) ? countryData : []);
+        setCountries(countryArray);
       } catch (err) {
         console.error("Lỗi khi tải bộ lọc:", err);
       }
@@ -99,7 +105,6 @@ export default function FilterFilm() {
       if (year) params.set("year", year);
 
       let url = "";
-      const trimmedKeyword = keyword.trim();
 
       if (trimmedKeyword) {
         params.set("keyword", trimmedKeyword);
@@ -123,9 +128,31 @@ export default function FilterFilm() {
       const data = await res.json();
 
       if (data.status) {
-        setResults(data.data?.items || []);
-        setTotalPages(data.data?.params?.pagination?.totalPages || 1);
-        setTotalItems(data.data?.params?.pagination?.totalItems || 0);
+        let items = data.data?.items || [];
+        // Lấy danh sách ảnh đầy đủ từ seoOnPage (đặc sản của phimapi)
+        const ogImages = data.data?.seoOnPage?.og_image || [];
+
+        // Gắn link ảnh full vào từng bộ phim dựa trên index
+        items = items.map((item, index) => ({
+          ...item,
+          full_image_path: ogImages[index] || item.poster_url 
+        }));
+
+        setResults(items);
+
+        // Fix lỗi thiếu totalPages nếu API trả về khác cấu trúc (tương tự lỗi đã fix ở list)
+        const paginationData = data.data?.params?.pagination;
+        if (paginationData) {
+          const total = paginationData.totalItems || 0;
+          const perPage = paginationData.totalItemsPerPage || limit;
+          const calculatedTotalPages = Math.ceil(total / perPage);
+          
+          setTotalItems(total);
+          setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
+        } else {
+          setTotalPages(1);
+          setTotalItems(0);
+        }
       } else {
         setResults([]);
         setTotalPages(1);
@@ -169,18 +196,15 @@ export default function FilterFilm() {
     const urlCategory = searchParams.get("category") || "";
 
     if (isBlocked(urlKeyword) || isBlocked(urlCategory)) {
-      // Reset state inputs
       setKeyword("");
       setCategory("");
       setPage(1);
 
-      // Clean the search params URL
       const cleanParams = new URLSearchParams(searchParams);
       cleanParams.delete("keyword");
       cleanParams.delete("category");
       setSearchParams(cleanParams, { replace: true });
 
-      // Notify the user
       Swal.fire({
         icon: "warning",
         title: "Nội dung không hợp lệ",
@@ -256,12 +280,11 @@ export default function FilterFilm() {
   /* ================= UTILS ================= */
   function getPoster(url) {
     if (!url) return "";
-    let originalUrl = url;
-    if (!originalUrl.startsWith("http")) {
-      if (!originalUrl.startsWith("/")) originalUrl = "/" + originalUrl;
-      originalUrl = `https://phimimg.com${originalUrl}`;
-    }
-    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(originalUrl)}`;
+    // Trả về trực tiếp nếu đã là link web
+    if (url.startsWith("http")) return url;
+    
+    // Nối thẳng vào domain gốc, loại bỏ hoàn toàn proxy image.php
+    return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
   }
 
   /* ================= PAGINATION ================= */
@@ -534,7 +557,8 @@ export default function FilterFilm() {
                 >
                   <div className="filter-poster-wrapper">
                     <img
-                      src={film.poster_url ? getPoster(film.poster_url) : ""}
+                      // Sử dụng đường dẫn full image path đã trích xuất
+                      src={getPoster(film.full_image_path || film.poster_url)}
                       alt={film.name}
                       className="filter-poster-img"
                       loading="lazy"
@@ -593,8 +617,9 @@ export default function FilterFilm() {
             onMouseLeave={() => setHoverFilm(null)}
             ref={previewRef}
             style={{
+              // Sử dụng full_image_path cho ảnh nền preview
               backgroundImage: `url(${getPoster(
-                hoverFilm.thumb_url || hoverFilm.poster_url
+                hoverFilm.full_image_path || hoverFilm.thumb_url || hoverFilm.poster_url
               )})`,
             }}
           >

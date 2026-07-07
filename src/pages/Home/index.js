@@ -70,7 +70,9 @@ function Home() {
 
         <div className="Home">
             {/* tabbar */}
-            <Tabbar />
+            <div className="tabbar-container">
+                <Tabbar />
+            </div>
             {/* main */}
             <div className="Home__main">
                <div className="Home__music"> 

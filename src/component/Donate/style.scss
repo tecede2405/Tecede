@@ -118,11 +118,51 @@
   padding: 12px;
   border-radius: 12px;
   background: #1d1d1d;
-  transition: 0.2s;
+  transition: all 0.3s ease;
   min-width: 0; 
-  
+  position: relative;
+  border: 1px solid transparent; // Mặc định viền trong suốt
+
   &:hover {
     background: #252525;
+    transform: translateY(-2px); // Nhấc nhẹ card lên khi hover
+  }
+
+  // --- VIP CSS CHO TOP 1 ---
+  &.item-rank-1 {
+    background: linear-gradient(135deg, #1d1d1d 0%, #282110 100%);
+    border-color: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.05);
+
+    &:hover {
+      border-color: rgba(255, 215, 0, 0.6);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+      .amount { text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
+    }
+  }
+
+  // --- VIP CSS CHO TOP 2 ---
+  &.item-rank-2 {
+    background: linear-gradient(135deg, #1d1d1d 0%, #202022 100%);
+    border-color: rgba(217, 217, 217, 0.15);
+    box-shadow: 0 4px 15px rgba(217, 217, 217, 0.03);
+
+    &:hover {
+      border-color: rgba(217, 217, 217, 0.5);
+      box-shadow: 0 6px 20px rgba(217, 217, 217, 0.15);
+    }
+  }
+
+  // --- VIP CSS CHO TOP 3 ---
+  &.item-rank-3 {
+    background: linear-gradient(135deg, #1d1d1d 0%, #251d15 100%);
+    border-color: rgba(205, 127, 50, 0.15);
+    box-shadow: 0 4px 15px rgba(205, 127, 50, 0.03);
+
+    &:hover {
+      border-color: rgba(205, 127, 50, 0.5);
+      box-shadow: 0 6px 20px rgba(205, 127, 50, 0.15);
+    }
   }
 }
 
@@ -178,12 +218,34 @@
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
-  padding: 0!important;
+  padding: 0 !important;
+  position: relative;
 
   span {
     display: inline-block;
     font-size: 10px;
     color: #a8a8a8;
+    
+    &.scroll-text {
+      padding-left: 0;
+      /* Tốc độ 10s lúc này sẽ rất vừa vặn vì quãng đường di chuyển chỉ còn một nửa */
+      animation: marqueeContinuous 10s linear infinite; 
+      
+      &:hover {
+        animation-play-state: paused;
+      }
+    }
+  }
+}
+
+/* Định nghĩa vòng lặp liên tục không điểm dừng */
+@keyframes marqueeContinuous {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    /* Dịch chuyển đúng bằng một nửa độ rộng tổng (tức là vừa khít độ dài 1 câu kèm khoảng trống) */
+    transform: translate3d(-50%, 0, 0); 
   }
 }
 

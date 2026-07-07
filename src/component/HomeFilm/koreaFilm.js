@@ -63,7 +63,8 @@ function KoreaFilms() {
             >
               <div className="film-card__poster">
                 <img
-                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
+                  // ĐÃ XÓA PROXY IMAGE.PHP - SỬ DỤNG TRỰC TIẾP LINK GỐC
+                  src={item.image}
                   alt={item.title}
                   loading="lazy"
                   className="film-card__img"

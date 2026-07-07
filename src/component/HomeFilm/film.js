@@ -59,33 +59,34 @@ function Film() {
             items={filmData}
             renderItem={(film) => (
               <div
-              className="film-card"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/chi-tiet/${film.path}`);
-              }}
-            >
-              <div className="film-card__poster">
-                <img
-                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(film.image)}`}
-                  alt={film.title}
-                  loading="lazy"
-                  className="film-card__img"
-                />
+                className="film-card"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/chi-tiet/${film.path}`);
+                }}
+              >
+                <div className="film-card__poster">
+                  <img
+                    // Đã loại bỏ proxy image.php, sử dụng trực tiếp link gốc từ API
+                    src={film.image}
+                    alt={film.title}
+                    loading="lazy"
+                    className="film-card__img"
+                  />
 
-                <div className="film-card__episode">
-                  {film.episode_current || "?"}
+                  <div className="film-card__episode">
+                    {film.episode_current || "?"}
+                  </div>
+
+                  <div className="film-card__lang">
+                    {film.lang || "Vietsub"}
+                  </div>
                 </div>
 
-                <div className="film-card__lang">
-                  {film.lang || "Vietsub"}
+                <div className="film-card__info">
+                  <h6 className="film-card__title">{film.title}</h6>
                 </div>
               </div>
-
-              <div className="film-card__info">
-                <h6 className="film-card__title">{film.title}</h6>
-              </div>
-            </div>
             )}
           />
         )}

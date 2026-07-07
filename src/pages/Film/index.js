@@ -46,11 +46,24 @@ export default function FilmListBySlug() {
             if (!firstRes.ok) return [];
             const firstData = await firstRes.json();
             
-            // Bắt chuẩn đường dẫn mảng data của cả 3 API
-            const items = firstData?.data?.items || firstData?.items || firstData?.data || [];
+            // HÀM XỬ LÝ ẢNH RIÊNG CHO TỪNG DATA TRẢ VỀ
+            const extractItems = (data) => {
+              let items = data?.data?.items || data?.items || data?.data || [];
+              
+              // Nếu là nguồn KK, lấy mảng og_image ghép thẳng vào item
+              if (sourceName === "KK" && data?.data?.seoOnPage?.og_image) {
+                const ogImages = data.data.seoOnPage.og_image;
+                items = items.map((item, index) => ({
+                  ...item,
+                  full_image_path: ogImages[index] || item.poster_url 
+                }));
+              }
+              return items;
+            };
+
+            let allItems = extractItems(firstData);
             const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || firstData?.totalPages || 1;
 
-            let allItems = [...items];
             if (totalPage > 1) {
               const fetchPromises = [];
               for (let i = 2; i <= totalPage; i++) {
@@ -58,7 +71,7 @@ export default function FilmListBySlug() {
               }
               const remainingPagesData = await Promise.all(fetchPromises);
               remainingPagesData.forEach(data => {
-                if (data) allItems = [...allItems, ...(data?.data?.items || data?.items || data?.data || [])];
+                if (data) allItems = [...allItems, ...extractItems(data)];
               });
             }
             return allItems;
@@ -95,11 +108,12 @@ export default function FilmListBySlug() {
           return "N/A";
         };
 
-        // Format data: Gắn tên nguồn và đảo ngược ảnh thumb/poster cho Ophim & Nguồn C
+        // Format data: Sử dụng full_image_path cho nguồn KK
         const normKk = resKk.map(f => ({ 
           ...f, sourceName: "KK", isKkphim: true, 
           name: f.name, original_name: f.origin_name || f.original_name, 
-          poster_url: f.poster_url, thumb_url: f.thumb_url, 
+          poster_url: f.full_image_path || f.poster_url, 
+          thumb_url: f.full_image_path || f.thumb_url, 
           slug: f.slug, path: f.slug, 
           episode_total: f.episode_total, current_episode: f.episode_current, 
           language: f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
@@ -123,14 +137,11 @@ export default function FilmListBySlug() {
           language: f.language || f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
         }));
 
-        // ĐÃ SỬA Ở ĐÂY: Xếp theo thứ tự cục KK -> OP -> NC và không dùng hàm .reverse() nữa
         const combined = [...normKk, ...normOp, ...normNc];
         
-        // Lọc trùng lặp bằng cách nối slug và sourceName. Cách này đảm bảo cả 3 nguồn đều hiện ra.
+        // Lọc trùng lặp bằng cách nối slug và sourceName
         const uniqueResults = Array.from(new Map(combined.map(item => [`${item.slug}-${item.sourceName}`, item])).values());
 
-        // Gán thẳng mảng kết quả, lúc này dữ liệu sẽ xếp y hệt như ý bạn: 
-        // Danh sách KK (giữ nguyên Mới->Cũ) -> Danh sách OP -> Danh sách NC
         setResults(uniqueResults);
       } catch (err) {
         setResults([]);
@@ -157,10 +168,11 @@ export default function FilmListBySlug() {
     return () => window.removeEventListener("resize", handleResize);
   }, [hoverFilm]);
 
+  /* ================= UTILS ================= */
   function getPoster(url, sourceName) {
     if (!url) return "";
     
-    // Nếu URL đã là link hoàn chỉnh (thường gặp ở Nguồn C)
+    // Nguồn C thường trả về link full sẵn
     if (url.startsWith("http")) return url;
 
     // Xử lý riêng cho OPhim
@@ -168,13 +180,7 @@ export default function FilmListBySlug() {
       return `https://img.ophim.live/uploads/movies/${url.startsWith("/") ? url.slice(1) : url}`;
     }
 
-    // Xử lý cho KKPhim
-    if (sourceName === "KK") {
-      let fullUrl = `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
-      return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(fullUrl)}`;
-    }
-
-    // Fallback mặc định
+    // Xử lý cho KKPhim (phimapi) - đã có full path ở bước fetch
     return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
   }
 
@@ -223,7 +229,6 @@ export default function FilmListBySlug() {
                 {film.sourceName}
               </div>
 
-              {/* Gọi getPoster truyền vào sourceName */}
               <img src={getPoster(film.poster_url, film.sourceName)} alt={film.name} className="film-poster" loading="lazy" />
               <div className="film-overlay">
                 <h6 className="film-name">{film.name}</h6>
@@ -236,7 +241,6 @@ export default function FilmListBySlug() {
 
       {enablePreview && hoverFilm && (
         <div className="hover-preview-backdrop">
-          {/* Truyền hoverFilm.sourceName thay vì isKkphim */}
           <div className="hover-preview-card" onMouseLeave={() => setHoverFilm(null)} ref={previewRef} style={{ backgroundImage: `url(${getPoster(hoverFilm.thumb_url || hoverFilm.poster_url, hoverFilm.sourceName)})` }}>
             <div className="preview-info">
               <div className="preview-left">

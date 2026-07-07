@@ -214,12 +214,10 @@ export default function FilmDetail() {
     return episodes.findIndex((v) => v.slug === currentVideo?.slug);
   }, [episodes, currentVideo]);
 
+  // ĐÃ XÓA BỎ CONFIG PROXY HÌNH ẢNH VÀ ĐUÔI WEB P - TRẢ VỀ LINK GỐC TRỰC TIẾP
   function getImageUrl(url) {
     if (!url) return "";
-    if (url.includes("phim.nguonc.com") || url.includes("ophim")) {
-      return url;
-    }
-    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
+    return url; // Trả thẳng link ảnh sạch từ API gốc
   }
 
   const isNguonC_or_OPhim = 
@@ -549,7 +547,7 @@ export default function FilmDetail() {
               ))}
             </div>
 
-            {/* ================= COMMENT SECTION (BỎ ĐÚNG ĐOẠN ĐANG THIẾU CỦA BẠN) ================= */}
+            {/* ================= COMMENT SECTION ================= */}
             <div className="comment-section mt-5">
               <h4 className="mb-3 text-white">Bình luận ({comments.length})</h4>
               

@@ -34,7 +34,8 @@ const CinemaHeroCarousel = ({ items = [] }) => {
               {/* THUMB 3:4 */}
               <div className="hero-card__thumb-wrap">
                 <img
-                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.thumb || item.image)}`}
+                  // Đã xóa proxy image.php - Trả về link gốc trực tiếp
+                  src={item.thumb || item.image}
                   alt={item.title}
                   loading="lazy"
                   className="hero-card__thumb"
@@ -43,7 +44,8 @@ const CinemaHeroCarousel = ({ items = [] }) => {
 
               {/* POSTER 2:3 ĐÈ */}
               <img
-                src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.poster || item.image)}`}
+                // Đã xóa proxy image.php - Trả về link gốc trực tiếp
+                src={item.poster || item.image}
                 alt={item.title}
                 loading="lazy"
                 className="hero-card__poster"
@@ -53,7 +55,7 @@ const CinemaHeroCarousel = ({ items = [] }) => {
               <div className="hero-card__detail">
                 <h6 className="film-card__title2">{item.title}</h6>
                 <p className="film-card__episode2">
-                {item.time || item.episode_current}
+                  {item.time || item.episode_current}
                 </p>
               </div>
             </div>

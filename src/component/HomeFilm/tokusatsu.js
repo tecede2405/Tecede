@@ -56,33 +56,34 @@ function SieuNhan() {
             items={filmData}
             renderItem={(item) => (
               <div
-              className="film-card"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/chi-tiet/${item.path}`);
-              }}
-            >
-              <div className="film-card__poster">
-                <img
-                  src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
-                  alt={item.title}
-                  loading="lazy"
-                  className="film-card__img"
-                />
+                className="film-card"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/chi-tiet/${item.path}`);
+                }}
+              >
+                <div className="film-card__poster">
+                  <img
+                    // Đã loại bỏ proxy image.php, sử dụng trực tiếp link gốc từ API
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="film-card__img"
+                  />
 
-                <div className="film-card__episode">
-                  {item.episode_current || "?"}
+                  <div className="film-card__episode">
+                    {item.episode_current || "?"}
+                  </div>
+
+                  <div className="film-card__lang">
+                    {item.lang || "Vietsub"}
+                  </div>
                 </div>
 
-                <div className="film-card__lang">
-                  {item.lang || "Vietsub"}
+                <div className="film-card__info">
+                  <h6 className="film-card__title">{item.title}</h6>
                 </div>
               </div>
-
-              <div className="film-card__info">
-                <h6 className="film-card__title">{item.title}</h6>
-              </div>
-            </div>
             )}
           />
         )}

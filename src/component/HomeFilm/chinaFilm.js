@@ -27,9 +27,9 @@ function ChinaFilms() {
     <>
       <div className="mb-1 d-flex justify-content-between align-items-center">
         <h2 className="film-category ms-3">
-        <FaFilm className="film-category__icon" />
-        <span>Series Trung Quốc</span>
-      </h2>
+          <FaFilm className="film-category__icon" />
+          <span>Series Trung Quốc</span>
+        </h2>
         <div className="watch-more" onClick={() => navigate("/detail/china-film")}>
           <span style={{ cursor: "pointer", fontWeight: "bold" }}>Xem Thêm</span>
           <GoChevronRight
@@ -63,7 +63,8 @@ function ChinaFilms() {
               >
                 <div className="film-card__poster">
                   <img
-                    src={`${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(item.image)}`}
+                    // Đã loại bỏ proxy image.php, sử dụng trực tiếp link gốc từ API
+                    src={item.image}
                     alt={item.title}
                     loading="lazy"
                     className="film-card__img"

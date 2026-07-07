@@ -53,7 +53,6 @@ export default function MovieDetail() {
   }, [slug]);
 
   // GỘP, ĐỔI TÊN SERVER VÀ SẮP XẾP ƯU TIÊN (OP -> KK -> NC)
-  // GỘP, ĐỔI TÊN SERVER VÀ SẮP XẾP ƯU TIÊN (OP -> KK -> NC)
   const allServers = useMemo(() => {
     let list = [];
     sources.forEach(src => {
@@ -68,17 +67,17 @@ export default function MovieDetail() {
 
         // Chỉ đưa vào danh sách nếu server có dữ liệu
         if (hasValidData) {
-        const episodeCount = epList.length;
+          const episodeCount = epList.length;
 
-        list.push({
-          ...srv,
-          server_name: `${sourceLabel} - ${srv.server_name}`, // giữ nguyên để URL không lỗi
-          display_name: `${sourceLabel} - ${srv.server_name} (${episodeCount} tập)`, // chỉ để hiển thị
-          original_name: srv.server_name,
-          sourceName: sourceLabel,
-          episodeCount
-        });
-      }
+          list.push({
+            ...srv,
+            server_name: `${sourceLabel} - ${srv.server_name}`, // giữ nguyên để URL không lỗi
+            display_name: `${sourceLabel} - ${srv.server_name} (${episodeCount} tập)`, // chỉ để hiển thị
+            original_name: srv.server_name,
+            sourceName: sourceLabel,
+            episodeCount
+          });
+        }
       });
     });
 
@@ -102,13 +101,10 @@ export default function MovieDetail() {
   const episodes = currentServerObj?.server_data || currentServerObj?.items || [];
   const currentServerName = currentServerObj?.server_name || "";
 
-  // KHÔNG CHẠY PROXY CHO OPHIM VÀ NGUỒN C
+  // ĐÃ XÓA BỎ CONFIG PROXY HÌNH ẢNH VÀ ĐUÔI WEB P - TRẢ VỀ LINK GỐC TRỰC TIẾP
   function getImageUrl(url) {
     if (!url) return "";
-    if (url.includes("phim.nguonc.com") || url.includes("ophim")) {
-      return url;
-    }
-    return `${process.env.REACT_APP_FILM_API_URL}/image.php?url=${encodeURIComponent(url)}`;
+    return url; // Trả thẳng link ảnh sạch từ API gốc
   }
 
   const posterUrl = getImageUrl(imgConfig.poster);
@@ -176,7 +172,6 @@ export default function MovieDetail() {
                 </div>
                 <button className="btn-play" onClick={() => {
                   if (!episodes.length) return;
-                  // Truyền đúng tên Server đã được nối chữ và có mức độ ưu tiên sang URL
                   navigate(`/xem-phim/${slug}/${encodeURIComponent(currentServerName)}/${episodes[0].slug}`, 
                     { state: { movieData: movie, sourcesData: sources } });
                 }}>
