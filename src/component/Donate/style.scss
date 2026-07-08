@@ -325,8 +325,8 @@
   .donate-header-title { font-size: 15px; }
   .donate-item { padding: 10px; gap: 10px; }
   .rank { min-width: 46px; width: 46px; height: 46px; font-size: 14px; }
-  .nickname { font-size: 14px; }
-  .message { font-size: 11px; }
+  .nickname { font-size: 11px!important; }
+  .message { font-size: 10px!important; }
   .amount { font-size: 14px; }
   
   .donate-actions { gap: 8px; }

@@ -25,8 +25,6 @@ export default function FilmListByCountry() {
 
   const title = slug.replace(/-/g, " ");
 
-  // Domain gốc của phimapi
-  const IMAGE_BASE_URL = "https://phimimg.com/";
 
   const handleBack = () => {
     navigate(-1);
@@ -145,7 +143,7 @@ export default function FilmListByCountry() {
     
     // Nếu path bắt đầu bằng '/', bỏ dấu '/' thừa trước khi ghép
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    return `${IMAGE_BASE_URL}${cleanPath}`;
+    return `${cleanPath}`;
   };
 
   const handleSearch = () => {

@@ -48,16 +48,9 @@ export default function FilmListBySlug() {
             
             // HÀM XỬ LÝ ẢNH RIÊNG CHO TỪNG DATA TRẢ VỀ
             const extractItems = (data) => {
+              // KK, OP, NC đều có cấu trúc items trong data.data.items
               let items = data?.data?.items || data?.items || data?.data || [];
-              
-              // Nếu là nguồn KK, lấy mảng og_image ghép thẳng vào item
-              if (sourceName === "KK" && data?.data?.seoOnPage?.og_image) {
-                const ogImages = data.data.seoOnPage.og_image;
-                items = items.map((item, index) => ({
-                  ...item,
-                  full_image_path: ogImages[index] || item.poster_url 
-                }));
-              }
+              // Không cần xử lý og_image nữa, vì poster_url đã đầy đủ
               return items;
             };
 
@@ -109,14 +102,22 @@ export default function FilmListBySlug() {
         };
 
         // Format data: Sử dụng full_image_path cho nguồn KK
-        const normKk = resKk.map(f => ({ 
-          ...f, sourceName: "KK", isKkphim: true, 
-          name: f.name, original_name: f.origin_name || f.original_name, 
-          poster_url: f.full_image_path || f.poster_url, 
-          thumb_url: f.full_image_path || f.thumb_url, 
-          slug: f.slug, path: f.slug, 
-          episode_total: f.episode_total, current_episode: f.episode_current, 
-          language: f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
+        const normKk = resKk.map(f => ({
+          ...f,
+          sourceName: "KK",
+          isKkphim: true,
+          name: f.name,
+          original_name: f.origin_name || f.original_name,
+          poster_url: f.poster_url,   // Giữ nguyên, không thay bằng full_image_path
+          thumb_url: f.thumb_url,     // Có thể dùng cho preview nếu cần
+          slug: f.slug,
+          path: f.slug,
+          episode_total: f.episode_total,
+          current_episode: f.episode_current,
+          language: f.lang || "N/A",
+          time: f.time || "N/A",
+          quality: f.quality || "N/A",
+          year: getYearFromData(f)
         }));
 
         const normOp = resOp.map(f => ({ 

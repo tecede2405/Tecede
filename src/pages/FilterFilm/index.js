@@ -27,7 +27,7 @@ export default function FilterFilm() {
   const [sortType, setSortType] = useState(searchParams.get("sort_type") || "desc");
   const [sortLang, setSortLang] = useState(searchParams.get("sort_lang") || "");
   const [limit] = useState(24);
-
+  const [type, setType] = useState(searchParams.get("type") || "phim-le");
   /* ================= DATA STATES ================= */
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -87,85 +87,88 @@ export default function FilterFilm() {
 
   /* ================= BUILD QUERY & FETCH ================= */
   const fetchMovies = useCallback(async () => {
-    const trimmedKeyword = keyword.trim();
-    if (isBlocked(trimmedKeyword) || isBlocked(category)) {
+  const trimmedKeyword = keyword.trim();
+
+  // Chặn nội dung 18+
+  if (isBlocked(trimmedKeyword) || isBlocked(category)) {
+    setResults([]);
+    setTotalPages(1);
+    setTotalItems(0);
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const params = new URLSearchParams();
+    params.set("page", page);
+    params.set("limit", limit);
+
+    if (sortField) params.set("sort_field", sortField);
+    if (sortType) params.set("sort_type", sortType);
+    if (sortLang) params.set("sort_lang", sortLang);
+    if (year) params.set("year", year);
+
+    let url = "";
+
+    if (trimmedKeyword) {
+      // Tìm kiếm bằng từ khóa
+      params.set("keyword", trimmedKeyword);
+      if (category) params.set("category", category);
+      if (country) params.set("country", country);
+      url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?${params.toString()}`;
+    } else {
+      // Dùng danh sách theo type
+      if (category) params.set("category", category);
+      if (country) params.set("country", country);
+      // type là state mới (phim-le, phim-bo, hoat-hinh, tv-shows)
+      url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/danh-sach/${type}?${params.toString()}`;
+    }
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.status) {
+      let items = data.data?.items || [];
+
+      // Lấy danh sách ảnh đầy đủ từ seoOnPage (mảng og_image)
+      const ogImages = data.data?.seoOnPage?.og_image || [];
+
+      // Gắn full_image_path cho từng phim dựa trên chỉ số
+      items = items.map((item, index) => ({
+        ...item,
+        full_image_path: ogImages[index] || item.poster_url || item.thumb_url,
+      }));
+
+      setResults(items);
+
+      // Xử lý phân trang
+      const paginationData = data.data?.params?.pagination;
+      if (paginationData) {
+        const total = paginationData.totalItems || 0;
+        const perPage = paginationData.totalItemsPerPage || limit;
+        const calculatedTotalPages = Math.ceil(total / perPage);
+        setTotalItems(total);
+        setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
+      } else {
+        // Fallback nếu API không trả về pagination
+        setTotalPages(1);
+        setTotalItems(items.length);
+      }
+    } else {
       setResults([]);
       setTotalPages(1);
       setTotalItems(0);
-      return;
     }
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      params.set("page", page);
-      params.set("limit", limit);
-      if (sortField) params.set("sort_field", sortField);
-      if (sortType) params.set("sort_type", sortType);
-      if (sortLang) params.set("sort_lang", sortLang);
-      if (year) params.set("year", year);
-
-      let url = "";
-
-      if (trimmedKeyword) {
-        params.set("keyword", trimmedKeyword);
-        if (category) params.set("category", category);
-        if (country) params.set("country", country);
-        url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?${params.toString()}`;
-      } else {
-        if (category) {
-          if (country) params.set("country", country);
-          url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/the-loai/${category}?${params.toString()}`;
-        } else if (country) {
-          url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/quoc-gia/${country}?${params.toString()}`;
-        } else {
-          // If no keyword, category, or country is selected, fallback to tim-kiem with generic keyword "a"
-          params.set("keyword", "a");
-          url = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?${params.toString()}`;
-        }
-      }
-
-      const res = await fetch(url);
-      const data = await res.json();
-
-      if (data.status) {
-        let items = data.data?.items || [];
-        // Lấy danh sách ảnh đầy đủ từ seoOnPage (đặc sản của phimapi)
-        const ogImages = data.data?.seoOnPage?.og_image || [];
-
-        // Gắn link ảnh full vào từng bộ phim dựa trên index
-        items = items.map((item, index) => ({
-          ...item,
-          full_image_path: ogImages[index] || item.poster_url 
-        }));
-
-        setResults(items);
-
-        // Fix lỗi thiếu totalPages nếu API trả về khác cấu trúc (tương tự lỗi đã fix ở list)
-        const paginationData = data.data?.params?.pagination;
-        if (paginationData) {
-          const total = paginationData.totalItems || 0;
-          const perPage = paginationData.totalItemsPerPage || limit;
-          const calculatedTotalPages = Math.ceil(total / perPage);
-          
-          setTotalItems(total);
-          setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
-        } else {
-          setTotalPages(1);
-          setTotalItems(0);
-        }
-      } else {
-        setResults([]);
-        setTotalPages(1);
-        setTotalItems(0);
-      }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      setResults([]);
-    } finally {
-      setLoading(false);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [keyword, page, sortField, sortType, sortLang, category, country, year, limit]);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    setResults([]);
+    setTotalPages(1);
+    setTotalItems(0);
+  } finally {
+    setLoading(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}, [keyword, page, sortField, sortType, sortLang, category, country, year, type, limit]);
 
   /* ================= AUTO FETCH ON FILTER / PAGE CHANGE ================= */
   useEffect(() => {
@@ -227,6 +230,7 @@ export default function FilterFilm() {
     setCategory("");
     setCountry("");
     setYear("");
+    setType("phim-le");   // reset loại phim về mặc định
     setSortField("modified.time");
     setSortType("desc");
     setSortLang("");
@@ -387,125 +391,160 @@ export default function FilterFilm() {
 
       {/* FILTER PANEL */}
       <div className={`filter-panel ${showFilters ? "open" : "closed"}`}>
-        <div className="filter-panel-inner">
-          {/* Row 1: Keyword search */}
-          <div className="filter-row filter-search-row">
-            <div className="filter-search-wrapper">
-              <CiSearch className="filter-search-icon" />
-              <input
-                type="text"
-                className="filter-search-input"
-                placeholder="Nhập từ khóa tìm kiếm..."
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleApplyFilter();
-                }}
-              />
-              {keyword && (
-                <MdClear
-                  className="filter-search-clear"
-                  onClick={() => setKeyword("")}
-                />
-              )}
-            </div>
-          </div>
-
-          {/* Row 2: Dropdowns */}
-          <div className="filter-row filter-dropdowns">
-            <div className="filter-group">
-              <label>Thể loại</label>
-              <select
-                value={category}
-                onChange={(e) => { setCategory(e.target.value); setPage(1); }}
-              >
-                <option value="">-- Tất cả --</option>
-                {categories.map((cat) => (
-                  <option key={cat.slug} value={cat.slug}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label>Quốc gia</label>
-              <select
-                value={country}
-                onChange={(e) => { setCountry(e.target.value); setPage(1); }}
-              >
-                <option value="">-- Tất cả --</option>
-                {countries.map((c) => (
-                  <option key={c.slug} value={c.slug}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label>Năm</label>
-              <select
-                value={year}
-                onChange={(e) => { setYear(e.target.value); setPage(1); }}
-              >
-                <option value="">-- Tất cả --</option>
-                {years.map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label>Ngôn ngữ</label>
-              <select
-                value={sortLang}
-                onChange={(e) => { setSortLang(e.target.value); setPage(1); }}
-              >
-                <option value="">-- Tất cả --</option>
-                <option value="vietsub">Vietsub</option>
-                <option value="thuyet-minh">Thuyết Minh</option>
-                <option value="long-tieng">Lồng Tiếng</option>
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label>Sắp xếp theo</label>
-              <select
-                value={sortField}
-                onChange={(e) => { setSortField(e.target.value); setPage(1); }}
-              >
-                <option value="modified.time">Thời gian cập nhật</option>
-                <option value="_id">ID phim</option>
-                <option value="year">Năm phát hành</option>
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label>Thứ tự</label>
-              <select
-                value={sortType}
-                onChange={(e) => { setSortType(e.target.value); setPage(1); }}
-              >
-                <option value="desc">Mới nhất</option>
-                <option value="asc">Cũ nhất</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Row 3: Action buttons */}
-          <div className="filter-row filter-actions">
-            <button className="filter-apply-btn" onClick={handleApplyFilter}>
-              <CiSearch /> Tìm kiếm
-            </button>
-            <button className="filter-clear-btn" onClick={handleClearFilters}>
-              <MdClear /> Xóa bộ lọc
-            </button>
-          </div>
-        </div>
+  <div className="filter-panel-inner">
+    {/* Row 1: Keyword search */}
+    <div className="filter-row filter-search-row">
+      <div className="filter-search-wrapper">
+        <CiSearch className="filter-search-icon" />
+        <input
+          type="text"
+          className="filter-search-input"
+          placeholder="Nhập từ khóa tìm kiếm..."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleApplyFilter();
+          }}
+        />
+        {keyword && (
+          <MdClear
+            className="filter-search-clear"
+            onClick={() => setKeyword("")}
+          />
+        )}
       </div>
+    </div>
+
+    {/* Row 2: Dropdowns */}
+    <div className="filter-row filter-dropdowns">
+      {/* MỚI: Loại phim */}
+      <div className="filter-group">
+        <label>Loại phim</label>
+        <select
+          value={type}
+          onChange={(e) => {
+            setType(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="phim-le">Phim lẻ</option>
+          <option value="phim-bo">Phim bộ</option>
+          <option value="hoat-hinh">Hoạt hình</option>
+          <option value="tv-shows">TV Shows</option>
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>Thể loại</label>
+        <select
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="">-- Tất cả --</option>
+          {categories.map((cat) => (
+            <option key={cat.slug} value={cat.slug}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>Quốc gia</label>
+        <select
+          value={country}
+          onChange={(e) => {
+            setCountry(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="">-- Tất cả --</option>
+          {countries.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>Năm</label>
+        <select
+          value={year}
+          onChange={(e) => {
+            setYear(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="">-- Tất cả --</option>
+          {years.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>Ngôn ngữ</label>
+        <select
+          value={sortLang}
+          onChange={(e) => {
+            setSortLang(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="">-- Tất cả --</option>
+          <option value="vietsub">Vietsub</option>
+          <option value="thuyet-minh">Thuyết Minh</option>
+          <option value="long-tieng">Lồng Tiếng</option>
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>Sắp xếp theo</label>
+        <select
+          value={sortField}
+          onChange={(e) => {
+            setSortField(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="modified.time">Thời gian cập nhật</option>
+          <option value="_id">ID phim</option>
+          <option value="year">Năm phát hành</option>
+        </select>
+      </div>
+
+      <div className="filter-group">
+        <label>Thứ tự</label>
+        <select
+          value={sortType}
+          onChange={(e) => {
+            setSortType(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="desc">Mới nhất</option>
+          <option value="asc">Cũ nhất</option>
+        </select>
+      </div>
+    </div>
+
+    {/* Row 3: Action buttons */}
+    <div className="filter-row filter-actions">
+      <button className="filter-apply-btn" onClick={handleApplyFilter}>
+        <CiSearch /> Tìm kiếm
+      </button>
+      <button className="filter-clear-btn" onClick={handleClearFilters}>
+        <MdClear /> Xóa bộ lọc
+      </button>
+    </div>
+  </div>
+</div>
 
       {/* RESULT STATS */}
       <div className="filter-result-stats">
