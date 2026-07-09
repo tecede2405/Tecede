@@ -135,7 +135,7 @@ export default function FilmListByCountry() {
     }
   }, [hoverFilm]);
 
-  /* ================= UTILS ================= */
+/* ================= UTILS ================= */
   // Lấy đường dẫn ảnh hoàn chỉnh dựa vào index
   const getFullImageUrl = (index) => {
     const path = imageUrls[index];
@@ -143,7 +143,9 @@ export default function FilmListByCountry() {
     
     // Nếu path bắt đầu bằng '/', bỏ dấu '/' thừa trước khi ghép
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    return `${cleanPath}`;
+    
+    // Nối thêm domain phimimg.com vào đầu
+    return `https://phimimg.com/${cleanPath}`;
   };
 
   const handleSearch = () => {

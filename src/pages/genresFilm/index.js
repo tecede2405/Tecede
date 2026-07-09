@@ -138,7 +138,9 @@ export default function FilmListBySlug() {
     const path = imageUrls[index];
     if (!path) return "";
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    return `${cleanPath}`;
+    
+    // Nối thêm domain phimimg.com vào đầu
+    return `https://phimimg.com/${cleanPath}`;
   };
 
   const handleSearch = () => {
