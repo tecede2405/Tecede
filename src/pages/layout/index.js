@@ -2,19 +2,8 @@ import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import "./layout.scss";
 import Tabbar from "../../component/tabar/index";
 import { useState, useEffect, useRef } from "react";
-import {
-  FaPhoneVolume,
-  FaEnvelope,
-  FaHashtag,
-  FaBars,
-  FaTimes,
-  FaHome,
-  FaHeart,
-  FaHeadphones,
-  FaChevronDown,
-  FaMusic,
-  FaBookOpen
-} from "react-icons/fa";
+
+import { FaTimes, FaBars, FaHome, FaBookOpen, FaHeadphones, FaMusic, FaHeart, FaChevronDown, FaHandHoldingHeart, FaPhoneVolume, FaEnvelope, FaHashtag } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import Swal from "sweetalert2";
@@ -148,7 +137,7 @@ function Layout() {
           {/* Cụm này LUÔN HIỆN kể cả trên Mobile (Heart, History) */}
           <div className="action-icons">
             <NavLink to="/ung-ho" className={({ isActive }) => isActive ? "act-icon active" : "act-icon"} title="Ủng hộ">
-              <FaHeart />
+              <FaHandHoldingHeart />
             </NavLink>
             <NavLink to="/history" className={({ isActive }) => isActive ? "act-icon active" : "act-icon"} title="Lịch sử xem">
               <FaClockRotateLeft />
@@ -193,6 +182,9 @@ function Layout() {
                       )}
                       <button className="menu-action-btn" onClick={() => navigate("/history")}>
                         <FaClockRotateLeft className="icon-purple" /> <span>Lịch sử xem</span>
+                      </button>
+                      <button className="menu-action-btn" onClick={() => { navigate("/yeu-thich"); setShowUserMenu(false); }}>
+                        <FaHeart className="icon-red" /> <span>Phim yêu thích</span>
                       </button>
                       <button className="menu-action-btn" onClick={() => navigate("/profile")}>
                         <MdOutlineAccountCircle className="icon-purple" /> <span>Đổi tên / avatar</span>

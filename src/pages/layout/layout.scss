@@ -149,6 +149,10 @@
     border-radius: 30px;
     border: 1px solid transparent;
     transition: 0.3s;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 
     &:hover {
         background: rgba(255,255,255,0.08);
@@ -214,6 +218,10 @@
     z-index: 1000;
     box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(157, 78, 221, 0.15);
     backdrop-filter: blur(20px);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     
     transform-origin: top right;
     animation: smoothFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -299,6 +307,7 @@
     transition: 0.3s;
 
     .icon-purple { color: #9d4edd; font-size: 18px; transition: 0.3s; }
+    .icon-red    { color: #e50914; font-size: 18px; transition: 0.3s; }
 
     &:hover {
         background: rgba(157, 78, 221, 0.1);
@@ -306,6 +315,7 @@
         transform: translateX(5px);
         border-color: rgba(157, 78, 221, 0.3);
         .icon-purple { color: #fff; filter: drop-shadow(0 0 5px #9d4edd); }
+        .icon-red    { color: #ff4f4f; filter: drop-shadow(0 0 5px #e50914); }
     }
 }
 

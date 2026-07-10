@@ -29,6 +29,7 @@ import Gallery from "./pages/Storage/gallery/index";
 import UsingApp from "./pages/using-app/index";
 import UsingAppIos from "./pages/using-app/ios";
 import HistoryFilm from "./pages/HistoryFilm/index";
+import FavoritesPage from "./pages/Favorites/index";
 import Anime from "./pages/Amine/index";
 import AnimeDetail from "./pages/AnimeDetail/index";
 import AnimeSearch from "./pages/AnimeSearch/index";
@@ -122,6 +123,7 @@ function App() {
                   <Route path="/truyen/doc/:id" element={<MangaReader />} />
 
                   <Route path="/history" element={<HistoryFilm />} />
+                  <Route path="/yeu-thich" element={<FavoritesPage />} />
                   {/* Music */}
                   <Route path="music/:categorySlug" element={<MusicCategory />} />
                   <Route path="/404" element={<NotFound />} />

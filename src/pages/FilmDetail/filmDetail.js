@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
+import { useFavoriteToggle } from "../../hooks/useFavorites";
+import { useAuth } from "../../context/AuthContext";
 import "./style.scss";
 
 // TỪ ĐIỂN ĐỂ ĐỒNG BỘ TÊN SERVER VỚI TRANG XEM PHIM (FilmDetail)
@@ -16,6 +18,7 @@ const SOURCE_NAMES = {
 export default function MovieDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [movie, setMovie] = useState(null);
   const [sources, setSources] = useState([]);
@@ -110,6 +113,17 @@ export default function MovieDetail() {
   const posterUrl = getImageUrl(imgConfig.poster);
   const thumbUrl = getImageUrl(imgConfig.thumb);
 
+  // ── FAVORITES ──
+  const { isFavorited, loading: favLoading, init: initFav, toggle: toggleFav } = useFavoriteToggle(
+    slug,
+    movie?.name,
+    posterUrl
+  );
+
+  useEffect(() => {
+    if (movie && slug) initFav();
+  }, [movie, slug, initFav]);
+
   return (
     <>
       <Helmet>
@@ -170,13 +184,27 @@ export default function MovieDetail() {
                   ))}
                   
                 </div>
-                <button className="btn-play" onClick={() => {
-                  if (!episodes.length) return;
-                  navigate(`/xem-phim/${slug}/${encodeURIComponent(currentServerName)}/${episodes[0].slug}`, 
-                    { state: { movieData: movie, sourcesData: sources } });
-                }}>
-                  <FaPlay className="me-1 mb-1" /> XEM NGAY
-                </button>
+                <div className="action-buttons">
+                  <button className="btn-play" onClick={() => {
+                    if (!episodes.length) return;
+                    navigate(`/xem-phim/${slug}/${encodeURIComponent(currentServerName)}/${episodes[0].slug}`,
+                      { state: { movieData: movie, sourcesData: sources } });
+                  }}>
+                    <FaPlay className="me-1 mb-1" /> XEM NGAY
+                  </button>
+
+                  {user && (
+                    <button
+                      className={`btn-favorite ${isFavorited ? "active" : ""}`}
+                      onClick={toggleFav}
+                      disabled={favLoading || isFavorited === null}
+                      title={isFavorited ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
+                    >
+                      {isFavorited ? <FaHeart /> : <FaRegHeart />}
+                      <span>{isFavorited ? "Đã yêu thích" : "Yêu thích"}</span>
+                    </button>
+                  )}
+                </div>
                 <p className="movie_description">{movie.content?.replace(/<\/?[^>]+(>|$)/g, "") || "Đang cập nhật..."}</p>
               </div>
             </div>
