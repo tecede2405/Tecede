@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { FaPlay, FaHeart, FaRegHeart, FaInfoCircle, FaFilm } from "react-icons/fa";
 import { useMovies } from "../../context/MoviesContext";
+import { useAuth } from "../../context/AuthContext";
 import { fetchFavorites, addFavorite, removeFavorite } from "../../hooks/useFavorites";
 
 // Swiper
@@ -18,6 +19,7 @@ import "./style.scss";
 function AnimeShowcase() {
   const navigate = useNavigate();
   const { grouped, loading } = useMovies();
+  const { user } = useAuth();
   const filmData = (grouped["anime-moi"] || []).slice(0, 15);
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -151,13 +153,17 @@ function AnimeShowcase() {
                   >
                     <FaPlay />
                   </button>
-                  <button
-                    className={`as-btn as-btn--like ${liked[idx] ? "liked" : ""}`}
-                    onClick={() => handleToggleFavorite(idx, item)}
-                    title={liked[idx] ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
-                  >
-                    {liked[idx] ? <FaHeart /> : <FaRegHeart />}
-                  </button>
+                  
+                  {user && (
+                    <button
+                      className={`as-btn as-btn--like ${liked[idx] ? "liked" : ""}`}
+                      onClick={() => handleToggleFavorite(idx, item)}
+                      title={liked[idx] ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
+                    >
+                      {liked[idx] ? <FaHeart /> : <FaRegHeart />}
+                    </button>
+                  )}
+
                   <button
                     className="as-btn as-btn--info"
                     onClick={() => navigate(`/chi-tiet/${item.path}`)}
