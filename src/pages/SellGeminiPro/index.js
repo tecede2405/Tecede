@@ -43,7 +43,7 @@ const plans = [
     id: "pack5",
     label: "Combo 5",
     accounts: 5,
-    price: "350.000đ",
+    price: "300.000đ",
     priceNote: "/ 5 tài khoản",
     badge: "TIẾT KIỆM NHẤT",
     highlight: false,

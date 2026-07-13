@@ -8,11 +8,12 @@ import { fetchFavorites, addFavorite, removeFavorite } from "../../hooks/useFavo
 
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Thumbs, FreeMode, Pagination, A11y } from "swiper/modules";
+import { Thumbs, FreeMode, Pagination, A11y, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 
 import "./style.scss";
 
@@ -98,7 +99,9 @@ function AnimeShowcase() {
 
       {/* ── Main Swiper ── */}
       <Swiper
-        modules={[Thumbs, Pagination, A11y]}
+        modules={[Thumbs, Pagination, A11y, EffectFade]}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
         thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
         pagination={{ clickable: true, el: ".as-custom-pagination" }}
         className="as-main-swiper"
@@ -123,24 +126,22 @@ function AnimeShowcase() {
                 )}
 
                 <div className="as-info__badges">
-                  {item.quality && (
-                    <span className="as-badge as-badge--imdb">
-                      IMDb <strong>{item.quality}</strong>
-                    </span>
+                  {item.lang && (
+                    <span className="as-badge">{item.lang}</span>
                   )}
-                  {item.episode_current && (
-                    <span className="as-badge">{item.episode_current}</span>
-                  )}
+                  
                   {item.year && (
                     <span className="as-badge">{item.year}</span>
                   )}
+                  
+                  {item.episode_current && (
+                    <span className="as-badge">{item.episode_current}</span>
+                  )}
+                  
+                  <span className="as-badge as-badge--imdb">
+                    {item.quality || "FHD"}
+                  </span>
                 </div>
-
-                {item.lang && (
-                  <div className="as-info__genre">
-                    <span className="as-genre-tag">{item.lang}</span>
-                  </div>
-                )}
 
                 <p className="as-info__desc">
                   {truncate(item.content || item.description || "")}
