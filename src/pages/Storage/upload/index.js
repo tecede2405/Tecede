@@ -115,7 +115,7 @@ function UploadStorage() {
         }
       );
 
-      if (res.status === 201) {
+      if (res.status === 200 || res.status === 201) {
         setProgress(100);
         setMessage(`✅ Tải lên kho dữ liệu thành công ${files.length} file!`);
         setFiles([]);

@@ -113,8 +113,8 @@ export default function ProfilePage() {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
 
-        if (uploadRes.status === 201 && uploadRes.data.data.length > 0) {
-          const savedFile = uploadRes.data.data[0];
+        if ((uploadRes.status === 200 || uploadRes.status === 201) && Array.isArray(uploadRes.data) && uploadRes.data.length > 0) {
+          const savedFile = uploadRes.data[0];
           finalAvatarUrl = `${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`;
         } else {
           throw new Error("Không lấy được thông tin file sau khi upload");
