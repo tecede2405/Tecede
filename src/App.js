@@ -51,6 +51,7 @@ import Donates from "./pages/Donate/index";
 import Support from "./pages/Support/index";
 import TemporaryClosed404 from "./pages/Error/index";
 import NotFound from "./pages/page404/index";
+import SellGeminiPro from "./pages/SellGeminiPro/index";
 // UI
 // import Squares from "./component/SquaresBackgound/index";
 
@@ -127,6 +128,8 @@ function App() {
                   {/* Music */}
                   <Route path="music/:categorySlug" element={<MusicCategory />} />
                   <Route path="/404" element={<NotFound />} />
+                  {/* Sell Gemini Pro */}
+                  <Route path="/ban-gemini-pro" element={<SellGeminiPro />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/404closed" element={<TemporaryClosed404 />} />
 

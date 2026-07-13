@@ -1,0 +1,373 @@
+/* ===================================================
+   SELL GEMINI PRO PAGE — SellGeminiPro.scss
+   =================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* ─── CSS Variables ─── */
+.sgp-wrapper {
+  --gem-blue: #4285f4;
+  --gem-red: #ea4335;
+  --gem-yellow: #fbbc04;
+  --gem-green: #34a853;
+  --gem-purple: #a855f7;
+  --gem-purple-dark: #7c3aed;
+  --gem-card-bg: #100d1f;
+  --gem-card-border: rgba(168, 85, 247, 0.18);
+  --gem-text: #e4e4e7;
+  --gem-muted: #71717a;
+
+  font-family: "Inter", sans-serif;
+  background: #07050f;
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+
+/* ─── HERO ─── */
+.sgp-hero {
+  position: relative;
+  text-align: center;
+  padding: 40px 20px 36px;
+  overflow: hidden;
+
+  &__glow {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+
+    &--left {
+      background: radial-gradient(circle, rgba(66, 133, 244, 0.18), transparent 70%);
+      top: -80px;
+      left: -100px;
+    }
+
+    &--right {
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.22), transparent 70%);
+      top: -60px;
+      right: -80px;
+    }
+  }
+
+  > *:not(.sgp-hero__glow) {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: #c084fc;
+    margin-bottom: 22px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  &__badge-icon {
+    font-size: 16px;
+    color: #c084fc;
+  }
+
+  &__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 16px;
+
+    &--gradient {
+      color: #a855f7;
+    }
+  }
+
+  &__desc {
+    font-size: 16px;
+    color: #a1a1aa;
+    max-width: 560px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+}
+
+.sgp-stat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #a1a1aa;
+  font-weight: 500;
+
+  &__icon {
+    font-size: 15px;
+    color: #71717a;
+
+    &--star {
+      color: #fbbc04 !important;
+    }
+  }
+}
+
+/* ─── PLANS GRID ─── */
+.sgp-plans {
+  padding: 0 16px;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    @media (min-width: 900px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+/* ─── CARD ─── */
+.sgp-card {
+  position: relative;
+  background: var(--gem-card-bg);
+  border: 1px solid var(--gem-card-border);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.15), rgba(168, 85, 247, 0.15));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.15);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  /* ── Highlighted card ── */
+  &--highlight {
+    background: linear-gradient(160deg, #130d2a 0%, #0f0a20 100%);
+    border-color: rgba(168, 85, 247, 0.45);
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.12);
+
+    &:hover {
+      box-shadow: 0 24px 70px rgba(168, 85, 247, 0.25);
+    }
+  }
+
+  /* ── Badge ── */
+  &__badge {
+    position: absolute;
+    top: -1px;
+    right: 20px;
+    padding: 4px 14px;
+    border-radius: 0 0 10px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+
+    &--trio {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      color: #fff;
+    }
+
+    &--pack5 {
+      background: linear-gradient(135deg, #fbbc04, #f59e0b);
+      color: #1c1003;
+    }
+  }
+
+  /* ── Header ── */
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  &__icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(168, 85, 247, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  &__gemini-icon {
+    font-size: 22px;
+    color: #a855f7;
+  }
+
+  &__label {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+
+  &__acc-count {
+    font-size: 12px;
+    color: #a855f7;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── Price ── */
+  &__price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  &__price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  &__price-note {
+    font-size: 12px;
+    color: #71717a;
+  }
+
+  &__per-acc {
+    font-size: 12px;
+    color: #a1a1aa;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    background: rgba(168, 85, 247, 0.08);
+    border-radius: 6px;
+    display: inline-block;
+
+    strong {
+      color: #c084fc;
+    }
+  }
+
+  /* ── Features ── */
+  &__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 13px;
+      color: #a1a1aa;
+      line-height: 1.5;
+    }
+  }
+
+  &__check {
+    font-size: 14px;
+    color: #34a853;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── CTA ── */
+  &__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d4d4d8;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    &--highlight {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border: none;
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(168, 85, 247, 0.35);
+
+      &:hover {
+        background: linear-gradient(135deg, #6d28d9, #9333ea);
+        box-shadow: 0 8px 32px rgba(168, 85, 247, 0.5);
+        transform: translateY(-3px);
+        color: #fff;
+      }
+    }
+  }
+}
+
+/* ─── NOTE ─── */
+.sgp-note {
+  text-align: center;
+  margin-top: 36px;
+  padding: 0 16px;
+
+  p {
+    font-size: 13px;
+    color: #71717a;
+    line-height: 1.7;
+  }
+
+  a {
+    color: #a855f7;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

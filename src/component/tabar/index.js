@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter } from "react-icons/fa"; // Thêm icon Facebook cho Fanpage
+import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter} from "react-icons/fa"; // Thêm icon Facebook cho Fanpage
+import { SiGooglegemini } from "react-icons/si";
 import { GoChevronDown, GoChevronRight } from "react-icons/go"; 
 import { NavLink } from "react-router-dom";
 import "./style.scss";
@@ -122,7 +123,16 @@ function Tabbar({ isOpen, onClose }) {
           </ul>
         </div>
 
-        {/* COUNTRY */}
+        {/* SELL GEMINI PRO */}
+        <div className="tab-parent">
+          <NavLink to="/ban-gemini-pro" className="tab-link-direct" onClick={handleLinkClick}>
+            <span className="title">
+              <SiGooglegemini style={{ color: "#a855f7", fontSize: "16px" }} />
+              <span className="tab-label">Sell Gemini Pro</span>
+            </span>
+          </NavLink>
+        </div>
+
         <div className={`tab-parent ${openTab === "country" ? "open" : ""}`}>
           <button onClick={() => toggleTab("country")} className={openTab === "country" ? "active-btn" : ""}>
             <span className="title">

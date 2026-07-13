@@ -4,7 +4,8 @@ import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
 import NewFilm from '../../component/HomeFilm/newfilm';
-import NewAnimes from '../../component/HomeFilm/newAnime';
+// import NewAnimes from '../../component/HomeFilm/newAnime';
+import AnimeShowcase from '../../component/AnimeShowcase/index';
 import SieuNhan from '../../component/HomeFilm/tokusatsu';
 // import PopularFilm from '../../component/HeroCarousel/index';
 import HighRateFilm from '../../component/HomeFilm/highRate';
@@ -111,8 +112,11 @@ function Home() {
                 <Film />
               </LazySection>
 
-              <LazySection> 
+              {/* <LazySection> 
                 <NewAnimes />
+              </LazySection> */}
+              <LazySection> 
+                <AnimeShowcase />
               </LazySection>
               <LazySection> 
                 <NewFilm />

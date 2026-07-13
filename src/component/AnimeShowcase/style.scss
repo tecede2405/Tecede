@@ -1,0 +1,434 @@
+/* ================================================================
+   ANIME SHOWCASE — style.scss  (Swiper version)
+   ================================================================ */
+
+/* ── Wrapper ── */
+.as-wrapper {
+  padding: 0 12px 20px;
+  color: #fff;
+  font-family: "Inter", -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.as-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-left: 4px;
+
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+
+  &__more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: #fff;
+    }
+  }
+}
+
+/* ── Main Swiper ── */
+.as-main-swiper {
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+
+  .swiper-slide {
+    height: auto;
+    width: 100%;
+  }
+}
+
+
+/* ── Single Slide ── */
+.as-slide {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 400px;
+  width: 100%;
+  background: #12111a;
+  border-radius: 16px; /* border-radius nhẹ cho ảnh bg hero */
+  overflow: hidden;
+  user-select: none;
+
+  /* Blurred bg */
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    filter: blur(26px) brightness(0.32) saturate(1.3);
+    border-radius: 10px;
+    transform: scale(1.08);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Dark overlay */
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      rgba(10, 8, 20, 0.94) 0%,
+      rgba(10, 8, 20, 0.62) 45%,
+      rgba(10, 8, 20, 0.08) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Info — left */
+  &__info {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    max-width: 55%;
+    padding: 28px 20px 28px 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Poster — right (desktop) */
+  &__poster {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    width: 45%;
+    align-self: stretch;
+    pointer-events: none;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      opacity: 0.85;
+      mask-image: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 1) 30%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 1) 30%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+  }
+}
+
+/* ── Info Content ── */
+.as-info {
+  &__title {
+    font-size: clamp(17px, 2.4vw, 25px);
+    font-weight: 800;
+    margin: 0 0 10px;
+    line-height: 1.22;
+    color: #fff;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: #f5a623;
+    font-weight: 500;
+    margin: 0 0 10px;
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  &__genre {
+    margin-bottom: 12px;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.65;
+    margin: 0 0 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+/* ── Badges ── */
+.as-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.726);
+  color: #e4e4e7;
+
+  &--imdb {
+    background: #f5c518;
+    border-color: #f5c518;
+    color: #1a1a1a;
+    strong { color: #1a1a1a; }
+  }
+}
+
+.as-genre-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 231, 14, 0.897);
+  color: #d4d4d8;
+}
+
+/* ── Action Buttons ── */
+.as-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &--play {
+    width: 52px;
+    height: 52px;
+    font-size: 16px;
+    background: #f5a623;
+    border-color: #f5a623;
+    color: #1a1100;
+    box-shadow: 0 0 18px rgba(245, 166, 35, 0.4);
+
+    &:hover {
+      background: #f0b945;
+      box-shadow: 0 0 28px rgba(245, 166, 35, 0.6);
+      transform: scale(1.07);
+    }
+  }
+
+  &--like {
+    color: rgba(255, 255, 255, 0.55);
+
+    &:hover,
+    &.liked {
+      background: rgba(229, 57, 53, 0.18);
+      border-color: #e53935;
+      color: #e53935;
+    }
+  }
+
+  &--info:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+/* ── Mobile Pagination dots ── */
+.as-custom-pagination {
+  display: none;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 0 2px;
+
+  .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.28);
+    opacity: 1;
+    margin: 0;
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #f5a623;
+    width: 22px;
+    border-radius: 4px;
+  }
+}
+
+/* ── Thumbnail Swiper ── */
+.as-thumb-swiper {
+  padding: 12px 0 4px !important;
+  margin: -40px 0 0 !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* Căn giữa các thumb khi số lượng ít hơn chiều rộng */
+.as-thumb-swiper .swiper-wrapper {
+  justify-content: center;
+}
+
+.as-thumb-slide {
+  width: auto !important;
+  margin-right: 8px !important;
+
+  &:last-child { margin-right: 0 !important; }
+}
+
+.as-thumb-wrap {
+  width: 62px;
+  height: 88px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: all 0.22s ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+}
+
+/* Swiper applies .swiper-slide-thumb-active on active thumb */
+.as-thumb-slide.swiper-slide-thumb-active .as-thumb-wrap {
+  border-color: #f5a623;
+  opacity: 1;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 4px 16px rgba(245, 166, 35, 0.4);
+}
+
+.as-thumb-slide:hover .as-thumb-wrap {
+  opacity: 0.82;
+  transform: translateY(-2px);
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .as-slide {
+    height: 320px;
+
+    &__info { max-width: 58%; padding: 18px 16px 18px 20px; }
+  }
+  
+  .as-thumb-wrap {
+    width: 52px;
+    height: 74px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .as-slide {
+    flex-direction: column-reverse;
+    height: auto;
+    min-height: auto;
+    background: #2a2b38; /* Nền xanh xám giống ảnh mẫu */
+
+    /* Poster nằm trên cùng, fade dần ở dưới */
+    &__poster {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      z-index: 1;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+        -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%);
+        opacity: 1;
+      }
+    }
+
+    /* Ẩn overlay che toàn bộ slide */
+    &__overlay {
+      display: none;
+    }
+
+    /* Info có nền trong suốt, dịch lên trên để đè vào phần mờ của ảnh */
+    &__info {
+      position: relative;
+      z-index: 3;
+      max-width: 100%;
+      padding: 0 18px 22px;
+      margin-top: -40px;
+      background: transparent;
+      flex: 1;
+    }
+  }
+
+  /* Ẩn thumb swiper, hiện dots */
+  .as-thumb-swiper {
+    display: none !important;
+  }
+
+  .as-custom-pagination {
+    display: flex;
+  }
+  .as-badge {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+  .as-genre-tag{
+    font-size: 10px;
+  }
+  .as-info {
+    &__title { font-size: 17px; }
+    &__desc {
+      -webkit-line-clamp: 3;
+      font-size: 12.5px;
+    }
+  }
+}
