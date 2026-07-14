@@ -29,18 +29,8 @@ function DownloadApp() {
       cancelButtonText: 'Hủy'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Sử dụng iframe ẩn để tải ngầm, tránh bị trình duyệt chuyển hướng (navigate) sang trang khác
-        const iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = APK_DOWNLOAD_URL;
-        document.body.appendChild(iframe);
-        
-        // Dọn dẹp iframe sau khi đã bắt đầu tải
-        setTimeout(() => {
-          if (document.body.contains(iframe)) {
-            document.body.removeChild(iframe);
-          }
-        }, 5000);
+        // Thay vì dùng iframe (bị Google Drive chặn X-Frame-Options), mở link trong tab mới để bắt đầu tải
+        window.open(APK_DOWNLOAD_URL, "_blank");
       }
     });
   };
