@@ -2,18 +2,42 @@
 /* CONFIG CHUNG CHO ADMIN LAYOUT */
 /* ================================= */
 .admin {
-  min-height: 100vh;
+  display: flex;
+  height: calc(100vh - 70px) !important; /* Cố định chiều cao (trừ đi 70px header) */
+  min-height: 0;
   background: linear-gradient(180deg, #0f172a, #111827);
   color: white;
-  overflow-x: hidden; 
+  overflow: hidden; /* Ngăn cuộn toàn trang */
+
+  .tabbar-container {
+      width: 200px; 
+      flex-shrink: 0; 
+      height: 100%; /* Chiếm toàn bộ chiều cao của .admin */
+      
+      @media (max-width: 768px) {
+          display: none;
+      }
+
+      /* Ép Tabbar vừa khít với container riêng biệt của Admin */
+      .tabbar {
+          position: relative !important;
+          top: 0 !important;
+          height: 100% !important;
+      }
+  }
 }
 
 .admin-layout {
-  width: 100%;
-  max-width: 1400px; 
-  margin: 0 auto;
+  flex: 1;
+  height: 100%;
+  overflow-y: auto; /* Bật cuộn dọc độc lập cho vùng nội dung */
   padding: 24px;
-  box-sizing: border-box;
+  
+  /* Tuỳ chỉnh thanh cuộn cho admin content */
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+  &::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
 
   @media (max-width: 768px) {
     padding: 16px;
@@ -38,12 +62,12 @@
   backdrop-filter: blur(16px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   
-  position: sticky;
-  top: 20px;
-  z-index: 99;
+  /* Tắt sticky theo yêu cầu của user, cho cuộn tự do cùng nội dung */
+  position: relative; 
+  z-index: 10;
 
   @media (max-width: 1024px) {
-    position: static; 
+    position: relative;
     padding: 18px;
     gap: 16px;
   }

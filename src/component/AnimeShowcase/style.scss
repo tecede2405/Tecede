@@ -243,14 +243,14 @@
     width: 52px;
     height: 52px;
     font-size: 16px;
-    background: #f5a623;
-    border-color: #f5a623;
+    background: linear-gradient(135deg, #1db954, #1ed760);
+    border-color: #4adb45;
     color: #1a1100;
-    box-shadow: 0 0 18px rgba(245, 166, 35, 0.4);
+    box-shadow: 0 0 18px rgba(53, 245, 35, 0.4);
 
     &:hover {
-      background: #f0b945;
-      box-shadow: 0 0 28px rgba(245, 166, 35, 0.6);
+      background: linear-gradient(135deg, #1d97b9, #1e59d7);
+      box-shadow: 0 0 28px rgba(35, 140, 245, 0.6);
       transform: scale(1.07);
     }
   }
@@ -291,7 +291,7 @@
   }
 
   .swiper-pagination-bullet-active {
-    background: #f5a623;
+    background: #33bb41;
     width: 22px;
     border-radius: 4px;
   }

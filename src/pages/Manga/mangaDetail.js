@@ -57,106 +57,98 @@ export default function ComicDetail() {
   return (
     <div className="comicDetail" style={{ "--comic-bg": `url(${thumb})` }}>
       
-      {/* HERO */}
-      <div className="comicDetailHero">
-        <div className="comicDetailLeft">
-          <img src={thumb} alt={comic.name} />
-        </div>
-
-        <div className="comicDetailRight">
-          <h4 className="text-light">{comic.name}</h4>
-          <p className="comicSub">{comic.origin_name}</p>
-
-          <div className="comicMeta">
-            <span className="text-light">
-              <IoPersonCircleSharp /> {comic.author?.length ? comic.author : "Đang cập nhật"}
-            </span>
-
-            <span className="text-light">
-              <IoMdBook /> {chapters.length} chương
-            </span>
-
-            <span className="text-light">
-              <CiClock1 /> Cập nhật: {new Date(comic.updatedAt).toISOString().split("T")[0]}
-            </span>
-          </div>
-
-          <div className="comicButtons">
-            <button className="btnPrimary" onClick={readFirst}>
-              Đọc từ đầu
-            </button>
-
-            <button className="btnDark" onClick={readLatest}>
-              Đọc mới nhất
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* CHAPTER LIST */}
-      <div className="comicChapters text-light">
-        <h3>Danh sách chương ({chapters.length} chương)</h3>
-
-        <div className="chapterGrid">
-          {chapters.map((chap, index) => (
-            <div
-              key={index}
-              className="chapterItem"
-              onClick={() => goRead(chap)}
-            >
-              <span className="chapter">
-                Chapter {chap.chapter_name}
-              </span>
-              <span>›</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* READING HISTORY */}
-      <div className="readingHistory text-light">
-
-        <h3>Truyện đã đọc</h3>
-
-        <div className="historyTable">
-
-          <div className="historyHeader">
-            <span className="">Ảnh</span>
-            <span className="historyCol chapter">Tên truyện</span>
-            <span className="historyCol chapter">Chapter</span>
-          </div>
-
-          {history.map((item, index) => (
-
-            <div
-              key={index}
-              className="historyRow"
-              onClick={() =>
-                navigate(`/truyen/doc/${item.slug}-${item.chapterId}`)
-              }
-            >
-
-              <div className="historyCol thumb">
-                <img
-                  src={item.thumb}
-                  alt={item.comicName}
-                />
-              </div>
-
-              <div className="historyCol chapter">
-                {item.comicName}
-              </div>
-
-              <div className="historyCol chapter">
-                Chapter {item.chapter}
-              </div>
-
+      <div className="comicDetailContainer">
+        
+        {/* KHỐI TRÁI: THÔNG TIN TRUYỆN & DANH SÁCH CHƯƠNG */}
+        <div className="comicDetailMain">
+          {/* HERO */}
+          <div className="comicDetailHero">
+            <div className="comicDetailLeft">
+              <img src={thumb} alt={comic.name} loading="lazy" />
             </div>
 
-          ))}
+            <div className="comicDetailRight">
+              <h3>{comic.name}</h3>
+              <p className="comicSub">{comic.origin_name || "Đang cập nhật"}</p>
 
+              <div className="comicMeta">
+                <span>
+                  <IoPersonCircleSharp size={18} color="#a78bfa" /> {comic.author?.length ? comic.author : "Đang cập nhật"}
+                </span>
+
+                <span>
+                  <IoMdBook size={18} color="#f472b6" /> {chapters.length} Chương
+                </span>
+
+                <span>
+                  <CiClock1 size={18} color="#38bdf8" /> Cập nhật: {new Date(comic.updatedAt).toISOString().split("T")[0]}
+                </span>
+              </div>
+
+              <div className="comicButtons">
+                <button className="btnPrimary" onClick={readFirst}>
+                  Đọc Từ Đầu
+                </button>
+
+                <button className="btnDark" onClick={readLatest}>
+                  Đọc Mới Nhất
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* CHAPTER LIST */}
+          <div className="comicChapters text-light">
+            <h4>Danh sách chương ({chapters.length} chương)</h4>
+
+            <div className="chapterGrid">
+              {chapters.map((chap, index) => (
+                <div
+                  key={index}
+                  className="chapterItem"
+                  onClick={() => goRead(chap)}
+                >
+                  <span className="chapter">
+                    Chương {chap.chapter_name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* KHỐI PHẢI: LỊCH SỬ ĐỌC (SIDEBAR) */}
+        <div className="comicDetailSidebar">
+          {history.length > 0 && (
+            <div className="readingHistory text-light">
+              <div className="historyHeader" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#94a3b8', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '10px', marginBottom: '12px' }}>
+                <span>Lịch sử đọc</span>
+              </div>
+
+              {history.map((item, index) => (
+                <div
+                  key={index}
+                  className="historyRow"
+                  style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer' }}
+                  onClick={() => navigate(`/truyen/doc/${item.slug}-${item.chapterId}`)}
+                >
+                  <img src={item.thumb} alt={item.comicName} loading="lazy" style={{ width: '40px', height: '56px', objectFit: 'cover', borderRadius: '4px' }} />
+                  <div className="historyInfo" style={{ flex: 1, overflow: 'hidden' }}>
+                    <div className="historyName text-white" style={{ fontSize: '13px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '4px' }}>
+                      {item.comicName}
+                    </div>
+                    <div className="historyChap text-success" style={{ fontSize: '12px' }}>
+                      Chương {item.chapter}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
       </div>
+
     </div>
   );
 }

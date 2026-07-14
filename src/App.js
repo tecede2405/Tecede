@@ -52,6 +52,7 @@ import Support from "./pages/Support/index";
 import TemporaryClosed404 from "./pages/Error/index";
 import NotFound from "./pages/page404/index";
 import SellGeminiPro from "./pages/SellGeminiPro/index";
+import DownloadApp from "./pages/DownloadApp/index";
 // UI
 // import Squares from "./component/SquaresBackgound/index";
 
@@ -130,6 +131,7 @@ function App() {
                   <Route path="/404" element={<NotFound />} />
                   {/* Sell Gemini Pro */}
                   <Route path="/ban-gemini-pro" element={<SellGeminiPro />} />
+                  <Route path="/tai-app" element={<DownloadApp />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/404closed" element={<TemporaryClosed404 />} />
 

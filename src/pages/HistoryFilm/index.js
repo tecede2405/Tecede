@@ -239,13 +239,7 @@ return (
         content="Theo dõi và tiếp tục xem các bộ phim bạn yêu thích tại Tecede."
       />
     </Helmet>
-    <div
-        className="history-page"
-        style={{
-          backgroundImage:
-            "url(https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/VN-vi-20260105-TRIFECTA-perspective_ec5c484f-840e-4d19-9f35-b9e6a0eef2c7_medium.jpg)",
-        }}
-      >
+    <div className="history-page">
       <div className="container py-4" style={{ minHeight: "80vh" }}>
       <div className="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3 flex-wrap gap-3">
       <div className="d-flex align-items-center">

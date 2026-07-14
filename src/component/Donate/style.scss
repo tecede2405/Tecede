@@ -106,9 +106,26 @@
   @media (max-width: 1160px) {
      grid-template-columns: repeat(2, 1fr) !important; 
   }
-   @media (max-width: 490px) {
-    grid-template-columns: 1fr !important;
-   }
+  @media (max-width: 600px) {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px; /* Tích hợp khoảng trống dưới cùng để không bị lẹm scrollbar */
+    
+    /* Thiết lập độ rộng cố định cho mỗi thẻ khi cuộn ngang */
+    .donate-item {
+      min-width: 85%; 
+      flex-shrink: 0;
+      scroll-snap-align: center;
+    }
+    
+    /* Ẩn thanh cuộn mặc định cho mượt */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 .donate-item {  
@@ -321,18 +338,33 @@
 /* MOBILE RESPONSIVE CHUNG */
 @media (max-width: 768px) {
   .donate-wrapper { padding: 0 8px; }
-  .donate-board { padding: 14px; }
-  .donate-header-title { font-size: 15px; }
-  .donate-item { padding: 10px; gap: 10px; }
-  .rank { min-width: 46px; width: 46px; height: 46px; font-size: 14px; }
-  .nickname { font-size: 11px!important; }
-  .message { font-size: 10px!important; }
-  .amount { font-size: 14px; }
+  .donate-board { padding: 10px; border-radius: 12px; }
+  .donate-header-title { font-size: 12px; }
+  .donate-goal-percent { font-size: 11px; }
   
-  .donate-actions { gap: 8px; }
+  .donate-item { padding: 8px; gap: 6px; border-radius: 10px; }
+  
+  .rank { 
+    min-width: 30px; 
+    width: 30px; 
+    height: 30px; 
+    font-size: 11px; 
+    border-radius: 6px;
+  }
+  
+  .nickname { font-size: 11px !important; max-width: 100px; }
+  .donate-date { font-size: 8px; }
+  
+  .message { margin-top: 2px; }
+  .message span { font-size: 9px !important; }
+  
+  .amount { font-size: 11px; }
+  
+  .donate-actions { gap: 8px; margin-top: 14px; }
   .support-btn, .view-more-btn {
-    height: 42px;
-    font-size: 10px !important;
-    font-weight: 500;
+    height: 32px !important;
+    font-size: 11px !important;
+    font-weight: 600;
+    border-radius: 8px;
   }
 }

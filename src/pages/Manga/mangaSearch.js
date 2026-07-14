@@ -30,34 +30,34 @@ export default function SearchResult() {
   }, [slug]);
 
   return (
-    <div className="searchResult mb-3 ps-3 pe-3">
+    <div className="manga-home searchResult pt-4">
       <MangaSearch />
 
-      <h3 className="text-light mb-3 mt-3 d-flex align-items-center gap-2">
+      <h3 className="text-light mb-4 mt-4 d-flex align-items-center gap-2" style={{ fontWeight: 700 }}>
         <IoIosArrowDropleft
-          style={{ cursor: "pointer", fontSize: "24px" }}
+          style={{ cursor: "pointer", fontSize: "32px", color: "#a78bfa" }}
           onClick={() => navigate("/truyen")}
         />
-        Kết quả tìm cho: <span className="text-warning">{slug}</span>
+        Kết quả tìm kiếm cho: <span className="text-warning">{slug.replace(/-/g, " ")}</span>
       </h3>
 
       {/* Loading */}
       {loading && (
-        <div className="text-center text-light mt-4">
+        <div className="text-center text-light mt-4" style={{ fontSize: "18px" }}>
           Đang tìm kiếm...
         </div>
       )}
 
       {/* Không có kết quả */}
       {!loading && data.length === 0 && (
-        <div className="text-center text-light mt-4">
+        <div className="text-center text-light mt-4" style={{ fontSize: "18px" }}>
           Không tìm thấy truyện phù hợp
         </div>
       )}
 
       {/* Có dữ liệu */}
       {!loading && data.length > 0 && (
-        <div className="comicGrid">
+        <div className="comicList">
           {data.map((item) => (
             <ComicCard key={item._id} comic={item} />
           ))}

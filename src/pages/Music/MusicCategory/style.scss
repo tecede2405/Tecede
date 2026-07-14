@@ -69,20 +69,20 @@
 /* CỘT TRÁI: HEADER & TABLE */
 /* ========================================= */
 .album-header {
-  padding: 15px 0 15px 0;
+  padding: 10px 0 10px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .album-cover-img {
-  width: 130px; 
-  height: 130px;
+  width: 115px; 
+  height: 115px;
   border-radius: 12px;
   object-fit: cover;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
 }
 
-.album-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #fff; }
-.album-desc { font-size: 12px; color: #a0a0ab; margin-bottom: 5px; }
+.album-title { font-size: 19px; font-weight: 700; margin-bottom: 8px; color: #fff; }
+.album-desc { font-size: 12px; color: #a0a0ab; margin-bottom: 3px; }
 .album-stats { font-size: 12px; color: rgba(255, 255, 255, 0.5); }
 
 .btn-play-all {
@@ -142,8 +142,8 @@
     text-overflow: ellipsis;
   }
   
-  th { color: rgba(255, 255, 255, 0.5); font-size: 12px; font-weight: 500; padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-  td { padding: 12px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.02); vertical-align: middle; }
+  th { color: rgba(255, 255, 255, 0.5); font-size: 12px; font-weight: 500; padding: 9px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  td { padding: 9px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.02); vertical-align: middle; }
   
   .song-row {
     cursor: pointer; transition: background 0.2s; border-radius: 8px;
@@ -151,16 +151,16 @@
     &.playing { background: rgba(155, 77, 224, 0.1); .song-name-text { color: #c084fc; } }
   }
   
-  .th-number, .td-number { width: 45px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; padding: 12px 5px; } 
+  .th-number, .td-number { width: 45px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; padding: 9px 5px; } 
   .th-title, .td-title { width: 45%; } 
-  .th-artist, .td-artist { width: 30%; color: rgba(255,255,255,0.5); font-size: 13px; }
+  .th-artist, .td-artist { width: 30%; color: rgba(255,255,255,0.5); font-size: 11px; }
   
   /* 🌟 Đã căn giữa chuẩn xác cho cột Cột Thời Gian/Lượt Nghe */
-  .th-time, .td-time { width: 20%; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+  .th-time, .td-time { width: 20%; text-align: center; color: rgba(255,255,255,0.5); font-size: 11px; }
 
-  .song-thumb { width: 40px; height: 40px; object-fit: cover; }
+  .song-thumb { width: 36px; height: 36px; object-fit: cover; border-radius: 4px; }
   .song-name-box { display: flex; align-items: center; gap: 8px; }
-  .song-name-text { font-size: 14px; font-weight: 500; color: #fff; }
+  .song-name-text { font-size: 12px; font-weight: 500; color: #fff; }
   .song-badge { font-size: 9px; padding: 2px 4px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 4px; color: rgba(255, 255, 255, 0.5); }
   .row-action-icon { opacity: 0; transition: opacity 0.2s; color: rgba(255,255,255,0.7); &:hover { color: #9b4de0; } }
   .playing-gif { width: 15px; height: 15px; }
@@ -276,7 +276,7 @@
 
   .un-number { font-size: 12px; color: rgba(255,255,255,0.4); width: 20px; }
   .un-thumb { width: 40px; height: 40px; object-fit: cover; }
-  .un-title { font-size: 13px; font-weight: 500; color: #fff; }
+  .un-title { font-size: 11px; font-weight: 500; color: #fff; }
   .un-artist { font-size: 11px; color: #a0a0ab; }
   .un-time { font-size: 11px; color: rgba(255,255,255,0.4); }
 }

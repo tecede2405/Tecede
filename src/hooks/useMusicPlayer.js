@@ -18,6 +18,7 @@ let audioCtx;
 let source;
 let isDspInitialized = false;
 let bass, mid, treble, delay, feedback, wetGain, dryGain, compressor;
+let consecutiveErrors = 0; // Biến theo dõi số lần lỗi liên tiếp
 
 export default function useMusicPlayer(initialSongs) {
   const [originalPlaylist, setOriginalPlaylist] = useState(initialSongs);
@@ -138,7 +139,11 @@ export default function useMusicPlayer(initialSongs) {
   // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN
   useEffect(() => {
     const handleFirstInteraction = () => {
-      initAudioContext();
+      // CHỈ khởi tạo DSP nếu tính năng Vibe đang BẬT. 
+      // Nếu tắt (Mobile), TUYỆT ĐỐI không bọc AudioElement vào Web Audio API để tránh bị iOS chặn phát nền.
+      if (isVibeEnabled && !isDspInitialized) {
+        initAudioContext();
+      }
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('touchstart', handleFirstInteraction);
     };
@@ -148,15 +153,15 @@ export default function useMusicPlayer(initialSongs) {
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('touchstart', handleFirstInteraction);
     };
-  }, [initAudioContext]);
+  }, [isVibeEnabled, initAudioContext]);
 
   // 🌟 SỬA LỖI NÚT BẤM: Gắn hàm toggleVibe ra ngoài thay vì setIsVibeEnabled
   const toggleVibe = useCallback(() => {
-    if (!isDspInitialized) {
-        initAudioContext(); // Ép khởi tạo nếu chưa có
-    }
     const newState = !isVibeEnabled;
     setIsVibeEnabled(newState);
+    if (newState && !isDspInitialized) {
+        initAudioContext(); // Ép khởi tạo nếu người dùng cố tình bật
+    }
     applyRouting(newState); // Ép đi dây lại ngay lập tức
   }, [isVibeEnabled, initAudioContext]);
 
@@ -193,9 +198,10 @@ export default function useMusicPlayer(initialSongs) {
     globalAudio.onplay = () => {
       setIsLoading(false);
       setIsPlaying(true);
+      consecutiveErrors = 0; // Reset lỗi khi phát thành công
       
-      // Đánh thức DSP mỗi khi nhạc bắt đầu phát
-      if (audioCtx && audioCtx.state === 'suspended') {
+      // Đánh thức DSP mỗi khi nhạc bắt đầu phát (Nếu DSP đã khởi tạo)
+      if (isDspInitialized && audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
 
@@ -222,14 +228,26 @@ export default function useMusicPlayer(initialSongs) {
       console.warn("Lỗi nhạc:", e);
       setIsLoading(false);
       setIsPlaying(false);
-      setTimeout(() => {
-        if (actionsRef.current.next) actionsRef.current.next();
-      }, 2000);
+      consecutiveErrors++;
+      
+      // Chỉ next tự động nếu số lần lỗi liên tiếp < 3 để tránh nhảy cóc liên tục dưới nền
+      if (consecutiveErrors <= 3) {
+        setTimeout(() => {
+          if (actionsRef.current.next) actionsRef.current.next();
+        }, 2000);
+      } else {
+        console.warn("Quá nhiều lỗi liên tiếp. Vòng lặp autoplay bị chặn.");
+      }
     };
 
-    globalAudio.play().catch(() => {
+    globalAudio.play().catch((err) => {
       setIsLoading(false);
       setIsPlaying(false);
+      
+      // Nếu HĐH chặn autoplay dưới nền hoặc màn hình tắt -> Ngưng vòng lặp
+      if (err.name === 'NotAllowedError' || (typeof document !== 'undefined' && document.hidden)) {
+         consecutiveErrors = 99; // Bứt dây vòng lặp ngay lập tức
+      }
     });
 
     fetch(`${baseUrl}/api/songs/${song._id}/listen`, { method: "PUT" }).catch(()=>{});

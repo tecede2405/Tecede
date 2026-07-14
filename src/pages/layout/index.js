@@ -20,6 +20,7 @@ function Layout() {
   
   const navigate = useNavigate();
   const location = useLocation();
+  const isAdminPage = location.pathname.startsWith("/admin");
   const { user, logout } = useAuth();
 
   const DarkSwal = Swal.mixin({
@@ -220,31 +221,33 @@ function Layout() {
         <Outlet />
       </div>
 
-      <footer className="footer-custom">
-        <div className="row text-start gy-4 p-3" style={{ maxWidth: "100vw", margin: 0 }}>
-          <div className="col-12 col-md-4 col-sm-5 footer-brand-section">
-            <img src="https://i.ibb.co/C3PLG9T9/2c06afde0ebca0c687b0d3add5f4b1f2.webp" alt="logo-footer" className="footer-logo mb-3" />
-            <p className="footer-desc">Tecede - Website xem phim miễn phí lỏ nhất Việt Nam.</p>
+      {!isAdminPage && (
+        <footer className="footer-custom">
+          <div className="row text-start gy-4 p-3" style={{ maxWidth: "100vw", margin: 0 }}>
+            <div className="col-12 col-md-4 col-sm-5 footer-brand-section">
+              <img src="https://i.ibb.co/C3PLG9T9/2c06afde0ebca0c687b0d3add5f4b1f2.webp" alt="logo-footer" className="footer-logo mb-3" />
+              <p className="footer-desc">Tecede - Website xem phim miễn phí lỏ nhất Việt Nam.</p>
+            </div>
+            <div className="col-12 col-md-4 col-sm-5">
+              <h6 className="footer-subtitle">Liên hệ hỗ trợ</h6>
+              <ul className="footer-list">
+                <li><FaPhoneVolume className="me-2 text-purple" /> +84 3x4 5x7 xxx</li>
+                <li><FaEnvelope className="me-2 text-purple" /> erenjeager6753@gmail.com</li>
+                <li><FaHashtag className="me-2 text-purple" /> #tecede #tecedeblog</li>
+              </ul>
+            </div>
+            <div className="col-12 col-md-4 col-sm-5">
+              <h6 className="footer-subtitle">Liên kết</h6>
+              <ul className="footer-list">
+                <li><a href="/sitemap.xml">Sitemap</a></li>
+              </ul>
+            </div>
           </div>
-          <div className="col-12 col-md-4 col-sm-5">
-            <h6 className="footer-subtitle">Liên hệ hỗ trợ</h6>
-            <ul className="footer-list">
-              <li><FaPhoneVolume className="me-2 text-purple" /> +84 3x4 5x7 xxx</li>
-              <li><FaEnvelope className="me-2 text-purple" /> erenjeager6753@gmail.com</li>
-              <li><FaHashtag className="me-2 text-purple" /> #tecede #tecedeblog</li>
-            </ul>
+          <div className="footer-bottom">
+            © {new Date().getFullYear()} Tecede. All rights reserved.
           </div>
-          <div className="col-12 col-md-4 col-sm-5">
-            <h6 className="footer-subtitle">Liên kết</h6>
-            <ul className="footer-list">
-              <li><a href="/sitemap.xml">Sitemap</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          © {new Date().getFullYear()} Tecede. All rights reserved.
-        </div>
-      </footer>
+        </footer>
+      )}
     </>
   );
 }

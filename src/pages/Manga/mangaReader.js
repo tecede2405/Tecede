@@ -131,25 +131,22 @@ export default function ComicReader() {
 
       {/* HEADER */}
       <div className="tecReaderHeader">
-
-        <div className="readerLeft">
-          <FaArrowLeft onClick={() => navigate(-1)} />
+        <div className="readerLeft" style={{ cursor: "pointer", padding: "10px" }}>
+          <FaArrowLeft size={20} onClick={() => navigate(-1)} />
         </div>
 
         <div className="readerTitle">
           <h4>{chapter.comic_name}</h4>
-          <span>Chapter {chapter.chapter_name}</span>
+          <span>Chương {chapter.chapter_name}</span>
         </div>
 
-        <div className="readerRight">
-          <FaHome onClick={() => navigate("/truyen")} />
+        <div className="readerRight" style={{ cursor: "pointer", padding: "10px" }}>
+          <FaHome size={22} onClick={() => navigate("/truyen")} />
         </div>
-
       </div>
 
       {/* CONTENT */}
       <div className="tecReaderContent">
-
         <div className="tecReaderImages">
           {images.map((img, index) => (
             <img
@@ -161,32 +158,31 @@ export default function ComicReader() {
             />
           ))}
         </div>
-
       </div>
 
       {/* FOOTER */}
       <div className="tecReaderFooter">
-
         <button
           className="prevBtn"
           disabled={!prev}
           onClick={() => prev && goChap(prev)}
+          title="Chương trước"
         >
           ‹
         </button>
 
         <span className="currentChap">
-          Chapter {chapter.chapter_name}
+          Chương {chapter.chapter_name}
         </span>
 
         <button
           className="nextBtn"
           disabled={!next}
           onClick={() => next && goChap(next)}
+          title="Chương sau"
         >
           ›
         </button>
-
       </div>
 
     </div>

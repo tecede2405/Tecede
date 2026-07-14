@@ -55,7 +55,9 @@ function Admin() {
 
   return (
     <div className="admin">
-      <Tabbar />
+      <div className="tabbar-container">
+        <Tabbar />
+      </div>
 
       <div className="admin-layout">
         <div className="admin-topbar">

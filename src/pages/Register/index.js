@@ -87,13 +87,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div
-      className="login-page"
-      style={{
-        backgroundImage:
-          "url(https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/VN-vi-20260105-TRIFECTA-perspective_ec5c484f-840e-4d19-9f35-b9e6a0eef2c7_medium.jpg)",
-      }}
-    >
+    <div className="login-page">
       <Helmet>
         <title>Đăng ký - Tecede</title>
       </Helmet>

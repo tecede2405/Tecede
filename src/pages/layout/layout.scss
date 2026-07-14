@@ -421,8 +421,9 @@
 }
 
 @media (max-width: 992px) {
-    /* Ẩn bộ icon Home/Sách/Nhạc ở giữa trên mobile */
-    .header__right .nav-icons { display: none !important; }
+    /* Ẩn toàn bộ các cụm icon (Home, Truyện, Nhạc, Donate, Lịch sử) trên mobile */
+    .header__right .nav-icons,
+    .header__right .action-icons { display: none !important; }
 }
 
 @media (max-width: 768px) {

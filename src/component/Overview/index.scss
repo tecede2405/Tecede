@@ -141,6 +141,14 @@ $primary: #2563eb;
     width: 100%;
     height: 300px;
   }
+  
+  /* Nếu là biểu đồ Category, cho phép content tự giãn ra chiếm hết khoảng trống */
+  &.category-chart {
+    .chart-content {
+      height: auto;
+      flex: 1;
+    }
+  }
 }
 
 // ==== 3. TÙY CHỈNH BIỂU ĐỒ TRÒN CATEGORY ====
@@ -151,7 +159,7 @@ $primary: #2563eb;
     align-items: center;
     justify-content: flex-start;
     gap: 12px;
-    height: 300px;
+    height: 100%; /* Đổi từ 300px sang 100% để lấp đầy card */
   }
 
   .pie-chart-wrapper {
@@ -167,7 +175,8 @@ $primary: #2563eb;
 
   .pie-legend {
     width: 100%;
-    max-height: 200px;
+    flex: 1; /* Chiếm hết khoảng trống còn lại */
+    max-height: 300px; /* Nới rộng giới hạn cuộn để hiện nhiều hơn */
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -356,9 +365,10 @@ $primary: #2563eb;
     .pie-container {
       flex-direction: column; 
       gap: 16px;
+      height: auto; /* Gỡ bỏ chiều cao cố định để hiện hết */
     }
     .pie-chart-wrapper { width: 100%; height: 180px; }
-    .pie-legend { width: 100%; max-height: 140px; }
+    .pie-legend { width: 100%; max-height: none; overflow-y: visible; } /* Không giới hạn chiều cao nữa */
   }
 }
 
@@ -399,5 +409,6 @@ $primary: #2563eb;
   .chart-card {
     padding: 16px;
     .chart-content { height: 240px; }
+    &.category-chart .chart-content { height: auto; } /* Riêng biểu đồ tròn thì auto */
   }
 }

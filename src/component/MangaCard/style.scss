@@ -1,132 +1,174 @@
-.comicCard{
-  background:#111;
-  border-radius:14px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:transform .25s ease, box-shadow .25s ease;
+.manga-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+
+    .manga-card__thumb img {
+      transform: scale(1.08);
+    }
+
+    .manga-card__overlay {
+      opacity: 1;
+    }
+
+    .manga-title {
+      color: #a78bfa;
+    }
+  }
 }
 
-.comicCard:hover{
-  transform:translateY(-6px);
-  box-shadow:0 10px 20px rgba(0,0,0,.4);
+.manga-card__thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
 }
 
-.comicThumb{
-  position:relative;
+.manga-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+
+  .read-icon {
+    font-size: 32px;
+    color: white;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+    transform: translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
-.comicThumb img{
-  width:100%;
-  aspect-ratio:3/4;
-  object-fit:cover;
+.manga-card:hover .manga-card__overlay .read-icon {
+  transform: translateY(0);
 }
 
-.comicThumb .badge{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:#008ce9;
-  color:white;
-  padding:4px 10px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:600;
+.manga-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+
+  &--hot {
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
 }
 
-.comicInfo{
-  padding:12px;
+.manga-card__info {
+  padding: 12px;
+  background: linear-gradient(to top, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.8) 100%);
 }
 
-.comicInfo h4{
-  font-size:14px;
-  line-height:1.4;
-  margin-bottom:6px;
-
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+.manga-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s ease;
 }
 
-.meta{
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  color:#aaa;
-  margin-top:4px;
+.manga-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .manga-chapter {
+    font-size: 12px;
+    font-weight: 500;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
 }
 
-.newChap{
-  color:#3ddc97;
-  font-size:13px;
-  margin-top:6px;
-}
-
-
-.comicList{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-  gap:12px;
-}
-// comics skeleton
-/* Skeleton base */
+/* SKELETON */
 .skeleton-box,
 .skeleton-line {
-  background: linear-gradient(
-    90deg,
-    #1a1a1a 25%,
-    #2a2a2a 37%,
-    #1a1a1a 63%
-  );
+  background: linear-gradient(90deg, #1e293b 25%, #334155 37%, #1e293b 63%);
   background-size: 400% 100%;
   animation: skeleton-loading 1.4s ease infinite;
   border-radius: 8px;
 }
 
 @keyframes skeleton-loading {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: 0 0;
-  }
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
 }
 
-/* Thumb */
-.skeleton .comicThumb {
+.skeleton .manga-card__thumb {
   width: 100%;
-  height: 160px; 
+  aspect-ratio: 2 / 3;
 }
 
-/* Text */
 .skeleton-line {
-  height: 10px;
+  height: 12px;
   margin-bottom: 8px;
+  
+  &.title { height: 16px; width: 90%; }
+  &.small { width: 60%; }
 }
 
-.skeleton-line.title {
-  height: 14px;
-  width: 90%;
+/* RESPONSIVE GRID */
+.comicList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
 }
 
-.skeleton-line.small {
-  width: 60%;
-}
-@media(max-width:1200px){
-  .comicList{
-    grid-template-columns:repeat(4,1fr);
-  }
+@media (max-width: 1200px) {
+  .comicList { grid-template-columns: repeat(5, 1fr); }
 }
 
-@media(max-width:900px){
-  .comicList{
-    grid-template-columns:repeat(3,1fr);
-  }
+@media (max-width: 900px) {
+  .comicList { grid-template-columns: repeat(4, 1fr); gap: 12px; }
 }
 
-@media(max-width:500px){
-  .comicList{
-    grid-template-columns:repeat(3,1fr); /* mobile 3 card */
-    gap:10px;
-  }
+@media (max-width: 600px) {
+  .comicList { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  
+  .manga-card__info { padding: 8px; }
+  .manga-title { font-size: 12px; }
+  .manga-meta .manga-chapter { font-size: 11px; padding: 2px 6px; }
+}
+
+@media (max-width: 400px) {
+  .comicList { grid-template-columns: repeat(2, 1fr); }
 }

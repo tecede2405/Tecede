@@ -8,7 +8,7 @@ import { fetchFavorites, addFavorite, removeFavorite } from "../../hooks/useFavo
 
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Thumbs, FreeMode, Pagination, A11y, EffectFade } from "swiper/modules";
+import { Thumbs, Pagination, A11y, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/thumbs";
 import "swiper/css/free-mode";
@@ -107,9 +107,11 @@ function AnimeShowcase() {
         className="as-main-swiper"
         speed={400}
         grabCursor={true}
+        loop={true}
+        loopedSlides={filmData.length}
       >
         {filmData.map((item, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={item.path || idx}>
             <div className="as-slide">
               {/* Blurred bg dùng thumb (ảnh ngang) */}
               <div
@@ -193,18 +195,19 @@ function AnimeShowcase() {
 
       {/* ── Thumbnail Swiper ── */}
       <Swiper
-        modules={[Thumbs, FreeMode]}
+        modules={[Thumbs]} /* Đã bỏ FreeMode vì gây lỗi vòng lặp */
         onSwiper={setThumbsSwiper}
         slidesPerView="auto"
-        freeMode={true}
         watchSlidesProgress={true}
         className="as-thumb-swiper"
         grabCursor={true}
         centeredSlides={false}
         slideToClickedSlide={true}
+        loop={true}
+        loopedSlides={filmData.length}
       >
         {filmData.map((film, idx) => (
-          <SwiperSlide key={idx} className="as-thumb-slide">
+          <SwiperSlide key={film.path || idx} className="as-thumb-slide">
             <div className="as-thumb-wrap">
               <img
                 src={film.image}

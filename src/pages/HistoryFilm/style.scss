@@ -1,17 +1,11 @@
 .history-page {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-.history-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8); // độ mờ 50%
-  z-index: 1;
+  background-color: #07050f;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.08), transparent 30%),
+    radial-gradient(circle at 85% 30%, rgba(61, 220, 132, 0.05), transparent 30%);
 }
 
 .history-page > * {
@@ -29,198 +23,118 @@
 .wh404-wrapper {
   width: 100%;
   min-height: 100vh;
-
   position: relative;
   overflow: hidden;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 20px;
-
-  background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/e393bb3f-261f-43d1-99bb-16a157885615/web/VN-vi-20260105-TRIFECTA-perspective_ec5c484f-840e-4d19-9f35-b9e6a0eef2c7_medium.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #07050f;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(168, 85, 247, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(61, 220, 132, 0.1), transparent 25%);
 }
 
 .wh404-overlay {
-  position: absolute;
-  inset: 0;
-
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(5px);
+  display: none;
 }
 
 .wh404-content {
   position: relative;
   z-index: 2;
-
   width: 100%;
-  max-width: 650px;
-
+  max-width: 500px;
   text-align: center;
-
-  padding: 45px 30px;
-
-  border-radius: 28px;
-
-  background: rgba(0, 0, 0, 0.45);
-
+  padding: 40px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .wh404-heading {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-
-  margin-bottom: 25px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
+
 .wh404-icon {
-  width: 75px;
-  height: 75px;
-
-  border-radius: 50%;
-
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  color: #e50914;
-
-  background: rgba(229, 9, 20, 0.226);
-
-  box-shadow: 0 0 25px rgba(229, 9, 20, 0.25);
-
-  flex-shrink: 0;
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.15);
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+  border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .wh404-title {
   color: white;
-
-  font-size: 42px;
-  font-weight: 800;
-
+  font-size: 28px;
+  font-weight: 700;
   margin: 0;
-
-  text-shadow: 0 0 25px rgba(229, 9, 20, 0.25);
+  letter-spacing: 0.5px;
 }
 
 .wh404-desc {
-  color: rgba(255, 255, 255, 0.75);
-
-  font-size: 18px;
-  line-height: 1.8;
-
-  margin-bottom: 40px;
+  color: #a1a1aa;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 32px;
 }
 
 .wh404-btn-group {
   display: flex;
   justify-content: center;
-  gap: 20px;
-
+  gap: 16px;
   flex-wrap: wrap;
 }
 
 .wh404-action-btn {
-  position: relative;
-
-  border: none;
-  outline: none;
-
-  background: transparent;
-
-  padding: 15px 36px;
-
-  border-radius: 999px;
-
-  cursor: pointer;
-
-  overflow: hidden;
-
-  transition: transform 0.3s ease;
-
-  min-width: 210px;
-}
-
-.wh404-action-btn span {
-  position: relative;
-  z-index: 3;
-
-  color: white;
-  font-size: 16px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
-
-  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.wh404-action-btn::before {
-  content: "";
-
-  position: absolute;
-  inset: -3px;
-
-  border-radius: 999px;
-
-  background: conic-gradient(
-    from 0deg,
-    #ff0000,
-    #ff7b00,
-    #ffee00,
-    #00ff95,
-    #00c3ff,
-    #003cff,
-    #ae00ff,
-    #ff008c,
-    #ff0000
-  );
-
-  animation: wh404RotateBorder 2s linear infinite;
-}
-.wh404-login-btn{
-    background: rgba(229, 9, 20, 0.226);
-    box-shadow: 0 0 25px rgba(229, 9, 20, 0.25);
-}
-.wh404-login-btn::before {
-  background: conic-gradient(
-    from 0deg,
-    #ff0000,
-    #ff2d55,
-    #ff4d4d,
-    #ff0000
-  );
-}
-.wh404-action-btn::after {
-  content: "";
-
-  position: absolute;
-  inset: 3px;
-
-  border-radius: 999px;
-
-  background: #000;
-
-  z-index: 1;
+/* Nút Về trang chủ (Secondary) */
+.wh404-action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
 .wh404-action-btn:hover {
-  transform: scale(1.05);
-
-  box-shadow:
-    0 0 18px rgba(255, 0, 76, 0.22),
-    0 0 35px rgba(0, 195, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
-@keyframes wh404RotateBorder {
-  100% {
-    transform: rotate(360deg);
-  }
+/* Nút Đăng nhập ngay (Primary) */
+.wh404-login-btn {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.wh404-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+  background: linear-gradient(135deg, #b065f8, #894cee);
 }
 
 @media (max-width: 768px) {

@@ -11,19 +11,12 @@
     .tabbar-container {
         width: 200px; 
         flex-shrink: 0; 
+        align-self: stretch; /* Kéo dài hết nội dung trang để Tabbar bên trong có thể sticky */
         
-        /* Cố định Tabbar trượt theo màn hình Desktop */
-        position: sticky;
-        top: 70px; /* Cách mép trên đúng bằng chiều cao của Header */
-        height: calc(100vh - 70px); 
-        overflow-y: auto; // Chỉ cuộn menu nếu menu quá nhiều mục
-        // Ẩn tabbar cứng trên mobile (vì mobile bạn đã có Menu Hamburger rồi)
+        // Ẩn tabbar cứng trên mobile
         @media (max-width: 768px) {
             display: none;
         }
-
-        &::-webkit-scrollbar { width: 4px; }
-        &::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
     }
 
     &__main {
