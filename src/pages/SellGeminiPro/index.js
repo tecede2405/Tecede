@@ -15,12 +15,13 @@ const plans = [
     badge: null,
     highlight: false,
     features: [
-      "1 tài khoản Gemini Pro",
+      "1 tài khoản Gemini Pro (dùng riêng)",
       "Thời hạn 18 tháng (Jio)",
       "Gemini Advanced đầy đủ",
       "Google One 5TB (chia sẻ 5 thành viên)",
       "Hỗ trợ qua Fanpage",
       "Hỗ trợ kích hoạt nhanh",
+      "Bảo hành 12H - không bảo hành nhúng 9Router và ClipProxy",
     ],
   },
   {
@@ -32,13 +33,13 @@ const plans = [
     badge: "PHỔ BIẾN",
     highlight: true,
     features: [
-      "3 tài khoản Gemini Pro",
+      "3 tài khoản Gemini Pro (dùng riêng)",
       "Thời hạn 18 tháng (Jio)",
       "Gemini Advanced đầy đủ",
       "Google One 5TB (chia sẻ 5 thành viên)",
-      "Ưu tiên hỗ trợ 24/7",
       "Tiết kiệm ~17% so với mua lẻ",
       "Hỗ trợ kích hoạt nhanh",
+      "Bảo hành 12H - không bảo hành nhúng 9Router và ClipProxy",
     ],
   },
   {
@@ -50,14 +51,13 @@ const plans = [
     badge: "TIẾT KIỆM NHẤT",
     highlight: false,
     features: [
-      "5 tài khoản Gemini Pro",
+      "5 tài khoản Gemini Pro (dùng riêng)",
       "Thời hạn 18 tháng (Jio)",
       "Gemini Advanced đầy đủ",
       "Google One 5TB (chia sẻ 5 thành viên)",
-      "Ưu tiên hỗ trợ VIP",
       "Tiết kiệm 25% so với mua lẻ",
       "Hỗ trợ kích hoạt nhanh",
-      "Phù hợp nhóm / gia đình",
+      "Bảo hành 12H - không bảo hành nhúng 9Router và ClipProxy",
     ],
   },
 ];
@@ -82,7 +82,7 @@ function SellGeminiPro() {
         </h1>
 
         <p className="sgp-hero__desc">
-          Tận hưởng Gemini Advanced chính hãng – gói Jio 18 tháng với giá siêu
+          Tận hưởng Gemini Advanced bảo hành 12h – gói Jio 18 tháng với giá siêu
           tốt. Hỗ trợ kích hoạt nhanh nhanh, hỗ trợ tận tình.
         </p>
 
@@ -175,11 +175,8 @@ function SellGeminiPro() {
       {/* ─── NOTE ─── */}
       <section className="sgp-note">
         <p>
-          📌 Mọi thắc mắc vui lòng liên hệ qua{" "}
-          <a href={FANPAGE_URL} target="_blank" rel="noopener noreferrer">
-            Fanpage
-          </a>{" "}
-          để được hỗ trợ nhanh nhất.
+          📌 Ad bán giùm bên thứ 3 để nhận hoa hồng,{" "}
+          mọi người ai có nhu cầu mua ủng hộ nhé.
         </p>
       </section>
     </div>

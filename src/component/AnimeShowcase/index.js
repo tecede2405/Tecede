@@ -108,7 +108,6 @@ function AnimeShowcase() {
         speed={400}
         grabCursor={true}
         loop={true}
-        loopedSlides={filmData.length}
       >
         {filmData.map((item, idx) => (
           <SwiperSlide key={item.path || idx}>
@@ -181,8 +180,6 @@ function AnimeShowcase() {
                 <img
                   src={item.thumb || item.image}
                   alt={item.title}
-                  loading="lazy"
-                  decoding="async"
                 />
               </div>
             </div>
@@ -204,7 +201,6 @@ function AnimeShowcase() {
         centeredSlides={false}
         slideToClickedSlide={true}
         loop={true}
-        loopedSlides={filmData.length}
       >
         {filmData.map((film, idx) => (
           <SwiperSlide key={film.path || idx} className="as-thumb-slide">
@@ -212,8 +208,6 @@ function AnimeShowcase() {
               <img
                 src={film.image}
                 alt={film.title}
-                loading="lazy"
-                decoding="async"
               />
             </div>
           </SwiperSlide>

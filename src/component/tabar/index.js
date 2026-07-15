@@ -119,7 +119,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className={`tab-parent ${openTab === "music" ? "open" : ""}`}>
           <button onClick={() => toggleTab("music")} className={openTab === "music" ? "active-btn" : ""}>
             <span className="title">
-              <FaMusic style={{ color: "#ec4899", fontSize: "16px" }} />
+              <FaMusic style={{ fontSize: "16px" }} />
               <span className="tab-label">Thể loại nhạc</span>
             </span>
             {openTab === "music" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}
@@ -142,7 +142,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className={`tab-parent ${openTab === "comic" ? "open" : ""}`}>
           <button onClick={() => toggleTab("comic")} className={openTab === "comic" ? "active-btn" : ""}>
             <span className="title">
-              <FaBook style={{ color: "#f59e0b", fontSize: "16px" }} />
+              <FaBook style={{ fontSize: "16px" }} />
               <span className="tab-label">Đọc truyện</span>
             </span>
             {openTab === "comic" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}
@@ -157,7 +157,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className={`tab-parent ${openTab === "fanpage" ? "open" : ""}`}>
           <button onClick={() => toggleTab("fanpage")} className={openTab === "fanpage" ? "active-btn" : ""}>
             <span className="title">
-              <FaFacebook style={{ color: "#1877F2", fontSize: "16px" }} />
+              <FaFacebook style={{ fontSize: "16px" }} />
               <span className="tab-label">Follow Fanpage</span>
             </span>
             {openTab === "fanpage" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}
@@ -177,7 +177,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className="tab-parent">
           <NavLink to="/ung-ho" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
-              <FaHandHoldingHeart style={{ color: "#f43f5e", fontSize: "16px" }} />
+              <FaHandHoldingHeart style={{ fontSize: "16px" }} />
               <span className="tab-label">Donate</span>
             </span>
           </NavLink>
@@ -187,7 +187,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className="tab-parent">
           <NavLink to="/tai-app" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
-              <FaAndroid style={{ color: "#3ddc84", fontSize: "16px" }} />
+              <FaAndroid style={{ fontSize: "16px" }} />
               <span className="tab-label">Tải app Android</span>
             </span>
           </NavLink>
@@ -197,8 +197,8 @@ function Tabbar({ isOpen, onClose }) {
         <div className="tab-parent">
           <NavLink to="/ban-gemini-pro" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
-              <SiGooglegemini style={{ color: "#a855f7", fontSize: "16px" }} />
-              <span className="tab-label">Sell Gemini Pro</span>
+              <SiGooglegemini style={{ fontSize: "16px" }} />
+              <span className="tab-label">Gemini Pro giá rẻ</span>
             </span>
           </NavLink>
         </div>
@@ -208,7 +208,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className={`tab-parent ${openTab === "country" ? "open" : ""}`}>
           <button onClick={() => toggleTab("country")} className={openTab === "country" ? "active-btn" : ""}>
             <span className="title">
-              <FaGlobeAsia style={{ color: "#0ea5e9", fontSize: "16px" }} />
+              <FaGlobeAsia style={{ fontSize: "16px" }} />
               <span className="tab-label">Quốc gia</span>
             </span>
             {openTab === "country" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}
@@ -229,7 +229,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className="tab-parent">
           <NavLink to="/loc-phim" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
-              <FaFilter style={{ color: "#eab308", fontSize: "16px" }} />
+              <FaFilter style={{ fontSize: "16px" }} />
               <span className="tab-label">Lọc phim</span>
             </span>
           </NavLink>
@@ -239,7 +239,7 @@ function Tabbar({ isOpen, onClose }) {
         <div className={`tab-parent ${openTab === "genre" ? "open" : ""}`}>
           <button onClick={() => toggleTab("genre")} className={openTab === "genre" ? "active-btn" : ""}>
             <span className="title">
-              <FaFilm style={{ color: "#ef4444", fontSize: "16px" }} />
+              <FaFilm style={{ fontSize: "16px" }} />
               <span className="tab-label">Thể loại phim</span>
             </span>
             {openTab === "genre" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}

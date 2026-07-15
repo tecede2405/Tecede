@@ -193,6 +193,21 @@ export default function useMusicPlayer(initialSongs) {
     globalAudio.onerror = null;
 
     globalAudio.src = `${baseUrl}/api/songs/stream/${song._id}`;
+    
+    // Đăng ký MediaSession NGAY LẬP TỨC để OS (Android/iOS) biết app vẫn đang active khi chuyển bài dưới nền
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title || "Unknown Title",
+        artist: song.artist || "Unknown Artist",
+        artwork: [{ src: song.image || 'https://via.placeholder.com/512', sizes: '512x512', type: 'image/jpeg' }]
+      });
+      navigator.mediaSession.playbackState = 'playing';
+      navigator.mediaSession.setActionHandler('play', () => { globalAudio.play(); setIsPlaying(true); });
+      navigator.mediaSession.setActionHandler('pause', () => { globalAudio.pause(); setIsPlaying(false); });
+      navigator.mediaSession.setActionHandler('previoustrack', () => actionsRef.current.prev && actionsRef.current.prev());
+      navigator.mediaSession.setActionHandler('nexttrack', () => actionsRef.current.next && actionsRef.current.next());
+    }
+
     globalAudio.load();
 
     globalAudio.onplay = () => {
@@ -203,18 +218,6 @@ export default function useMusicPlayer(initialSongs) {
       // Đánh thức DSP mỗi khi nhạc bắt đầu phát (Nếu DSP đã khởi tạo)
       if (isDspInitialized && audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
-      }
-
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: song.title || "Unknown Title",
-          artist: song.artist || "Unknown Artist",
-          artwork: [{ src: song.image || 'https://via.placeholder.com/512', sizes: '512x512', type: 'image/jpeg' }]
-        });
-        navigator.mediaSession.setActionHandler('play', () => { globalAudio.play(); setIsPlaying(true); });
-        navigator.mediaSession.setActionHandler('pause', () => { globalAudio.pause(); setIsPlaying(false); });
-        navigator.mediaSession.setActionHandler('previoustrack', () => actionsRef.current.prev && actionsRef.current.prev());
-        navigator.mediaSession.setActionHandler('nexttrack', () => actionsRef.current.next && actionsRef.current.next());
       }
     };
 

@@ -74,7 +74,6 @@
   overflow: hidden;
   user-select: none;
   transform: translate3d(0, 0, 0); /* Ép dùng GPU chống lag */
-  will-change: opacity;
 
   /* Blurred bg */
   &__bg {
@@ -86,7 +85,6 @@
     transform: translate3d(0, 0, 0) scale(1.08); /* Ép dùng GPU */
     z-index: 0;
     pointer-events: none;
-    will-change: transform;
   }
 
   /* Dark overlay */

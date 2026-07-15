@@ -3,7 +3,7 @@ import { MdPhoneAndroid } from "react-icons/md";
 import Swal from "sweetalert2";
 import "./style.scss";
 
-const APK_DOWNLOAD_URL = "https://docs.google.com/uc?export=download&id=1Nmwsij9uWjkkhh7v-Ta4XGrOMwF2aY2R";
+const APK_DOWNLOAD_URL = "https://docs.google.com/uc?export=download&id=1GrWP_DFpkjAgxsSVghx7zCXi2kgZecOh";
 
 function DownloadApp() {
   const DarkSwal = Swal.mixin({
