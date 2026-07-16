@@ -4,20 +4,18 @@ import HomeFilm from '../../component/HomeFilm/index';
 import CinematicFilm from '../../component/HomeFilm/cinematic';
 import Film from '../../component/HomeFilm/film';
 import NewFilm from '../../component/HomeFilm/newfilm';
-// import NewAnimes from '../../component/HomeFilm/newAnime';
 import AnimeShowcase from '../../component/AnimeShowcase/index';
 import SieuNhan from '../../component/HomeFilm/tokusatsu';
-// import PopularFilm from '../../component/HeroCarousel/index';
 import HighRateFilm from '../../component/HomeFilm/highRate';
 import KoreaFilms from "../../component/HomeFilm/koreaFilm";
 import ChinaFilms from "../../component/HomeFilm/chinaFilm";
 import GenreCarousel from "../../component/Carousel/genreCarousel";
 import HomeMusic from "../../component/HomeMusic/index";
 import China3dFilms from "../../component/HomeFilm/china3dFilm";
-// import MovieCarousel from "../../component/MovieCarousel/index";
 import MovieRow from "../../component/MovieRow/index";
-// import ComicHero from "../../component/Banner/mangaBanner";
-import Donate from "../../component/Donate/index";
+
+
+import TopList from "../../component/TopList/index";
 import { Helmet } from "react-helmet-async";
 import LazySection from "../../component/LazySection/index";
 import "./style.scss";
@@ -80,11 +78,9 @@ function Home() {
                 <MovieRow />
               </div>
               
-              <div className="Home__music"> 
-                <GenreCarousel />
-              </div>
-              <LazySection> 
-                <Donate />
+              <GenreCarousel />
+              <LazySection>
+                <TopList />
               </LazySection>
               <LazySection> 
                 <HighRateFilm />

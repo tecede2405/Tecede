@@ -1,0 +1,469 @@
+.toplist-wrapper {
+  margin: 20px 15px;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  
+  @media (max-width: 768px) {
+    margin: 20px 0; /* Reset lề 2 bên trên mobile để rộng rãi hơn */
+  }
+}
+
+.toplist-container {
+  display: flex;
+  background: rgba(18, 18, 25, 0.6);
+  border-radius: 12px;
+  padding: 24px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  /* Mobile: Stack dọc: Donate trên, Phim dưới */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 16px 12px;
+  }
+}
+
+.toplist-film-wrapper {
+  display: flex;
+  flex: 2; /* Chiếm 2 phần */
+  
+  @media (max-width: 768px) {
+    order: 2; /* Đẩy xuống dưới Donate */
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    
+    padding-bottom: 8px; /* Thêm chút khoảng trống cho thanh cuộn */
+    
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+  }
+}
+
+.toplist-column {
+  flex: 1;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  
+  @media (max-width: 768px) {
+    min-width: 330px; /* Ép kích thước để cuộn ngang trên mobile */
+    padding: 0 15px;
+  }
+}
+
+.donate-column {
+  flex: 1;
+  @media (max-width: 768px) {
+    order: 1; /* Donate lên đầu */
+    min-width: 100%;
+    padding: 0;
+    margin-bottom: 24px;
+    border-left: none !important;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    padding-bottom: 24px;
+  }
+}
+
+.border-left-desktop {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  
+  @media (max-width: 768px) {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+.toplist-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.toplist-icon {
+  font-size: 18px;
+  color: #fcd34d; /* Vàng */
+}
+
+.toplist-heading {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.toplist-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toplist-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px;
+  border-radius: 8px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  &__rank {
+    font-size: 15px;
+    font-weight: 600;
+    color: #9ca3af;
+    width: 20px;
+    text-align: right;
+  }
+  
+  &__trend {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &__thumb {
+    width: 36px;
+    height: 52px;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  
+  &__title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e7eb;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+  }
+}
+
+/* Kiểu dáng riêng cho item Donate dạng Card mới */
+.donate-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.donate-card-item {
+  display: flex;
+  gap: 12px;
+  background: rgba(18, 18, 18, 0.8);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.2s;
+  
+  &:hover {
+    background: rgba(30, 30, 30, 0.8);
+  }
+}
+
+.donate-card-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(255,255,255,0.1); /* Màu mặc định cho hạng 4, 5... */
+}
+
+/* Hiệu ứng màu sắc rực rỡ cho TOP 3 */
+.donate-card-avatar.rank-1 {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+  color: #fff;
+}
+.donate-card-avatar.rank-2 {
+  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+  box-shadow: 0 0 10px rgba(148, 163, 184, 0.4);
+  color: #1e293b;
+}
+.donate-card-avatar.rank-3 {
+  background: linear-gradient(135deg, #b45309, #d97706);
+  box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+  color: #fff;
+}
+
+.donate-card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  gap: 2px;
+}
+
+.donate-card-line1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.donate-card-name {
+  font-weight: 700;
+  color: #f3f4f6;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.donate-card-icon {
+  color: #fcd34d;
+  font-size: 12px;
+}
+
+.donate-card-amount {
+  font-weight: 500;
+  font-size: 11px;
+  color: #10b981;
+}
+
+.donate-card-line2 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: #9ca3af;
+  width: 100%;
+}
+
+.donate-card-arrow {
+  color: #fcd34d;
+  font-size: 8px;
+  flex-shrink: 0;
+}
+
+.donate-msg-container {
+  overflow: hidden;
+  white-space: nowrap;
+  flex-grow: 1;
+  max-width: 260px;
+}
+
+.donate-card-msg {
+  display: inline-block;
+}
+
+.donate-scroll-text {
+  display: flex;
+  width: max-content;
+  animation: scrollText 25s linear infinite;
+}
+
+@keyframes scrollText {
+  0%, 6% { transform: translateX(0); } /* Đứng yên 1.5s (6% của 25s) ở vị trí bắt đầu */
+  100% { transform: translateX(-50%); }
+}
+
+/* Thanh Tiến Độ Donate (Inline) */
+.toplist-goal-wrapper-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toplist-goal-percent-inline {
+  font-size: 12px;
+  color: #10b981;
+  font-weight: 700;
+}
+
+.toplist-goal-bar-inline {
+  width: 80px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.toplist-goal-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f43f5e, #fb923c);
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+.donate-btn-mini {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  transition: all 0.2s;
+  
+  &:hover {
+    background: rgba(244, 63, 94, 0.2);
+    color: #fff;
+  }
+}
+
+.toplist-footer {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s;
+  
+  &:hover {
+    color: #fff;
+  }
+}
+
+/* ==============================================================
+   MODAL
+   ============================================================== */
+.toplist-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.toplist-modal-content {
+  background: #18181b;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
+
+.toplist-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+}
+
+.toplist-modal-close {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    color: #ef4444;
+  }
+}
+
+.toplist-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .toplist-heading {
+    font-size: 13px;
+  }
+  .toplist-item__title {
+    font-size: 12px;
+  }
+  .toplist-item__rank {
+    font-size: 14px;
+  }
+  .toplist-item__trend {
+    font-size: 14px;
+  }
+  .toplist-footer {
+    font-size: 11px;
+  }
+  .toplist-item__thumb {
+    width: 32px;
+    height: 46px;
+  }
+  
+  /* Thu nhỏ chữ cho Donate Card */
+  .donate-card-name {
+    font-size: 12px;
+  }
+  .donate-card-amount {
+    font-size: 11px;
+  }
+  .donate-card-line2 {
+    font-size: 10px;
+  }
+  .donate-card-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  .toplist-goal-percent-inline {
+    font-size: 11px;
+  }
+  .donate-btn-mini {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+}

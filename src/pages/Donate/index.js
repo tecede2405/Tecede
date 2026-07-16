@@ -76,48 +76,39 @@ function DonatePage() {
           </div>
         ) : (
           currentMonthDonates.map((item, index) => (
-          <div
-            className="donate-row"
-            key={item.id}
-          >
-            <div
-              className={`rank rank-${
-                index + 1 <= 5
-                  ? index + 1
-                  : "default"
-              }`}
-            >
-              #{index + 1}
-            </div>
+            <div className="donate-pg-card" key={item.id}>
+              <div className={`donate-pg-avatar rank-${index + 1 <= 3 ? index + 1 : 'default'}`}>
+                #{index + 1}
+              </div>
 
-            <div className="donate-content">
-              <div className="nickname-container">
-                    <span className="nickname">{item.nickname}</span>
-                    {item.created_at && (
-                      <span className="donate-date">
-                        {/* Cắt chuỗi lấy YYYY-MM-DD rồi lật ngược thành DD/MM/YYYY */}
-                        {item.created_at.split(" ")[0].split("-").reverse().join("/")}
+              <div className="donate-pg-info">
+                <div className="donate-pg-line1">
+                  <span className="donate-pg-name">{item.nickname}</span>
+                  {item.created_at && (
+                    <span className="donate-pg-date">
+                      {item.created_at.split(" ")[0].split("-").reverse().join("/")}
+                    </span>
+                  )}
+                  <span className="donate-pg-amount">{formatMoney(item.amount)}</span>
+                </div>
+
+                <div className="donate-pg-line2">
+                  <div className="donate-pg-msg-container">
+                    {item.message?.length > 35 ? (
+                      <div className="donate-pg-scroll">
+                        <span>{item.message} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span>{item.message} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                      </div>
+                    ) : (
+                      <span className="donate-pg-msg">
+                        {item.message || "Không có nội dung"}
                       </span>
                     )}
                   </div>
-
-              <div className="message">
-                <span className={
-                        item.message?.length > 35
-                          ? "scroll-text"
-                          : ""
-                      }>
-                  {item.message ||
-                    "Không có nội dung"}
-                </span>
+                </div>
               </div>
             </div>
-
-            <div className="amount">
-              {formatMoney(item.amount)}
-            </div>
-          </div>
-        ))
+          ))
       )}
       </div>
     </div>

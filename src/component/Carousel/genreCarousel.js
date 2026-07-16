@@ -93,24 +93,21 @@ function GenreCarousel() {
           <SwiperSlide key={item.id}>
             <div
               className="genre-carousel__card"
-              style={{
-                backgroundImage: `
-                  linear-gradient(
-                    rgba(0,0,0,.25),
-                    rgba(0,0,0,.25)
-                  ),
-                  url(${item.image})
-                `
-              }}
               onClick={() => navigate(item.path)}
             >
-              <h3 className="genre-carousel__card-title">
-                {item.title}
-              </h3>
-
-              <p className="genre-carousel__card-desc">
-                {item.desc}
-              </p>
+              <div className="genre-carousel__bg">
+                <img src={item.image} alt={item.title} />
+              </div>
+              <div className="genre-carousel__overlay" />
+              
+              <div className="genre-carousel__content">
+                <h3 className="genre-carousel__card-title">
+                  {item.title}
+                </h3>
+                <p className="genre-carousel__card-desc">
+                  {item.desc}
+                </p>
+              </div>
             </div>
           </SwiperSlide>
         ))}
