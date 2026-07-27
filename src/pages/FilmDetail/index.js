@@ -133,7 +133,7 @@ export default function FilmDetail() {
           });
         });
 
-        const priority = { "OP": 1, "KK": 2, "NC": 3 };
+        const priority = { "KK": 1, "OP": 2,  "NC": 3 };
         mergedServers.sort((a, b) => {
           const rankA = priority[a.sourceName] || 99;
           const rankB = priority[b.sourceName] || 99;

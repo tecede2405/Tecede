@@ -86,8 +86,8 @@ export default function MovieDetail() {
 
     // Mức độ ưu tiên càng nhỏ càng được xếp lên đầu
     const priority = {
-      "OP": 1,
-      "KK": 2,
+      "KK": 1,
+      "OP": 2,
       "NC": 3
     };
 

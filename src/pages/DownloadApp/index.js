@@ -56,7 +56,7 @@ function DownloadApp() {
           </p>
 
           <div className="download-hero__badge">
-            <FaCheckCircle /> File APK • Android
+            <FaCheckCircle /> File APK • 6.7 MB
           </div>
 
           <button className="download-hero__btn" onClick={handleDownload}>

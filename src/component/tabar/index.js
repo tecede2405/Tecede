@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter, FaAndroid, FaHandHoldingHeart } from "react-icons/fa";
+import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter, FaAndroid, FaHandHoldingHeart, FaTv, FaLaptopCode } from "react-icons/fa";
 import { SiGooglegemini } from "react-icons/si";
 import { GoChevronDown, GoChevronRight } from "react-icons/go"; 
 import { NavLink, useNavigate } from "react-router-dom";
@@ -183,12 +183,34 @@ function Tabbar({ isOpen, onClose }) {
           </NavLink>
         </div>
 
+        {/* THUÊ LÀM WEB */}
+        <div className="tab-parent">
+          <NavLink to="/design-web" className="tab-link-direct" onClick={handleLinkClick}>
+            <span className="title">
+              <FaLaptopCode style={{ fontSize: "16px" }} />
+              <span className="tab-label">Thuê làm web</span>
+            </span>
+          </NavLink>
+        </div>
+
         {/* TẢI APP ANDROID */}
         <div className="tab-parent">
           <NavLink to="/tai-app" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
               <FaAndroid style={{ fontSize: "16px" }} />
               <span className="tab-label">Tải app Android</span>
+              <span className="badge-hot">Hot</span>
+            </span>
+          </NavLink>
+        </div>
+
+        {/* TẢI APP ANDROID TV */}
+        <div className="tab-parent">
+          <NavLink to="/tai-app-tv" className="tab-link-direct" onClick={handleLinkClick}>
+            <span className="title">
+              <FaTv style={{ fontSize: "16px" }} />
+              <span className="tab-label">Tải app Android TV</span>
+              <span className="badge-hot">Hot</span>
             </span>
           </NavLink>
         </div>

@@ -1,0 +1,118 @@
+@import "../DownloadApp/style.scss";
+
+/* ── Download TV Specific Styles ── */
+
+.download-instructions-tv {
+  margin-bottom: 40px;
+
+  &__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.tv-instructions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tv-method-col {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  
+  .method-header {
+    margin-bottom: 16px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 16px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+    }
+  }
+
+  .method-meta {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    
+    p {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .method-require {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .method-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.75);
+      position: relative;
+      padding-left: 20px;
+
+      &::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #3ddc84;
+        font-weight: bold;
+      }
+
+      strong {
+        color: #fff;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+/* Custom button color for TV Hero */
+.download-tv-page .download-hero__btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
+
+  &:hover {
+    box-shadow: 0 10px 36px rgba(59, 130, 246, 0.45);
+  }
+}
+
+.download-tv-page .download-hero__icon {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.35);
+}
+
+.download-tv-page .download-hero__badge {
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
