@@ -2,7 +2,7 @@ import { FaTv, FaCheckCircle, FaCloudDownloadAlt, FaMobileAlt } from "react-icon
 import Swal from "sweetalert2";
 import "./style.scss";
 
-const APK_DOWNLOAD_URL = "https://drive.google.com/file/d/1MRA5EWAoH8dmQoeVeX_4jN3hOu8OpooY/view?usp=sharing";
+const APK_DOWNLOAD_URL = "https://docs.google.com/uc?export=download&id=1MRA5EWAoH8dmQoeVeX_4jN3hOu8OpooY";
 
 function DownloadAppTV() {
   const DarkSwal = Swal.mixin({
@@ -21,7 +21,7 @@ function DownloadAppTV() {
   const handleDownload = () => {
     DarkSwal.fire({
       title: 'Bạn có chắc chắn muốn tải?',
-      text: "File APK (25.1 MB) sẽ được mở trong tab mới để tải xuống.",
+      text: "File APK (25.1 MB) sẽ được tải xuống thiết bị của bạn.",
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Tải xuống',

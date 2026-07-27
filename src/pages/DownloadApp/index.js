@@ -3,7 +3,7 @@ import { MdPhoneAndroid } from "react-icons/md";
 import Swal from "sweetalert2";
 import "./style.scss";
 
-const APK_DOWNLOAD_URL = "https://docs.google.com/uc?export=download&id=1GrWP_DFpkjAgxsSVghx7zCXi2kgZecOh";
+const APK_DOWNLOAD_URL = "https://drive.google.com/file/d/1GrWP_DFpkjAgxsSVghx7zCXi2kgZecOh/view?usp=sharing";
 
 function DownloadApp() {
   const DarkSwal = Swal.mixin({
@@ -22,7 +22,7 @@ function DownloadApp() {
   const handleDownload = () => {
     DarkSwal.fire({
       title: 'Bạn có chắc chắn muốn tải?',
-      text: "File APK sẽ được tải xuống thiết bị của bạn.",
+      text: "File APK (6.7 MB) sẽ được tải xuống thiết bị của bạn.",
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Vẫn tải xuống',
