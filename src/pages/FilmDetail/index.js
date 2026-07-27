@@ -119,7 +119,7 @@ export default function FilmDetail() {
               const episodeCount = normalized.length;
 
               mergedServers.push({
-                // Dùng cho URL và logic
+                // Dùng cho URL và logics 
                 server_name: uniqueServerName,
 
                 // Dùng để hiển thị
