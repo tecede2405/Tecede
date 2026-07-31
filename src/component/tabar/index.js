@@ -199,7 +199,6 @@ function Tabbar({ isOpen, onClose }) {
             <span className="title">
               <FaAndroid style={{ fontSize: "16px" }} />
               <span className="tab-label">Tải app Android</span>
-              <span className="badge-hot">Hot</span>
             </span>
           </NavLink>
         </div>
@@ -210,7 +209,7 @@ function Tabbar({ isOpen, onClose }) {
             <span className="title">
               <FaTv style={{ fontSize: "16px" }} />
               <span className="tab-label">Tải app Android TV</span>
-              <span className="badge-hot">Hot</span>
+              <span className="badge-hot">Update 31/7/2026</span>
             </span>
           </NavLink>
         </div>
