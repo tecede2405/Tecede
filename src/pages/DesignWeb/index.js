@@ -81,7 +81,7 @@ function DesignWeb() {
         <h1 className="dw-hero__title">
           Thiết Kế Website Đẹp
           <br />
-          <span className="dw-hero__title--gradient">Tối Ưu - Giá HSSV</span>
+          <span className="dw-hero__title--gradient">Tối Ưu - Giá Học Sinh Sinh Viên</span>
         </h1>
 
         <p className="dw-hero__desc">
