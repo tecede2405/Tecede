@@ -289,72 +289,147 @@
 /* ========================================= */
 /* THANH PHÁT NHẠC (BOTTOM PLAYER) */
 /* ========================================= */
-.custom-bottom-player {
+.custom-bottom-player.spotify-style {
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 75px;
-  background: #1e142ede; 
+  height: 90px;
+  background: rgba(23, 15, 35, 0.95);
+  backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 100px;
+  padding: 0 16px;
   z-index: 9999;
+  cursor: pointer;
 }
 
-.player-left { display: flex; align-items: center; gap: 20px; width: 30%; overflow: hidden;}
-.player-thumb { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #2a2238; }
-.spinning { animation: spin 10s linear infinite; }
+.spotify-style {
+  .player-left {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    min-width: 180px;
+  }
+  .player-thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: none;
+  }
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
+  }
+  .song-name { font-size: 14px; font-weight: 500; color: #fff; margin: 0; }
+  .song-name:hover { text-decoration: underline; }
+  .song-artist { font-size: 12px; color: #b3b3b3; margin: 0; }
+  .song-artist:hover { color: #fff; text-decoration: underline; }
 
-.audio-controls { display: flex; align-items: center; gap: 18px; width: 220px; justify-content: space-between; }
-.ctrl-btn { background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; transition: all 0.2s ease; &:hover { color: #c084fc; } &:disabled { opacity: 0.5; } }
-.play-pause-btn { width: 40px; height: 40px; border-radius: 50%; background-color: #9b4de076; font-size: 14px; &:hover { background-color: #7c3aed; color: #fff; transform: scale(1.05); } }
+  .player-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 40%;
+  }
 
-.player-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width: 45%; overflow: hidden;}
-.song-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  margin-bottom:10px;
-}
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
 
-.song-name,
-.song-artist {
-  margin: 0;
-  white-space: nowrap;
-}
+  .ctrl-btn {
+    background: transparent;
+    border: none;
+    color: #b3b3b3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    &:hover { color: #fff; }
+    &:disabled { opacity: 0.5; }
+    &.text-primary { color: #c084fc !important; }
+  }
 
-.song-name::after {
-  content: " ";
-  margin: 0 4px;
-}
-.song-name { font-size: 14px; font-weight: 600; color: #fff; margin: 0; }
-.song-artist { font-size: 12px; color: #a0a0ab; margin: 0; }
+  .play-pause-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover { transform: scale(1.05); background-color: #fff; color: #000;}
+  }
 
-.progress-container { display: flex; align-items: center; width: 100%; gap: 10px; }
-.time-text { font-size: 12px; color: #a0a0ab; min-width: 40px; text-align: center; font-weight: 500; }
-.custom-range { 
-  -webkit-appearance: none; flex: 1; height: 4px; 
-  background: transparent; 
-  border-radius: 2px; outline: none; cursor: pointer; transition: background 0.2s; 
-  &::-webkit-slider-thumb { 
-    -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; 
-    background: #c084fc; cursor: pointer; box-shadow: 0 0 5px rgba(192, 132, 252, 0.5); 
-    opacity: 1; 
-    transition: opacity 0.2s; 
-  } 
-  &:hover::-webkit-slider-thumb { width: 14px; height: 14px; } 
-}
+  .progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .time-text {
+    font-size: 11px;
+    color: #a7a7a7;
+    min-width: 35px;
+    text-align: center;
+  }
 
-.player-right { display: flex; align-items: center; justify-content: flex-end; gap: 20px; width: 30%; }
-.volume-control { display: flex; align-items: center; gap: 10px; width: 120px; }
-.volume-slider { 
-  -webkit-appearance: none; width: 100%; height: 3px; 
-  background: transparent; border-radius: 2px; cursor: pointer; 
-  &::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%; background: #f604f2; } 
+  .custom-range, .volume-slider { 
+    -webkit-appearance: none;
+    flex: 1;
+    height: 4px; 
+    background: rgba(255, 255, 255, 0.3); 
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.2s; 
+    
+    &::-webkit-slider-thumb { 
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%; 
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5); 
+      opacity: 0; 
+      transition: opacity 0.2s; 
+    } 
+    &:hover::-webkit-slider-thumb { opacity: 1; } 
+  }
+  
+  .custom-range:hover, .volume-slider:hover {
+    background: #c084fc !important;
+  }
+
+  .player-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 30%;
+    min-width: 180px;
+  }
+
+  .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 .options-container {
@@ -403,49 +478,39 @@
   .th-title, .td-title { width: calc(100% - 40px) !important; padding-left: 10px; }
   .btn-play-all { font-size: 13px; padding: 7px 15px; }
   .action-icon-btn { display: none; }
-  /* PLAYER */
-  .custom-bottom-player {
-    height: auto;
-    padding: 10px;
-    bottom: 20px;
-    background: #1e142ef2;
-    flex-direction: column;
-    gap: 10px;
-    position: fixed; /* cần để con absolute định vị đúng */
+  /* PLAYER MOBILE */
+  .custom-bottom-player.spotify-style {
+    height: 60px;
+    padding: 0 10px;
+    background: rgba(23, 15, 35, 0.98);
+    flex-direction: row;
+    gap: 0;
+    position: fixed;
   }
-
-  .player-left {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 10px;
+  .spotify-style .player-left {
+    width: 60%;
   }
-
-  /* audio-controls cần position: relative để popup con định vị đúng */
-  .audio-controls {
-    position: relative;
+  .spotify-style .player-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
   }
-
-  /* options-container mobile: nằm trong audio-controls, reset position */
-  .audio-controls .options-container {
-    position: static; /* không absolute nữa, nằm flow bình thường trong audio-controls */
-    display: flex;
-    align-items: center;
-
-    .custom-options-popup {
-      position: fixed;        /* fixed để thoát khỏi mọi overflow:hidden của cha */
-      bottom: 120px;  
-      width: 70%!important;        
-      right: 10px;            
-      width: auto;
-      z-index: 99999;
-    }
+  .spotify-style .audio-controls {
+    width: auto;
+    gap: 15px;
+    position: static;
+  }
+  .spotify-style .play-pause-btn {
+    background: transparent;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    &:hover { background: transparent; color: #fff; }
   }
 
   .player-center {
-    width: 100%;
-    max-width: 100%;
-    order: 2;
-    .song-info { display: none; }
+    width: auto;
+    order: 0;
   }
 
   /* ẨN player-right (volume + nút ⋮ PC) — nút ⋮ mobile đã nằm trong audio-controls */
@@ -463,3 +528,127 @@
     justify-content: space-around;
   }
 }
+/* FULL-SCREEN PLAYER TABS */
+.fsp-tab-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s;
+  opacity: 0.7;
+}
+.fsp-tab-btn.active {
+  background: rgba(255,255,255,0.2);
+  opacity: 1;
+}
+.fsp-tab-btn:hover {
+  opacity: 1;
+}
+@media (max-width: 768px) {
+  .fsp-tab-btn {
+    padding: 10px 20px;
+  }
+}
+
+
+/* FULL-SCREEN PLAYER */
+.full-screen-player {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background: #170f23;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.4s ease-in-out;
+  transform: translateY(100%);
+}
+
+.full-screen-player.active {
+  transform: translateY(0);
+}
+
+.fsp-background {
+  position: absolute;
+  top: -10%; left: -10%; width: 120%; height: 120%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(50px);
+  opacity: 0.4;
+  z-index: -2;
+}
+
+.fsp-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: -1;
+}
+
+.fsp-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.fsp-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.fsp-album-art {
+  width: min(50vw, 250px);
+  height: min(50vw, 250px);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  margin-bottom: 20px;
+  border: 4px solid rgba(255,255,255,0.05); /* Thêm viền nhẹ cho đĩa */
+}
+.fsp-album-art.spinning {
+  animation: spin 15s linear infinite;
+}
+
+@media (min-width: 768px) and (min-height: 700px) {
+  .fsp-album-art {
+    width: min(300px, 40vh);
+    height: min(300px, 40vh);
+  }
+}
+
+.fsp-play-pause-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  
+  &:hover {
+    background: rgba(255,255,255,0.2);
+  }
+}
+

@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Tabbar from '../../../component/tabar/index';
 import useMusicPlayer from "../../../hooks/useMusicPlayer";
-import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch } from "react-icons/fa";
+import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc } from "react-icons/fa";
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
 
@@ -55,10 +55,76 @@ function MusicCategory() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [showMenu, setShowMenu] = useState(false);
+  const [showFullPlayer, setShowFullPlayer] = useState(false);
+  const [fspTab, setFspTab] = useState('karaoke');
+  const [lyrics, setLyrics] = useState([]);
+  
   const [playbackRate, setPlaybackRate] = useState(1); 
   const [sleepTimer, setSleepTimer] = useState(null); 
   const sleepTimerRef = useRef(null);
   const wakeLockRef = useRef(null);
+  const lyricsRef = useRef(null);
+
+  // Fetch Lyrics LRCLIB
+  useEffect(() => {
+    if (!playlist[currentIndex]) return;
+    const { title, artist } = playlist[currentIndex];
+    
+    setLyrics([]); // reset
+    
+    fetch(`https://lrclib.net/api/search?track_name=${encodeURIComponent(title)}&artist_name=${encodeURIComponent(artist)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0 && data[0].syncedLyrics) {
+          const lrc = data[0].syncedLyrics;
+          const lines = lrc.split('\n');
+          const result = [];
+          const timeRegex = /\[(\d{2}):(\d{2}\.\d{2})\]/;
+          
+          lines.forEach(line => {
+            const match = timeRegex.exec(line);
+            if (match) {
+              const minutes = parseInt(match[1], 10);
+              const seconds = parseFloat(match[2]);
+              const time = minutes * 60 + seconds;
+              const text = line.replace(timeRegex, '').trim();
+              if (text) {
+                result.push({ time, text });
+              }
+            }
+          });
+          setLyrics(result);
+        } else {
+          setLyrics([]);
+        }
+      })
+      .catch(err => {
+        console.error("Lỗi lấy lời bài hát:", err);
+        setLyrics([]);
+      });
+  }, [currentIndex, playlist]);
+
+  // Find active lyric index
+  let activeLyricIndex = -1;
+  if (lyrics.length > 0) {
+    for (let i = 0; i < lyrics.length; i++) {
+      if (currentTime >= lyrics[i].time) {
+        activeLyricIndex = i;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // Auto-scroll lyrics
+  useEffect(() => {
+    if (fspTab === 'lyrics' && showFullPlayer && activeLyricIndex !== -1 && lyricsRef.current) {
+      const activeEl = lyricsRef.current.querySelector('.lyric-line.active');
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [activeLyricIndex, fspTab, showFullPlayer]);
 
   const toggleMute = () => {
     const newMute = !isMuted;
@@ -510,9 +576,10 @@ useEffect(() => {
                 </div>
               </div>
 
-              {/* BOTTOM PLAYER */}
+              {/* BOTTOM PLAYER SPOTIFY STYLE */}
               {playlist[currentIndex] && (
-                <div className="custom-bottom-player">
+                <div className="custom-bottom-player spotify-style" onClick={() => setShowFullPlayer(true)}>
+                  {/* LEFT: Info */}
                   <div className="player-left">
                     <img
                       src={playlist[currentIndex].image}
@@ -520,51 +587,35 @@ useEffect(() => {
                       className={`player-thumb flex-shrink-0 ${isPlaying && !isLoading ? "spinning" : ""}`}
                       onError={(e) => { e.target.onerror = null; e.target.src = currentInfo.img; }}
                     />
-                    
-                    <div className="mobile-song-info d-md-none ms-2 flex-grow-1 overflow-hidden">
-                      <h6 className="text-truncate m-0 text-white" style={{fontSize: '13px'}}>{playlist[currentIndex].title}</h6>
-                      <p className="text-truncate m-0" style={{fontSize: '11px', color: '#aaa'}}>{playlist[currentIndex].artist}</p>
-                    </div>
-
-                    <div className="audio-controls ms-auto ms-md-0 flex-shrink-0 d-flex align-items-center">
-                      <button onClick={handlePrev} className="ctrl-btn"><FaStepBackward /></button>
-                      
-                      <button onClick={togglePlay} className="ctrl-btn play-pause-btn" disabled={isLoading}>
-                        {isLoading ? (
-                          <FaSpinner style={{ animation: "spin 1s linear infinite" }} />
-                        ) : isPlaying ? (
-                          <FaPause />
-                        ) : (
-                          <FaPlay />
-                        )}
-                      </button>
-
-                      <button onClick={handleNext} className="ctrl-btn"><FaStepForward /></button>
-                      
-                      {/* NÚT 3 CHẤM BẢN MOBILE */}
-                      <div className="options-container position-relative d-md-none ms-3">
-                        <button 
-                          className={`ctrl-btn ${showMenu ? "active-menu" : ""}`} 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowMenu(!showMenu)
-                            }
-                          }
-                        >
-                          <FaEllipsisV />
-                        </button>
-                        {showMenu && renderMenuPopup()}
-                      </div>
+                    <div className="song-info flex-grow-1 overflow-hidden ms-2 ms-md-3">
+                      <h6 className="song-name m-0 text-white text-truncate" style={{fontSize: '14px'}}>{playlist[currentIndex].title}</h6>
+                      <p className="song-artist m-0 text-truncate" style={{fontSize: '12px', color: '#b3b3b3'}}>{playlist[currentIndex].artist}</p>
                     </div>
                   </div>
 
-                  <div className="player-center">
-                    <div className="song-info">
-                      <h5 className="song-name">{playlist[currentIndex].title}</h5>
-                      <p className="song-artist">{playlist[currentIndex].artist}</p>
+                  {/* CENTER: Controls & Progress */}
+                  <div className="player-center" onClick={(e) => e.stopPropagation()}>
+                    <div className="audio-controls d-flex align-items-center justify-content-center mb-0 mb-md-2">
+                      <button onClick={handleShufflePlaylist} className="ctrl-btn d-none d-md-block" title="Phát ngẫu nhiên"><FaRandom size={14} /></button>
+                      <button onClick={handlePrev} className="ctrl-btn ms-3 d-none d-md-block" title="Bài trước"><FaStepBackward size={16}/></button>
+                      
+                      <button onClick={togglePlay} className="ctrl-btn play-pause-btn ms-auto ms-md-3" title="Phát/Tạm dừng" disabled={isLoading}>
+                        {isLoading ? (
+                          <FaSpinner size={14} style={{ animation: "spin 1s linear infinite" }} />
+                        ) : isPlaying ? (
+                          <FaPause size={14} />
+                        ) : (
+                          <FaPlay size={14} style={{marginLeft:'2px'}}/>
+                        )}
+                      </button>
+
+                      <button onClick={handleNext} className="ctrl-btn ms-3" title="Bài tiếp theo"><FaStepForward size={16}/></button>
+                      <button className="ctrl-btn ms-3 d-none d-md-block" title="Lặp lại"><FaRetweet size={14} /></button>
+                      <button className="ctrl-btn ms-3 d-md-none" title="Mở toàn màn hình" onClick={() => setShowFullPlayer(true)}><FaExpandAlt size={14} /></button>
                     </div>
-                    <div className="progress-container">
-                      <span className="time-text">{formatTime(currentTime)}</span>
+                    
+                    <div className="progress-container w-100 d-none d-md-flex align-items-center gap-2">
+                      <span className="time-text" style={{fontSize:'11px', color:'#a7a7a7'}}>{formatTime(currentTime)}</span>
                       <input
                         type="range"
                         className="custom-range"
@@ -572,17 +623,33 @@ useEffect(() => {
                         max={duration || 0}
                         value={currentTime}
                         onChange={handleSeek}
-                        style={{ background: `linear-gradient(to right, #c084fc ${progressPercent}%, rgba(255,255,255,0.1) ${progressPercent}%)` }}
+                        style={{ background: `linear-gradient(to right, #fff ${progressPercent}%, rgba(255,255,255,0.1) ${progressPercent}%)` }}
                       />
-                      <span className="time-text">{formatTime(duration)}</span>
+                      <span className="time-text" style={{fontSize:'11px', color:'#a7a7a7'}}>{formatTime(duration)}</span>
                     </div>
                   </div>
 
-                  <div className="player-right">
-                    <div className="volume-control">
-                      <button className="ctrl-btn" onClick={toggleMute}>
-                        {isMuted ? <FaVolumeUp style={{color: '#666'}}/> : <FaVolumeUp />}
+                  {/* RIGHT: Volume & Actions */}
+                  <div className="player-right d-none d-md-flex justify-content-end align-items-center gap-3 pe-2" onClick={(e) => e.stopPropagation()}>
+                    <button 
+                      className={`ctrl-btn ${fspTab === 'lyrics' ? 'text-primary' : ''}`} 
+                      title="Lời bài hát"
+                      onClick={() => {
+                        setFspTab('lyrics');
+                        setShowFullPlayer(true);
+                      }}
+                    >
+                      <FaMicrophone size={14} />
+                    </button>
+                    
+                    <div 
+                      className="volume-control d-flex justify-content-center align-items-center" 
+                      style={{width: '90px'}}
+                    >
+                      <button className="ctrl-btn me-2" onClick={toggleMute} title="Âm lượng">
+                        {isMuted ? <FaVolumeMute size={16} style={{color: '#666'}}/> : <FaVolumeUp size={16}/>}
                       </button>
+                      
                       <input
                         type="range"
                         className="volume-slider"
@@ -591,23 +658,32 @@ useEffect(() => {
                         step="0.1"
                         value={isMuted ? 0 : volume}
                         onChange={handleVolumeChange}
-                        style={{ background: `linear-gradient(to right, #fff ${volPercent}%, rgba(255,255,255,0.1) ${volPercent}%)` }}
+                        style={{ 
+                          width: '100%', 
+                          background: `linear-gradient(to right, #fff ${volPercent}%, rgba(255,255,255,0.3) ${volPercent}%)` 
+                        }}
                       />
                     </div>
-
-                    {/* NÚT 3 CHẤM BẢN PC */}
-                    <div className="options-container position-relative d-none d-md-block">
+                    <button className="ctrl-btn" title="Toàn màn hình" onClick={() => setShowFullPlayer(true)}><FaExpandAlt size={14} /></button>
+                    
+                    <div className="options-container position-relative">
                       <button 
                         className={`ctrl-btn ${showMenu ? "active-menu" : ""}`} 
+                        title="Tùy chọn khác"
                         onClick={(e) => {
                           e.stopPropagation();
                           setShowMenu(!showMenu)
                         }}
                       >
-                        <FaEllipsisV />
+                        <FaEllipsisV size={14} />
                       </button>
                       {showMenu && renderMenuPopup()}
                     </div>
+                  </div>
+                  
+                  {/* MOBILE PROGRESS BAR (Absolute Bottom) */}
+                  <div className="mobile-progress-bar d-md-none position-absolute bottom-0 start-0 w-100" style={{height: '2px', background: 'rgba(255,255,255,0.1)'}}>
+                    <div className="mobile-progress-fill h-100 bg-white" style={{width: `${progressPercent}%`}}></div>
                   </div>
                 </div>
               )}
@@ -615,6 +691,170 @@ useEffect(() => {
           )}
         </div>
       </div>
+
+      {/* FULL-SCREEN PLAYER OVERLAY */}
+      <div className={`full-screen-player ${showFullPlayer ? "active" : ""}`}>
+        {playlist[currentIndex] && (
+          <>
+            <div 
+              className="fsp-background" 
+              style={{ backgroundImage: `url(${playlist[currentIndex].image})` }} 
+            />
+            <div className="fsp-overlay" />
+            
+            <div className="fsp-content d-flex flex-column h-100">
+              <div className="fsp-header d-flex justify-content-between align-items-center p-3 pt-4 position-relative">
+                <button className="fsp-btn z-index-3" onClick={() => setShowFullPlayer(false)} style={{zIndex: 10}}>
+                  <FaChevronDown />
+                </button>
+                
+                {/* SEGMENTED CONTROL TABS (IN HEADER) */}
+                <div className="fsp-tabs-container position-absolute top-50 start-50 translate-middle w-100 d-flex justify-content-center px-5" style={{zIndex: 5, pointerEvents: 'none'}}>
+                  <div className="d-flex align-items-center" style={{background: 'rgba(255,255,255,0.1)', borderRadius: '30px', padding: '4px', pointerEvents: 'auto'}}>
+                    <button 
+                      className={`fsp-tab-btn ${fspTab === 'playlist' ? 'active' : ''}`} 
+                      onClick={() => setFspTab('playlist')}
+                    >
+                      <span className="d-none d-md-inline">Danh sách phát</span>
+                      <FaListUl className="d-md-none" size={16}/>
+                    </button>
+                    <button 
+                      className={`fsp-tab-btn ${fspTab === 'karaoke' ? 'active' : ''}`} 
+                      onClick={() => setFspTab('karaoke')}
+                    >
+                      <span className="d-none d-md-inline">Màn hình phát</span>
+                      <FaCompactDisc className="d-md-none" size={16}/>
+                    </button>
+                    <button 
+                      className={`fsp-tab-btn ${fspTab === 'lyrics' ? 'active' : ''}`} 
+                      onClick={() => setFspTab('lyrics')}
+                    >
+                      <span className="d-none d-md-inline">Lời bài hát</span>
+                      <FaMicrophone className="d-md-none" size={16}/>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="z-index-3" style={{width: '40px', zIndex: 10}}></div>
+              </div>
+
+              <div className="fsp-body flex-grow-1 d-flex flex-column justify-content-center align-items-center px-4" style={{overflowY: 'hidden', position: 'relative'}}>
+                {/* 1. PLAYLIST */}
+                {fspTab === 'playlist' && (
+                  <div className="playlist-container custom-scrollbar w-100 h-100" style={{overflowY: 'auto', padding: '20px 0', maxWidth: '600px'}}>
+                    <h3 className="mb-4 text-center fw-bold text-white">Danh sách phát</h3>
+                    {playlist.map((song, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`d-flex align-items-center p-2 mb-2 rounded ${idx === currentIndex ? 'text-white' : 'text-light'}`}
+                        style={{cursor: 'pointer', background: idx === currentIndex ? 'rgba(155, 77, 224, 0.4)' : 'rgba(255,255,255,0.05)', transition: 'background 0.2s'}}
+                        onClick={() => {
+                          handlePlay(idx);
+                        }}
+                      >
+                        <img src={song.image} alt={song.title} style={{width: '50px', height: '50px', borderRadius: '4px', objectFit: 'cover'}} />
+                        <div className="ms-3 overflow-hidden">
+                          <p className="m-0 fw-bold text-truncate" style={{fontSize: '15px'}}>{song.title}</p>
+                          <p className="m-0 small opacity-75 text-truncate">{song.artist}</p>
+                        </div>
+                        {idx === currentIndex && <div className="ms-auto pe-3"><FaPlay size={12} color="#c084fc"/></div>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* 2. KARAOKE (Default) */}
+                {fspTab === 'karaoke' && (
+                  <>
+                    <img 
+                      src={playlist[currentIndex].image} 
+                      alt={playlist[currentIndex].title}
+                      className={`fsp-album-art ${isPlaying && !isLoading ? "spinning" : ""}`}
+                      onError={(e) => { e.target.onerror = null; e.target.src = currentInfo.img; }}
+                    />
+                    
+                    <div className="fsp-song-info text-center mt-4 mb-2">
+                      <h2 className="fsp-title m-0 fw-bold">{playlist[currentIndex].title}</h2>
+                      <p className="fsp-artist m-0 fs-5 opacity-75 mt-1">{playlist[currentIndex].artist}</p>
+                    </div>
+                  </>
+                )}
+
+                {/* 3. LYRICS */}
+                {fspTab === 'lyrics' && (
+                  <div className="lyrics-container custom-scrollbar w-100 h-100" ref={lyricsRef} style={{overflowY: 'auto', padding: '20vh 0', maskImage: 'linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)'}}>
+                    {lyrics.length > 0 ? (
+                      lyrics.map((line, idx) => (
+                        <p 
+                          key={idx} 
+                          className={`lyric-line ${idx === activeLyricIndex ? 'active fw-bold text-white fs-3' : 'text-secondary fs-5'} text-center`} 
+                          style={{transition: 'all 0.3s', minHeight: '40px', cursor: 'pointer', margin: '15px 0', opacity: idx === activeLyricIndex ? 1 : 0.6}}
+                          onClick={() => {
+                            if (soundRef.current) soundRef.current.seek(line.time);
+                          }}
+                        >
+                          {line.text}
+                        </p>
+                      ))
+                    ) : (
+                      <div className="d-flex h-100 justify-content-center align-items-center text-center">
+                        <p className="text-secondary fs-5 w-75">Đang tải hoặc không tìm thấy lời cho bài hát này...</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+
+
+              <div className="fsp-footer p-4">
+                <div className="fsp-progress-container mb-4">
+                  <div className="d-flex justify-content-between mb-2">
+                    <span className="time-text">{formatTime(currentTime)}</span>
+                    <span className="time-text">{formatTime(duration)}</span>
+                  </div>
+                  <input
+                    type="range"
+                    className="custom-range w-100"
+                    min="0"
+                    max={duration || 0}
+                    value={currentTime}
+                    onChange={handleSeek}
+                    style={{ background: `linear-gradient(to right, #fff ${progressPercent}%, rgba(255,255,255,0.2) ${progressPercent}%)` }}
+                  />
+                </div>
+
+                <div className="fsp-controls d-flex justify-content-center align-items-center gap-4 gap-md-5">
+                  <button onClick={handleShufflePlaylist} className="fsp-btn opacity-75 hover-opacity-100">
+                    <FaRandom size={20} />
+                  </button>
+                  <button onClick={handlePrev} className="fsp-btn">
+                    <FaStepBackward size={28} />
+                  </button>
+                  
+                  <button onClick={togglePlay} className="fsp-btn fsp-play-pause-btn" disabled={isLoading}>
+                    {isLoading ? (
+                      <FaSpinner size={32} style={{ animation: "spin 1s linear infinite" }} />
+                    ) : isPlaying ? (
+                      <FaPause size={32} />
+                    ) : (
+                      <FaPlay size={32} className="ms-1" />
+                    )}
+                  </button>
+
+                  <button onClick={handleNext} className="fsp-btn">
+                    <FaStepForward size={28} />
+                  </button>
+                  <button className="fsp-btn opacity-75 hover-opacity-100">
+                    <FaRegHeart size={20} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
     </div>
   );
 }
