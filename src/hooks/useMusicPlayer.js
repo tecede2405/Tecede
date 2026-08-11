@@ -29,6 +29,7 @@ export default function useMusicPlayer(initialSongs) {
   const [isLoading, setIsLoading] = useState(false); 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isRepeat, setIsRepeat] = useState(false); // Thêm trạng thái lặp lại
 
   // Mặc định PC Bật, Mobile Tắt
   const [isVibeEnabled, setIsVibeEnabled] = useState(() => {
@@ -39,7 +40,7 @@ export default function useMusicPlayer(initialSongs) {
     return false;
   });
 
-  const stateRef = useRef({ playlist: initialSongs, index: null });
+  const stateRef = useRef({ playlist: initialSongs, index: null, isRepeat: false });
   const actionsRef = useRef({ next: null, prev: null });
 
   const soundRef = useRef({
@@ -59,7 +60,8 @@ export default function useMusicPlayer(initialSongs) {
   useEffect(() => {
     stateRef.current.playlist = currentPlaylist;
     stateRef.current.index = currentIndex;
-  }, [currentPlaylist, currentIndex]);
+    stateRef.current.isRepeat = isRepeat;
+  }, [currentPlaylist, currentIndex, isRepeat]);
 
   useEffect(() => {
     const handleTimeUpdate = () => setCurrentTime(globalAudio.currentTime);
@@ -184,6 +186,8 @@ export default function useMusicPlayer(initialSongs) {
     }
 
     const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+    const newSrc = `${baseUrl}/api/songs/stream/${song._id}`;
+    
     setIsPlaying(true); 
     setIsLoading(true); 
 
@@ -192,8 +196,14 @@ export default function useMusicPlayer(initialSongs) {
     globalAudio.onended = null;
     globalAudio.onerror = null;
 
-    globalAudio.src = `${baseUrl}/api/songs/stream/${song._id}`;
-    
+    // Tránh set lại src nếu bài hát đang phát trùng với bài yêu cầu, ngăn lỗi trình duyệt
+    if (globalAudio.src === newSrc || globalAudio.src.endsWith(`/api/songs/stream/${song._id}`)) {
+      globalAudio.currentTime = 0;
+    } else {
+      globalAudio.src = newSrc;
+      globalAudio.load();
+    }
+
     // Đăng ký MediaSession NGAY LẬP TỨC để OS (Android/iOS) biết app vẫn đang active khi chuyển bài dưới nền
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -207,8 +217,6 @@ export default function useMusicPlayer(initialSongs) {
       navigator.mediaSession.setActionHandler('previoustrack', () => actionsRef.current.prev && actionsRef.current.prev());
       navigator.mediaSession.setActionHandler('nexttrack', () => actionsRef.current.next && actionsRef.current.next());
     }
-
-    globalAudio.load();
 
     globalAudio.onplay = () => {
       setIsLoading(false);
@@ -224,7 +232,12 @@ export default function useMusicPlayer(initialSongs) {
     globalAudio.onpause = () => setIsPlaying(false);
     
     globalAudio.onended = () => {
-      if (actionsRef.current.next) actionsRef.current.next(); 
+      if (stateRef.current.isRepeat) {
+        globalAudio.currentTime = 0;
+        globalAudio.play();
+      } else {
+        if (actionsRef.current.next) actionsRef.current.next(); 
+      }
     };
     
     globalAudio.onerror = (e) => {
@@ -303,6 +316,10 @@ export default function useMusicPlayer(initialSongs) {
   const setGlobalVolume = useCallback((vol) => { globalAudio.volume = vol; }, []);
   const setGlobalMute = useCallback((isMuted) => { globalAudio.muted = isMuted; }, []);
 
+  const toggleRepeat = useCallback(() => {
+    setIsRepeat((prev) => !prev);
+  }, []);
+
   return {
     playlist: currentPlaylist,
     currentIndex,
@@ -321,6 +338,8 @@ export default function useMusicPlayer(initialSongs) {
     setGlobalVolume,
     setGlobalMute,
     isVibeEnabled,
-    toggleVibe // XUẤT HÀM MỚI NÀY RA GIAO DIỆN
+    toggleVibe, // XUẤT HÀM MỚI NÀY RA GIAO DIỆN
+    isRepeat,
+    toggleRepeat
   };
 }

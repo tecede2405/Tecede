@@ -35,7 +35,7 @@ function AddSongs() {
       setProgress(0);
 
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/songs/upload`,
+        `${process.env.REACT_APP_API_URL2}/api/songs/upload`,
         formData,
         {
           headers: {

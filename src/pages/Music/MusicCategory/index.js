@@ -46,7 +46,9 @@ function MusicCategory() {
     setGlobalVolume, 
     setGlobalMute,
     isVibeEnabled,
-    toggleVibe // 🌟 Gọi hàm toggle mới ở đây
+    toggleVibe,
+    isRepeat,
+    toggleRepeat
   } = useMusicPlayer([]);
 
   const [loading, setLoading] = useState(true);
@@ -125,6 +127,18 @@ function MusicCategory() {
       }
     }
   }, [activeLyricIndex, fspTab, showFullPlayer]);
+
+  // Auto-scroll playlist
+  useEffect(() => {
+    if (fspTab === 'playlist' && showFullPlayer) {
+      setTimeout(() => {
+        const activeEl = document.querySelector('.fsp-playlist-active');
+        if (activeEl) {
+          activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, [currentIndex, fspTab, showFullPlayer]);
 
   const toggleMute = () => {
     const newMute = !isMuted;
@@ -610,7 +624,7 @@ useEffect(() => {
                       </button>
 
                       <button onClick={handleNext} className="ctrl-btn ms-3" title="Bài tiếp theo"><FaStepForward size={16}/></button>
-                      <button className="ctrl-btn ms-3 d-none d-md-block" title="Lặp lại"><FaRetweet size={14} /></button>
+                      <button onClick={toggleRepeat} className={`ctrl-btn ms-3 d-none d-md-block ${isRepeat ? 'text-primary' : ''}`} title="Lặp lại 1 bài"><FaRetweet size={14} color={isRepeat ? '#c084fc' : 'inherit'} /></button>
                       <button className="ctrl-btn ms-3 d-md-none" title="Mở toàn màn hình" onClick={() => setShowFullPlayer(true)}><FaExpandAlt size={14} /></button>
                     </div>
                     
@@ -741,25 +755,28 @@ useEffect(() => {
               <div className="fsp-body flex-grow-1 d-flex flex-column justify-content-center align-items-center px-4" style={{overflowY: 'hidden', position: 'relative'}}>
                 {/* 1. PLAYLIST */}
                 {fspTab === 'playlist' && (
-                  <div className="playlist-container custom-scrollbar w-100 h-100" style={{overflowY: 'auto', padding: '20px 0', maxWidth: '600px'}}>
-                    <h3 className="mb-4 text-center fw-bold text-white">Danh sách phát</h3>
-                    {playlist.map((song, idx) => (
-                      <div 
-                        key={idx} 
-                        className={`d-flex align-items-center p-2 mb-2 rounded ${idx === currentIndex ? 'text-white' : 'text-light'}`}
-                        style={{cursor: 'pointer', background: idx === currentIndex ? 'rgba(155, 77, 224, 0.4)' : 'rgba(255,255,255,0.05)', transition: 'background 0.2s'}}
-                        onClick={() => {
-                          handlePlay(idx);
-                        }}
-                      >
-                        <img src={song.image} alt={song.title} style={{width: '50px', height: '50px', borderRadius: '4px', objectFit: 'cover'}} />
-                        <div className="ms-3 overflow-hidden">
-                          <p className="m-0 fw-bold text-truncate" style={{fontSize: '15px'}}>{song.title}</p>
-                          <p className="m-0 small opacity-75 text-truncate">{song.artist}</p>
+                  <div className="playlist-container custom-scrollbar w-100 h-100" style={{overflowY: 'auto', padding: '10px 0', maxWidth: '1200px'}}>
+                    <div className="d-flex flex-wrap w-100 m-0">
+                      {playlist.map((song, idx) => (
+                        <div className="col-12 col-sm-6 p-1" key={idx}>
+                          <div 
+                            className={`d-flex align-items-center px-2 py-1 rounded ${idx === currentIndex ? 'text-white fsp-playlist-active' : 'text-light'}`}
+                            style={{cursor: 'pointer', background: idx === currentIndex ? 'rgba(155, 77, 224, 0.4)' : 'rgba(255,255,255,0.05)', transition: 'background 0.2s'}}
+                            onClick={() => {
+                              handlePlay(idx);
+                            }}
+                          >
+                            <div className="ms-1 me-2 opacity-50 text-end" style={{minWidth: '20px', fontSize: '13px'}}>{idx + 1}</div>
+                            <img src={song.image} alt={song.title} style={{width: '42px', height: '42px', borderRadius: '4px', objectFit: 'cover'}} />
+                            <div className="ms-2 overflow-hidden text-start">
+                              <p className="m-0 fw-bold text-truncate" style={{fontSize: '14px'}}>{song.title}</p>
+                              <p className="m-0 opacity-75 text-truncate" style={{fontSize: '12px'}}>{song.artist}</p>
+                            </div>
+                            {idx === currentIndex && <div className="ms-auto pe-2"><img src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif" alt="playing" style={{width: '16px', height: '16px'}} /></div>}
+                          </div>
                         </div>
-                        {idx === currentIndex && <div className="ms-auto pe-3"><FaPlay size={12} color="#c084fc"/></div>}
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
 
@@ -772,7 +789,6 @@ useEffect(() => {
                       className={`fsp-album-art ${isPlaying && !isLoading ? "spinning" : ""}`}
                       onError={(e) => { e.target.onerror = null; e.target.src = currentInfo.img; }}
                     />
-                    
                     <div className="fsp-song-info text-center mt-4 mb-2">
                       <h2 className="fsp-title m-0 fw-bold">{playlist[currentIndex].title}</h2>
                       <p className="fsp-artist m-0 fs-5 opacity-75 mt-1">{playlist[currentIndex].artist}</p>
@@ -807,7 +823,16 @@ useEffect(() => {
 
 
 
-              <div className="fsp-footer p-4">
+              <div className="fsp-footer p-4 pt-0">
+                {fspTab !== 'karaoke' && (
+                  <div className="fsp-song-info-small d-flex align-items-center mb-3">
+                    <img src={playlist[currentIndex].image} alt="thumb" style={{width: '40px', height: '40px', borderRadius: '4px', objectFit: 'cover'}} />
+                    <div className="ms-3 overflow-hidden text-start">
+                      <p className="m-0 fw-bold text-white text-truncate" style={{fontSize: '14px'}}>{playlist[currentIndex].title}</p>
+                      <p className="m-0 text-light opacity-75 text-truncate" style={{fontSize: '12px'}}>{playlist[currentIndex].artist}</p>
+                    </div>
+                  </div>
+                )}
                 <div className="fsp-progress-container mb-4">
                   <div className="d-flex justify-content-between mb-2">
                     <span className="time-text">{formatTime(currentTime)}</span>
@@ -824,29 +849,29 @@ useEffect(() => {
                   />
                 </div>
 
-                <div className="fsp-controls d-flex justify-content-center align-items-center gap-4 gap-md-5">
+                <div className="fsp-controls d-flex justify-content-center align-items-center gap-3 gap-md-5">
                   <button onClick={handleShufflePlaylist} className="fsp-btn opacity-75 hover-opacity-100">
-                    <FaRandom size={20} />
+                    <FaRandom className="fsp-icon-sm" />
                   </button>
                   <button onClick={handlePrev} className="fsp-btn">
-                    <FaStepBackward size={28} />
+                    <FaStepBackward className="fsp-icon-md" />
                   </button>
                   
                   <button onClick={togglePlay} className="fsp-btn fsp-play-pause-btn" disabled={isLoading}>
                     {isLoading ? (
-                      <FaSpinner size={32} style={{ animation: "spin 1s linear infinite" }} />
+                      <FaSpinner className="fsp-icon-lg" style={{ animation: "spin 1s linear infinite" }} />
                     ) : isPlaying ? (
-                      <FaPause size={32} />
+                      <FaPause className="fsp-icon-lg" />
                     ) : (
-                      <FaPlay size={32} className="ms-1" />
+                      <FaPlay className="fsp-icon-lg ms-1" />
                     )}
                   </button>
 
                   <button onClick={handleNext} className="fsp-btn">
-                    <FaStepForward size={28} />
+                    <FaStepForward className="fsp-icon-md" />
                   </button>
-                  <button className="fsp-btn opacity-75 hover-opacity-100">
-                    <FaRegHeart size={20} />
+                  <button onClick={toggleRepeat} className={`fsp-btn opacity-75 hover-opacity-100 ${isRepeat ? 'text-primary' : ''}`}>
+                    <FaRetweet className="fsp-icon-sm" color={isRepeat ? '#c084fc' : 'inherit'} />
                   </button>
                 </div>
               </div>
