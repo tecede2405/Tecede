@@ -13,6 +13,7 @@ import ScrollToTop from "./component/ScrollToTop/index";
 
 // Music pages
 import MusicCategory  from "./pages/Music/MusicCategory/index";
+import MiniFloatingPlayer from "./component/MiniFloatingPlayer/index";
 // Admin
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
@@ -183,6 +184,9 @@ function App() {
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
+
+              {/* Cửa sổ nhạc Mini PIP nổi góc phải khi duyệt các trang khác */}
+              <MiniFloatingPlayer />
             </div>
           </div>
         </>

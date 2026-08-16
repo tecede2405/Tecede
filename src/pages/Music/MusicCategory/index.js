@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { useParams } from "react-router-dom";
 import Tabbar from '../../../component/tabar/index';
-import useMusicPlayer from "../../../hooks/useMusicPlayer";
+import { useMusic } from "../../../context/MusicContext";
 import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc } from "react-icons/fa";
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
@@ -48,8 +48,16 @@ function MusicCategory() {
     isVibeEnabled,
     toggleVibe,
     isRepeat,
-    toggleRepeat
-  } = useMusicPlayer([]);
+    toggleRepeat,
+    currentCategory,
+    setCurrentCategory,
+    setIsMiniPlayerVisible
+  } = useMusic();
+
+  // Khi người dùng vào lại trang nhạc, tự động bật lại trạng thái hiển thị mini player
+  useEffect(() => {
+    setIsMiniPlayerVisible(true);
+  }, [setIsMiniPlayerVisible]);
 
   const [loading, setLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
@@ -64,7 +72,6 @@ function MusicCategory() {
   const [playbackRate, setPlaybackRate] = useState(1); 
   const [sleepTimer, setSleepTimer] = useState(null); 
   const sleepTimerRef = useRef(null);
-  const wakeLockRef = useRef(null);
   const lyricsRef = useRef(null);
 
   // Fetch Lyrics LRCLIB
@@ -154,16 +161,23 @@ function MusicCategory() {
   };
 
   useEffect(() => {
+    // Nếu quay lại đúng thể loại cũ và playlist đã có sẵn, giữ nguyên trạng thái đang phát
+    if (currentCategory?.slug === categorySlug && playlist && playlist.length > 0) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
     fetch(`${baseUrl}/api/songs/category/${currentInfo.dbType}`)
       .then((res) => res.json())
       .then((data) => {
         updatePlaylist(data);
-        setTimeout(() => setLoading(false), 1000); 
+        setCurrentCategory({ slug: categorySlug, dbType: currentInfo.dbType, title: currentInfo.title, img: currentInfo.img });
+        setTimeout(() => setLoading(false), 500); 
       })
-      .catch(() => setTimeout(() => setLoading(false), 1000));
-  }, [categorySlug, currentInfo.dbType, updatePlaylist]);
+      .catch(() => setTimeout(() => setLoading(false), 500));
+  }, [categorySlug, currentInfo.dbType, currentInfo.title, currentInfo.img, currentCategory?.slug, playlist, updatePlaylist, setCurrentCategory]);
 
   const handleSeek = (e) => {
     const newTime = Number(e.target.value);
@@ -244,91 +258,7 @@ function MusicCategory() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [togglePlay]);
 
-  // wakelock
 
-
-
-useEffect(() => {
-  let isMounted = true;
-
-  // Hàm xin quyền giữ màn hình sáng
-  const requestWakeLock = async () => {
-    try {
-      // Kiểm tra trình duyệt có hỗ trợ không
-      if (!("wakeLock" in navigator)) {
-        console.log("❌ Trình duyệt không hỗ trợ Wake Lock");
-        return;
-      }
-
-      // Xin quyền giữ màn hình sáng
-      wakeLockRef.current = await navigator.wakeLock.request("screen");
-
-      console.log("🔒 Đã bật chế độ không tắt màn hình");
-
-      // Khi Wake Lock bị hủy
-      wakeLockRef.current.addEventListener("release", () => {
-        console.log(
-          "🔓 Wake Lock bị hủy | Trạng thái tab:",
-          document.visibilityState
-        );
-
-        // Reset ref để lần sau xin lại được
-        wakeLockRef.current = null;
-      });
-    } catch (error) {
-      console.error("Lỗi Wake Lock:", error);
-    }
-  };
-
-  // Vào trang là xin Wake Lock luôn
-  requestWakeLock();
-
-  // Theo dõi khi người dùng đổi tab hoặc quay lại tab
-  const handleVisibilityChange = async () => {
-    console.log(
-      " thái tab:",
-      document.visibilityState
-    );
-
-    // Nếu quay lại tab và Wake Lock đã mất
-    if (
-      document.visibilityState === "visible" &&
-      !wakeLockRef.current &&
-      isMounted
-    ) {
-      console.log("Đang xin lại Wake Lock...");
-      await requestWakeLock();
-    }
-  };
-
-  document.addEventListener(
-    "visibilitychange",
-    handleVisibilityChange
-  );
-
-  // Cleanup khi rời trang
-  return async () => {
-    isMounted = false;
-
-    document.removeEventListener(
-      "visibilitychange",
-      handleVisibilityChange
-    );
-
-    if (wakeLockRef.current) {
-      try {
-        await wakeLockRef.current.release();
-        wakeLockRef.current = null;
-
-        console.log(
-          "🔓 Đã tắt Wake Lock vì người dùng rời trang"
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-}, []);
 
   // KHAI BÁO MENU DÙNG CHUNG CHO PC VÀ MOBILE
   const renderMenuPopup = () => (

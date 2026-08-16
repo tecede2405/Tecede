@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from "./context/AuthContext";
 import { MoviesProvider } from "./context/MoviesContext";
 import { DonateProvider } from "./context/DonateContext";
+import { MusicProvider } from "./context/MusicContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
@@ -25,9 +26,11 @@ root.render(
       <AuthProvider>
         <MoviesProvider>
           <DonateProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
+            <MusicProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </MusicProvider>
           </DonateProvider>
         </MoviesProvider>
       </AuthProvider>
