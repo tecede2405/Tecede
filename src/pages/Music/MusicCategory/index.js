@@ -420,12 +420,6 @@ useEffect(() => {
                   </div>
 
                   <div className="playlist-table-container">
-                    <div className="playlist-tabs d-flex justify-content-between align-items-center">
-                      <div className="tabs-left d-flex gap-4">
-                        <span className="tab-item active">Tổng quan</span>
-                        <span className="tab-item active">Bài hát<span className="badge">{playlist.length}</span></span>
-                      </div>
-                    </div>
 
                     <div className="filter-bar d-flex justify-content-between align-items-center my-3">
                       <div className="search-mini">

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMovies } from "../../context/MoviesContext";
 import { useDonates } from "../../context/DonateContext";
-import { FaFilm, FaHeart, FaTimes, FaDonate, FaHandHoldingHeart } from "react-icons/fa";
+import { FaFilm, FaHeart, FaTimes, FaDonate } from "react-icons/fa";
 import { BsGraphUpArrow } from "react-icons/bs";
 import "./style.scss";
 
@@ -136,7 +136,6 @@ function TopList() {
                   <div className="donate-card-info">
                     <div className="donate-card-line1">
                       <span className="donate-card-name">{item.nickname}</span>
-                      <FaHandHoldingHeart className="donate-card-icon" />
                       <span className="donate-card-amount">{formatMoney(item.amount)}</span>
                     </div>
                     <div className="donate-card-line2">
