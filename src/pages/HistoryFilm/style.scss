@@ -20,6 +20,31 @@
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
 }
+
+.history-pagination {
+  padding: 16px 0;
+  
+  .btn {
+    border-color: rgba(255, 255, 255, 0.2);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.05);
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
 .wh404-wrapper {
   width: 100%;
   min-height: 100vh;
