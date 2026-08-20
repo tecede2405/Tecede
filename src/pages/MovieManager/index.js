@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import { FaSyncAlt } from "react-icons/fa";
 import { useMovies } from "../../context/MoviesContext";
 import { useAuth } from "../../context/AuthContext"; 
 import "./style.scss";
@@ -10,8 +11,49 @@ const MovieManager = () => {
   const movies = grouped["phim-hot"] || [];
   const [editingMovie, setEditingMovie] = useState(null);
   const [formData, setFormData] = useState({});
+  const [isResetting, setIsResetting] = useState(false);
 
   const API_URL = process.env.REACT_APP_SERVER_API_URL || "";
+
+  // 0. RESET MOVIES
+  const handleReset = async () => {
+    setIsResetting(true);
+    try {
+      const response = await fetch(`${API_URL}/movies?refresh=true`, {
+        headers: user?.token ? { Authorization: `Bearer ${user.token}` } : {},
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          title: "Thành công!",
+          text: "Đã làm mới danh sách phim.",
+          icon: "success",
+          background: "#1f2937",
+          color: "#f3f4f6",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          title: "Lỗi!",
+          text: "Không thể làm mới danh sách.",
+          icon: "error",
+          background: "#1f2937",
+          color: "#f3f4f6",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Lỗi!",
+        text: "Mất kết nối server.",
+        icon: "error",
+        background: "#1f2937",
+        color: "#f3f4f6",
+      });
+    } finally {
+      setIsResetting(false);
+    }
+  };
 
   // 1. CẬP NHẬT INDEX
   const handleUpdateIndex = async (movie, newIndex, inputElement) => {
@@ -127,7 +169,18 @@ const MovieManager = () => {
 
   return (
     <div className="movie-manager">
-      <h2>Quản lý Phim Hot</h2>
+      <div className="movie-manager-header">
+        <h2>Quản lý Phim Hot</h2>
+        <button
+          className="btn-reset"
+          onClick={handleReset}
+          disabled={isResetting}
+          title="Reset / Làm mới danh sách"
+        >
+          <FaSyncAlt className={isResetting ? "spinning" : ""} />
+          <span>{isResetting ? "Đang làm mới..." : "Reset"}</span>
+        </button>
+      </div>
 
       {/* BỌC TABLE TRONG THẺ NÀY ĐỂ RESPONSIVE */}
       <div className="table-responsive">
