@@ -283,12 +283,14 @@ export default function FilterFilm() {
 
   /* ================= UTILS ================= */
   function getPoster(url) {
-    if (!url) return "";
+    if (!url || typeof url !== "string") return "";
+    const cleanUrl = url.trim();
+    if (!cleanUrl) return "";
     // Trả về trực tiếp nếu đã là link web
-    if (url.startsWith("http")) return url;
+    if (cleanUrl.startsWith("http")) return cleanUrl;
     
     // Nối thẳng vào domain gốc, loại bỏ hoàn toàn proxy image.php
-    return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+    return `https://phimimg.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
   }
 
   /* ================= PAGINATION ================= */

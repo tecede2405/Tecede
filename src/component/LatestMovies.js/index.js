@@ -48,10 +48,12 @@ export default function LatestMoviesTable() {
 
   /* ================= UTILS ================= */
   const getPoster = (url) => {
-    if (!url) return "";
-    if (url.startsWith("http")) return url; // URL tuyệt đối thì dùng luôn
+    if (!url || typeof url !== "string") return "";
+    const cleanUrl = url.trim();
+    if (!cleanUrl) return "";
+    if (cleanUrl.startsWith("http")) return cleanUrl; // URL tuyệt đối thì dùng luôn
     // Nếu là relative, ghép với CDN
-    return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+    return `https://phimimg.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
   };
 
   if (loading) return <p>Đang tải dữ liệu...</p>;

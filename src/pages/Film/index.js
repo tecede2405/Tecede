@@ -8,7 +8,7 @@ import "./style.scss";
 const BLOCKED_KEYWORDS = ["18", "18+", "phim sex", "sex", "sexy", "adult", "xxx", "erotic", "porn", "hentai"];
 
 const isBlockedKeyword = (text) => {
-  if (!text) return false;
+  if (!text || typeof text !== "string") return false;
   return BLOCKED_KEYWORDS.some((k) => text.toLowerCase().includes(k));
 };
 
@@ -25,15 +25,19 @@ export default function FilmListBySlug() {
   const navigate = useNavigate();
 
   const handleBack = () => navigate(-1);
-  const keyword = filmSlug.replace(/-/g, " ");
+  const keyword = filmSlug ? filmSlug.replace(/-/g, " ") : "";
 
   useEffect(() => {
-    if (isBlockedKeyword(keyword)) {
+    if (!keyword || isBlockedKeyword(keyword)) {
       setResults([]);
       setLoading(false);
-      Swal.fire({ icon: "warning", title: "Từ khóa không được hỗ trợ", text: "Vui lòng tìm kiếm nội dung phù hợp.", confirmButtonText: "OK" });
+      if (isBlockedKeyword(keyword)) {
+        Swal.fire({ icon: "warning", title: "Từ khóa không được hỗ trợ", text: "Vui lòng tìm kiếm nội dung phù hợp.", confirmButtonText: "OK" });
+      }
       return;
     }
+
+    let isMounted = true;
 
     async function fetchData() {
       try {
@@ -41,31 +45,50 @@ export default function FilmListBySlug() {
 
         const fetchAllPages = async (baseUrl, sourceName) => {
           try {
+            if (!baseUrl) return [];
             const hasQuery = baseUrl.includes("?");
             const firstRes = await fetch(`${baseUrl}${hasQuery ? "&" : "?"}page=1`);
             if (!firstRes.ok) return [];
             const firstData = await firstRes.json();
             
-            // HÀM XỬ LÝ DỮ LIỆU TỪ TỪNG NGUỒN
+            // HÀM XỬ LÝ DỮ LIỆU TỪ TỪNG NGUỒN (ĐẢM BẢO LUÔN TRẢ VỀ MẢNG)
             const extractItems = (data) => {
-              let items = data?.data?.items || data?.items || data?.data || [];
-              return items;
+              if (!data) return [];
+              if (Array.isArray(data?.data?.items)) return data.data.items;
+              if (Array.isArray(data?.items)) return data.items;
+              if (Array.isArray(data?.data)) return data.data;
+              return [];
             };
 
             let allItems = extractItems(firstData);
-            const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || firstData?.totalPages || firstData?.pagination?.totalPages || 1;
+            const totalPage = firstData?.data?.params?.pagination?.totalPages || 
+                              firstData?.paginate?.total_page || 
+                              firstData?.totalPages || 
+                              firstData?.pagination?.totalPages || 1;
 
-            if (totalPage > 1) {
+            // Giới hạn tối đa 5 trang mỗi nguồn để tránh nghẽn mạng và spam request
+            const maxPages = Math.min(Number(totalPage) || 1, 5);
+
+            if (maxPages > 1) {
               const fetchPromises = [];
-              for (let i = 2; i <= totalPage; i++) {
-                fetchPromises.push(fetch(`${baseUrl}${hasQuery ? "&" : "?"}page=${i}`).then(res => res.ok ? res.json() : null).catch(() => null));
+              for (let i = 2; i <= maxPages; i++) {
+                fetchPromises.push(
+                  fetch(`${baseUrl}${hasQuery ? "&" : "?"}page=${i}`)
+                    .then(res => (res.ok ? res.json() : null))
+                    .catch(() => null)
+                );
               }
               const remainingPagesData = await Promise.all(fetchPromises);
               remainingPagesData.forEach(data => {
-                if (data) allItems = [...allItems, ...extractItems(data)];
+                if (data) {
+                  const items = extractItems(data);
+                  if (items.length > 0) {
+                    allItems = [...allItems, ...items];
+                  }
+                }
               });
             }
-            return allItems;
+            return Array.isArray(allItems) ? allItems : [];
           } catch (error) {
             console.error(`[${sourceName}] Lỗi:`, error);
             return [];
@@ -73,11 +96,14 @@ export default function FilmListBySlug() {
         };
 
         // 1. KKPhim
-        const urlKk = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        const kkBase = process.env.REACT_APP_FILM_API_URL || "https://phimapi.com";
+        const urlKk = `${kkBase}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
         // 2. VSMOV (VM)
-        const urlVm = `${process.env.REACT_APP_FILM_API_URL_2}/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        const vmBase = process.env.REACT_APP_FILM_API_URL_2 || "https://vsmov.com";
+        const urlVm = `${vmBase}/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
         // 3. Nguồn C
-        const urlNc = `${process.env.REACT_APP_FILM_API_URL_3}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
+        const ncBase = process.env.REACT_APP_FILM_API_URL_3 || "https://phim.nguonc.com";
+        const urlNc = `${ncBase}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
 
         // Fetch song song 3 nguồn: KK, VM, NC
         const [resKk, resVm, resNc] = await Promise.all([
@@ -86,15 +112,23 @@ export default function FilmListBySlug() {
           fetchAllPages(urlNc, "NC")
         ]);
 
+        if (!isMounted) return;
+
         const getYearFromData = (f) => {
-          if (f.year) return f.year; 
+          if (!f) return "N/A";
+          if (f.year) {
+            if (typeof f.year === "string" || typeof f.year === "number") return String(f.year);
+            if (typeof f.year === "object" && f.year?.name) return String(f.year.name);
+          }
           if (f.category && typeof f.category === 'object') {
             const categories = Object.values(f.category);
             for (let cat of categories) {
-              if (cat.list && Array.isArray(cat.list)) {
+              if (cat && cat.list && Array.isArray(cat.list)) {
                 for (let item of cat.list) {
-                  const name = String(item.name);
-                  if (/^\d{4}$/.test(name)) return name;
+                  if (item && item.name) {
+                    const name = String(item.name);
+                    if (/^\d{4}$/.test(name)) return name;
+                  }
                 }
               }
             }
@@ -102,76 +136,108 @@ export default function FilmListBySlug() {
           return "N/A";
         };
 
+        const safeResKk = Array.isArray(resKk) ? resKk.filter(Boolean) : [];
+        const safeResVm = Array.isArray(resVm) ? resVm.filter(Boolean) : [];
+        const safeResNc = Array.isArray(resNc) ? resNc.filter(Boolean) : [];
+
         // Format data KKPhim: Giữ nguyên poster_url và thumb_url
-        const normKk = resKk.map(f => ({
-          ...f,
-          sourceName: "KK",
-          isKkphim: true,
-          name: f.name,
-          original_name: f.origin_name || f.original_name,
-          poster_url: f.poster_url || f.thumb_url,
-          thumb_url: f.thumb_url || f.poster_url,
-          slug: f.slug,
-          path: f.slug,
-          episode_total: f.episode_total,
-          current_episode: f.episode_current,
-          language: f.lang || "N/A",
-          time: f.time || "N/A",
-          quality: f.quality || "N/A",
-          year: getYearFromData(f)
-        }));
+        const normKk = safeResKk.map(f => {
+          const poster = typeof f.poster_url === "string" ? f.poster_url : (typeof f.thumb_url === "string" ? f.thumb_url : "");
+          const thumb = typeof f.thumb_url === "string" ? f.thumb_url : (typeof f.poster_url === "string" ? f.poster_url : "");
+          return {
+            ...f,
+            sourceName: "KK",
+            isKkphim: true,
+            name: typeof f.name === "string" ? f.name : (f.name ? String(f.name) : "N/A"),
+            original_name: typeof (f.origin_name || f.original_name) === "string" ? (f.origin_name || f.original_name) : "",
+            poster_url: poster,
+            thumb_url: thumb,
+            slug: f.slug || f._id || "",
+            path: f.slug || f._id || "",
+            episode_total: f.episode_total || "",
+            current_episode: f.episode_current || "",
+            language: typeof f.lang === "string" ? f.lang : "N/A",
+            time: typeof f.time === "string" ? f.time : "N/A",
+            quality: typeof f.quality === "string" ? f.quality : "N/A",
+            year: getYearFromData(f)
+          };
+        });
 
         // Format data VSMOV (VM): ĐẢO NGƯỢC (thumb_url làm poster đứng, poster_url làm thumb ngang)
-        const normVm = resVm.map(f => ({ 
-          ...f, 
-          sourceName: "VM", 
-          isKkphim: false, 
-          name: f.name, 
-          original_name: f.origin_name || f.original_name, 
-          poster_url: f.thumb_url || f.poster_url,   // Đảo ngược giống NC và OP cũ
-          thumb_url: f.poster_url || f.thumb_url,    // Đảo ngược giống NC và OP cũ
-          slug: f.slug, 
-          path: f.slug, 
-          episode_total: f.episode_total || f.total_episodes, 
-          current_episode: f.episode_current || f.current_episode, 
-          language: f.lang || "N/A", 
-          time: f.time || "N/A", 
-          quality: f.quality || "N/A", 
-          year: getYearFromData(f) 
-        }));
+        const normVm = safeResVm.map(f => {
+          const rawPoster = typeof f.poster_url === "string" ? f.poster_url : "";
+          const rawThumb = typeof f.thumb_url === "string" ? f.thumb_url : "";
+          const poster = rawThumb || rawPoster;
+          const thumb = rawPoster || rawThumb;
+          return { 
+            ...f, 
+            sourceName: "VM", 
+            isKkphim: false, 
+            name: typeof f.name === "string" ? f.name : (f.name ? String(f.name) : "N/A"), 
+            original_name: typeof (f.origin_name || f.original_name) === "string" ? (f.origin_name || f.original_name) : "", 
+            poster_url: poster,
+            thumb_url: thumb,
+            slug: f.slug || f._id || "", 
+            path: f.slug || f._id || "", 
+            episode_total: f.episode_total || f.total_episodes || "", 
+            current_episode: f.episode_current || f.current_episode || "", 
+            language: typeof f.lang === "string" ? f.lang : "N/A", 
+            time: typeof f.time === "string" ? f.time : "N/A", 
+            quality: typeof f.quality === "string" ? f.quality : "N/A", 
+            year: getYearFromData(f) 
+          };
+        });
 
         // Format data Nguồn C: ĐẢO NGƯỢC (thumb_url làm poster đứng, poster_url làm thumb ngang)
-        const normNc = resNc.map(f => ({ 
-          ...f, 
-          sourceName: "NC", 
-          isKkphim: false, 
-          name: f.name, 
-          original_name: f.original_name || f.origin_name, 
-          poster_url: f.thumb_url || f.poster_url, 
-          thumb_url: f.poster_url || f.thumb_url, 
-          slug: f.slug, 
-          path: f.slug, 
-          episode_total: f.total_episodes || f.episode_total, 
-          current_episode: f.current_episode || f.episode_current, 
-          language: f.language || f.lang || "N/A", 
-          time: f.time || "N/A", 
-          quality: f.quality || "N/A", 
-          year: getYearFromData(f) 
-        }));
+        const normNc = safeResNc.map(f => {
+          const rawPoster = typeof f.poster_url === "string" ? f.poster_url : "";
+          const rawThumb = typeof f.thumb_url === "string" ? f.thumb_url : "";
+          const poster = rawThumb || rawPoster;
+          const thumb = rawPoster || rawThumb;
+          return { 
+            ...f, 
+            sourceName: "NC", 
+            isKkphim: false, 
+            name: typeof f.name === "string" ? f.name : (f.name ? String(f.name) : "N/A"), 
+            original_name: typeof (f.original_name || f.origin_name) === "string" ? (f.original_name || f.origin_name) : "", 
+            poster_url: poster, 
+            thumb_url: thumb, 
+            slug: f.slug || f.id || "", 
+            path: f.slug || f.id || "", 
+            episode_total: f.total_episodes || f.episode_total || "", 
+            current_episode: f.current_episode || f.episode_current || "", 
+            language: typeof (f.language || f.lang) === "string" ? (f.language || f.lang) : "N/A", 
+            time: typeof f.time === "string" ? f.time : "N/A", 
+            quality: typeof f.quality === "string" ? f.quality : "N/A", 
+            year: getYearFromData(f) 
+          };
+        });
 
         const combined = [...normKk, ...normVm, ...normNc];
         
         // Lọc trùng lặp bằng cách nối slug và sourceName
-        const uniqueResults = Array.from(new Map(combined.map(item => [`${item.slug}-${item.sourceName}`, item])).values());
+        const uniqueResults = Array.from(
+          new Map(
+            combined
+              .filter(item => item && item.slug)
+              .map(item => [`${item.slug}-${item.sourceName}`, item])
+          ).values()
+        );
 
         setResults(uniqueResults);
       } catch (err) {
+        console.error("Fetch search error:", err);
         setResults([]);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
+
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [keyword]);
 
   useEffect(() => {
@@ -192,22 +258,30 @@ export default function FilmListBySlug() {
 
   /* ================= UTILS ================= */
   function getPoster(url, sourceName) {
-    if (!url) return "";
+    if (!url || typeof url !== "string") return "";
+    const cleanUrl = url.trim();
+    if (!cleanUrl) return "";
     
     // Nếu link đã là Full Path (http/https) -> Dùng trực tiếp
-    if (url.startsWith("http")) return url;
+    if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) return cleanUrl;
+    if (cleanUrl.startsWith("//")) return `https:${cleanUrl}`;
 
     // Xử lý riêng cho VSMOV (nếu có relative path)
     if (sourceName === "VM") {
-      return `https://vsmov.com/${url.startsWith("/") ? url.slice(1) : url}`;
+      return `https://vsmov.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
     }
 
     // Xử lý riêng cho KKPhim (nếu có relative path)
     if (sourceName === "KK") {
-      return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+      return `https://phimimg.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
     }
 
-    return url;
+    // Xử lý riêng cho NC (nếu có relative path)
+    if (sourceName === "NC") {
+      return `https://phim.nguonc.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
+    }
+
+    return cleanUrl;
   }
 
   const executeSearch = () => {
@@ -230,7 +304,15 @@ export default function FilmListBySlug() {
   return (
     <div className="film-container">
       <div className="input-search-film">
-        <input type="text" ref={inputRef} className="input-film fst-italic" placeholder="Tìm kiếm phim khác..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={(e) => e.key === "Enter" && executeSearch()} />
+        <input 
+          type="text" 
+          ref={inputRef} 
+          className="input-film fst-italic" 
+          placeholder="Tìm kiếm phim khác..." 
+          value={search} 
+          onChange={(e) => setSearch(e.target.value)} 
+          onKeyDown={(e) => e.key === "Enter" && executeSearch()} 
+        />
         <CiSearch className="search-film-icon" onClick={executeSearch} />
       </div>
       <h3 className="result-title fst-italic ms-3">
@@ -238,12 +320,22 @@ export default function FilmListBySlug() {
         <i className="ms-2">Kết quả cho: {keyword}</i>
       </h3>
 
-      {results.length === 0 && <p className="no-result">Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên,
-          lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim, tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.</p>}
+      {results.length === 0 && (
+        <p className="no-result">
+          Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên,
+          lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim, tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
+        </p>
+      )}
 
       <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
         {results.map((film) => (
-          <Link to={`/chi-tiet/${film.slug}`} key={`${film.slug}-${film.sourceName}`} className="film-card" onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} onMouseLeave={enablePreview ? handleMouseLeave : undefined}>
+          <Link 
+            to={`/chi-tiet/${film.slug}`} 
+            key={`${film.slug}-${film.sourceName}`} 
+            className="film-card" 
+            onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} 
+            onMouseLeave={enablePreview ? handleMouseLeave : undefined}
+          >
             <div className="film-poster-wrapper">
               {/* LABEL HIỂN THỊ NGUỒN PHIM */}
               <div style={{
@@ -255,7 +347,16 @@ export default function FilmListBySlug() {
                 {film.sourceName}
               </div>
 
-              <img src={getPoster(film.poster_url, film.sourceName)} alt={film.name} className="film-poster" loading="lazy" />
+              <img 
+                src={getPoster(film.poster_url, film.sourceName)} 
+                alt={film.name} 
+                className="film-poster" 
+                loading="lazy" 
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://placehold.co/300x450?text=No+Image";
+                }}
+              />
               <div className="film-overlay">
                 <h6 className="film-name">{film.name}</h6>
                 <span className="film-year">{film.year}</span>
@@ -267,7 +368,12 @@ export default function FilmListBySlug() {
 
       {enablePreview && hoverFilm && (
         <div className="hover-preview-backdrop">
-          <div className="hover-preview-card" onMouseLeave={() => setHoverFilm(null)} ref={previewRef} style={{ backgroundImage: `url(${getPoster(hoverFilm.thumb_url || hoverFilm.poster_url, hoverFilm.sourceName)})` }}>
+          <div 
+            className="hover-preview-card" 
+            onMouseLeave={() => setHoverFilm(null)} 
+            ref={previewRef} 
+            style={{ backgroundImage: `url(${getPoster(hoverFilm.thumb_url || hoverFilm.poster_url, hoverFilm.sourceName)})` }}
+          >
             <div className="preview-info">
               <div className="preview-left">
                 <h5 className="preview-name">{hoverFilm.name}</h5>
@@ -278,7 +384,7 @@ export default function FilmListBySlug() {
                   <span className="preview-tag">{hoverFilm.year}</span>
                 </div>
                 <div className="preview-actions">
-                  <Link to={`/chi-tiet/${hoverFilm.path}`} className="btn-watch">▶ Xem ngay</Link>
+                  <Link to={`/chi-tiet/${hoverFilm.path || hoverFilm.slug}`} className="btn-watch">▶ Xem ngay</Link>
                 </div>
               </div>
             </div>
