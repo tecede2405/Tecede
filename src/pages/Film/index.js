@@ -46,16 +46,14 @@ export default function FilmListBySlug() {
             if (!firstRes.ok) return [];
             const firstData = await firstRes.json();
             
-            // HÀM XỬ LÝ ẢNH RIÊNG CHO TỪNG DATA TRẢ VỀ
+            // HÀM XỬ LÝ DỮ LIỆU TỪ TỪNG NGUỒN
             const extractItems = (data) => {
-              // KK, OP, NC đều có cấu trúc items trong data.data.items
               let items = data?.data?.items || data?.items || data?.data || [];
-              // Không cần xử lý og_image nữa, vì poster_url đã đầy đủ
               return items;
             };
 
             let allItems = extractItems(firstData);
-            const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || firstData?.totalPages || 1;
+            const totalPage = firstData?.data?.params?.pagination?.totalPages || firstData?.paginate?.total_page || firstData?.totalPages || firstData?.pagination?.totalPages || 1;
 
             if (totalPage > 1) {
               const fetchPromises = [];
@@ -74,14 +72,17 @@ export default function FilmListBySlug() {
           }
         };
 
+        // 1. KKPhim
         const urlKk = `${process.env.REACT_APP_FILM_API_URL}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
-        const urlOp = `${process.env.REACT_APP_FILM_API_URL_2}/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        // 2. VSMOV (VM)
+        const urlVm = `${process.env.REACT_APP_FILM_API_URL_2}/api/tim-kiem?keyword=${encodeURIComponent(keyword)}`;
+        // 3. Nguồn C
         const urlNc = `${process.env.REACT_APP_FILM_API_URL_3}/api/films/search?keyword=${encodeURIComponent(keyword)}`;
 
-        // Fetch song song 3 nguồn
-        const [resKk, resOp, resNc] = await Promise.all([
+        // Fetch song song 3 nguồn: KK, VM, NC
+        const [resKk, resVm, resNc] = await Promise.all([
           fetchAllPages(urlKk, "KK"),
-          fetchAllPages(urlOp, "OP"),
+          fetchAllPages(urlVm, "VM"),
           fetchAllPages(urlNc, "NC")
         ]);
 
@@ -101,15 +102,15 @@ export default function FilmListBySlug() {
           return "N/A";
         };
 
-        // Format data: Sử dụng full_image_path cho nguồn KK
+        // Format data KKPhim: Giữ nguyên poster_url và thumb_url
         const normKk = resKk.map(f => ({
           ...f,
           sourceName: "KK",
           isKkphim: true,
           name: f.name,
           original_name: f.origin_name || f.original_name,
-          poster_url: f.poster_url,   // Giữ nguyên, không thay bằng full_image_path
-          thumb_url: f.thumb_url,     // Có thể dùng cho preview nếu cần
+          poster_url: f.poster_url || f.thumb_url,
+          thumb_url: f.thumb_url || f.poster_url,
           slug: f.slug,
           path: f.slug,
           episode_total: f.episode_total,
@@ -120,25 +121,45 @@ export default function FilmListBySlug() {
           year: getYearFromData(f)
         }));
 
-        const normOp = resOp.map(f => ({ 
-          ...f, sourceName: "OP", isKkphim: false, 
-          name: f.name, original_name: f.origin_name || f.original_name, 
-          poster_url: f.thumb_url || f.poster_url, thumb_url: f.poster_url || f.thumb_url, 
-          slug: f.slug, path: f.slug, 
-          episode_total: f.episode_total, current_episode: f.episode_current, 
-          language: f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
+        // Format data VSMOV (VM): ĐẢO NGƯỢC (thumb_url làm poster đứng, poster_url làm thumb ngang)
+        const normVm = resVm.map(f => ({ 
+          ...f, 
+          sourceName: "VM", 
+          isKkphim: false, 
+          name: f.name, 
+          original_name: f.origin_name || f.original_name, 
+          poster_url: f.thumb_url || f.poster_url,   // Đảo ngược giống NC và OP cũ
+          thumb_url: f.poster_url || f.thumb_url,    // Đảo ngược giống NC và OP cũ
+          slug: f.slug, 
+          path: f.slug, 
+          episode_total: f.episode_total || f.total_episodes, 
+          current_episode: f.episode_current || f.current_episode, 
+          language: f.lang || "N/A", 
+          time: f.time || "N/A", 
+          quality: f.quality || "N/A", 
+          year: getYearFromData(f) 
         }));
 
+        // Format data Nguồn C: ĐẢO NGƯỢC (thumb_url làm poster đứng, poster_url làm thumb ngang)
         const normNc = resNc.map(f => ({ 
-          ...f, sourceName: "NC", isKkphim: false, 
-          name: f.name, original_name: f.original_name || f.origin_name, 
-          poster_url: f.thumb_url || f.poster_url, thumb_url: f.poster_url || f.thumb_url, 
-          slug: f.slug, path: f.slug, 
-          episode_total: f.total_episodes || f.episode_total, current_episode: f.current_episode || f.episode_current, 
-          language: f.language || f.lang || "N/A", time: f.time || "N/A", quality: f.quality || "N/A", year: getYearFromData(f) 
+          ...f, 
+          sourceName: "NC", 
+          isKkphim: false, 
+          name: f.name, 
+          original_name: f.original_name || f.origin_name, 
+          poster_url: f.thumb_url || f.poster_url, 
+          thumb_url: f.poster_url || f.thumb_url, 
+          slug: f.slug, 
+          path: f.slug, 
+          episode_total: f.total_episodes || f.episode_total, 
+          current_episode: f.current_episode || f.episode_current, 
+          language: f.language || f.lang || "N/A", 
+          time: f.time || "N/A", 
+          quality: f.quality || "N/A", 
+          year: getYearFromData(f) 
         }));
 
-        const combined = [...normKk, ...normOp, ...normNc];
+        const combined = [...normKk, ...normVm, ...normNc];
         
         // Lọc trùng lặp bằng cách nối slug và sourceName
         const uniqueResults = Array.from(new Map(combined.map(item => [`${item.slug}-${item.sourceName}`, item])).values());
@@ -173,16 +194,20 @@ export default function FilmListBySlug() {
   function getPoster(url, sourceName) {
     if (!url) return "";
     
-    // Nguồn C thường trả về link full sẵn
+    // Nếu link đã là Full Path (http/https) -> Dùng trực tiếp
     if (url.startsWith("http")) return url;
 
-    // Xử lý riêng cho OPhim
-    if (sourceName === "OP") {
-      return `https://img.ophim.live/uploads/movies/${url.startsWith("/") ? url.slice(1) : url}`;
+    // Xử lý riêng cho VSMOV (nếu có relative path)
+    if (sourceName === "VM") {
+      return `https://vsmov.com/${url.startsWith("/") ? url.slice(1) : url}`;
     }
 
-    // Xử lý cho KKPhim (phimapi) - đã có full path ở bước fetch
-    return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+    // Xử lý riêng cho KKPhim (nếu có relative path)
+    if (sourceName === "KK") {
+      return `https://phimimg.com/${url.startsWith("/") ? url.slice(1) : url}`;
+    }
+
+    return url;
   }
 
   const executeSearch = () => {
@@ -223,7 +248,7 @@ export default function FilmListBySlug() {
               {/* LABEL HIỂN THỊ NGUỒN PHIM */}
               <div style={{
                 position: "absolute", top: "5px", left: "5px", 
-                backgroundColor: film.sourceName === "KK" ? "#e50914" : film.sourceName === "OP" ? "#ff9800" : "#2196f3", 
+                backgroundColor: film.sourceName === "KK" ? "#e50914" : film.sourceName === "VM" ? "#8e24aa" : "#2196f3", 
                 color: "white", padding: "3px 8px", fontSize: "11px", fontWeight: "bold", 
                 borderRadius: "4px", zIndex: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.5)"
               }}>
