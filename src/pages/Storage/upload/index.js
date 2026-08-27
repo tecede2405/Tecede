@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { FaTrashCan, FaPlus, FaFileImage, FaFileVideo } from "react-icons/fa6";
+import { FaTrashCan, FaPlus, FaFileImage, FaFileVideo, FaCopy, FaCheck } from "react-icons/fa6";
 import "./style.scss";
 
 function UploadStorage() {
@@ -10,6 +10,8 @@ function UploadStorage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [uploadedResults, setUploadedResults] = useState([]);
+  const [copiedLink, setCopiedLink] = useState(null);
 
   const MAX_FILE_SIZE = 52428800; // 50MB per file
   const isSizeError = files.some(item => item.file.size > MAX_FILE_SIZE);
@@ -19,7 +21,6 @@ function UploadStorage() {
     setTotalSizeMB(Number((totalBytes / (1024 * 1024)).toFixed(2)));
   };
 
-  // Hàm gom nhóm xử lý file chung cho cả Click chọn và Kéo thả
   const processSelectedFiles = (selectedFiles) => {
     if (selectedFiles.length === 0) return;
 
@@ -34,32 +35,28 @@ function UploadStorage() {
     setFiles(updatedFiles);
     calculateTotalSize(updatedFiles);
     setMessage("");
+    setUploadedResults([]);
   };
 
-  // 1. Xử lý khi chọn file qua click nút truyền thống
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     processSelectedFiles(selectedFiles);
     e.target.value = ""; 
   };
 
-  // 🔥 2. NGĂN TRÌNH DUYỆT TỰ MỞ TAB MỚI KHI ĐANG KÉO FILE QUA VÙNG THẢ
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  // 🔥 3. XỬ LÝ LẤY FILE KHI NGƯỜI DÙNG THẢ CHUỘT
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (loading) return; // Nếu đang upload thì không nhận thêm file kéo thả
+    if (loading) return;
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFiles = Array.from(e.dataTransfer.files);
-      
-      // Chỉ lọc lấy các file là ảnh hoặc video
       const validFiles = droppedFiles.filter(
         file => file.type.startsWith("image/") || file.type.startsWith("video/")
       );
@@ -86,6 +83,12 @@ function UploadStorage() {
     calculateTotalSize(updated);
   };
 
+  const copyToClipboard = (link, id) => {
+    navigator.clipboard.writeText(link);
+    setCopiedLink(id);
+    setTimeout(() => setCopiedLink(null), 2000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (files.length === 0 || isSizeError) return;
@@ -93,7 +96,6 @@ function UploadStorage() {
     const formData = new FormData();
     files.forEach((item) => {
       const finalName = `${item.customName.trim()}${item.extension}`;
-      //  Bọc encodeURIComponent quanh tên file để ép dữ liệu về chuỗi ký tự ASCII an toàn
       const safeHeaderName = encodeURIComponent(finalName);
       formData.append("files", item.file, safeHeaderName);
     });
@@ -102,6 +104,7 @@ function UploadStorage() {
       setLoading(true);
       setMessage("");
       setProgress(0);
+      setUploadedResults([]);
 
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/storage/upload`,
@@ -117,6 +120,36 @@ function UploadStorage() {
 
       if (res.status === 200 || res.status === 201) {
         setProgress(100);
+
+        let results = [];
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          results = await Promise.all(
+            res.data.map(async (savedFile) => {
+              let directUrl = savedFile.url || savedFile.directUrl || savedFile.imgbb_url || savedFile.display_url || savedFile.link;
+
+              const isImage = savedFile.type === "image" || savedFile.mimeType?.startsWith("image/") || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(savedFile.name);
+
+              if (isImage && (!directUrl || !directUrl.startsWith("http") || directUrl.includes("/api/storage/file/"))) {
+                try {
+                  const check = await fetch(`${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`);
+                  if (check.ok && check.url) {
+                    directUrl = check.url;
+                  }
+                } catch (e) {
+                  console.warn("Không lấy được link thật của ảnh:", e);
+                }
+              }
+
+              return {
+                ...savedFile,
+                directLink: directUrl || `${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`,
+                isImage,
+              };
+            })
+          );
+        }
+
+        setUploadedResults(results);
         setMessage(`✅ Tải lên kho dữ liệu thành công ${files.length} file!`);
         setFiles([]);
         setTotalSizeMB(0);
@@ -124,7 +157,7 @@ function UploadStorage() {
         setTimeout(() => {
           setMessage("");
           setProgress(0);
-        }, 4000);
+        }, 5000);
       }
     } catch (err) {
       console.error(err);
@@ -259,6 +292,50 @@ function UploadStorage() {
         {message && (
           <div className={`storage-message ${message.includes("✅") ? "success" : "error"}`}>
             {message}
+          </div>
+        )}
+
+        {/* DANH SÁCH FILE VỪA UPLOAD THÀNH CÔNG VỚI LINK THẬT */}
+        {uploadedResults.length > 0 && (
+          <div className="uploaded-results-wrapper">
+            <div className="results-header">
+              <h3>🎉 File vừa tải lên ({uploadedResults.length})</h3>
+              <button
+                type="button"
+                className="clear-results-btn"
+                onClick={() => setUploadedResults([])}
+              >
+                Đóng
+              </button>
+            </div>
+            <div className="uploaded-results-list">
+              {uploadedResults.map((item, idx) => (
+                <div key={item._id || idx} className="uploaded-result-card">
+                  <div className="result-icon">
+                    {item.isImage ? (
+                      <img src={item.directLink} alt={item.name} className="result-thumb" />
+                    ) : (
+                      <FaFileVideo className="icon-video" />
+                    )}
+                  </div>
+                  <div className="result-info">
+                    <span className="result-name">{item.name}</span>
+                    <span className="result-link" title={item.directLink}>
+                      {item.directLink}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="copy-link-btn"
+                    onClick={() => copyToClipboard(item.directLink, item._id || idx)}
+                    title="Sao chép link"
+                  >
+                    {copiedLink === (item._id || idx) ? <FaCheck style={{ color: "#4ade80" }} /> : <FaCopy />}
+                    <span>{copiedLink === (item._id || idx) ? "Đã chép" : "Copy link"}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </form>

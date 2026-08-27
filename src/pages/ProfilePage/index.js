@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
       let finalAvatarUrl = selectedAvatar;
 
-      // Nếu có file mới từ máy -> Upload qua router storage cũ
+      // Nếu có file mới từ máy -> Upload qua router storage và lấy link ảnh thật (ImgBB)
       if (avatarFile) {
         const formData = new FormData();
         const safeName = encodeURIComponent(`avatar_${Date.now()}_${avatarFile.name}`);
@@ -115,7 +115,24 @@ export default function ProfilePage() {
 
         if ((uploadRes.status === 200 || uploadRes.status === 201) && Array.isArray(uploadRes.data) && uploadRes.data.length > 0) {
           const savedFile = uploadRes.data[0];
-          finalAvatarUrl = `${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`;
+          
+          // 1. Kiểm tra nếu backend upload đã trả về link ảnh thật
+          let realImageUrl = savedFile.url || savedFile.directUrl || savedFile.imgbb_url || savedFile.display_url || savedFile.link;
+
+          // 2. Nếu chưa có link trực tiếp, gọi file endpoint để lấy link đích thật sau redirect (ImgBB)
+          if (!realImageUrl || !realImageUrl.startsWith("http") || realImageUrl.includes("/api/storage/file/")) {
+            try {
+              const fileCheck = await fetch(`${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`);
+              if (fileCheck.ok && fileCheck.url) {
+                realImageUrl = fileCheck.url;
+              }
+            } catch (fetchErr) {
+              console.warn("Không lấy được redirect link từ storage:", fetchErr);
+            }
+          }
+
+          // Gán link ảnh thật từ ImgBB vào finalAvatarUrl để lưu vào database
+          finalAvatarUrl = realImageUrl || `${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`;
         } else {
           throw new Error("Không lấy được thông tin file sau khi upload");
         }

@@ -363,3 +363,128 @@
   transition: all 0.2s;
   &:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
 }
+
+/* ===== UPLOADED RESULTS ===== */
+.uploaded-results-wrapper {
+  margin-top: 24px;
+  padding: 18px;
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 16px;
+
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+
+    h3 {
+      font-size: 15px;
+      color: #34d399;
+      margin: 0;
+    }
+
+    .clear-results-btn {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+    }
+  }
+
+  .uploaded-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .uploaded-result-card {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 14px;
+    gap: 12px;
+
+    .result-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      flex-shrink: 0;
+
+      .result-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .icon-video {
+        font-size: 20px;
+        color: #fbbf24;
+      }
+    }
+
+    .result-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      overflow: hidden;
+
+      .result-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #f1f5f9;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .result-link {
+        font-size: 11.5px;
+        color: #38bdf8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: monospace;
+      }
+    }
+
+    .copy-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(56, 189, 248, 0.25);
+        color: #fff;
+        border-color: #38bdf8;
+      }
+    }
+  }
+}

@@ -45,12 +45,24 @@ function StorageGallery() {
     fetchStorageData();
   }, []);
 
-  const handleCopyLink = (id) => {
-    const directLink = `${process.env.REACT_APP_API_URL}/api/storage/file/${id}`;
-    
-    navigator.clipboard.writeText(directLink);
-    setCopiedId(id);
-    
+  const handleCopyLink = async (item) => {
+    let directLink = item.url || item.directUrl || item.imgbb_url || item.display_url || item.link;
+
+    if (item.type === "image" && (!directLink || !directLink.startsWith("http") || directLink.includes("/api/storage/file/"))) {
+      try {
+        const fileCheck = await fetch(`${process.env.REACT_APP_API_URL}/api/storage/file/${item._id}`);
+        if (fileCheck.ok && fileCheck.url) {
+          directLink = fileCheck.url;
+        }
+      } catch (err) {
+        console.warn("Could not get direct ImgBB link:", err);
+      }
+    }
+
+    const finalLink = directLink || `${process.env.REACT_APP_API_URL}/api/storage/file/${item._id}`;
+    navigator.clipboard.writeText(finalLink);
+    setCopiedId(item._id);
+
     setTimeout(() => {
       setCopiedId(null);
     }, 2000);
@@ -172,7 +184,7 @@ function StorageGallery() {
 
                 <div className="card-actions">
                   <button
-                    onClick={() => handleCopyLink(item._id)}
+                    onClick={() => handleCopyLink(item)}
                     className={`copy-btn ${copiedId === item._id ? "copied" : ""}`}
                   >
                     {copiedId === item._id ? (
