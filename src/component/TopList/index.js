@@ -6,6 +6,62 @@ import { FaFilm, FaHeart, FaTimes, FaDonate } from "react-icons/fa";
 import { BsGraphUpArrow } from "react-icons/bs";
 import "./style.scss";
 
+function DonateMessage({ message }) {
+  const containerRef = React.useRef(null);
+  const [isOverflowing, setIsOverflowing] = React.useState(false);
+  const displayMsg = message || "Ủng hộ web";
+
+  React.useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const checkOverflow = () => {
+      const tempSpan = document.createElement("span");
+      const style = window.getComputedStyle(container);
+      tempSpan.style.visibility = "hidden";
+      tempSpan.style.position = "absolute";
+      tempSpan.style.whiteSpace = "nowrap";
+      tempSpan.style.fontSize = style.fontSize;
+      tempSpan.style.fontFamily = style.fontFamily;
+      tempSpan.style.fontWeight = style.fontWeight || "400";
+      tempSpan.innerText = displayMsg;
+      document.body.appendChild(tempSpan);
+
+      const textWidth = tempSpan.offsetWidth;
+      document.body.removeChild(tempSpan);
+
+      setIsOverflowing(textWidth > container.clientWidth + 2);
+    };
+
+    checkOverflow();
+
+    const resizeObserver = new ResizeObserver(() => {
+      checkOverflow();
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [displayMsg]);
+
+  return (
+    <div className="donate-msg-container" ref={containerRef}>
+      {isOverflowing ? (
+        <div className="donate-scroll-text">
+          <span>{displayMsg} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span>{displayMsg} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+      ) : (
+        <span className="donate-card-msg">
+          {displayMsg}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function TopList() {
   const { grouped, loading: moviesLoading } = useMovies();
   const { donates, loading: donatesLoading } = useDonates();
@@ -139,18 +195,7 @@ function TopList() {
                       <span className="donate-card-amount">{formatMoney(item.amount)}</span>
                     </div>
                     <div className="donate-card-line2">
-                      <div className="donate-msg-container">
-                        {(item.message && item.message.length > 35) ? (
-                          <div className="donate-scroll-text">
-                            <span>{item.message} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <span>{item.message} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                          </div>
-                        ) : (
-                          <span className="donate-card-msg">
-                            {item.message || "Ủng hộ web"}
-                          </span>
-                        )}
-                      </div>
+                      <DonateMessage message={item.message} />
                     </div>
                   </div>
                 </div>

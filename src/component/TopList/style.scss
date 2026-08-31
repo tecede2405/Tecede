@@ -203,13 +203,13 @@
   color: #fff;
 }
 .donate-card-avatar.rank-2 {
-  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
-  box-shadow: 0 0 10px rgba(148, 163, 184, 0.4);
-  color: #1e293b;
+  background: linear-gradient(135deg, #c084fc, #9333ea);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.45);
+  color: #fff;
 }
 .donate-card-avatar.rank-3 {
-  background: linear-gradient(135deg, #b45309, #d97706);
-  box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.45);
   color: #fff;
 }
 
@@ -263,20 +263,28 @@
   white-space: nowrap;
   flex-grow: 1;
   max-width: 260px;
+  display: flex;
 }
 
 .donate-card-msg {
   display: inline-block;
+  white-space: nowrap;
 }
 
 .donate-scroll-text {
-  display: flex;
+  display: inline-flex;
+  white-space: nowrap;
   width: max-content;
-  animation: scrollText 25s linear infinite;
+  animation: scrollText 14s linear infinite;
+
+  span {
+    display: inline-block;
+    flex-shrink: 0;
+  }
 }
 
 @keyframes scrollText {
-  0%, 6% { transform: translateX(0); } /* Đứng yên 1.5s (6% của 25s) ở vị trí bắt đầu */
+  0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
@@ -433,32 +441,193 @@
   }
   .toplist-footer {
     font-size: 11px;
+    margin-top: 16px;
   }
   .toplist-item__thumb {
     width: 32px;
     height: 46px;
   }
   
-  /* Thu nhỏ chữ cho Donate Card */
-  .donate-card-name {
-    font-size: 12px;
-  }
-  .donate-card-amount {
-    font-size: 11px;
-  }
-  .donate-card-line2 {
-    font-size: 10px;
-  }
-  .donate-card-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 11px;
-  }
   .toplist-goal-percent-inline {
     font-size: 11px;
   }
+  .toplist-goal-bar-inline {
+    width: 65px;
+    height: 5px;
+  }
+  
+  /* ==============================================================
+     DONATE MOBILE GRID: 3 ROWS (TOP 1: 1 ROW, TOP 2 & 3: 1 ROW, TOP 4 & 5: 1 ROW)
+     ============================================================== */
+  .donate-column {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+  }
+
+  .donate-card-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .donate-card-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(22, 22, 28, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    min-width: 0;
+    overflow: hidden;
+
+    // Hàng 1: TOP 1 chiếm trọn 1 hàng (2 cột)
+    &:nth-child(1) {
+      grid-column: 1 / -1;
+      padding: 10px 12px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(239, 68, 68, 0.1) 100%), rgba(24, 24, 32, 0.95);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+
+      .donate-card-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+      }
+
+      .donate-card-name {
+        font-size: 12px;
+        font-weight: 800;
+        color: #fef08a;
+      }
+
+      .donate-card-amount {
+        font-size: 11px;
+        font-weight: 700;
+        color: #34d399;
+      }
+
+      .donate-card-line2 {
+        font-size: 10px;
+        color: #d1d5db;
+      }
+    }
+
+    // Hàng 2 (Top 2, Top 3) & Hàng 3 (Top 4, Top 5)
+    &:nth-child(n+2) {
+      padding: 7px 8px;
+      gap: 6px;
+
+      .donate-card-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+      }
+
+      .donate-card-name {
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .donate-card-amount {
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .donate-card-line2 {
+        font-size: 9px;
+        color: #9ca3af;
+      }
+    }
+
+    &:nth-child(2) {
+      border-color: rgba(168, 85, 247, 0.45);
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(20, 20, 26, 0.95) 100%);
+      box-shadow: 0 2px 10px rgba(168, 85, 247, 0.12);
+
+      .donate-card-name {
+        color: #f3e8ff;
+      }
+    }
+
+    &:nth-child(3) {
+      border-color: rgba(59, 130, 246, 0.45);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(20, 20, 26, 0.95) 100%);
+      box-shadow: 0 2px 10px rgba(59, 130, 246, 0.12);
+
+      .donate-card-name {
+        color: #dbeafe;
+      }
+    }
+  }
+
+  .donate-card-info {
+    flex: 1;
+    min-width: 0;
+    gap: 1px;
+  }
+
+  .donate-card-line1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .donate-card-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .donate-card-amount {
+    flex-shrink: 0;
+  }
+
+  .donate-card-line2 {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .donate-msg-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .donate-scroll-text {
+    display: inline-flex;
+    white-space: nowrap;
+    width: max-content;
+    animation: scrollText 12s linear infinite;
+
+    span {
+      display: inline-block;
+      flex-shrink: 0;
+    }
+  }
+
+  .donate-card-msg {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .donate-footer {
+    margin-top: 14px;
+  }
+
   .donate-btn-mini {
     font-size: 11px;
-    padding: 4px 12px;
+    padding: 5px 14px;
   }
 }

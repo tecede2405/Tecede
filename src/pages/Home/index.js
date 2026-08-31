@@ -16,6 +16,7 @@ import MovieRow from "../../component/MovieRow/index";
 
 
 import TopList from "../../component/TopList/index";
+import LatestComments from "../../component/LatestComments/index";
 import { Helmet } from "react-helmet-async";
 import LazySection from "../../component/LazySection/index";
 import "./style.scss";
@@ -79,6 +80,9 @@ function Home() {
               </div>
               
               <GenreCarousel />
+              <LazySection>
+                <LatestComments />
+              </LazySection>
               <LazySection>
                 <TopList />
               </LazySection>
