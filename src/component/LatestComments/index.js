@@ -9,6 +9,54 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "./style.scss";
 
+function formatCommentTime(dateInput) {
+  if (!dateInput) return "";
+  let date;
+  if (typeof dateInput === "string") {
+    const isoString = dateInput.includes("Z") || dateInput.includes("+")
+      ? dateInput
+      : dateInput.replace(" ", "T") + "Z";
+    date = new Date(isoString);
+  } else {
+    date = new Date(dateInput);
+  }
+
+  if (isNaN(date.getTime())) return "";
+
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+
+  if (diffMs < 0) return "Vừa xong";
+
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
+
+  if (diffYears >= 1) {
+    return `${diffYears} năm trước`;
+  }
+  if (diffMonths >= 1) {
+    return `${diffMonths} tháng trước`;
+  }
+  if (diffWeeks >= 1) {
+    return `${diffWeeks} tuần trước`;
+  }
+  if (diffDays >= 1) {
+    return `${diffDays} ngày trước`;
+  }
+  if (diffHours >= 1) {
+    return `${diffHours} giờ trước`;
+  }
+  if (diffMins >= 1) {
+    return `${diffMins} phút trước`;
+  }
+  return "Vừa xong";
+}
+
 export default function LatestComments() {
   const { comments, loading } = useComments();
   const navigate = useNavigate();
@@ -62,6 +110,7 @@ export default function LatestComments() {
           {comments.map((item) => {
             const bgImage = item.thumb_url || item.poster_url || "";
             const displayName = item.display_name || "Người dùng";
+            const timeAgo = formatCommentTime(item.created_at);
 
             return (
               <SwiperSlide key={item.id}>
@@ -107,9 +156,14 @@ export default function LatestComments() {
                         </div>
                       </div>
                       <div className="user-details">
-                        <span className="user-name" title={displayName}>
-                          {displayName}
-                        </span>
+                        <div className="user-name-row">
+                          <span className="user-name" title={displayName}>
+                            {displayName}
+                          </span>
+                          {timeAgo && (
+                            <span className="comment-time">{timeAgo}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
 

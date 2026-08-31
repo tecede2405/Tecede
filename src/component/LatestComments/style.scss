@@ -122,6 +122,14 @@
         min-width: 0;
         flex: 1;
 
+        .user-name-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 6px;
+          width: 100%;
+        }
+
         .user-name {
           display: block;
           font-size: 13px;
@@ -130,6 +138,16 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          min-width: 0;
+          flex: 1;
+        }
+
+        .comment-time {
+          font-size: 11px;
+          color: #94a3b8;
+          font-weight: 400;
+          flex-shrink: 0;
+          white-space: nowrap;
         }
       }
     }
@@ -217,8 +235,14 @@
           }
         }
 
-        .user-details .user-name {
-          font-size: 11px;
+        .user-details {
+          .user-name {
+            font-size: 11px;
+          }
+
+          .comment-time {
+            font-size: 9.5px;
+          }
         }
       }
 
