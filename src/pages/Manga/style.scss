@@ -1,4 +1,197 @@
 /* ====================================================
+   MANGA NOTICE POPUP
+   ==================================================== */
+.manga-notice-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 18, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: noticeFadeIn 0.25s ease-out forwards;
+}
+
+.manga-notice-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(145deg, #181c2e 0%, #0f121e 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 20px;
+  padding: 32px 24px 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 158, 11, 0.15);
+  text-align: center;
+  animation: noticeScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.manga-notice-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+    transform: rotate(90deg);
+  }
+}
+
+.manga-notice-icon-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+
+  .manga-notice-icon-bg {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(239, 68, 68, 0.1) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
+    animation: pulseNoticeGlow 2s infinite ease-in-out;
+
+    .manga-notice-icon {
+      font-size: 28px;
+      color: #f59e0b;
+    }
+  }
+}
+
+.manga-notice-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+.manga-notice-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 24px;
+  padding: 0 10px;
+}
+
+.manga-notice-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+
+  .manga-notice-btn-home {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+      background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+    }
+  }
+
+  .manga-notice-btn-close {
+    padding: 11px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+@keyframes noticeFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes noticeScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseNoticeGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.45);
+  }
+}
+
+@media (max-width: 480px) {
+  .manga-notice-modal {
+    padding: 26px 16px 22px;
+    border-radius: 16px;
+  }
+  .manga-notice-title {
+    font-size: 19px;
+  }
+  .manga-notice-desc {
+    font-size: 13.5px;
+    padding: 0;
+  }
+  .manga-notice-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+
+    .manga-notice-btn-home,
+    .manga-notice-btn-close {
+      width: 100%;
+      padding: 10px;
+    }
+  }
+}
+
+/* ====================================================
    MANGA HOME PAGE
    ==================================================== */
 .manga-home {

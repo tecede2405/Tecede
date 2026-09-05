@@ -157,9 +157,14 @@ export default function LatestComments() {
                       </div>
                       <div className="user-details">
                         <div className="user-name-row">
-                          <span className="user-name" title={displayName}>
-                            {displayName}
-                          </span>
+                          <div className="user-name-group">
+                            <span className="user-name" title={displayName}>
+                              {displayName}
+                            </span>
+                            {item.user_id && (
+                              <span className="user-id">id : #{item.user_id}</span>
+                            )}
+                          </div>
                           {timeAgo && (
                             <span className="comment-time">{timeAgo}</span>
                           )}

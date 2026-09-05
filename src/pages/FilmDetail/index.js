@@ -409,6 +409,37 @@ export default function FilmDetail() {
     return lastWord.charAt(0).toUpperCase();
   };
 
+  const formatVietnamTime = (dateStr) => {
+    if (!dateStr) return "";
+    try {
+      const isoString = dateStr.includes("Z") || dateStr.includes("+")
+        ? dateStr
+        : dateStr.replace(" ", "T") + "Z";
+      const date = new Date(isoString);
+      if (isNaN(date.getTime())) return dateStr;
+
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }).formatToParts(date);
+
+      const m = {};
+      parts.forEach((p) => {
+        m[p.type] = p.value;
+      });
+
+      return `${m.hour}:${m.minute}:${m.second} ${m.day}/${m.month}/${m.year}`;
+    } catch (e) {
+      return dateStr;
+    }
+  };
+
   if (!movie || !currentVideo || servers.length === 0) {
     return (
       <div className="movie-loading">
@@ -606,7 +637,7 @@ export default function FilmDetail() {
                           {c.display_name || "User"}
                         </b>
                         {c.display_name === "Tecede" && <VerifiedBadge />}
-                        <i style={{ fontSize: 11, color: "#999" }}>{c.created_at}</i>
+                        <i style={{ fontSize: 11, color: "#999" }}>{formatVietnamTime(c.created_at)}</i>
                       </div>
                     </div>
                     <p style={{ margin: "6px 0", color: "#ccc", fontSize: 14 }}>{c.content}</p>
@@ -720,7 +751,7 @@ export default function FilmDetail() {
                                 {r.display_name === "Tecede" && <VerifiedBadge />}
                               </b>
 
-                              <i style={{ fontSize: 10, color: "#999" }}>{r.created_at}</i>
+                              <i style={{ fontSize: 10, color: "#999" }}>{formatVietnamTime(r.created_at)}</i>
                             </div>
 
                             {/* Logic Highlight Tag @User */}
