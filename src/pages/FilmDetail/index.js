@@ -6,6 +6,8 @@ import { MdOutlineStorage } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
+import HlsPlayer from "../../component/HlsPlayer";
+import NetworkSpeedIndicator from "../../component/NetworkSpeedIndicator";
 import "./style.scss";
 
 // TẠO BỘ NHỚ ĐỆM (CACHE) Ở NGOÀI COMPONENT ĐỂ KHÔNG BỊ MẤT KHI RE-RENDER
@@ -18,7 +20,9 @@ const SOURCE_NAMES = {
   kkphim: "KK",
   op: "OP",
   nc: "NC",
-  nguonc: "NC"
+  nguonc: "NC",
+  vm: "VM",
+  vsmov: "VM"
 };
 
 export default function FilmDetail() {
@@ -133,7 +137,7 @@ export default function FilmDetail() {
           });
         });
 
-        const priority = { "KK": 1, "OP": 2,  "NC": 3 };
+        const priority = { "KK": 1, "OP": 2, "NC": 3, "VM": 4 };
         mergedServers.sort((a, b) => {
           const rankA = priority[a.sourceName] || 99;
           const rankB = priority[b.sourceName] || 99;
@@ -209,6 +213,15 @@ export default function FilmDetail() {
   }, [episodes, selectedEpisodeSlug]);
 
   const isReady = !!movie && !!currentVideo && episodes.length > 0;
+
+  const isVmServer = useMemo(() => {
+    const srv = servers[currentServer];
+    return Boolean(
+      srv?.sourceName?.toUpperCase() === "VM" ||
+      srv?.server_name?.toUpperCase().includes("VM") ||
+      (!currentVideo?.m3u8Url && currentVideo?.embedUrl)
+    );
+  }, [servers, currentServer, currentVideo]);
 
   const currentIndex = useMemo(() => {
     return episodes.findIndex((v) => v.slug === currentVideo?.slug);
@@ -471,24 +484,43 @@ export default function FilmDetail() {
             </h5>
 
             {/* Player */}
-            <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
-              {currentVideo?.embedUrl ? (
-                <iframe
-                  key={currentVideo.embedUrl} 
-                  src={currentVideo.embedUrl}
-                  title={`Phim ${movie.name} - ${currentVideo.name}`}
-                  className="w-100 h-100" 
-                  allow="autoplay; encrypted-media; picture-in-picture;"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  frameBorder="0"
+            {isVmServer ? (
+              <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
+                {currentVideo?.embedUrl ? (
+                  <iframe
+                    key={currentVideo.embedUrl}
+                    src={currentVideo.embedUrl}
+                    title={`Phim ${movie.name} - ${currentVideo.name}`}
+                    className="w-100 h-100"
+                    allow="autoplay; encrypted-media; picture-in-picture;"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    frameBorder="0"
+                  />
+                ) : (
+                  <div className="d-flex align-items-center justify-content-center bg-dark text-white">
+                    Đang tải video...
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="movie-page__player mb-4 mx-auto">
+                <HlsPlayer
+                  movie={movie}
+                  servers={servers}
+                  currentServer={currentServer}
+                  currentVideo={currentVideo}
+                  episodes={episodes}
+                  selectedEpisodeSlug={selectedEpisodeSlug || currentVideo?.slug}
+                  onChangeServer={handleChangeServer}
+                  onChangeEpisode={(epSlug) => {
+                    navigate(`/xem-phim/${slug}/${encodeURIComponent(server)}/${epSlug}`);
+                  }}
+                  posterUrl={posterUrl}
+                  thumbUrl={thumbUrl}
                 />
-              ) : (
-                <div className="d-flex align-items-center justify-content-center bg-dark text-white">
-                  Đang tải video...
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Server selector */}
             <h5 className="server-title"><MdOutlineStorage /> Chọn server</h5>
@@ -504,6 +536,15 @@ export default function FilmDetail() {
                 </button>
               ))}
             </div>
+
+            {/* Tốc độ tải & Trạng thái đường truyền */}
+            <NetworkSpeedIndicator
+              isVmServer={isVmServer}
+              currentServerObj={servers[currentServer]}
+              servers={servers}
+              currentServer={currentServer}
+              onSwitchServer={handleChangeServer}
+            />
 
             <p className="film-policy border-top pt-2 mt-3 fst-italic">
               Nếu bạn không load được phim hãy đổi server khác, 1 số phim sẽ bị match sai kết quả cứ đổi server khác sẽ xem được nha.

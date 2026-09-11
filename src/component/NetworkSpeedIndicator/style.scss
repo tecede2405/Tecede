@@ -1,0 +1,377 @@
+.network-speed-indicator {
+  margin-top: 14px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.status-excellent {
+    border-color: rgba(16, 185, 129, 0.28);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(15, 23, 42, 0.75));
+  }
+
+  &.status-good {
+    border-color: rgba(6, 182, 212, 0.28);
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.06), rgba(15, 23, 42, 0.75));
+  }
+
+  &.status-normal {
+    border-color: rgba(245, 158, 11, 0.25);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(15, 23, 42, 0.75));
+  }
+
+  &.status-slow {
+    border-color: rgba(239, 68, 68, 0.4);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.09), rgba(15, 23, 42, 0.8));
+    animation: slowBorderPulse 2.5s infinite alternate;
+  }
+
+  &.is-vm-mode {
+    border-color: rgba(245, 158, 11, 0.25);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(15, 23, 42, 0.75));
+  }
+
+  // Header
+  .nsi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .nsi-status-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nsi-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: nsiPulse 2s infinite ease-out;
+    }
+
+    &--excellent {
+      background-color: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      &::after { background-color: #10b981; }
+    }
+
+    &--good {
+      background-color: #06b6d4;
+      box-shadow: 0 0 10px #06b6d4;
+      &::after { background-color: #06b6d4; }
+    }
+
+    &--normal {
+      background-color: #f59e0b;
+      box-shadow: 0 0 8px #f59e0b;
+      &::after { background-color: #f59e0b; animation-duration: 2.8s; }
+    }
+
+    &--slow {
+      background-color: #ef4444;
+      box-shadow: 0 0 12px #ef4444;
+      &::after { background-color: #ef4444; animation-duration: 1.2s; }
+    }
+
+    &--connecting,
+    &--buffering {
+      background-color: #3b82f6;
+      box-shadow: 0 0 8px #3b82f6;
+      &::after { background-color: #3b82f6; animation-duration: 1.5s; }
+    }
+
+    &--vm {
+      background-color: #a855f7;
+      box-shadow: 0 0 10px #a855f7;
+      &::after { background-color: #a855f7; }
+    }
+  }
+
+  .nsi-title-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+
+    .nsi-label {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .nsi-status-text {
+      font-weight: 600;
+
+      &.text-excellent { color: #10b981; }
+      &.text-good { color: #22d3ee; }
+      &.text-normal { color: #fbbf24; }
+      &.text-slow { color: #f87171; }
+      &.text-connecting,
+      &.text-buffering { color: #60a5fa; }
+    }
+  }
+
+  .nsi-speed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+
+    .speed-icon {
+      color: #facc15;
+      font-size: 11px;
+    }
+
+    &.speed-excellent {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      .speed-icon { color: #34d399; }
+    }
+
+    &.speed-good {
+      border-color: rgba(6, 182, 212, 0.4);
+      background: rgba(6, 182, 212, 0.12);
+      color: #67e8f9;
+      .speed-icon { color: #67e8f9; }
+    }
+
+    &.speed-slow {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      .speed-icon { color: #f87171; }
+    }
+  }
+
+  .nsi-badge--vm {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    font-size: 12px;
+    font-weight: 600;
+    color: #d8b4fe;
+
+    svg {
+      font-size: 12px;
+    }
+  }
+
+  // Metrics chips row
+  .nsi-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .nsi-metric-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 11.5px;
+    color: #94a3b8;
+
+    .chip-icon {
+      display: flex;
+      align-items: center;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .chip-label {
+      font-weight: 400;
+    }
+
+    .chip-value {
+      font-weight: 600;
+      color: #f1f5f9;
+      font-variant-numeric: tabular-nums;
+
+      &.text-accent {
+        color: #38bdf8;
+      }
+
+      &.ping-fast {
+        color: #34d399;
+      }
+      &.ping-medium {
+        color: #fbbf24;
+      }
+      &.ping-slow {
+        color: #f87171;
+      }
+    }
+
+    &.chip-buffer {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      .mini-buffer-track {
+        width: 36px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+        margin-left: 2px;
+      }
+
+      .mini-buffer-fill {
+        height: 100%;
+        background: #38bdf8;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+    }
+  }
+
+  // Footer Advice
+  .nsi-footer-advice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.45;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+
+    .advice-icon {
+      font-size: 13px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .advice-text {
+      flex: 1;
+    }
+  }
+
+  // Switch Suggestion (when slow)
+  .nsi-switch-suggestion {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+
+    .switch-text {
+      display: block;
+      font-size: 12px;
+      color: #fca5a5;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .switch-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #ef4444;
+        border-color: #ef4444;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes nsiPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes slowBorderPulse {
+  from {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+  to {
+    border-color: rgba(239, 68, 68, 0.65);
+  }
+}
+
+// Responsive
+@media (max-width: 576px) {
+  .network-speed-indicator {
+    padding: 10px 12px;
+
+    .nsi-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .nsi-metrics {
+      gap: 6px;
+    }
+
+    .nsi-metric-chip {
+      padding: 3px 8px;
+      font-size: 11px;
+    }
+  }
+}

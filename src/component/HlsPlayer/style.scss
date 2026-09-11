@@ -1,0 +1,1183 @@
+:root {
+  --hls-bg-body: #0a0c10;
+  --hls-bg-panel: #141720;
+  --hls-accent: #fdcb36;
+  --hls-accent-hover: #ffe066;
+  --hls-text-white: #ffffff;
+  --hls-text-muted: #94a3b8;
+  --hls-border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   PLAYER CONTAINER (16:9) - CHUẨN MÂM PHIM
+   ============================================================ */
+.hls-player-wrapper {
+  position: relative;
+  width: 100%;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  &.is-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    z-index: 999999 !important;
+
+    .player-stage {
+      padding-top: 0 !important;
+      height: 100% !important;
+      width: 100% !important;
+    }
+  }
+
+  .player-stage {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 ratio */
+    background: #000;
+    cursor: pointer;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .player-top-bar,
+  .player-bottom-bar,
+  .episodes-drawer,
+  .settings-popup {
+    cursor: default;
+  }
+
+  .video-core,
+  .embed-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+    border: none;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: layout paint;
+    will-change: transform;
+  }
+
+  .embed-frame {
+    z-index: 5;
+  }
+
+  /* LỚP PHỦ TỰ ĐỘNG ẨN KHI KHÔNG TƯƠNG TÁC (SAU 1.8s) */
+  .player-overlay {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+    visibility: hidden;
+  }
+
+  &.user-active .player-overlay,
+  .player-overlay.force-show {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  /* Khi không tương tác (ẩn controls): Ẩn luôn con trỏ chuột để màn hình sạch sẽ tuyệt đối */
+  &:not(.user-active) {
+    cursor: none !important;
+
+    * {
+      cursor: none !important;
+    }
+  }
+
+  /* 1. TOP BAR OVERLAY */
+  .player-top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 25;
+  }
+
+  .top-left-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .movie-title-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .movie-sub-text {
+    font-size: 13px;
+    color: var(--hls-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .top-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  /* SERVER DROPDOWN WRAP */
+  .server-dropdown-wrap {
+    position: relative;
+  }
+
+  .btn-top-server,
+  .btn-top-eps {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  .btn-top-server {
+    color: var(--hls-accent);
+  }
+
+  .btn-top-server:hover,
+  .btn-top-eps:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* POPUP CHỌN SERVER GLASSMORPHISM */
+  .server-menu-popup {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(18, 22, 32, 0.92);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    width: 230px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 50;
+    animation: hlsFadeIn 0.2s ease;
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  .server-item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: #e2e8f0;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.15s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    &.active {
+      color: var(--hls-accent);
+      font-weight: 700;
+      background: rgba(253, 203, 54, 0.12);
+
+      .check-icon {
+        display: inline-block;
+      }
+    }
+
+    .check-icon {
+      color: var(--hls-accent);
+      font-size: 14px;
+      display: none;
+    }
+  }
+
+  /* 2. DRAWER DANH SÁCH TẬP */
+  .episodes-drawer {
+    position: absolute;
+    top: 0;
+    right: -380px;
+    width: 360px;
+    max-width: 90%;
+    height: 100%;
+    background: rgba(15, 18, 26, 0.96);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 45;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.open {
+      right: 0;
+    }
+  }
+
+  .drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .drawer-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.4;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .btn-drawer-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #252a36;
+    border: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #333a4a;
+    }
+  }
+
+  .season-indicator-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .season-badge-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .season-qty-text {
+    font-size: 13px;
+    color: var(--hls-text-muted);
+  }
+
+  .drawer-episodes-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 4px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+  }
+
+  .drawer-ep-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #181d28;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    content-visibility: auto;
+    contain-intrinsic-size: 68px;
+
+    &:hover {
+      background: #222938;
+    }
+
+    &.active {
+      background: #1e2433;
+
+      .drawer-ep-thumb {
+        border-color: var(--hls-accent);
+        box-shadow: 0 0 10px rgba(253, 203, 54, 0.3);
+      }
+
+      .drawer-ep-label {
+        color: var(--hls-accent);
+      }
+    }
+  }
+
+  .drawer-ep-thumb {
+    width: 90px;
+    height: 52px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .drawer-ep-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 3. POPUP CÀI ĐẶT GLASSMORPHISM */
+  .settings-popup {
+    position: absolute;
+    bottom: 76px;
+    right: 24px;
+    background: rgba(18, 22, 32, 0.92);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    width: 260px;
+    padding: 14px 12px;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 60;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+    animation: hlsFadeIn 0.2s ease;
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  .settings-header {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .settings-back-btn {
+    background: none;
+    border: none;
+    color: var(--hls-text-muted);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: none;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #fff;
+    }
+
+    &.show {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .settings-submenu-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+
+    /* Thanh cuộn siêu gọn gàng, tinh tế */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(253, 203, 54, 0.4) transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 4px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: var(--hls-accent);
+      }
+    }
+
+    &.speed-submenu-wrap {
+      max-height: 185px;
+
+      .settings-row {
+        padding: 6.5px 10px;
+        min-height: 29px;
+
+        .settings-label {
+          font-size: 13px;
+        }
+
+        .settings-val svg {
+          font-size: 11px;
+        }
+      }
+    }
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  .settings-label {
+    font-size: 14px;
+    color: #f1f5f9;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .settings-val {
+    font-size: 13.5px;
+    color: var(--hls-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+
+    svg {
+      font-size: 12px;
+      color: #64748b;
+    }
+  }
+
+  /* 4. BOTTOM CONTROLS BAR */
+  .player-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 20px 14px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 65%, transparent 100%);
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .time-indicators-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #f8fafc;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    padding: 0 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .progress-bar-container {
+    position: relative;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover .progress-track {
+      height: 6px;
+    }
+
+    &:hover .progress-scrubber {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .seek-hover-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      transform: translateX(-50%);
+      background: rgba(18, 22, 32, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(253, 203, 54, 0.45);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 0 10px rgba(253, 203, 54, 0.25);
+      z-index: 35;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgba(18, 22, 32, 0.95) transparent transparent transparent;
+      }
+    }
+  }
+
+  .progress-track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    transition: height 0.15s ease;
+    overflow: hidden;
+  }
+
+  .progress-buffered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    width: 0%;
+    border-radius: 999px;
+    transition: width 0.2s ease;
+  }
+
+  .progress-played {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #fdcb36, #ffe066);
+    width: 0%;
+    border-radius: 999px;
+    box-shadow: 0 0 8px rgba(253, 203, 54, 0.6);
+  }
+
+  .progress-scrubber {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 13px;
+    height: 13px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    transition: transform 0.15s ease;
+    pointer-events: none;
+  }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .controls-left,
+  .controls-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .ctrl-icon-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, color 0.15s;
+
+    &:hover {
+      color: var(--hls-accent);
+      transform: scale(1.1);
+    }
+  }
+
+  .volume-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .volume-slider-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 75px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 99px;
+    cursor: pointer;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+    }
+  }
+
+  .settings-btn-wrap {
+    position: relative;
+  }
+
+  .gear-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #fff;
+    color: #000;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 4px;
+    line-height: 1.1;
+    pointer-events: none;
+  }
+
+  /* NÚT BỎ QUA QUẢNG CÁO CHO SERVER KKPHIM (TẠI PHÚT 14:57 -> 15:00) */
+  .btn-skip-ad {
+    position: absolute;
+    bottom: 80px;
+    right: 24px;
+    background: rgba(20, 24, 35, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid var(--hls-accent);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    z-index: 36;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(253, 203, 54, 0.3);
+    animation: skipAdGlowPulse 1.8s infinite ease-in-out;
+    transition: all 0.2s ease;
+
+    svg {
+      color: var(--hls-accent);
+      font-size: 14px;
+    }
+
+    &:hover {
+      background: var(--hls-accent);
+      color: #000;
+      transform: scale(1.04);
+      box-shadow: 0 6px 25px rgba(253, 203, 54, 0.5);
+
+      svg {
+        color: #000;
+      }
+    }
+  }
+
+  /* RESUME TOAST NOTIFICATION */
+  .rop-resume-notify {
+    position: absolute;
+    bottom: 78px;
+    left: 20px;
+    background: rgba(18, 22, 32, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    z-index: 35;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+    font-size: 13px;
+    animation: hlsFadeIn 0.3s ease;
+
+    .rn-text strong {
+      color: var(--hls-accent);
+      font-weight: 700;
+    }
+
+    .rn-action {
+      background: var(--hls-accent);
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      transition: all 0.2s;
+
+      &:hover {
+        background: var(--hls-accent-hover);
+        transform: scale(1.02);
+      }
+    }
+
+    .btn-close-toast {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 18px;
+      cursor: pointer;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  /* BUFFER SPINNER */
+  .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--hls-accent);
+    border-radius: 50%;
+    animation: hlsSpin 0.8s linear infinite;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  /* CENTER PLAY/PAUSE FLASH INDICATOR */
+  .center-play-flash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: rgba(15, 18, 26, 0.72);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(253, 203, 54, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(253, 203, 54, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hls-accent);
+    pointer-events: none;
+    z-index: 22;
+    opacity: 0;
+
+    &.animate {
+      animation: centerFlashPulse 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    svg {
+      width: 34px;
+      height: 34px;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+    }
+  }
+
+  /* NÚT BỎ QUA QUẢNG CÁO */
+  .btn-skip-ad {
+    position: absolute;
+    bottom: 74px;
+    right: 24px;
+    z-index: 40;
+    background: rgba(18, 22, 32, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #fff;
+    border: 1px solid rgba(253, 203, 54, 0.55);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 14px rgba(253, 203, 54, 0.3);
+    animation: skipAdGlowPulse 2s infinite ease-in-out;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+    span {
+      color: #fff;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    svg {
+      color: var(--hls-accent);
+      font-size: 14px;
+    }
+
+    &:hover {
+      background: var(--hls-accent);
+      border-color: var(--hls-accent);
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(253, 203, 54, 0.55);
+
+      span {
+        color: #000;
+      }
+
+      svg {
+        color: #000;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* KEYFRAMES */
+@keyframes hlsSpin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes hlsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes centerFlashPulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.65);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  70% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.22);
+  }
+}
+
+@keyframes skipAdGlowPulse {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 12px rgba(253, 203, 54, 0.25);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 22px rgba(253, 203, 54, 0.55);
+  }
+}
+
+/* ============================================================
+   RESPONSIVE CHO MÀN HÌNH MOBILE (< 768PX)
+   ============================================================ */
+@media (max-width: 768px) {
+  .hls-player-wrapper {
+    .player-stage {
+      cursor: default !important;
+    }
+
+    /* 1. LÚC CHƯA FULLSCREEN: ẨN TOP BAR */
+    &:not(.is-fullscreen) .player-top-bar {
+      display: none !important;
+    }
+
+    /* 2. KHI MỞ FULLSCREEN TRÊN MOBILE: HIỆN LẠI TOP BAR GỌN GÀNG */
+    &.is-fullscreen .player-top-bar {
+      display: flex !important;
+      padding: 12px 14px !important;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%) !important;
+    }
+
+    &.is-fullscreen .movie-title-text {
+      font-size: 13.5px !important;
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &.is-fullscreen .movie-sub-text {
+      font-size: 11px !important;
+    }
+
+    &.is-fullscreen .btn-top-server,
+    &.is-fullscreen .btn-top-eps {
+      font-size: 11.5px !important;
+      padding: 4px 6px !important;
+      gap: 4px !important;
+
+      svg {
+        width: 15px !important;
+        height: 15px !important;
+      }
+    }
+
+    /* 3. THANH ĐIỀU KHIỂN DƯỚI (BOTTOM CONTROLS) TRÊN MOBILE */
+    .player-bottom-bar {
+      padding: 0 10px 8px !important;
+      gap: 4px !important;
+    }
+
+    .time-indicators-row {
+      font-size: 11px !important;
+      padding: 0 2px !important;
+      letter-spacing: 0 !important;
+    }
+
+    .controls-row {
+      gap: 6px !important;
+    }
+
+    .controls-left {
+      gap: 8px !important;
+    }
+
+    .controls-right {
+      gap: 8px !important;
+      margin-left: auto;
+    }
+
+    .ctrl-icon-btn svg,
+    .ctrl-icon-btn i {
+      transform: scale(0.85);
+      transform-origin: center;
+    }
+
+    .btn-play-pause svg {
+      width: 24px !important;
+      height: 24px !important;
+      transform: none !important;
+    }
+
+    /* Ẩn slider volume trên mobile */
+    .volume-slider-range {
+      display: none !important;
+    }
+
+    .btn-fullscreen {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 32px !important;
+      height: 32px !important;
+      flex-shrink: 0 !important;
+
+      svg {
+        width: 20px !important;
+        height: 20px !important;
+        transform: none !important;
+      }
+    }
+
+    .settings-popup {
+      bottom: 38px !important;
+      right: 6px !important;
+      width: 175px !important;
+      padding: 8px 6px !important;
+      border-radius: 8px !important;
+      gap: 3px !important;
+    }
+
+    .settings-header {
+      font-size: 11.5px !important;
+      margin-bottom: 4px !important;
+      padding: 0 4px !important;
+      gap: 6px !important;
+    }
+
+    .settings-back-btn {
+      font-size: 10px !important;
+      padding: 1px 4px !important;
+    }
+
+    .settings-submenu-wrap {
+      gap: 2px !important;
+      max-height: 155px !important;
+      padding-right: 2px !important;
+
+      &::-webkit-scrollbar {
+        width: 3px !important;
+      }
+
+      &.speed-submenu-wrap {
+        max-height: 135px !important;
+
+        .settings-row {
+          padding: 3.5px 5px !important;
+          min-height: 22px !important;
+
+          .settings-label {
+            font-size: 10.5px !important;
+          }
+        }
+      }
+    }
+
+    .settings-row {
+      padding: 5px 6px !important;
+      border-radius: 5px !important;
+
+      svg {
+        font-size: 9.5px !important;
+      }
+    }
+
+    .settings-label {
+      font-size: 11px !important;
+    }
+
+    .settings-val {
+      font-size: 10.5px !important;
+      gap: 4px !important;
+
+      svg {
+        font-size: 8.5px !important;
+      }
+    }
+
+    .gear-badge {
+      font-size: 7.5px !important;
+      padding: 1px 3px !important;
+      top: -6px !important;
+      right: -6px !important;
+    }
+
+    .rop-resume-notify {
+      bottom: 58px !important;
+      left: 8px !important;
+      right: 8px !important;
+      padding: 8px 12px !important;
+      font-size: 12px !important;
+      gap: 8px !important;
+    }
+
+    .rn-action {
+      padding: 4px 8px !important;
+      font-size: 11px !important;
+    }
+
+    .btn-skip-ad {
+      bottom: 58px !important;
+      right: 10px !important;
+      padding: 6px 12px !important;
+      font-size: 11.5px !important;
+    }
+  }
+}
