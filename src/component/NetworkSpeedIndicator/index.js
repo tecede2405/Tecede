@@ -82,7 +82,7 @@ export default function NetworkSpeedIndicator({
             <span className="nsi-dot nsi-dot--normal" />
             <div className="nsi-title-box">
               <span className="nsi-label">Trạng thái đường truyền:</span>
-              <strong className="nsi-status-text text-normal">Server này không đo lường</strong>
+              <strong className="nsi-status-text text-normal">Nguồn phát này không đo lường</strong>
             </div>
           </div>
           <div className="nsi-speed-badge">
@@ -112,7 +112,7 @@ export default function NetworkSpeedIndicator({
         <div className="nsi-footer-advice">
           <FaCircleInfo className="advice-icon text-warning" />
           <span className="advice-text">
-            Server này không hỗ trợ đo lường tốc độ. Nếu bạn xem thấy chậm hoặc giật, hãy thử đổi sang các server khác ở trên nhé!
+            Nguồn phát này không đo lường, chỉ đo lường nguồn phát HLS.
           </span>
         </div>
       </div>

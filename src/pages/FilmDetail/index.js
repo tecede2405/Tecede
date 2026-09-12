@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom"; 
 import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
-import { MdOutlineStorage } from "react-icons/md";
+import { MdOutlineStorage, MdOutlineTune } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
@@ -214,6 +214,34 @@ export default function FilmDetail() {
 
   const isReady = !!movie && !!currentVideo && episodes.length > 0;
 
+  const currentServerObj = servers[currentServer];
+
+  const isKkOrNcServer = useMemo(() => {
+    const sName = currentServerObj?.sourceName?.toUpperCase() || "";
+    const sFullName = currentServerObj?.server_name?.toUpperCase() || "";
+    return Boolean(
+      sName === "KK" ||
+      sName === "NC" ||
+      sFullName.includes("KK") ||
+      sFullName.includes("NC")
+    );
+  }, [currentServerObj]);
+
+  const [playMode, setPlayMode] = useState(() => {
+    try {
+      return localStorage.getItem("mamphim_play_mode") || "hls";
+    } catch (e) {
+      return "hls";
+    }
+  });
+
+  const handlePlayModeChange = (mode) => {
+    setPlayMode(mode);
+    try {
+      localStorage.setItem("mamphim_play_mode", mode);
+    } catch (e) {}
+  };
+
   const isVmServer = useMemo(() => {
     const srv = servers[currentServer];
     return Boolean(
@@ -222,6 +250,12 @@ export default function FilmDetail() {
       (!currentVideo?.m3u8Url && currentVideo?.embedUrl)
     );
   }, [servers, currentServer, currentVideo]);
+
+  const shouldUseIframe = useMemo(() => {
+    if (isVmServer) return true;
+    if (isKkOrNcServer && playMode === "iframe") return true;
+    return false;
+  }, [isVmServer, isKkOrNcServer, playMode]);
 
   const currentIndex = useMemo(() => {
     return episodes.findIndex((v) => v.slug === currentVideo?.slug);
@@ -484,7 +518,7 @@ export default function FilmDetail() {
             </h5>
 
             {/* Player */}
-            {isVmServer ? (
+            {shouldUseIframe ? (
               <div className="movie-page__player ratio ratio-16x9 mb-4 mx-auto">
                 {currentVideo?.embedUrl ? (
                   <iframe
@@ -537,9 +571,39 @@ export default function FilmDetail() {
               ))}
             </div>
 
+            {/* Chế độ nguồn phát: IF (cũ) / HLS (mới) cho Server KK hoặc NC */}
+            {isKkOrNcServer && (
+              <div className="play-mode-container mt-3 mb-2">
+                <div className="play-mode-label">
+                  <MdOutlineTune /> Chế độ nguồn phát:
+                </div>
+                <div className="play-mode-options">
+                  <button
+                    type="button"
+                    className={`play-mode-pill ${playMode === "iframe" ? "active" : ""}`}
+                    onClick={() => handlePlayModeChange("iframe")}
+                    title="Phát qua khung nhúng IF (cũ)"
+                  >
+                    <span className="mode-dot"></span>
+                    <span>IF (cũ)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`play-mode-pill ${playMode === "hls" ? "active" : ""}`}
+                    onClick={() => handlePlayModeChange("hls")}
+                    title="Phát qua bộ phát HLS (mới)"
+                  >
+                    <span className="mode-dot"></span>
+                    <span>HLS (mới)</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Tốc độ tải & Trạng thái đường truyền */}
             <NetworkSpeedIndicator
-              isVmServer={isVmServer}
+              isVmServer={shouldUseIframe}
               currentServerObj={servers[currentServer]}
               servers={servers}
               currentServer={currentServer}
