@@ -127,6 +127,10 @@ export default function HlsPlayer({
 
   const volumeRef = useRef(volume);
   const isMutedRef = useRef(isMuted);
+  const isFullscreenRef = useRef(isFullscreen);
+  const userActiveRef = useRef(userActive);
+  const lastBecameActiveRef = useRef(Date.now());
+  const wasHiddenAtInteractionStartRef = useRef(false);
 
   useEffect(() => {
     volumeRef.current = volume;
@@ -134,6 +138,12 @@ export default function HlsPlayer({
   useEffect(() => {
     isMutedRef.current = isMuted;
   }, [isMuted]);
+  useEffect(() => {
+    isFullscreenRef.current = isFullscreen;
+  }, [isFullscreen]);
+  useEffect(() => {
+    userActiveRef.current = userActive;
+  }, [userActive]);
 
   // Popups & Drawers
   const [showServerMenu, setShowServerMenu] = useState(false);
@@ -218,16 +228,23 @@ export default function HlsPlayer({
     showSettingsRef.current = showSettings;
   }, [showSettings]);
 
-  // User Inactivity Timer for overlay (1.8s không tương tác -> tự động ẩn toàn bộ controls & con trỏ chuột)
+  // User Inactivity Timer for overlay (3s khi ở cửa sổ thường, 2.5s khi fullscreen không tương tác -> tự động ẩn)
   const handleUserActivity = useCallback(() => {
     const now = Date.now();
     if (now - lastActivityRef.current < 40) return;
     lastActivityRef.current = now;
 
-    setUserActive(true);
+    setUserActive((prev) => {
+      if (!prev) {
+        lastBecameActiveRef.current = now;
+      }
+      return true;
+    });
+
     if (hideOverlayTimerRef.current) {
       clearTimeout(hideOverlayTimerRef.current);
     }
+    const timeoutMs = isFullscreenRef.current ? 2500 : 3000;
     hideOverlayTimerRef.current = setTimeout(() => {
       // Chỉ ẩn nếu không mở menu server, danh sách tập, hoặc cài đặt
       if (
@@ -240,27 +257,29 @@ export default function HlsPlayer({
           setUserActive(false);
         }
       }
-    }, 1800);
+    }, timeoutMs);
   }, []);
 
-  // Xử lý khi chuột rời khỏi player ở chế độ cửa sổ
+  // Xử lý khi chuột rời khỏi player ở chế độ cửa sổ: chờ đủ 3s mới ẩn để user kịp thao tác
   const handleMouseLeave = useCallback(() => {
-    if (!isFullscreen) {
+    if (!isFullscreenRef.current) {
       if (hideOverlayTimerRef.current) {
         clearTimeout(hideOverlayTimerRef.current);
       }
-      if (
-        !showServerMenuRef.current &&
-        !showEpisodesDrawerRef.current &&
-        !showSettingsRef.current
-      ) {
-        const v = videoRef.current;
-        if (!v || !v.paused) {
-          setUserActive(false);
+      hideOverlayTimerRef.current = setTimeout(() => {
+        if (
+          !showServerMenuRef.current &&
+          !showEpisodesDrawerRef.current &&
+          !showSettingsRef.current
+        ) {
+          const v = videoRef.current;
+          if (!v || !v.paused) {
+            setUserActive(false);
+          }
         }
-      }
+      }, 3000);
     }
-  }, [isFullscreen]);
+  }, []);
 
   // Fullscreen Handler
   const toggleFullscreen = useCallback(() => {
@@ -491,7 +510,7 @@ export default function HlsPlayer({
   const handleSkipAd = useCallback((e) => {
     if (e) e.stopPropagation();
     if (videoRef.current) {
-      videoRef.current.currentTime = 930; // 15:30
+      videoRef.current.currentTime = 931; // 15:31
     }
     adSkippedRef.current = true;
     setShowSkipAd(false);
@@ -880,12 +899,12 @@ export default function HlsPlayer({
         } catch (e) {}
       }
 
-      // Skip Ad button for KKPhim: 14:55 (895s) -> 15:30 (930s)
+      // Skip Ad button for KKPhim: 14:57 (897s) -> 15:31 (931s)
       if (isKkServer) {
-        if (cur < 895) {
+        if (cur < 897) {
           adSkippedRef.current = false;
           setShowSkipAd(false);
-        } else if (cur >= 895 && cur <= 930) {
+        } else if (cur >= 897 && cur <= 931) {
           if (!adSkippedRef.current) {
             setShowSkipAd(true);
           }
@@ -1179,6 +1198,18 @@ export default function HlsPlayer({
   // ============================================================
   // STAGE SCREEN CLICK & KEYBOARD SHORTCUTS
   // ============================================================
+  const handleStagePointerDown = (e) => {
+    if (
+      e.target.closest(
+        ".player-bottom-bar, .settings-popup, .episodes-drawer, .server-menu-popup, .rop-resume-notify, .btn-top-server, .btn-top-eps, .btn-skip-ad, button, input"
+      )
+    ) {
+      return;
+    }
+    // Ghi nhận chính xác xem tại thời điểm bắt đầu chạm/click thì controls có đang ẩn hay không
+    wasHiddenAtInteractionStartRef.current = !userActiveRef.current;
+  };
+
   const handleStageClick = (e) => {
     if (justFinishedDraggingRef.current) return;
 
@@ -1199,17 +1230,21 @@ export default function HlsPlayer({
       return;
     }
 
-    // Mobile: chạm màn hình chỉ toggle thanh điều khiển
-    if (window.innerWidth <= 768) {
-      setUserActive((prev) => {
-        const next = !prev;
-        if (next) handleUserActivity();
-        return next;
-      });
+    // Nếu controls đang ẩn lúc bắt đầu chạm/click HOẶC vừa mới được đánh thức
+    // -> Chỉ hiển thị controls trước, KHÔNG pause/play
+    const wasHiddenAtStart = wasHiddenAtInteractionStartRef.current;
+    const wasCurrentlyHidden = !userActiveRef.current;
+    const justWokeUp = Date.now() - lastBecameActiveRef.current < 450;
+
+    if (wasHiddenAtStart || wasCurrentlyHidden || justWokeUp) {
+      wasHiddenAtInteractionStartRef.current = false;
+      setUserActive(true);
+      lastBecameActiveRef.current = 0; // Đã hoàn tất đánh thức
+      handleUserActivity();
       return;
     }
 
-    // PC: Toggle play/pause + Center flash animation
+    // Nếu controls ĐÃ HIỆN từ trước và user click vào màn hình -> Mới toggle play/pause
     const willPlay = !isPlaying;
     togglePlay();
     triggerCenterFlash(willPlay);
@@ -1338,6 +1373,7 @@ export default function HlsPlayer({
     >
       <div
         className="player-stage"
+        onPointerDown={handleStagePointerDown}
         onClick={handleStageClick}
         onDoubleClick={handleStageDoubleClick}
       >
@@ -1390,12 +1426,12 @@ export default function HlsPlayer({
           </div>
         )}
 
-        {/* NÚT BỎ QUA QUẢNG CÁO TẠI 14:55 - 15:30 (CHO KKPHIM) */}
+        {/* NÚT BỎ QUA QUẢNG CÁO TẠI 14:57 - 15:31 (CHO KKPHIM) */}
         {showSkipAd && !isVmServer && (
           <button
             className="btn-skip-ad"
             onClick={handleSkipAd}
-            title="Bỏ qua quảng cáo đến 15:30"
+            title="Bỏ qua quảng cáo đến 15:31"
           >
             <span>Bỏ qua quảng cáo</span>
             <FaForwardStep />
@@ -1505,9 +1541,8 @@ export default function HlsPlayer({
           <div className="season-indicator-row">
             <div className="season-badge-btn">
               <FaBarsStaggered />
-              <span>Phần 1</span>
+              <span>{episodes.length} tập</span>
             </div>
-            <div className="season-qty-text">{episodes.length} tập</div>
           </div>
 
           <div className="drawer-episodes-list">
