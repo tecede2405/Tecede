@@ -19,7 +19,6 @@ const plans = [
       "Thời hạn 18 tháng (Jio)",
       "Gemini Advanced đầy đủ",
       "Google One 5TB (chia sẻ 5 thành viên)",
-      "Hỗ trợ qua Fanpage",
       "Hỗ trợ kích hoạt nhanh",
       "Bảo hành 12H - không bảo hành nhúng 9Router và ClipProxy",
     ],
