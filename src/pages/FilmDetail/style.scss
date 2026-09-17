@@ -141,6 +141,80 @@
 .film-policy{
     color: #fff;
 }
+
+/* ===============================
+   EPISODE NAVIGATION (PREV / NEXT)
+================================= */
+.movie-page__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 24px;
+}
+
+.ep-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #e2e8f0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(132, 229, 249, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  .ep-nav-icon {
+    font-size: 13px;
+    color: #84e5f9;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(132, 229, 249, 0.22), rgba(132, 229, 249, 0.08));
+    border-color: #84e5f9;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(132, 229, 249, 0.3);
+    transform: translateY(-2px);
+
+    &.ep-nav-btn--prev .ep-nav-icon {
+      transform: translateX(-3px);
+      color: #a5f3fc;
+    }
+
+    &.ep-nav-btn--next .ep-nav-icon {
+      transform: translateX(3px);
+      color: #a5f3fc;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(132, 229, 249, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #64748b;
+    box-shadow: none;
+    transform: none;
+
+    .ep-nav-icon {
+      color: #64748b;
+    }
+  }
+}
 /* ===============================
    MOVIE INFO (COMPACT)
 ================================= */
@@ -837,6 +911,23 @@
     padding: 4px 10px;
     font-size: 11px;
     gap: 5px;
+  }
+
+  .movie-page__nav {
+    margin-top: 10px;
+    margin-bottom: 18px;
+    gap: 8px;
+  }
+
+  .ep-nav-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 8px;
+    gap: 6px;
+
+    .ep-nav-icon {
+      font-size: 11px;
+    }
   }
 }
 @media (max-width: 768px) {

@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Tabbar from '../../../component/tabar/index';
 import { useMusic } from "../../../context/MusicContext";
-import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc } from "react-icons/fa";
+import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc, FaSlidersH, FaUndo } from "react-icons/fa";
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
 
@@ -45,8 +45,16 @@ function MusicCategory() {
     updatePlaylist,
     setGlobalVolume, 
     setGlobalMute,
-    isVibeEnabled,
-    toggleVibe,
+    audioEffectEnabled,
+    toggleAudioEffect,
+    audioEffectPreset,
+    changeAudioEffectPreset,
+    audioEffectIntensity,
+    changeAudioEffectIntensity,
+    customAudioSettings,
+    updateCustomAudioSetting,
+    resetCustomAudioSettings,
+    audioPresets,
     isRepeat,
     toggleRepeat,
     currentCategory,
@@ -193,7 +201,7 @@ function MusicCategory() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.options-container')) {
+      if (!event.target.closest('.custom-options-popup') && !event.target.closest('.options-trigger-btn')) {
         setShowMenu(false);
       }
     };
@@ -258,19 +266,198 @@ function MusicCategory() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [togglePlay]);
 
-
-
-  // KHAI BÁO MENU DÙNG CHUNG CHO PC VÀ MOBILE
+  // KHAI BÁO MENU DÙNG CHUNG CHO PC VÀ MOBILE (DOLBY ATMOS & SPATIAL ENGINE)
   const renderMenuPopup = () => (
-    <div className="custom-options-popup">
-      <div className="option-section">
-        <p className="option-title">Hiệu ứng âm thanh</p>
-        <button 
-          className={`option-btn w-100 ${isVibeEnabled ? "active" : ""}`}
-          onClick={toggleVibe} // Gọi hàm toggleVibe ở đây
-        >
-          {isVibeEnabled ? "Tắt Bass" : "Bật Bass"}
-        </button>
+    <div className="custom-options-popup" onClick={(e) => e.stopPropagation()}>
+      {/* 🌌 DOLBY ATMOS & 3D SPATIAL AUDIO SECTION */}
+      <div className="option-section atmos-section">
+        <div className="d-flex align-items-center justify-content-between mb-2">
+          <div className="d-flex align-items-center gap-2">
+            <span className="dolby-title">DOLBY ATMOS</span>
+            <span className="spatial-badge">3D SPATIAL</span>
+          </div>
+          <label className="atmos-toggle" title={audioEffectEnabled ? "Tắt hiệu ứng Dolby Atmos" : "Bật hiệu ứng Dolby Atmos"}>
+            <input 
+              type="checkbox" 
+              checked={!!audioEffectEnabled} 
+              onChange={toggleAudioEffect} 
+            />
+            <span className="atmos-slider"></span>
+          </label>
+        </div>
+
+        {audioEffectEnabled ? (
+          <>
+            <div className="active-preset-desc mb-2">
+              <span className="preset-pill-dot"></span>
+              <span className="preset-pill-text">
+                {audioPresets?.[audioEffectPreset]?.name || "Dolby Atmos"}
+                <span className="preset-pill-sub"> • {audioPresets?.[audioEffectPreset]?.desc || "Hiệu ứng 3D đang hoạt động"}</span>
+              </span>
+            </div>
+
+            {/* PRESET CHIPS / GRID */}
+            <div className="preset-grid mb-3">
+              {audioPresets && Object.values(audioPresets).map((p) => {
+                const isActive = audioEffectPreset === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    className={`preset-card ${isActive ? "active" : ""}`}
+                    onClick={() => changeAudioEffectPreset(p.id)}
+                    title={p.desc}
+                  >
+                    <span className="preset-icon">{p.icon}</span>
+                    <span className="preset-name">{p.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* INTENSITY SLIDER (Khi không ở chế độ custom) */}
+            {audioEffectPreset !== "custom" ? (
+              <div className="intensity-control mb-2">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <span className="control-label">Độ sâu không gian & hiệu ứng</span>
+                  <span className="control-val">{audioEffectIntensity}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="20"
+                  max="100"
+                  step="5"
+                  value={audioEffectIntensity}
+                  onChange={(e) => changeAudioEffectIntensity(Number(e.target.value))}
+                  className="atmos-range"
+                  style={{
+                    background: `linear-gradient(to right, #9b4de0 ${audioEffectIntensity}%, rgba(255,255,255,0.15) ${audioEffectIntensity}%)`
+                  }}
+                />
+              </div>
+            ) : (
+              /* BẢNG TÙY CHỈNH NÂNG CAO (CUSTOM EQUALIZER & SPATIAL) */
+              <div className="custom-dsp-panel mb-2">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <span className="custom-panel-title">🎛️ Tinh chỉnh chi tiết</span>
+                  <button 
+                    className="custom-reset-btn" 
+                    onClick={resetCustomAudioSettings}
+                    title="Khôi phục thiết lập mặc định"
+                  >
+                    <FaUndo size={11} className="me-1" />
+                    Mặc định
+                  </button>
+                </div>
+
+                {/* 1. BASS */}
+                <div className="custom-row mb-2">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="dsp-label">🔊 Âm trầm (Bass)</span>
+                    <span className="dsp-value">{customAudioSettings.bass > 0 ? `+${customAudioSettings.bass}` : customAudioSettings.bass} dB</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="-10"
+                    max="14"
+                    step="0.5"
+                    value={customAudioSettings.bass}
+                    onChange={(e) => updateCustomAudioSetting("bass", Number(e.target.value))}
+                    className="atmos-range"
+                    style={{
+                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.bass + 10) / 24) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.bass + 10) / 24) * 100))}%)`
+                    }}
+                  />
+                </div>
+
+                {/* 2. MID / VOCAL */}
+                <div className="custom-row mb-2">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="dsp-label">🎤 Giọng hát & Mid</span>
+                    <span className="dsp-value">{customAudioSettings.mid > 0 ? `+${customAudioSettings.mid}` : customAudioSettings.mid} dB</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="-8"
+                    max="10"
+                    step="0.5"
+                    value={customAudioSettings.mid}
+                    onChange={(e) => updateCustomAudioSetting("mid", Number(e.target.value))}
+                    className="atmos-range"
+                    style={{
+                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.mid + 8) / 18) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.mid + 8) / 18) * 100))}%)`
+                    }}
+                  />
+                </div>
+
+                {/* 3. TREBLE */}
+                <div className="custom-row mb-2">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="dsp-label">✨ Âm cao (Treble)</span>
+                    <span className="dsp-value">{customAudioSettings.treble > 0 ? `+${customAudioSettings.treble}` : customAudioSettings.treble} dB</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="-8"
+                    max="10"
+                    step="0.5"
+                    value={customAudioSettings.treble}
+                    onChange={(e) => updateCustomAudioSetting("treble", Number(e.target.value))}
+                    className="atmos-range"
+                    style={{
+                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.treble + 8) / 18) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.treble + 8) / 18) * 100))}%)`
+                    }}
+                  />
+                </div>
+
+                {/* 4. SPATIAL WIDTH */}
+                <div className="custom-row mb-2">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="dsp-label">🌐 Âm trường 3D</span>
+                    <span className="dsp-value">{customAudioSettings.spatial}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="5"
+                    value={customAudioSettings.spatial}
+                    onChange={(e) => updateCustomAudioSetting("spatial", Number(e.target.value))}
+                    className="atmos-range"
+                    style={{
+                      background: `linear-gradient(to right, #38bdf8 ${customAudioSettings.spatial}%, rgba(255,255,255,0.15) ${customAudioSettings.spatial}%)`
+                    }}
+                  />
+                </div>
+
+                {/* 5. REVERB ROOM */}
+                <div className="custom-row mb-1">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <span className="dsp-label">🏛️ Vang phòng (Reverb)</span>
+                    <span className="dsp-value">{customAudioSettings.reverb}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="5"
+                    value={customAudioSettings.reverb}
+                    onChange={(e) => updateCustomAudioSetting("reverb", Number(e.target.value))}
+                    className="atmos-range"
+                    style={{
+                      background: `linear-gradient(to right, #38bdf8 ${customAudioSettings.reverb}%, rgba(255,255,255,0.15) ${customAudioSettings.reverb}%)`
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="atmos-disabled-notice">
+            <p className="m-0 text-secondary" style={{fontSize: '11.5px', lineHeight: '1.4'}}>
+              Chế độ âm thanh gốc (Bypass). Bật công tắc để kích hoạt âm vòm Dolby Atmos đa chiều & tăng cường âm học.
+            </p>
+          </div>
+        )}
       </div>
       
       <hr className="menu-divider" />
@@ -324,7 +511,10 @@ function MusicCategory() {
                 {/* CỘT TRÁI */}
                 <div className="left-column flex-grow-1">
                   
-                  <div className="album-header d-flex align-items-center gap-4">
+                  <div 
+                    className="album-header d-flex align-items-center gap-4"
+                    style={{ '--album-cover': `url(${currentInfo.img})` }}
+                  >
                     <div className="album-cover-wrapper">
                       <img 
                         src={currentInfo.img} 
@@ -549,7 +739,16 @@ function MusicCategory() {
 
                       <button onClick={handleNext} className="ctrl-btn ms-3" title="Bài tiếp theo"><FaStepForward size={16}/></button>
                       <button onClick={toggleRepeat} className={`ctrl-btn ms-3 d-none d-md-block ${isRepeat ? 'text-primary' : ''}`} title="Lặp lại 1 bài"><FaRetweet size={14} color={isRepeat ? '#c084fc' : 'inherit'} /></button>
-                      <button className="ctrl-btn ms-3 d-md-none" title="Mở toàn màn hình" onClick={() => setShowFullPlayer(true)}><FaExpandAlt size={14} /></button>
+                      <button 
+                        className={`ctrl-btn ms-3 d-md-none options-trigger-btn ${showMenu ? "active-menu" : ""}`} 
+                        title="Dolby Atmos & Cài đặt" 
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          setShowMenu(!showMenu); 
+                        }}
+                      >
+                        <FaSlidersH size={14} />
+                      </button>
                     </div>
                     
                     <div className="progress-container w-100 d-none d-md-flex align-items-center gap-2">
@@ -606,19 +805,21 @@ function MusicCategory() {
                     
                     <div className="options-container position-relative">
                       <button 
-                        className={`ctrl-btn ${showMenu ? "active-menu" : ""}`} 
-                        title="Tùy chọn khác"
+                        className={`ctrl-btn options-trigger-btn ${showMenu ? "active-menu" : ""}`} 
+                        title="Dolby Atmos & Cài đặt"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setShowMenu(!showMenu)
+                          setShowMenu(!showMenu);
                         }}
                       >
-                        <FaEllipsisV size={14} />
+                        <FaSlidersH size={15} />
                       </button>
-                      {showMenu && renderMenuPopup()}
                     </div>
                   </div>
                   
+                  {/* POPUP OPTIONS CHO BOTTOM PLAYER */}
+                  {showMenu && !showFullPlayer && renderMenuPopup()}
+
                   {/* MOBILE PROGRESS BAR (Absolute Bottom) */}
                   <div className="mobile-progress-bar d-md-none position-absolute bottom-0 start-0 w-100" style={{height: '2px', background: 'rgba(255,255,255,0.1)'}}>
                     <div className="mobile-progress-fill h-100 bg-white" style={{width: `${progressPercent}%`}}></div>
@@ -673,7 +874,19 @@ function MusicCategory() {
                   </div>
                 </div>
 
-                <div className="z-index-3" style={{width: '40px', zIndex: 10}}></div>
+                <div className="z-index-3 position-relative" style={{zIndex: 10}}>
+                  <button 
+                    className={`fsp-btn options-trigger-btn ${showMenu ? "text-primary" : ""}`} 
+                    title="Dolby Atmos & Cài đặt" 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setShowMenu(!showMenu); 
+                    }}
+                  >
+                    <FaSlidersH size={18} />
+                  </button>
+                  {showMenu && showFullPlayer && renderMenuPopup()}
+                </div>
               </div>
 
               <div className="fsp-body flex-grow-1 d-flex flex-column justify-content-center align-items-center px-4" style={{overflowY: 'hidden', position: 'relative'}}>

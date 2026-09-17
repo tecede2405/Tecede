@@ -3,11 +3,11 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
 import { MdOutlineStorage, MdOutlineTune } from "react-icons/md";
+import { FaBackwardStep, FaForwardStep } from "react-icons/fa6";
 import { useAuth } from "../../context/AuthContext";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
 import HlsPlayer from "../../component/HlsPlayer";
-import NetworkSpeedIndicator from "../../component/NetworkSpeedIndicator";
 import "./style.scss";
 
 // TẠO BỘ NHỚ ĐỆM (CACHE) Ở NGOÀI COMPONENT ĐỂ KHÔNG BỊ MẤT KHI RE-RENDER
@@ -601,43 +601,42 @@ export default function FilmDetail() {
               </div>
             )}
 
-            {/* Tốc độ tải & Trạng thái đường truyền */}
-            <NetworkSpeedIndicator
-              isVmServer={shouldUseIframe}
-              currentServerObj={servers[currentServer]}
-              servers={servers}
-              currentServer={currentServer}
-              onSwitchServer={handleChangeServer}
-            />
+
 
             <p className="film-policy border-top pt-2 mt-3 fst-italic">
               Nếu bạn không load được phim hãy đổi server khác, 1 số phim sẽ bị match sai kết quả cứ đổi server khác sẽ xem được nha.
             </p>
 
             {/* Navigation buttons */}
-            <div className="movie-page__nav d-flex justify-content-between mb-4">
+            <div className="movie-page__nav">
               <button
-                className="btn btn-outline-info"
+                type="button"
+                className="ep-nav-btn ep-nav-btn--prev"
                 onClick={() => {
                   const prev = episodes[currentIndex - 1];
                   if (!prev) return;
                   navigate(`/xem-phim/${slug}/${encodeURIComponent(server)}/${prev.slug}`);
                 }}
                 disabled={currentIndex <= 0}
+                title={currentIndex > 0 ? `Chuyển về tập ${episodes[currentIndex - 1]?.name || ""}` : "Đã là tập đầu tiên"}
               >
-                Tập trước
+                <FaBackwardStep className="ep-nav-icon" />
+                <span>Tập trước</span>
               </button>
 
               <button
-                className="btn btn-outline-info"
+                type="button"
+                className="ep-nav-btn ep-nav-btn--next"
                 onClick={() => {
                   const next = episodes[currentIndex + 1];
                   if (!next) return;
                   navigate(`/xem-phim/${slug}/${encodeURIComponent(server)}/${next.slug}`);
                 }}
                 disabled={currentIndex >= episodes.length - 1}
+                title={currentIndex < episodes.length - 1 ? `Chuyển sang tập ${episodes[currentIndex + 1]?.name || ""}` : "Đã là tập mới nhất"}
               >
-                Tập sau
+                <span>Tập sau</span>
+                <FaForwardStep className="ep-nav-icon" />
               </button>
             </div>
 

@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import spatialEngine, { PRESETS, DEFAULT_CUSTOM_SETTINGS } from "../audio/SpatialAudioEngine";
+
+const STORAGE_KEY = "tecede_spatial_audio_settings";
 
 function shuffleArray(arr) {
   const newArr = [...arr];
@@ -14,10 +17,6 @@ globalAudio.preload = "auto";
 globalAudio.crossOrigin = "anonymous";
 globalAudio.playsInline = true;
 
-let audioCtx;
-let source;
-let isDspInitialized = false;
-let bass, mid, treble, delay, feedback, wetGain, dryGain, compressor;
 let consecutiveErrors = 0; // Biến theo dõi số lần lỗi liên tiếp
 
 export default function useMusicPlayer(initialSongs) {
@@ -31,13 +30,59 @@ export default function useMusicPlayer(initialSongs) {
   const [duration, setDuration] = useState(0);
   const [isRepeat, setIsRepeat] = useState(false); // Thêm trạng thái lặp lại
 
-  // Mặc định PC Bật, Mobile Tắt
-  const [isVibeEnabled, setIsVibeEnabled] = useState(() => {
+  // 🎛️ KHỞI TẠO SETTINGS HIỆU ỨNG TỪ LOCALSTORAGE
+  const [audioEffectEnabled, setAudioEffectEnabled] = useState(() => {
     if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (typeof parsed.enabled === "boolean") return parsed.enabled;
+        }
+      } catch (e) {}
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       return !isMobile; 
     }
     return false;
+  });
+
+  const [audioEffectPreset, setAudioEffectPreset] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.preset && PRESETS[parsed.preset]) return parsed.preset;
+        }
+      } catch (e) {}
+    }
+    return "atmos";
+  });
+
+  const [audioEffectIntensity, setAudioEffectIntensity] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (typeof parsed.intensity === "number") return parsed.intensity;
+        }
+      } catch (e) {}
+    }
+    return 80;
+  });
+
+  const [customAudioSettings, setCustomAudioSettings] = useState(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.custom) return { ...DEFAULT_CUSTOM_SETTINGS, ...parsed.custom };
+        }
+      } catch (e) {}
+    }
+    return { ...DEFAULT_CUSTOM_SETTINGS };
   });
 
   const stateRef = useRef({ playlist: initialSongs, index: null, isRepeat: false });
@@ -76,96 +121,140 @@ export default function useMusicPlayer(initialSongs) {
     };
   }, []);
 
-  // 🎛️ KHỞI TẠO VÀ NỐI DÂY (Chạy 1 lần duy nhất)
+  // 🎛️ LƯU THIẾT LẬP VÀO LOCALSTORAGE
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        enabled: audioEffectEnabled,
+        preset: audioEffectPreset,
+        intensity: audioEffectIntensity,
+        custom: customAudioSettings
+      }));
+    } catch (e) {}
+  }, [audioEffectEnabled, audioEffectPreset, audioEffectIntensity, customAudioSettings]);
+
+  const audioEffectRef = useRef({
+    enabled: audioEffectEnabled,
+    preset: audioEffectPreset,
+    intensity: audioEffectIntensity,
+    custom: customAudioSettings
+  });
+
+  useEffect(() => {
+    audioEffectRef.current = {
+      enabled: audioEffectEnabled,
+      preset: audioEffectPreset,
+      intensity: audioEffectIntensity,
+      custom: customAudioSettings
+    };
+  }, [audioEffectEnabled, audioEffectPreset, audioEffectIntensity, customAudioSettings]);
+
+  // 🎛️ KHỞI TẠO VÀ CẤP ĐIỆN CHO SPATIAL ENGINE
   const initAudioContext = useCallback(() => {
-    if (isDspInitialized) return;
     try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContext();
-      source = audioCtx.createMediaElementSource(globalAudio);
-
-      bass = audioCtx.createBiquadFilter(); bass.type = "lowshelf"; bass.frequency.value = 110; bass.gain.value = 7;
-      mid = audioCtx.createBiquadFilter(); mid.type = "peaking"; mid.frequency.value = 400; mid.Q.value = 1.5; mid.gain.value = -2;
-      treble = audioCtx.createBiquadFilter(); treble.type = "peaking"; treble.frequency.value = 3000; treble.Q.value = 1; treble.gain.value = 3;
-      
-      delay = audioCtx.createDelay(); delay.delayTime.value = 0.08;
-      feedback = audioCtx.createGain(); feedback.gain.value = 0.25;
-      wetGain = audioCtx.createGain(); wetGain.gain.value = 0.2;
-      dryGain = audioCtx.createGain(); dryGain.gain.value = 1;
-      
-      compressor = audioCtx.createDynamicsCompressor();
-      compressor.threshold.value = -14; compressor.knee.value = 10; compressor.ratio.value = 4; compressor.attack.value = 0.005; compressor.release.value = 0.1;
-
-      isDspInitialized = true;
-      applyRouting(isVibeEnabled); // Cấp điện ngay khi khởi tạo
+      if (!spatialEngine.isInitialized) {
+        spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
+      }
+      spatialEngine.resumeContext();
+      spatialEngine.applySettings({
+        preset: audioEffectRef.current.preset,
+        intensity: audioEffectRef.current.intensity,
+        custom: audioEffectRef.current.custom
+      });
     } catch (err) {
-      console.warn("Lỗi Audio API:", err);
+      console.warn("Lỗi Spatial Audio API:", err);
     }
-  }, [isVibeEnabled]);
-
-  // 🎛️ HÀM CẮM DÂY (ROUTING) - Tách ra riêng để dễ gọi
-  const applyRouting = (vibeOn) => {
-    if (!isDspInitialized || !source || !audioCtx) return;
-
-    // Phải resume context thì tiếng mới kêu
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-
-    try {
-      source.disconnect();
-      dryGain.disconnect();
-      wetGain.disconnect();
-      compressor.disconnect();
-    } catch (e) {} // Bỏ qua lỗi ngắt kết nối lần đầu
-
-    if (vibeOn) {
-      source.connect(delay);
-      delay.connect(feedback);
-      feedback.connect(delay);
-      delay.connect(wetGain);
-
-      source.connect(bass);
-      bass.connect(mid);
-      mid.connect(treble);
-      treble.connect(dryGain);
-
-      dryGain.connect(compressor);
-      wetGain.connect(compressor);
-      compressor.connect(audioCtx.destination);
-    } else {
-      source.connect(audioCtx.destination);
-    }
-  };
+  }, []);
 
   // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN
   useEffect(() => {
     const handleFirstInteraction = () => {
-      // CHỈ khởi tạo DSP nếu tính năng Vibe đang BẬT. 
-      // Nếu tắt (Mobile), TUYỆT ĐỐI không bọc AudioElement vào Web Audio API để tránh bị iOS chặn phát nền.
-      if (isVibeEnabled && !isDspInitialized) {
+      if (!spatialEngine.isInitialized) {
         initAudioContext();
       }
-      window.removeEventListener('click', handleFirstInteraction);
-      window.removeEventListener('touchstart', handleFirstInteraction);
+      spatialEngine.resumeContext();
     };
-    window.addEventListener('click', handleFirstInteraction);
-    window.addEventListener('touchstart', handleFirstInteraction);
+    window.addEventListener('click', handleFirstInteraction, { once: true });
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
     return () => {
       window.removeEventListener('click', handleFirstInteraction);
       window.removeEventListener('touchstart', handleFirstInteraction);
     };
-  }, [isVibeEnabled, initAudioContext]);
+  }, [initAudioContext]);
 
-  // 🌟 SỬA LỖI NÚT BẤM: Gắn hàm toggleVibe ra ngoài thay vì setIsVibeEnabled
-  const toggleVibe = useCallback(() => {
-    const newState = !isVibeEnabled;
-    setIsVibeEnabled(newState);
-    if (newState && !isDspInitialized) {
-        initAudioContext(); // Ép khởi tạo nếu người dùng cố tình bật
+  // 🌟 ĐIỀU KHIỂN BẬT/TẮT HIỆU ỨNG
+  const toggleAudioEffect = useCallback(() => {
+    setAudioEffectEnabled((prev) => {
+      const next = !prev;
+      if (!spatialEngine.isInitialized) {
+        spatialEngine.init(globalAudio, next);
+      } else {
+        spatialEngine.setEnabled(next);
+      }
+      if (next) {
+        spatialEngine.applySettings({
+          preset: audioEffectRef.current.preset,
+          intensity: audioEffectRef.current.intensity,
+          custom: audioEffectRef.current.custom
+        });
+      }
+      return next;
+    });
+  }, []);
+
+  const changeAudioEffectPreset = useCallback((presetId) => {
+    setAudioEffectPreset(presetId);
+    if (!spatialEngine.isInitialized) {
+      spatialEngine.init(globalAudio, true);
     }
-    applyRouting(newState); // Ép đi dây lại ngay lập tức
-  }, [isVibeEnabled, initAudioContext]);
+    spatialEngine.resumeContext();
+    spatialEngine.applySettings({
+      preset: presetId,
+      intensity: audioEffectRef.current.intensity,
+      custom: audioEffectRef.current.custom
+    });
+  }, []);
+
+  const changeAudioEffectIntensity = useCallback((intensity) => {
+    setAudioEffectIntensity(intensity);
+    if (!spatialEngine.isInitialized) {
+      spatialEngine.init(globalAudio, true);
+    }
+    spatialEngine.resumeContext();
+    spatialEngine.applySettings({ intensity });
+  }, []);
+
+  const updateCustomAudioSetting = useCallback((key, value) => {
+    setCustomAudioSettings((prev) => {
+      const updated = { ...prev, [key]: value };
+      if (!spatialEngine.isInitialized) {
+        spatialEngine.init(globalAudio, true);
+      }
+      spatialEngine.resumeContext();
+      // Tự động bật hiệu ứng nếu đang tắt để nghe thấy ngay lập tức
+      setAudioEffectEnabled((curEnabled) => {
+        if (!curEnabled) {
+          spatialEngine.setEnabled(true);
+          return true;
+        }
+        return curEnabled;
+      });
+      setAudioEffectPreset("custom");
+      spatialEngine.applySettings({ preset: "custom", custom: updated });
+      return updated;
+    });
+  }, []);
+
+  const resetCustomAudioSettings = useCallback(() => {
+    const reset = { ...DEFAULT_CUSTOM_SETTINGS };
+    setCustomAudioSettings(reset);
+    if (!spatialEngine.isInitialized) {
+      spatialEngine.init(globalAudio, true);
+    }
+    spatialEngine.resumeContext();
+    setAudioEffectPreset("custom");
+    spatialEngine.applySettings({ preset: "custom", custom: reset });
+  }, []);
 
   const updatePlaylist = useCallback((songs) => {
     setOriginalPlaylist(songs);
@@ -179,6 +268,12 @@ export default function useMusicPlayer(initialSongs) {
     if (listToUse.length === 0 || index === null) return;
     const song = listToUse[index];
     if (!song?._id) return;
+
+    // Khởi tạo và đánh thức AudioContext ngay trong cử chỉ bấm của user
+    if (!spatialEngine.isInitialized) {
+      spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
+    }
+    spatialEngine.resumeContext();
 
     if (!optionalPlaylist && index === stateRef.current.index) {
         if (globalAudio.paused) globalAudio.play();
@@ -223,10 +318,8 @@ export default function useMusicPlayer(initialSongs) {
       setIsPlaying(true);
       consecutiveErrors = 0; // Reset lỗi khi phát thành công
       
-      // Đánh thức DSP mỗi khi nhạc bắt đầu phát (Nếu DSP đã khởi tạo)
-      if (isDspInitialized && audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      // Đánh thức Web Audio Context mỗi khi nhạc bắt đầu phát
+      spatialEngine.resumeContext();
     };
 
     globalAudio.onpause = () => setIsPlaying(false);
@@ -280,18 +373,20 @@ export default function useMusicPlayer(initialSongs) {
     setCurrentIndex(index);
   }, []);
 
-  const handleNext = useCallback(() => {
-    const { playlist, index } = stateRef.current;
-    if (playlist.length === 0) return;
-    const nextIdx = index === null ? 0 : (index + 1) % playlist.length;
-    handlePlay(nextIdx);
+  const handlePrev = useCallback(() => {
+    const list = stateRef.current.playlist;
+    const cur = stateRef.current.index;
+    if (list.length === 0 || cur === null) return;
+    const newIdx = cur - 1 < 0 ? list.length - 1 : cur - 1;
+    handlePlay(newIdx);
   }, [handlePlay]);
 
-  const handlePrev = useCallback(() => {
-    const { playlist, index } = stateRef.current;
-    if (playlist.length === 0) return;
-    const prevIdx = index === null ? 0 : (index - 1 + playlist.length) % playlist.length;
-    handlePlay(prevIdx);
+  const handleNext = useCallback(() => {
+    const list = stateRef.current.playlist;
+    const cur = stateRef.current.index;
+    if (list.length === 0 || cur === null) return;
+    const newIdx = cur + 1 >= list.length ? 0 : cur + 1;
+    handlePlay(newIdx);
   }, [handlePlay]);
 
   useEffect(() => {
@@ -306,6 +401,10 @@ export default function useMusicPlayer(initialSongs) {
   }, [isShuffle, originalPlaylist, handlePlay]);
 
   const togglePlay = useCallback(() => {
+    if (!spatialEngine.isInitialized) {
+      spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
+    }
+    spatialEngine.resumeContext();
     if (globalAudio.paused) {
       globalAudio.play().catch(()=>{});
     } else {
@@ -337,8 +436,24 @@ export default function useMusicPlayer(initialSongs) {
     updatePlaylist,
     setGlobalVolume,
     setGlobalMute,
-    isVibeEnabled,
-    toggleVibe, // XUẤT HÀM MỚI NÀY RA GIAO DIỆN
+    
+    // 🌌 Hiệu ứng âm thanh vòm Dolby Atmos & Spatial DSP
+    audioEffectEnabled,
+    setAudioEffectEnabled,
+    toggleAudioEffect,
+    audioEffectPreset,
+    changeAudioEffectPreset,
+    audioEffectIntensity,
+    changeAudioEffectIntensity,
+    customAudioSettings,
+    updateCustomAudioSetting,
+    resetCustomAudioSettings,
+    audioPresets: PRESETS,
+
+    // Tương thích ngược với các component cũ
+    isVibeEnabled: audioEffectEnabled,
+    toggleVibe: toggleAudioEffect,
+
     isRepeat,
     toggleRepeat
   };

@@ -19,28 +19,22 @@ const SMOOTH_HLS_CONFIG = {
   debug: false,
   enableWorker: true,
   lowLatencyMode: false,
-  backBufferLength: 90,
-  maxBufferLength: 60,
-  maxMaxBufferLength: 120,
-  maxBufferSize: 90 * 1000 * 1000,
-  maxBufferHole: 1.0,
-  highBufferWatchdogPeriod: 2,
-  nudgeOffset: 0.2,
-  nudgeMaxRetry: 15,
-  maxFragLookUpTolerance: 0.4,
-  startFragPrefetch: true,
-  appendErrorMaxRetry: 5,
-  abrBandWidthFactor: 0.85,
-  abrBandWidthUpFactor: 0.7,
-  abrEwmaDefaultEstimate: 5000000,
+  backBufferLength: 30,             // Giữ 30s buffer quá khứ để dọn dẹp RAM kịp thời
+  maxBufferLength: 30,              // 30s đệm trước chuẩn VOD, tránh tràn MediaSource MSE quota
+  maxMaxBufferLength: 60,           // Tối đa 60s khi mạng nhàn rỗi
+  maxBufferSize: 60 * 1000 * 1000,  // 60MB là ngưỡng an toàn tuyệt đối cho trình duyệt di động & PC
+  maxBufferHole: 0.5,               // 0.5s bỏ qua lệch PTS/DTS của nguồn phim, triệt tiêu micro-stutter
+  highBufferWatchdogPeriod: 2,      // Quét mỗi 2s theo chuẩn Hls.js
+  nudgeOffset: 0.1,                 // Nhích nhẹ 0.1s
+  nudgeMaxRetry: 3,
+  nudgeOnVideoHole: true,
+  maxFragLookUpTolerance: 0.25,
+  startFragPrefetch: false,         // Tắt prefetch để tập trung 100% băng thông tải chunk đầu tiên phát ngay
+  appendErrorMaxRetry: 3,
   autoStartLoad: true,
-  fragLoadingTimeOut: 30000,
-  manifestLoadingTimeOut: 20000,
-  levelLoadingTimeOut: 20000,
-  fragLoadingMaxRetry: 8,
-  levelLoadingMaxRetry: 6,
+  fragLoadingTimeOut: 20000,        // 20s timeout phân đoạn
+  fragLoadingMaxRetry: 4,
   fragLoadingRetryDelay: 1000,
-  fragLoadingMaxRetryTimeout: 64000,
 };
 
 function formatTime(seconds) {
@@ -128,6 +122,7 @@ export default function HlsPlayer({
   const volumeRef = useRef(volume);
   const isMutedRef = useRef(isMuted);
   const isFullscreenRef = useRef(isFullscreen);
+  const isBufferingRef = useRef(isBuffering);
   const userActiveRef = useRef(userActive);
   const lastBecameActiveRef = useRef(Date.now());
   const wasHiddenAtInteractionStartRef = useRef(false);
@@ -141,6 +136,9 @@ export default function HlsPlayer({
   useEffect(() => {
     isFullscreenRef.current = isFullscreen;
   }, [isFullscreen]);
+  useEffect(() => {
+    isBufferingRef.current = isBuffering;
+  }, [isBuffering]);
   useEffect(() => {
     userActiveRef.current = userActive;
   }, [userActive]);
@@ -599,7 +597,6 @@ export default function HlsPlayer({
       hls.attachMedia(v);
 
       hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-        setIsBuffering(false);
         setLevels(data.levels || []);
         if (hls.subtitleTracks && hls.subtitleTracks.length > 0) {
           setSubtitleTracks(hls.subtitleTracks);
@@ -661,15 +658,14 @@ export default function HlsPlayer({
           hls.recoverMediaError();
         } else if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
           hls.startLoad();
-          // Tự động nhích nhẹ con trỏ phát 0.15s để vượt qua buffer hole giữa các phân đoạn TS
-          if (v && !v.paused) {
-            v.currentTime += 0.15;
-          }
+          // Để GapController và nudge nội bộ của Hls.js tự động xử lý, không can thiệp thủ công v.currentTime tránh flush pipeline
         }
       });
 
       hls.on(Hls.Events.FRAG_BUFFERED, () => {
-        setIsBuffering(false);
+        if (isBufferingRef.current) {
+          setIsBuffering(false);
+        }
       });
 
       hls.on(Hls.Events.FRAG_PARSED, () => {
@@ -780,28 +776,57 @@ export default function HlsPlayer({
       }
     };
     const onWaiting = () => {
+      // Nếu là server KK và bị kẹt/nghẽn đệm tại ngưỡng quảng cáo (14:57 -> 15:30)
+      const cur = v ? v.currentTime : 0;
+      if (isKkServer && cur >= 897 && cur <= 930 && !adSkippedRef.current) {
+        if (bufferingTimeout) clearTimeout(bufferingTimeout);
+        if (v) v.currentTime = 931; // Nhảy ngay tới 15:31 qua khỏi đoạn quảng cáo
+        adSkippedRef.current = true;
+        setShowSkipAd(false);
+        setIsBuffering(false);
+        if (hlsRef.current) {
+          hlsRef.current.startLoad();
+        }
+        return;
+      }
+
       if (bufferingTimeout) clearTimeout(bufferingTimeout);
       bufferingTimeout = setTimeout(() => {
         if (v && v.readyState < 3 && !v.paused) {
           setIsBuffering(true);
+          if (hlsRef.current) {
+            hlsRef.current.startLoad();
+          }
         }
-      }, 350);
+      }, 700);
     };
     const onPlaying = () => {
-      if (bufferingTimeout) clearTimeout(bufferingTimeout);
-      setIsBuffering(false);
+      if (bufferingTimeout) {
+        clearTimeout(bufferingTimeout);
+        bufferingTimeout = null;
+      }
+      if (isBufferingRef.current) {
+        setIsBuffering(false);
+      }
       if (v && playbackSpeedRef.current !== 1) {
         v.playbackRate = playbackSpeedRef.current;
       }
     };
     const onCanPlay = () => {
-      if (bufferingTimeout) clearTimeout(bufferingTimeout);
-      setIsBuffering(false);
+      if (bufferingTimeout) {
+        clearTimeout(bufferingTimeout);
+        bufferingTimeout = null;
+      }
+      if (isBufferingRef.current) {
+        setIsBuffering(false);
+      }
     };
 
     const onLoadedMetadata = () => {
       if (bufferingTimeout) clearTimeout(bufferingTimeout);
-      setIsBuffering(false);
+      if (isBufferingRef.current) {
+        setIsBuffering(false);
+      }
       const dur = v.duration || 0;
       durationRef.current = dur;
       if (durTimeRef.current && dur > 0) {
@@ -836,7 +861,9 @@ export default function HlsPlayer({
           clearTimeout(bufferingTimeout);
           bufferingTimeout = null;
         }
-        setIsBuffering(false);
+        if (isBufferingRef.current) {
+          setIsBuffering(false);
+        }
       }
 
       if (dur > 0 && durationRef.current !== dur) {
