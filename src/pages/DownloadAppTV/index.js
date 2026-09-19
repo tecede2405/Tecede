@@ -2,7 +2,7 @@ import { FaTv, FaCheckCircle, FaCloudDownloadAlt, FaMobileAlt } from "react-icon
 import Swal from "sweetalert2";
 import "./style.scss";
 
-const APK_DOWNLOAD_URL = "https://docs.google.com/uc?export=download&id=15KsIoq4Jmblw7G56rGe6elyBxZVKRfoy";
+const APK_DOWNLOAD_URL = "https://docs.google.com/uc?export=download&id=1x3QWH9qx-M9mX9GXqkOwvw8YZT9y7x5O";
 
 function DownloadAppTV() {
   const DarkSwal = Swal.mixin({
