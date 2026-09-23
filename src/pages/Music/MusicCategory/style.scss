@@ -571,6 +571,82 @@
       }
     }
 
+    .btn-collapse-atmos {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(155, 77, 224, 0.25);
+        border-color: #c084fc;
+        color: #fff;
+      }
+    }
+
+    /* Compact bar khi rút gọn menu */
+    .atmos-compact-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      background: rgba(155, 77, 224, 0.12);
+      border: 1px solid rgba(155, 77, 224, 0.28);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(155, 77, 224, 0.2);
+        border-color: rgba(155, 77, 224, 0.45);
+      }
+
+      .compact-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow: hidden;
+      }
+
+      .compact-icon {
+        font-size: 14px;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+
+      .compact-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        white-space: nowrap;
+      }
+
+      .compact-sub {
+        font-size: 11px;
+        color: #94a3b8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .compact-action {
+        font-size: 11px;
+        color: #38bdf8;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-left: 8px;
+        flex-shrink: 0;
+      }
+    }
+
     /* Active preset info banner */
     .active-preset-desc {
       display: flex;
@@ -605,11 +681,12 @@
       }
     }
 
-    /* Preset Grid */
+    /* Preset Grid (Đúng 4 item mỗi hàng, 3 hàng, hàng cuối 2 item) */
     .preset-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
+      width: 100%;
 
       .preset-card {
         display: flex;

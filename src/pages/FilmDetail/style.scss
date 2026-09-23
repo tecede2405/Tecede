@@ -533,6 +533,48 @@
           }
         }
 
+        .btn-refresh {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          padding: 10px 22px;
+          background: rgba(33, 150, 243, 0.12);
+          color: #64b5f6;
+          border: 1.5px solid rgba(33, 150, 243, 0.35);
+          border-radius: 50px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(4px);
+
+          svg {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+          }
+
+          &:hover:not(:disabled) {
+            border-color: #2196f3;
+            color: #fff;
+            background: rgba(33, 150, 243, 0.25);
+            transform: scale(1.04);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+
+          .spin {
+            animation: spin 1s linear infinite;
+          }
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
         .btn-favorite {
           display: flex;
           align-items: center;

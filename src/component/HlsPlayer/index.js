@@ -19,22 +19,32 @@ const SMOOTH_HLS_CONFIG = {
   debug: false,
   enableWorker: true,
   lowLatencyMode: false,
-  backBufferLength: 30,             // Giữ 30s buffer quá khứ để dọn dẹp RAM kịp thời
-  maxBufferLength: 30,              // 30s đệm trước chuẩn VOD, tránh tràn MediaSource MSE quota
-  maxMaxBufferLength: 60,           // Tối đa 60s khi mạng nhàn rỗi
-  maxBufferSize: 60 * 1000 * 1000,  // 60MB là ngưỡng an toàn tuyệt đối cho trình duyệt di động & PC
+  backBufferLength: 60,             // Giữ 60s buffer đã xem, giúp tua lùi tức thì không cần tải lại
+  maxBufferLength: 45,              // Đệm trước 45s chuẩn VOD theo player.phimapi.com
+  maxMaxBufferLength: 180,          // Cho phép đệm trước tới 180s (3 phút) khi mạng rảnh theo player.phimapi.com
+  maxBufferSize: 60 * 1024 * 1024,  // 60MB RAM MSE buffer
   maxBufferHole: 0.5,               // 0.5s bỏ qua lệch PTS/DTS của nguồn phim, triệt tiêu micro-stutter
   highBufferWatchdogPeriod: 2,      // Quét mỗi 2s theo chuẩn Hls.js
   nudgeOffset: 0.1,                 // Nhích nhẹ 0.1s
-  nudgeMaxRetry: 3,
+  nudgeMaxRetry: 5,                 // 5 lần thử nudge nếu gặp khoảng trống
   nudgeOnVideoHole: true,
   maxFragLookUpTolerance: 0.25,
-  startFragPrefetch: false,         // Tắt prefetch để tập trung 100% băng thông tải chunk đầu tiên phát ngay
-  appendErrorMaxRetry: 3,
+  startFragPrefetch: true,          // BẬT prefetch phân đoạn tiếp theo giống player.phimapi.com để gối đầu dữ liệu liên tục
+  appendErrorMaxRetry: 5,
   autoStartLoad: true,
-  fragLoadingTimeOut: 20000,        // 20s timeout phân đoạn
-  fragLoadingMaxRetry: 4,
+  fragLoadingTimeOut: 25000,        // 25s timeout phân đoạn cho mạng chập chờn
+  fragLoadingMaxRetry: 6,           // Retry tải phân đoạn tới 6 lần
   fragLoadingRetryDelay: 1000,
+  fragLoadingMaxRetryTimeout: 64000,
+  manifestLoadingTimeOut: 25000,
+  manifestLoadingMaxRetry: 6,
+  manifestLoadingRetryDelay: 1000,
+  levelLoadingTimeOut: 25000,
+  levelLoadingMaxRetry: 6,
+  levelLoadingRetryDelay: 1000,
+  abrEwmaDefaultEstimate: 5000000,  // Khởi tạo ước lượng băng thông 5Mbps giúp chọn bitrate mượt ngay từ đầu
+  testBandwidth: true,
+  progressive: false,
 };
 
 function formatTime(seconds) {

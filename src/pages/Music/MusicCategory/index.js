@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Tabbar from '../../../component/tabar/index';
 import { useMusic } from "../../../context/MusicContext";
-import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc, FaSlidersH, FaUndo } from "react-icons/fa";
+import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaChevronUp, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc, FaSlidersH, FaUndo } from "react-icons/fa";
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
 
@@ -79,6 +79,7 @@ function MusicCategory() {
   
   const [playbackRate, setPlaybackRate] = useState(1); 
   const [sleepTimer, setSleepTimer] = useState(null); 
+  const [isAtmosCollapsed, setIsAtmosCollapsed] = useState(false);
   const sleepTimerRef = useRef(null);
   const lyricsRef = useRef(null);
 
@@ -276,25 +277,57 @@ function MusicCategory() {
             <span className="dolby-title">DOLBY ATMOS</span>
             <span className="spatial-badge">3D SPATIAL</span>
           </div>
-          <label className="atmos-toggle" title={audioEffectEnabled ? "Tắt hiệu ứng Dolby Atmos" : "Bật hiệu ứng Dolby Atmos"}>
-            <input 
-              type="checkbox" 
-              checked={!!audioEffectEnabled} 
-              onChange={toggleAudioEffect} 
-            />
-            <span className="atmos-slider"></span>
-          </label>
+          <div className="d-flex align-items-center gap-2">
+            <label className="atmos-toggle" title={audioEffectEnabled ? "Tắt hiệu ứng Dolby Atmos" : "Bật hiệu ứng Dolby Atmos"}>
+              <input 
+                type="checkbox" 
+                checked={!!audioEffectEnabled} 
+                onChange={toggleAudioEffect} 
+              />
+              <span className="atmos-slider"></span>
+            </label>
+            {audioEffectEnabled && (
+              <button 
+                type="button"
+                className="btn-collapse-atmos"
+                onClick={() => setIsAtmosCollapsed(prev => !prev)}
+                title={isAtmosCollapsed ? "Mở rộng tùy chọn hiệu ứng" : "Rút gọn để hiển thị Tốc độ & Hẹn giờ"}
+              >
+                {isAtmosCollapsed ? (
+                  <FaChevronDown size={11} />
+                ) : (
+                  <FaChevronUp size={11} />
+                )}
+              </button>
+            )}
+          </div>
         </div>
 
         {audioEffectEnabled ? (
-          <>
-            <div className="active-preset-desc mb-2">
-              <span className="preset-pill-dot"></span>
-              <span className="preset-pill-text">
-                {audioPresets?.[audioEffectPreset]?.name || "Dolby Atmos"}
-                <span className="preset-pill-sub"> • {audioPresets?.[audioEffectPreset]?.desc || "Hiệu ứng 3D đang hoạt động"}</span>
-              </span>
+          isAtmosCollapsed ? (
+            <div 
+              className="atmos-compact-bar" 
+              onClick={() => setIsAtmosCollapsed(false)}
+              title="Bấm để mở rộng các chế độ âm thanh"
+            >
+              <div className="compact-left">
+                <span className="compact-icon">{audioPresets?.[audioEffectPreset]?.icon || "🌌"}</span>
+                <span className="compact-name">{audioPresets?.[audioEffectPreset]?.name || "Dolby Atmos"}</span>
+                <span className="compact-sub">
+                  • {audioEffectPreset === "custom" ? "Tùy chỉnh EQ" : `${audioEffectIntensity}%`}
+                </span>
+              </div>
+              <span className="compact-action"><FaChevronDown size={11} /></span>
             </div>
+          ) : (
+            <>
+              <div className="active-preset-desc mb-2">
+                <span className="preset-pill-dot"></span>
+                <span className="preset-pill-text">
+                  {audioPresets?.[audioEffectPreset]?.name || "Dolby Atmos"}
+                  <span className="preset-pill-sub"> • {audioPresets?.[audioEffectPreset]?.desc || "Hiệu ứng 3D đang hoạt động"}</span>
+                </span>
+              </div>
 
             {/* PRESET CHIPS / GRID */}
             <div className="preset-grid mb-3">
@@ -338,7 +371,7 @@ function MusicCategory() {
               /* BẢNG TÙY CHỈNH NÂNG CAO (CUSTOM EQUALIZER & SPATIAL) */
               <div className="custom-dsp-panel mb-2">
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  <span className="custom-panel-title">🎛️ Tinh chỉnh chi tiết</span>
+                  <span className="custom-panel-title">Tinh chỉnh chi tiết</span>
                   <button 
                     className="custom-reset-btn" 
                     onClick={resetCustomAudioSettings}
@@ -357,14 +390,14 @@ function MusicCategory() {
                   </div>
                   <input
                     type="range"
-                    min="-10"
-                    max="14"
+                    min="-8"
+                    max="10"
                     step="0.5"
                     value={customAudioSettings.bass}
                     onChange={(e) => updateCustomAudioSetting("bass", Number(e.target.value))}
                     className="atmos-range"
                     style={{
-                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.bass + 10) / 24) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.bass + 10) / 24) * 100))}%)`
+                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.bass + 8) / 18) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.bass + 8) / 18) * 100))}%)`
                     }}
                   />
                 </div>
@@ -377,14 +410,14 @@ function MusicCategory() {
                   </div>
                   <input
                     type="range"
-                    min="-8"
-                    max="10"
+                    min="-6"
+                    max="8"
                     step="0.5"
                     value={customAudioSettings.mid}
                     onChange={(e) => updateCustomAudioSetting("mid", Number(e.target.value))}
                     className="atmos-range"
                     style={{
-                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.mid + 8) / 18) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.mid + 8) / 18) * 100))}%)`
+                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.mid + 6) / 14) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.mid + 6) / 14) * 100))}%)`
                     }}
                   />
                 </div>
@@ -397,14 +430,14 @@ function MusicCategory() {
                   </div>
                   <input
                     type="range"
-                    min="-8"
-                    max="10"
+                    min="-6"
+                    max="8"
                     step="0.5"
                     value={customAudioSettings.treble}
                     onChange={(e) => updateCustomAudioSetting("treble", Number(e.target.value))}
                     className="atmos-range"
                     style={{
-                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.treble + 8) / 18) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.treble + 8) / 18) * 100))}%)`
+                      background: `linear-gradient(to right, #c084fc ${Math.min(100, Math.max(0, ((customAudioSettings.treble + 6) / 14) * 100))}%, rgba(255,255,255,0.15) ${Math.min(100, Math.max(0, ((customAudioSettings.treble + 6) / 14) * 100))}%)`
                     }}
                   />
                 </div>
@@ -451,7 +484,7 @@ function MusicCategory() {
               </div>
             )}
           </>
-        ) : (
+        )) : (
           <div className="atmos-disabled-notice">
             <p className="m-0 text-secondary" style={{fontSize: '11.5px', lineHeight: '1.4'}}>
               Chế độ âm thanh gốc (Bypass). Bật công tắc để kích hoạt âm vòm Dolby Atmos đa chiều & tăng cường âm học.

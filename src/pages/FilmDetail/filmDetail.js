@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { FaPlay, FaHeart, FaRegHeart } from "react-icons/fa";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { FaPlay, FaHeart, FaRegHeart, FaSyncAlt } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
 import { useFavoriteToggle } from "../../hooks/useFavorites";
 import { useAuth } from "../../context/AuthContext";
@@ -18,42 +18,100 @@ const SOURCE_NAMES = {
 export default function MovieDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
+
+  const sourceFromSearch = location.state?.sourceName;
+  const isRefreshParam = new URLSearchParams(location.search).get("refresh") === "true";
 
   const [movie, setMovie] = useState(null);
   const [sources, setSources] = useState([]);
   const [currentServer, setCurrentServer] = useState(0); 
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [imgConfig, setImgConfig] = useState({ poster: "", thumb: "" });
 
-  useEffect(() => {
+  const fetchMovieDetail = useCallback(async (forceRefresh = false) => {
     setLoading(true);
-    // Reset server về 0 khi chuyển phim khác
     setCurrentServer(0);
-    fetch(`${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`)
-      .then(res => res.json())
-      .then(data => {
-        const m = data.data?.movie || {};
-        setMovie(m);
-        
-        // KIỂM TRA NGUỒN C VÀ OPHIM ĐỂ ĐẢO CHIỀU ẢNH NGAY TỪ LÚC FETCH
-        const isNguonC_or_OPhim = 
-          m.poster_url?.includes("phim.nguonc.com") || 
-          m.thumb_url?.includes("phim.nguonc.com") ||
-          m.poster_url?.includes("ophim") ||
-          m.thumb_url?.includes("ophim");
+    try {
+      const baseUrl = `${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`;
+      const shouldRefresh = forceRefresh || isRefreshParam;
+      const firstUrl = shouldRefresh ? `${baseUrl}?refresh=true` : baseUrl;
 
-        let p = isNguonC_or_OPhim ? m.thumb_url : m.poster_url;
-        let t = isNguonC_or_OPhim ? m.poster_url : m.thumb_url;
-        
-        if (!p) p = t;
-        if (!t) t = p;
+      let res = await fetch(firstUrl);
+      let data = await res.json();
 
-        setImgConfig({ poster: p, thumb: t });
-        setSources(data.data?.episodes || []);
-      })
-      .finally(() => setLoading(false));
-  }, [slug]);
+      let m = data.data?.movie;
+      let epList = data.data?.episodes || [];
+
+      const checkHasM3u8 = (list) => {
+        if (!Array.isArray(list) || list.length === 0) return false;
+        return list.some(src => 
+          (src.episodes || []).some(srv => 
+            (srv.server_data || srv.items || []).some(ep => Boolean(ep.link_m3u8 || ep.m3u8))
+          )
+        );
+      };
+
+      const checkNcHasM3u8 = (list) => {
+        if (!Array.isArray(list) || list.length === 0) return false;
+        const nc = list.find(s => s.source?.toLowerCase() === "nc" || s.source?.toLowerCase() === "nguonc");
+        if (!nc) return true;
+        return (nc.episodes || []).some(srv => 
+          (srv.server_data || srv.items || []).some(ep => Boolean(ep.link_m3u8 || ep.m3u8))
+        );
+      };
+
+      const isNc = sourceFromSearch === "NC" || sourceFromSearch === "nguonc" || epList.some(s => s.source?.toLowerCase() === "nc" || s.source?.toLowerCase() === "nguonc");
+      const lacksM3u8 = !checkHasM3u8(epList) || (isNc && !checkNcHasM3u8(epList));
+
+      // Nếu chưa gọi refresh mà data thiếu m3u8 hoặc không có tập -> tự động gọi ?refresh=true
+      if (!shouldRefresh && (!data.success || !m || epList.length === 0 || lacksM3u8)) {
+        console.log(`[FilmDetail] Phim ${slug} chưa có m3u8 (NC: ${isNc}), đang tự động gọi ?refresh=true...`);
+        setIsRefreshing(true);
+        try {
+          const refRes = await fetch(`${baseUrl}?refresh=true`);
+          const refData = await refRes.json();
+          if (refData.success && refData.data?.movie) {
+            m = refData.data.movie;
+            epList = refData.data.episodes || [];
+          }
+        } catch (refErr) {
+          console.warn("[FilmDetail] Lỗi refresh phim:", refErr);
+        } finally {
+          setIsRefreshing(false);
+        }
+      }
+
+      m = m || {};
+      setMovie(m);
+
+      // KIỂM TRA NGUỒN C VÀ OPHIM ĐỂ ĐẢO CHIỀU ẢNH NGAY TỪ LÚC FETCH
+      const isNguonC_or_OPhim = 
+        m.poster_url?.includes("phim.nguonc.com") || 
+        m.thumb_url?.includes("phim.nguonc.com") ||
+        m.poster_url?.includes("ophim") ||
+        m.thumb_url?.includes("ophim");
+
+      let p = isNguonC_or_OPhim ? m.thumb_url : m.poster_url;
+      let t = isNguonC_or_OPhim ? m.poster_url : m.thumb_url;
+      
+      if (!p) p = t;
+      if (!t) t = p;
+
+      setImgConfig({ poster: p, thumb: t });
+      setSources(epList);
+    } catch (err) {
+      console.error("Lỗi fetch chi tiết phim:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [slug, isRefreshParam, sourceFromSearch]);
+
+  useEffect(() => {
+    fetchMovieDetail();
+  }, [fetchMovieDetail]);
 
   // GỘP, ĐỔI TÊN SERVER VÀ SẮP XẾP ƯU TIÊN (OP -> KK -> NC)
   const allServers = useMemo(() => {
@@ -99,6 +157,15 @@ export default function MovieDetail() {
 
     return list;
   }, [sources]);
+
+  useEffect(() => {
+    if (sourceFromSearch && allServers.length > 0) {
+      const idx = allServers.findIndex(s => s.sourceName === sourceFromSearch);
+      if (idx !== -1) {
+        setCurrentServer(idx);
+      }
+    }
+  }, [sourceFromSearch, allServers]);
 
   const currentServerObj = allServers[currentServer];
   const episodes = currentServerObj?.server_data || currentServerObj?.items || [];
@@ -192,6 +259,18 @@ export default function MovieDetail() {
                   }}>
                     <FaPlay className="me-1 mb-1" /> XEM NGAY
                   </button>
+
+                  {user?.role === "admin" && (
+                    <button 
+                      className="btn-refresh" 
+                      onClick={() => fetchMovieDetail(true)}
+                      disabled={isRefreshing || loading}
+                      title="Làm mới nguồn và cập nhật m3u8 (Chỉ dành cho Admin)"
+                    >
+                      <FaSyncAlt className={`me-1 ${isRefreshing ? "spin" : ""}`} /> 
+                      {isRefreshing ? "Đang làm mới..." : "Làm mới nguồn"}
+                    </button>
+                  )}
 
                   {user && (
                     <button

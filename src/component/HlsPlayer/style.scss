@@ -47,8 +47,7 @@
     padding-top: 56.25%; /* 16:9 ratio */
     background: #000;
     cursor: pointer;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    overflow: hidden;
   }
 
   .player-top-bar,
@@ -68,10 +67,6 @@
     object-fit: contain;
     background: #000;
     border: none;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    contain: layout paint;
-    will-change: transform;
   }
 
   .embed-frame {
@@ -244,7 +239,8 @@
   .episodes-drawer {
     position: absolute;
     top: 0;
-    right: -380px;
+    right: 0;
+    transform: translateX(100%);
     width: 360px;
     max-width: 90%;
     height: 100%;
@@ -256,10 +252,16 @@
     display: flex;
     flex-direction: column;
     padding: 24px 20px;
-    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.35s ease;
 
     &.open {
-      right: 0;
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
   }
 

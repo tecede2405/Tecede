@@ -331,6 +331,7 @@ export default function FilmListBySlug() {
         {results.map((film) => (
           <Link 
             to={`/chi-tiet/${film.slug}`} 
+            state={{ sourceName: film.sourceName }}
             key={`${film.slug}-${film.sourceName}`} 
             className="film-card" 
             onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} 
@@ -384,7 +385,13 @@ export default function FilmListBySlug() {
                   <span className="preview-tag">{hoverFilm.year}</span>
                 </div>
                 <div className="preview-actions">
-                  <Link to={`/chi-tiet/${hoverFilm.path || hoverFilm.slug}`} className="btn-watch">▶ Xem ngay</Link>
+                  <Link 
+                    to={`/chi-tiet/${hoverFilm.path || hoverFilm.slug}`} 
+                    state={{ sourceName: hoverFilm.sourceName }}
+                    className="btn-watch"
+                  >
+                    ▶ Xem ngay
+                  </Link>
                 </div>
               </div>
             </div>

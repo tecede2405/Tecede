@@ -85,22 +85,68 @@ export default function FilmDetail() {
       try {
         if (filmCache[slug]) {
           const cachedData = filmCache[slug];
-          if (isMounted) {
+          const cachedHasM3u8 = cachedData.mergedServers?.some(srv => 
+            srv.server_data?.some(ep => ep.m3u8Url)
+          );
+          if (cachedHasM3u8 && isMounted) {
             setMovie(cachedData.movieData);
             setServers(cachedData.mergedServers);
             setIsKkphim(cachedData.isKkphim);
+            return; 
           }
-          return; 
+          delete filmCache[slug];
         }
 
         let movieDataToUse = passedMovie;
         let episodesDataToUse = passedSources;
 
-        if (!movieDataToUse || !episodesDataToUse) {
-          const res = await fetch(`${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`);
-          const responseJson = await res.json();
-          movieDataToUse = responseJson.data?.movie;
-          episodesDataToUse = responseJson.data?.episodes || [];
+        const checkHasM3u8 = (list) => {
+          if (!Array.isArray(list) || list.length === 0) return false;
+          return list.some(src => 
+            (src.episodes || []).some(srv => 
+              (srv.server_data || srv.items || []).some(ep => Boolean(ep.link_m3u8 || ep.m3u8))
+            )
+          );
+        };
+
+        const checkNcHasM3u8 = (list) => {
+          if (!Array.isArray(list) || list.length === 0) return false;
+          const nc = list.find(s => s.source?.toLowerCase() === "nc" || s.source?.toLowerCase() === "nguonc");
+          if (!nc) return true;
+          return (nc.episodes || []).some(srv => 
+            (srv.server_data || srv.items || []).some(ep => Boolean(ep.link_m3u8 || ep.m3u8))
+          );
+        };
+
+        const isMissingM3u8 = !movieDataToUse || 
+                             !episodesDataToUse || 
+                             episodesDataToUse.length === 0 || 
+                             !checkHasM3u8(episodesDataToUse) || 
+                             !checkNcHasM3u8(episodesDataToUse);
+
+        if (isMissingM3u8) {
+          const baseUrl = `${process.env.REACT_APP_SERVER_API_URL}/movie-detail/${slug}`;
+          
+          if (!movieDataToUse || !episodesDataToUse || episodesDataToUse.length === 0) {
+            try {
+              const res = await fetch(baseUrl);
+              const responseJson = await res.json();
+              movieDataToUse = responseJson.data?.movie;
+              episodesDataToUse = responseJson.data?.episodes || [];
+            } catch (e) {}
+          }
+
+          if (!movieDataToUse || episodesDataToUse.length === 0 || !checkHasM3u8(episodesDataToUse) || !checkNcHasM3u8(episodesDataToUse)) {
+            console.log(`[FilmDetail/xem-phim] Phim ${slug} chưa có m3u8, đang tự động gọi ?refresh=true...`);
+            try {
+              const refRes = await fetch(`${baseUrl}?refresh=true`);
+              const refJson = await refRes.json();
+              if (refJson.success && refJson.data?.movie) {
+                movieDataToUse = refJson.data.movie;
+                episodesDataToUse = refJson.data.episodes || [];
+              }
+            } catch (e) {}
+          }
         }
 
         const mergedServers = [];
