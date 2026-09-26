@@ -137,10 +137,10 @@ function TopList() {
             </div>
             
             <div className="toplist-body">
-              {renderList('active', activeFilms, 5)}
+              {renderList('favorite', favoriteFilms, 5)}
             </div>
             
-            <div className="toplist-footer" onClick={() => setModalType('active')}>
+            <div className="toplist-footer" onClick={() => setModalType('favorite')}>
               Xem thêm
             </div>
           </div>
@@ -153,10 +153,10 @@ function TopList() {
             </div>
             
             <div className="toplist-body">
-              {renderList('favorite', favoriteFilms, 5)}
+              {renderList('active', activeFilms, 5)}
             </div>
             
-            <div className="toplist-footer" onClick={() => setModalType('favorite')}>
+            <div className="toplist-footer" onClick={() => setModalType('active')}>
               Xem thêm
             </div>
           </div>

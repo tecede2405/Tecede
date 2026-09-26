@@ -253,7 +253,7 @@ export default function LoginPage() {
 
           <div className="auth-header">
             <h2>Đăng nhập</h2>
-            <p>Chào mừng trở lại! Nhập tài khoản để tiếp tục trải nghiệm.</p>
+            <p>Chào mừng trở lại!</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>

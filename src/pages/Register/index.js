@@ -223,7 +223,7 @@ export default function RegisterPage() {
 
           <div className="auth-header">
             <h2>Tạo tài khoản mới</h2>
-            <p>Điền thông tin bên dưới để bắt đầu trải nghiệm Tecede.</p>
+            <p>Lưu lại lịch sử xem và yêu thích.</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
