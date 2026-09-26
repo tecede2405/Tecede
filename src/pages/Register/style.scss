@@ -1,5 +1,5 @@
 /* 
-  Trang Đăng ký sử dụng chung hệ thống class với trang Đăng nhập.
-  Toàn bộ CSS (kính mờ, nền tím, nút gradient, focus màu) 
-  được quản lý tập trung tại src/pages/Login/style.scss.
+  Trang Đăng ký kế thừa và đồng bộ 100% hệ thống style cinematic glassmorphism 
+  từ src/pages/Login/style.scss.
 */
+@import "../Login/style.scss";

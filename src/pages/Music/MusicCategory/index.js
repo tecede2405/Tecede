@@ -994,7 +994,7 @@ function MusicCategory() {
 
 
               <div className="fsp-footer p-4 pt-0">
-                {fspTab !== 'karaoke' && (
+                {fspTab === 'lyrics' && (
                   <div className="fsp-song-info-small d-flex align-items-center mb-3">
                     <img src={playlist[currentIndex].image} alt="thumb" style={{width: '40px', height: '40px', borderRadius: '4px', objectFit: 'cover'}} />
                     <div className="ms-3 overflow-hidden text-start">
@@ -1003,7 +1003,7 @@ function MusicCategory() {
                     </div>
                   </div>
                 )}
-                <div className="fsp-progress-container mb-4">
+                <div className="fsp-progress-container mb-4 mt-2">
                   <div className="d-flex justify-content-between mb-2">
                     <span className="time-text">{formatTime(currentTime)}</span>
                     <span className="time-text">{formatTime(duration)}</span>
