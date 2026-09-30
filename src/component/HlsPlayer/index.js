@@ -89,6 +89,8 @@ export default function HlsPlayer({
   const lastActivityRef = useRef(0);
   const showServerMenuRef = useRef(false);
   const showEpisodesDrawerRef = useRef(false);
+  const drawerEpisodesListRef = useRef(null);
+  const activeEpisodeCardRef = useRef(null);
   const showSettingsRef = useRef(false);
   const playbackSpeedRef = useRef(1);
   const onStatsUpdateRef = useRef(onStatsUpdate);
@@ -289,40 +291,109 @@ export default function HlsPlayer({
     }
   }, []);
 
-  // Fullscreen Handler
-  const toggleFullscreen = useCallback(() => {
+  // Khóa xoay ngang màn hình cho mobile & tablet khi xem fullscreen
+  const lockLandscape = useCallback(async () => {
+    try {
+      const orientation =
+        window.screen?.orientation ||
+        window.screen?.mozOrientation ||
+        window.screen?.msOrientation;
+      if (orientation && typeof orientation.lock === "function") {
+        await orientation.lock("landscape").catch(() => {});
+      } else if (window.screen?.lockOrientation) {
+        window.screen.lockOrientation("landscape");
+      } else if (window.screen?.webkitLockOrientation) {
+        window.screen.webkitLockOrientation("landscape");
+      } else if (window.screen?.mozLockOrientation) {
+        window.screen.mozLockOrientation("landscape");
+      } else if (window.screen?.msLockOrientation) {
+        window.screen.msLockOrientation("landscape");
+      }
+    } catch (e) {
+      // Bỏ qua nếu thiết bị hoặc trình duyệt không hỗ trợ lock xoay màn hình
+    }
+  }, []);
+
+  const unlockOrientation = useCallback(() => {
+    try {
+      const orientation =
+        window.screen?.orientation ||
+        window.screen?.mozOrientation ||
+        window.screen?.msOrientation;
+      if (orientation && typeof orientation.unlock === "function") {
+        orientation.unlock();
+      } else if (window.screen?.unlockOrientation) {
+        window.screen.unlockOrientation();
+      } else if (window.screen?.webkitUnlockOrientation) {
+        window.screen.webkitUnlockOrientation();
+      } else if (window.screen?.mozUnlockOrientation) {
+        window.screen.mozUnlockOrientation();
+      } else if (window.screen?.msUnlockOrientation) {
+        window.screen.msUnlockOrientation();
+      }
+    } catch (e) {
+      // Ignore
+    }
+  }, []);
+
+  // Fullscreen Handler: Tự động phóng to và xoay ngang màn hình trên mobile & tablet
+  const toggleFullscreen = useCallback(async () => {
     handleUserActivity();
     const container = containerRef.current;
     if (!container) return;
 
-    const isFs =
+    const isFs = Boolean(
       document.fullscreenElement ||
       document.webkitFullscreenElement ||
-      container.classList.contains("is-fullscreen");
+      document.mozFullScreenElement ||
+      document.msFullscreenElement ||
+      container.classList.contains("is-fullscreen")
+    );
 
     if (!isFs) {
-      if (container.requestFullscreen) {
-        container.requestFullscreen().catch(() => {
+      try {
+        if (container.requestFullscreen) {
+          await container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+          await container.webkitRequestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+          await container.mozRequestFullScreen();
+        } else if (container.msRequestFullscreen) {
+          await container.msRequestFullscreen();
+        } else if (videoRef.current && videoRef.current.webkitEnterFullscreen) {
+          videoRef.current.webkitEnterFullscreen();
+        } else {
           setIsFullscreen(true);
-        });
-      } else if (container.webkitRequestFullscreen) {
-        container.webkitRequestFullscreen();
-      } else if (videoRef.current && videoRef.current.webkitEnterFullscreen) {
-        videoRef.current.webkitEnterFullscreen();
-      } else {
-        setIsFullscreen(true);
+        }
+      } catch (err) {
+        if (videoRef.current && videoRef.current.webkitEnterFullscreen) {
+          try {
+            videoRef.current.webkitEnterFullscreen();
+          } catch (e) {}
+        } else {
+          setIsFullscreen(true);
+        }
       }
+      // Tự động xoay ngang màn hình
+      await lockLandscape();
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
+      unlockOrientation();
+      try {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } catch (err) {}
       setIsFullscreen(false);
     }
-  }, [handleUserActivity]);
+  }, [handleUserActivity, lockLandscape, unlockOrientation]);
 
-  // Sync Fullscreen state
+  // Sync Fullscreen state & Auto-rotate
   useEffect(() => {
     const handleFsChange = () => {
       const isFs = Boolean(
@@ -332,16 +403,88 @@ export default function HlsPlayer({
         document.msFullscreenElement
       );
       setIsFullscreen(isFs);
+      if (isFs) {
+        lockLandscape();
+      } else {
+        unlockOrientation();
+      }
       handleUserActivity();
     };
 
     document.addEventListener("fullscreenchange", handleFsChange);
     document.addEventListener("webkitfullscreenchange", handleFsChange);
+    document.addEventListener("mozfullscreenchange", handleFsChange);
+    document.addEventListener("MSFullscreenChange", handleFsChange);
     return () => {
       document.removeEventListener("fullscreenchange", handleFsChange);
       document.removeEventListener("webkitfullscreenchange", handleFsChange);
+      document.removeEventListener("mozfullscreenchange", handleFsChange);
+      document.removeEventListener("MSFullscreenChange", handleFsChange);
+      unlockOrientation();
     };
-  }, [handleUserActivity]);
+  }, [handleUserActivity, lockLandscape, unlockOrientation]);
+
+  // Xác định chính xác index của tập đang phát
+  const activeSlug = selectedEpisodeSlug || currentVideo?.slug;
+  const activeEpisodeIndex = useMemo(() => {
+    if (!episodes || episodes.length === 0 || !activeSlug) return -1;
+    const strSlug = String(activeSlug).trim().toLowerCase();
+    // 1. So khớp chính xác slug
+    const idx = episodes.findIndex(
+      (ep) => String(ep.slug).trim().toLowerCase() === strSlug
+    );
+    if (idx !== -1) return idx;
+
+    // 2. So khớp theo tên tập (ví dụ "385", "tập 385" hoặc số tập tương ứng)
+    const numOnly = strSlug.replace(/\D/g, "");
+    return episodes.findIndex((ep) => {
+      const epSlug = String(ep.slug).trim().toLowerCase();
+      const epName = String(ep.name).trim().toLowerCase();
+      if (epSlug === strSlug || epName === strSlug) return true;
+      if (numOnly && (epSlug.replace(/\D/g, "") === numOnly || epName.replace(/\D/g, "") === numOnly)) {
+        return true;
+      }
+      return false;
+    });
+  }, [episodes, activeSlug]);
+
+  // Tự động cuộn tới đúng tập đang phát khi mở Danh sách tập trong HLS Player
+  useEffect(() => {
+    if (!showEpisodesDrawer) return;
+
+    const scrollToCurrentEpisode = () => {
+      const container = drawerEpisodesListRef.current;
+      const target = activeEpisodeCardRef.current;
+      if (!container || !target) return;
+
+      // Tính vị trí offsetTop tuyệt đối của phần tử mục tiêu so với container
+      let targetTop = 0;
+      let el = target;
+      while (el && el !== container) {
+        targetTop += el.offsetTop;
+        el = el.offsetParent;
+      }
+
+      const containerHeight = container.clientHeight || 500;
+      const targetHeight = target.offsetHeight || 72;
+      const targetScroll = Math.max(
+        0,
+        targetTop - (containerHeight / 2) + (targetHeight / 2)
+      );
+
+      container.scrollTop = targetScroll;
+    };
+
+    // Đặt vị trí chính xác ngay khi mở drawer
+    const timer1 = setTimeout(scrollToCurrentEpisode, 30);
+    // Căn chuẩn lại sau khi hiệu ứng trượt drawer kết thúc
+    const timer2 = setTimeout(scrollToCurrentEpisode, 260);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [showEpisodesDrawer, activeEpisodeIndex]);
 
   // Lắng nghe hoạt động chuột/phím toàn cục khi xem fullscreen hoặc di chuột trên player
   useEffect(() => {
@@ -1582,11 +1725,9 @@ export default function HlsPlayer({
             </div>
           </div>
 
-          <div className="drawer-episodes-list">
+          <div className="drawer-episodes-list" ref={drawerEpisodesListRef}>
             {episodes.map((ep, idx) => {
-              const isEpActive =
-                ep.slug === selectedEpisodeSlug ||
-                (!selectedEpisodeSlug && ep.slug === currentVideo?.slug);
+              const isEpActive = idx === activeEpisodeIndex;
               let epLabel = ep.name || `Tập ${idx + 1}`;
               if (!isNaN(epLabel)) {
                 epLabel = `Tập ${epLabel}`;
@@ -1595,6 +1736,7 @@ export default function HlsPlayer({
               return (
                 <div
                   key={ep.slug || idx}
+                  ref={isEpActive ? activeEpisodeCardRef : null}
                   className={`drawer-ep-card ${isEpActive ? "active" : ""}`}
                   onClick={() => {
                     setShowEpisodesDrawer(false);
