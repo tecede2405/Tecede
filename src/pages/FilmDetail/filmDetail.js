@@ -146,7 +146,9 @@ export default function MovieDetail() {
     const priority = {
       "KK": 1,
       "OP": 2,
-      "NC": 3
+      "OF": 3,
+      "NC": 4,
+      "VM": 5
     };
 
     list.sort((a, b) => {

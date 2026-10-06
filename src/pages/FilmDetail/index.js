@@ -20,6 +20,8 @@ const SOURCE_NAMES = {
   kkphim: "KK",
   op: "OP",
   nc: "NC",
+  of: "OF",
+  onflix: "OF",
   nguonc: "NC",
   vm: "VM",
   vsmov: "VM"
@@ -183,7 +185,7 @@ export default function FilmDetail() {
           });
         });
 
-        const priority = { "KK": 1, "OP": 2, "NC": 3, "VM": 4 };
+        const priority = { "KK": 1, "OP": 2, "OF": 3,"NC": 4, "VM": 5 };
         mergedServers.sort((a, b) => {
           const rankA = priority[a.sourceName] || 99;
           const rankB = priority[b.sourceName] || 99;

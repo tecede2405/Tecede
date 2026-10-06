@@ -225,9 +225,9 @@ function TopList() {
             <div className="toplist-modal-header">
               <h3>
                 {modalType === 'active' ? (
-                  <><FaFilm style={{color: '#fcd34d', marginRight: '8px'}} /> TOP TRONG NGÀY</>
+                  <><FaFilm style={{color: '#fcd34d', marginRight: '8px'}} /> TOP TRONG TUẦN</>
                 ) : (
-                  <><FaHeart style={{color: '#fcd34d', marginRight: '8px'}} /> TOP TRONG TUẦN</>
+                  <><FaHeart style={{color: '#fcd34d', marginRight: '8px'}} /> TOP TRONG NGÀY</>
                 )}
               </h3>
               <button className="toplist-modal-close" onClick={() => setModalType(null)}>
