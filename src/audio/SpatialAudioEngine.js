@@ -45,12 +45,12 @@ export const PRESETS = {
     name: "Âm Vòm 8D",
     icon: "🌀",
     desc: "Âm thanh 360° xoay vòng quanh đầu sống động, đảo tai rõ ràng và biến thiên chiều sâu 3D",
-    bass: 3.6,
-    warmth: 1.2,
-    mid: 1.6,
-    treble: 3.2,
-    spatial: 95,
-    reverb: 30,
+    bass: 3.2,
+    warmth: 1.0,
+    mid: 1.5,
+    treble: 2.8,
+    spatial: 88,
+    reverb: 20,
     is8D: true,
   },
   cinema: {
@@ -206,6 +206,12 @@ class SpatialAudioEngine {
     }
 
     try {
+      if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+        try {
+          navigator.audioSession.type = "playback";
+        } catch (e) {}
+      }
+
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) return;
       this.audioCtx = new AudioContext();
@@ -263,22 +269,16 @@ class SpatialAudioEngine {
       this.rightSideInvert.gain.value = -1.0;
 
       // 4. Audiophile Zero-Latency Spatial Room Ambience (Algorithmic Early Reflections)
-      // Thay thế Convolver: Không tốn RAM, không rác bộ nhớ, không bao giờ drop audio hay gây rè
+      // Thiết kế Feedforward thuần túy: Triệt tiêu 100% vòng lặp delay gây nổ tạch tạch trên chip ARM mobile/tablet
       this.reverbFilter = this.audioCtx.createBiquadFilter();
       this.reverbFilter.type = "lowpass";
-      this.reverbFilter.frequency.value = 2600; // Tiêu âm tự nhiên ấm áp
+      this.reverbFilter.frequency.value = 2800;
 
       this.reverbDelayL = this.audioCtx.createDelay(0.1);
       this.reverbDelayL.delayTime.value = 0.021; // 21ms phản xạ phòng bên trái
 
       this.reverbDelayR = this.audioCtx.createDelay(0.1);
-      this.reverbDelayR.delayTime.value = 0.029; // 29ms phản xạ phòng bên phải (decorrelated)
-
-      this.reverbCrossL = this.audioCtx.createGain();
-      this.reverbCrossL.gain.value = 0.20;
-
-      this.reverbCrossR = this.audioCtx.createGain();
-      this.reverbCrossR.gain.value = 0.20;
+      this.reverbDelayR.delayTime.value = 0.031; // 31ms phản xạ phòng bên phải (decorrelated)
 
       this.reverbWetGain = this.audioCtx.createGain();
       this.reverbWetGain.gain.value = 0.10;
@@ -300,13 +300,13 @@ class SpatialAudioEngine {
         this.eightDPanner.pan.value = 0.0;
       }
 
-      // 6. Master Transparent Dynamics Limiter (Bảo vệ tín hiệu, không làm méo dạng sóng)
+      // 6. Master Transparent Dynamics Limiter (Bảo vệ tín hiệu, bắt trọn đỉnh xung, triệt tiêu méo/rè)
       this.compressor = this.audioCtx.createDynamicsCompressor();
-      this.compressor.threshold.value = -4.0; // Ngưỡng an toàn âm nhạc
-      this.compressor.knee.value = 12.0;     // Soft-knee cong mượt mà, không bao giờ bẻ vuông dạng sóng
-      this.compressor.ratio.value = 5.0;      // Nén vừa phải, không gây méo hài âm
-      this.compressor.attack.value = 0.015;   // 15ms bảo toàn độ nảy tròn của tiếng bass/kick drum
-      this.compressor.release.value = 0.120;  // 120ms nhả mượt mà
+      this.compressor.threshold.value = -3.0; // Ngưỡng an toàn âm nhạc
+      this.compressor.knee.value = 10.0;     // Soft-knee cong mượt mà, không bao giờ bẻ vuông dạng sóng
+      this.compressor.ratio.value = 4.0;      // Nén bảo vệ đỉnh
+      this.compressor.attack.value = 0.003;   // 3ms bắt tức thì đỉnh xung âm thanh, triệt tiêu 100% tiếng rè
+      this.compressor.release.value = 0.080;  // 80ms nhả mượt mà, không bị hiện tượng pumping/dập dình
 
       // 🔌 KẾT NỐI SƠ ĐỒ ÂM THANH (GRAPH ROUTING)
 
@@ -348,16 +348,10 @@ class SpatialAudioEngine {
 
       this.msMerger.connect(this.dspGain);
 
-      // Đi dây Early Reflection Room Ambience (Delay + Cross-Feed)
+      // Đi dây Early Reflection Room Ambience (Feedforward sạch, decorrelated stereo)
       this.trebleFilter.connect(this.reverbFilter);
       this.reverbFilter.connect(this.reverbDelayL);
       this.reverbFilter.connect(this.reverbDelayR);
-
-      this.reverbDelayL.connect(this.reverbCrossL);
-      this.reverbCrossL.connect(this.reverbDelayR); // Cross-feed L -> R
-
-      this.reverbDelayR.connect(this.reverbCrossR);
-      this.reverbCrossR.connect(this.reverbDelayL); // Cross-feed R -> L
 
       this.reverbDelayL.connect(this.reverbWetGain);
       this.reverbDelayR.connect(this.reverbWetGain);
@@ -396,15 +390,30 @@ class SpatialAudioEngine {
   }
 
   resumeContext() {
-    if (this.audioCtx && this.audioCtx.state === "suspended") {
-      this.audioCtx.resume().catch(() => {});
+    if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+      try {
+        navigator.audioSession.type = "playback";
+      } catch (e) {}
+    }
+    if (this.audioCtx) {
+      if (this.audioCtx.state === "suspended" || this.audioCtx.state === "interrupted") {
+        this.audioCtx.resume().catch(() => {});
+        // Khởi tạo 1-sample silent buffer đánh thức phần cứng DAC trên iOS Safari
+        try {
+          const dummy = this.audioCtx.createBuffer(1, 1, 22050);
+          const src = this.audioCtx.createBufferSource();
+          src.buffer = dummy;
+          src.connect(this.audioCtx.destination);
+          src.start(0);
+        } catch (e) {}
+      }
     }
   }
 
   start8DLoop() {
     if (this.eightDTimer) return;
     this.eightDActive = true;
-    this.eightDTimer = setInterval(() => this.update8D(), 25);
+    this.eightDTimer = setInterval(() => this.update8D(), 35);
   }
 
   stop8DLoop() {
@@ -415,17 +424,15 @@ class SpatialAudioEngine {
     this.eightDActive = false;
     if (this.audioCtx) {
       const now = this.audioCtx.currentTime;
+      const tc = 0.05;
       if (this.eightDPanner) {
-        this.eightDPanner.pan.cancelScheduledValues(now);
-        this.eightDPanner.pan.setTargetAtTime(0, now, 0.05);
+        this.eightDPanner.pan.setTargetAtTime(0, now, tc);
       }
       if (this.eightDVolumeGain) {
-        this.eightDVolumeGain.gain.cancelScheduledValues(now);
-        this.eightDVolumeGain.gain.setTargetAtTime(1.0, now, 0.05);
+        this.eightDVolumeGain.gain.setTargetAtTime(1.0, now, tc);
       }
       if (this.eightDFilter) {
-        this.eightDFilter.gain.cancelScheduledValues(now);
-        this.eightDFilter.gain.setTargetAtTime(0, now, 0.05);
+        this.eightDFilter.gain.setTargetAtTime(0, now, tc);
       }
     }
   }
@@ -437,40 +444,39 @@ class SpatialAudioEngine {
     }
 
     const now = this.audioCtx.currentTime;
-    const rampTime = now + 0.040; // 40ms smooth lookahead ramp
+    // Chu kỳ quay quanh đầu: ~9.6 giây cho 1 vòng quay mượt mà, sâu sắc (0.65 rad/s)
+    const angle = now * 0.65;
 
-    // Chu kỳ quay 360 độ: ~10.5 giây cho 1 vòng quay mượt mà (0.60 rad/s)
-    const angle = now * 0.60;
+    // 1. Quỹ đạo X: Chạy từ tai Trái (-0.94) sang tai Phải (+0.94)
+    const rawSin = Math.sin(angle);
+    // Giới hạn trong [-0.94, 0.94] để bảo toàn trọn vẹn headroom và tránh méo biên của StereoPannerNode
+    const shapedPan = Math.sign(rawSin) * Math.min(0.94, Math.pow(Math.abs(rawSin), 0.76));
 
-    // 1. Quỹ đạo X: Chạy trọn vẹn từ tai Trái (-1.0) sang tai Phải (+1.0)
-    const panX = Math.sin(angle);
-
-    // 2. Chiều sâu Z: Trước mặt (-1.0) ra sau gáy (+1.0)
+    // 2. Chiều sâu Z: Trước mặt (depthZ > 0) ra sau gáy (depthZ < 0)
     const depthZ = Math.cos(angle);
 
-    // 3. Biến thiên âm lượng theo khoảng cách 3D (Distance Attenuation):
-    // Khi âm thanh ở 2 bên tai (sin = ±1, cos = 0): Áp sát tai nhất -> Âm lượng to nhất (1.0 = 0dB)!
-    // Khi âm thanh lượn ra trước mặt (cos = -1) hoặc sau gáy (cos = +1): Lùi xa hơn -> Âm lượng giảm nhẹ (~0.76 = -2.4dB)!
-    const orbitVol = 1.0 - 0.24 * (depthZ * depthZ);
+    // 3. Biến thiên âm lượng theo vị trí 3D (Distance & Center Attenuation):
+    // Đỉnh áp sát tai là 1.0 (chuẩn 0dBFS không bao giờ vượt ngưỡng gây rè hay méo tiếng)
+    // Ở giữa đầu / trước mặt / sau gáy: giữ ở mức 0.76 (~ -2.3dB) để âm thanh luôn to rõ, dày dặn
+    const earProximity = Math.pow(Math.abs(shapedPan), 1.2);
+    const orbitVol = 0.76 + 0.24 * earProximity;
 
     // 4. Hiệu ứng cản âm của đầu (Head-Shadow & Pinna Acoustic Filter):
-    // Khi âm thanh chạy ra sau gáy (depthZ > 0): Cắt tần số cao tới -7.5dB tạo cảm giác âm thanh ở sau gáy thật 100%!
-    // Khi ở phía trước (depthZ <= 0): Giữ nguyên độ sáng trong trẻo (0dB).
-    const headShadow = depthZ > 0 ? -depthZ * 7.5 : 0;
+    // Khi âm thanh chạy ra sau gáy (depthZ < 0): Cắt nhẹ tần số cao -3.5dB tại 2.6kHz mô phỏng vành tai che khuất
+    // Khi ở phía trước (depthZ >= 0): Âm thanh mở sáng trong trẻo (0dB)
+    const headShadow = depthZ < 0 ? depthZ * 3.5 : 0;
 
-    // Cực kỳ quan trọng: cancelScheduledValues để xóa bỏ toàn bộ queue cũ,
-    // chống tích lũy RAM và triệt tiêu 100% tiếng tạch tạch/drop buffer như pháo hoa!
+    // 🚀 CHỐNG NỔ TẠCH TẠCH 100%: Dùng setTargetAtTime với timeConstant = 0.045s.
+    // Tuyệt đối không dùng cancelScheduledValues hay linearRamp ngắn trong timer vì sẽ gây gãy bước sóng (clicks/crackles) trên mobile/tablet!
+    const tc = 0.045;
     if (this.eightDPanner) {
-      this.eightDPanner.pan.cancelScheduledValues(now);
-      this.eightDPanner.pan.linearRampToValueAtTime(panX, rampTime);
+      this.eightDPanner.pan.setTargetAtTime(shapedPan, now, tc);
     }
     if (this.eightDVolumeGain) {
-      this.eightDVolumeGain.gain.cancelScheduledValues(now);
-      this.eightDVolumeGain.gain.linearRampToValueAtTime(orbitVol, rampTime);
+      this.eightDVolumeGain.gain.setTargetAtTime(orbitVol, now, tc);
     }
     if (this.eightDFilter) {
-      this.eightDFilter.gain.cancelScheduledValues(now);
-      this.eightDFilter.gain.linearRampToValueAtTime(headShadow, rampTime);
+      this.eightDFilter.gain.setTargetAtTime(headShadow, now, tc);
     }
   }
 
@@ -523,8 +529,8 @@ class SpatialAudioEngine {
         this.compressor.threshold.setTargetAtTime(-1.0, now, timeConstant);
         this.compressor.ratio.setTargetAtTime(2.0, now, timeConstant);
       } else {
-        this.compressor.threshold.setTargetAtTime(-4.0, now, timeConstant);
-        this.compressor.ratio.setTargetAtTime(5.0, now, timeConstant);
+        this.compressor.threshold.setTargetAtTime(-3.0, now, timeConstant);
+        this.compressor.ratio.setTargetAtTime(4.0, now, timeConstant);
       }
     }
 
@@ -550,7 +556,11 @@ class SpatialAudioEngine {
 
     // Dynamic Headroom: Tự động hạ preGain tỉ lệ với mức boost EQ để triệt tiêu 100% digital clipping (rè rè)
     const maxBoost = Math.max(0, bassVal, warmVal, midVal, trebleVal);
-    const headroomDb = Math.min(6.5, maxBoost * 0.75 + 1.5);
+    let headroomDb = Math.min(6.5, maxBoost * 0.75 + 1.2);
+    // Bù âm lượng an toàn cho 8D (+0.8dB) giúp giữ âm thanh to rõ mà tuyệt đối không đẩy quá ngưỡng gây rè
+    if (this.currentPreset === "eightD") {
+      headroomDb = Math.max(0.6, headroomDb - 0.8);
+    }
     const headroomFactor = Math.pow(10, -headroomDb / 20);
     if (this.preGain) {
       this.preGain.gain.setTargetAtTime(headroomFactor, now, timeConstant);

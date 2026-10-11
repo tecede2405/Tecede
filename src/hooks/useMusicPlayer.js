@@ -16,6 +16,11 @@ const globalAudio = new Audio();
 globalAudio.preload = "auto";
 globalAudio.crossOrigin = "anonymous";
 globalAudio.playsInline = true;
+if (typeof window !== "undefined") {
+  globalAudio.setAttribute("playsinline", "true");
+  globalAudio.setAttribute("webkit-playsinline", "true");
+  globalAudio.setAttribute("x-webkit-airplay", "allow");
+}
 
 let consecutiveErrors = 0; // Biến theo dõi số lần lỗi liên tiếp
 
@@ -152,8 +157,11 @@ export default function useMusicPlayer(initialSongs) {
   // 🎛️ KHỞI TẠO VÀ CẤP ĐIỆN CHO SPATIAL ENGINE
   const initAudioContext = useCallback(() => {
     try {
+      // Chỉ khởi tạo Web Audio khi người dùng thực sự BẬT hiệu ứng âm thanh
+      if (!audioEffectRef.current.enabled) return;
+
       if (!spatialEngine.isInitialized) {
-        spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
+        spatialEngine.init(globalAudio, true);
       }
       spatialEngine.resumeContext();
       spatialEngine.applySettings({
@@ -166,13 +174,17 @@ export default function useMusicPlayer(initialSongs) {
     }
   }, []);
 
-  // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN
+  // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN (chỉ khi effect đã bật)
   useEffect(() => {
     const handleFirstInteraction = () => {
-      if (!spatialEngine.isInitialized) {
+      if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+        try {
+          navigator.audioSession.type = "playback";
+        } catch (e) {}
+      }
+      if (audioEffectRef.current.enabled && !spatialEngine.isInitialized) {
         initAudioContext();
       }
-      spatialEngine.resumeContext();
     };
     window.addEventListener('click', handleFirstInteraction, { once: true });
     window.addEventListener('touchstart', handleFirstInteraction, { once: true });
@@ -181,6 +193,31 @@ export default function useMusicPlayer(initialSongs) {
       window.removeEventListener('touchstart', handleFirstInteraction);
     };
   }, [initAudioContext]);
+
+  // 🍏 Hồi sinh Web Audio Context trên iOS khi người dùng quay lại tab/app
+  useEffect(() => {
+    const handleAppResume = () => {
+      if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+        try {
+          navigator.audioSession.type = "playback";
+        } catch (e) {}
+      }
+      if (spatialEngine.isInitialized) {
+        spatialEngine.resumeContext();
+      }
+    };
+    window.addEventListener("pageshow", handleAppResume);
+    window.addEventListener("focus", handleAppResume);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        handleAppResume();
+      }
+    });
+    return () => {
+      window.removeEventListener("pageshow", handleAppResume);
+      window.removeEventListener("focus", handleAppResume);
+    };
+  }, []);
 
   // 🌟 ĐIỀU KHIỂN BẬT/TẮT HIỆU ỨNG
   const toggleAudioEffect = useCallback(() => {
@@ -192,6 +229,7 @@ export default function useMusicPlayer(initialSongs) {
         spatialEngine.setEnabled(next);
       }
       if (next) {
+        spatialEngine.resumeContext();
         spatialEngine.applySettings({
           preset: audioEffectRef.current.preset,
           intensity: audioEffectRef.current.intensity,
@@ -204,9 +242,11 @@ export default function useMusicPlayer(initialSongs) {
 
   const changeAudioEffectPreset = useCallback((presetId) => {
     setAudioEffectPreset(presetId);
+    setAudioEffectEnabled(true);
     if (!spatialEngine.isInitialized) {
       spatialEngine.init(globalAudio, true);
     }
+    spatialEngine.setEnabled(true);
     spatialEngine.resumeContext();
     spatialEngine.applySettings({
       preset: presetId,
@@ -220,6 +260,8 @@ export default function useMusicPlayer(initialSongs) {
     if (!spatialEngine.isInitialized) {
       spatialEngine.init(globalAudio, true);
     }
+    spatialEngine.setEnabled(true);
+    setAudioEffectEnabled(true);
     spatialEngine.resumeContext();
     spatialEngine.applySettings({ intensity });
   }, []);
@@ -269,11 +311,20 @@ export default function useMusicPlayer(initialSongs) {
     const song = listToUse[index];
     if (!song?._id) return;
 
-    // Khởi tạo và đánh thức AudioContext ngay trong cử chỉ bấm của user
-    if (!spatialEngine.isInitialized) {
-      spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
+    // Cấp quyền AudioSession playback cho iOS Safari (vượt qua công tắc gạt rung/im lặng của iPhone)
+    if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+      try {
+        navigator.audioSession.type = "playback";
+      } catch (e) {}
     }
-    spatialEngine.resumeContext();
+
+    // Nếu đang bật hiệu ứng âm thanh -> kết nối AudioContext
+    if (audioEffectRef.current.enabled) {
+      if (!spatialEngine.isInitialized) {
+        spatialEngine.init(globalAudio, true);
+      }
+      spatialEngine.resumeContext();
+    }
 
     if (!optionalPlaylist && index === stateRef.current.index) {
         if (globalAudio.paused) globalAudio.play();
@@ -401,10 +452,17 @@ export default function useMusicPlayer(initialSongs) {
   }, [isShuffle, originalPlaylist, handlePlay]);
 
   const togglePlay = useCallback(() => {
-    if (!spatialEngine.isInitialized) {
-      spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
+    if (typeof navigator !== "undefined" && "audioSession" in navigator) {
+      try {
+        navigator.audioSession.type = "playback";
+      } catch (e) {}
     }
-    spatialEngine.resumeContext();
+    if (audioEffectRef.current.enabled) {
+      if (!spatialEngine.isInitialized) {
+        spatialEngine.init(globalAudio, true);
+      }
+      spatialEngine.resumeContext();
+    }
     if (globalAudio.paused) {
       globalAudio.play().catch(()=>{});
     } else {

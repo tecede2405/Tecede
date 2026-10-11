@@ -571,7 +571,8 @@
       }
     }
 
-    .btn-collapse-atmos {
+    .btn-collapse-atmos,
+    .btn-close-atmos-menu {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -589,6 +590,14 @@
         background: rgba(155, 77, 224, 0.25);
         border-color: #c084fc;
         color: #fff;
+      }
+    }
+
+    .btn-close-atmos-menu {
+      &:hover {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.5);
+        color: #f87171;
       }
     }
 
@@ -651,11 +660,27 @@
     .active-preset-desc {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 5px 8px 5px 10px;
       background: rgba(155, 77, 224, 0.12);
       border: 1px solid rgba(155, 77, 224, 0.25);
       border-radius: 8px;
+      transition: all 0.2s ease;
+
+      .preset-desc-content {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+        overflow: hidden;
+        cursor: pointer;
+        flex: 1;
+
+        &:hover .preset-pill-text {
+          color: #fff;
+        }
+      }
 
       .preset-pill-dot {
         width: 6px;
@@ -673,11 +698,18 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition: color 0.15s ease;
       }
 
       .preset-pill-sub {
         color: #94a3b8;
         font-weight: 400;
+      }
+
+      .btn-collapse-atmos {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
       }
     }
 

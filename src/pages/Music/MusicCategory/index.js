@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Tabbar from '../../../component/tabar/index';
 import { useMusic } from "../../../context/MusicContext";
-import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaChevronUp, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc, FaSlidersH, FaUndo } from "react-icons/fa";
+import { FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaVolumeUp, FaVolumeMute, FaEllipsisV, FaSpinner, FaRegHeart, FaSearch, FaChevronDown, FaChevronUp, FaMicrophone, FaExpandAlt, FaRetweet, FaListUl, FaCompactDisc, FaSlidersH, FaUndo, FaTimes } from "react-icons/fa";
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
 
@@ -286,20 +286,14 @@ function MusicCategory() {
               />
               <span className="atmos-slider"></span>
             </label>
-            {audioEffectEnabled && (
-              <button 
-                type="button"
-                className="btn-collapse-atmos"
-                onClick={() => setIsAtmosCollapsed(prev => !prev)}
-                title={isAtmosCollapsed ? "Mở rộng tùy chọn hiệu ứng" : "Rút gọn để hiển thị Tốc độ & Hẹn giờ"}
-              >
-                {isAtmosCollapsed ? (
-                  <FaChevronDown size={11} />
-                ) : (
-                  <FaChevronUp size={11} />
-                )}
-              </button>
-            )}
+            <button 
+              type="button"
+              className="btn-close-atmos-menu"
+              onClick={() => setShowMenu(false)}
+              title="Đóng menu"
+            >
+              <FaTimes size={11} />
+            </button>
           </div>
         </div>
 
@@ -322,11 +316,25 @@ function MusicCategory() {
           ) : (
             <>
               <div className="active-preset-desc mb-2">
-                <span className="preset-pill-dot"></span>
-                <span className="preset-pill-text">
-                  {audioPresets?.[audioEffectPreset]?.name || "Dolby Atmos"}
-                  <span className="preset-pill-sub"> • {audioPresets?.[audioEffectPreset]?.desc || "Hiệu ứng 3D đang hoạt động"}</span>
-                </span>
+                <div 
+                  className="preset-desc-content"
+                  onClick={() => setIsAtmosCollapsed(true)}
+                  title="Thu gọn tùy chọn hiệu ứng"
+                >
+                  <span className="preset-pill-dot"></span>
+                  <span className="preset-pill-text">
+                    {audioPresets?.[audioEffectPreset]?.name || "Dolby Atmos"}
+                    <span className="preset-pill-sub"> • {audioPresets?.[audioEffectPreset]?.desc || "Hiệu ứng 3D đang hoạt động"}</span>
+                  </span>
+                </div>
+                <button 
+                  type="button"
+                  className="btn-collapse-atmos"
+                  onClick={() => setIsAtmosCollapsed(true)}
+                  title="Thu gọn tùy chọn hiệu ứng"
+                >
+                  <FaChevronUp size={11} />
+                </button>
               </div>
 
             {/* PRESET CHIPS / GRID */}
