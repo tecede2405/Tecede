@@ -125,6 +125,9 @@ function App() {
                   <Route path="truyen" element={<Manga />} />
                   <Route path="truyen/chi-tiet/:slug" element={<MangaDetail />} />
                   <Route path="/truyen/tim-kiem/:slug" element={<MangaSearch />} />
+                  <Route path="/truyen/doc" element={<MangaReader />} />
+                  <Route path="/truyen/doc/:storySlug" element={<MangaReader />} />
+                  <Route path="/truyen/doc/:storySlug/:chapterSlug" element={<MangaReader />} />
                   <Route path="/truyen/doc/:id" element={<MangaReader />} />
 
                   <Route path="/history" element={<HistoryFilm />} />

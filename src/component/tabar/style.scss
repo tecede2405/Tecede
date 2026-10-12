@@ -138,6 +138,7 @@
   color: #d4d4d8;
   text-decoration: none;
   font-size: 14px;
+  position: relative;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
@@ -341,17 +342,20 @@
 
 .badge-hot {
   position: absolute;
-  top: -16px;
-  right: -24px;
-  padding: 1px 5px;
+  top: -4px;
+  right: 10px;
+  padding: 1px 6px;
   border-radius: 4px;
   background: linear-gradient(135deg, #ef4444, #f43f5e);
   color: #fff;
   font-size: 8.5px;
   font-weight: 800;
   text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
   animation: pulseHot 2s infinite;
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+  z-index: 2;
 }
 
 @keyframes pulseHot {

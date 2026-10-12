@@ -139,18 +139,14 @@ function Tabbar({ isOpen, onClose }) {
         </div>
         
         {/* COMIC */}
-        <div className={`tab-parent ${openTab === "comic" ? "open" : ""}`}>
-          <button onClick={() => toggleTab("comic")} className={openTab === "comic" ? "active-btn" : ""}>
+        <div className="tab-parent">
+          <NavLink to="/truyen" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
               <FaBook style={{ fontSize: "16px" }} />
               <span className="tab-label">Đọc truyện</span>
             </span>
-            {openTab === "comic" ? <GoChevronRight className="arrow" /> : <GoChevronDown className="arrow" />}
-          </button>
-
-          <ul className="tab-child">
-            <li><NavLink to="/truyen" className="tab-link" onClick={handleLinkClick}>Đọc truyện</NavLink></li>
-          </ul>
+            <span className="badge-hot">Mở lại 12/10/2026</span>
+          </NavLink>
         </div>
 
         {/* FANPAGE */}
@@ -209,8 +205,8 @@ function Tabbar({ isOpen, onClose }) {
             <span className="title">
               <FaTv style={{ fontSize: "16px" }} />
               <span className="tab-label">Tải app Android TV</span>
-              <span className="badge-hot">Update 19/9/2026</span>
             </span>
+            <span className="badge-hot">Update 19/9/2026</span>
           </NavLink>
         </div>
         
