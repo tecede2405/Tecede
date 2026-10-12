@@ -194,26 +194,77 @@
 /* RESPONSIVE GRID */
 .comicList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(6, 1fr);
   gap: 16px;
 }
 
-@media (max-width: 1200px) {
-  .comicList { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1300px) {
+  .comicList {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
 }
 
-@media (max-width: 900px) {
-  .comicList { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 992px) {
+  .comicList {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
 }
 
-@media (max-width: 600px) {
-  .comicList { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  
-  .manga-card__info { padding: 8px; }
-  .manga-title { font-size: 12px; }
-  .manga-meta .manga-chapter { font-size: 11px; padding: 2px 6px; }
+@media (max-width: 768px) {
+  .comicList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
 }
 
-@media (max-width: 400px) {
-  .comicList { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 540px) {
+  .comicList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .manga-card {
+    border-radius: 10px;
+  }
+
+  .manga-card__info {
+    padding: 8px 10px;
+  }
+
+  .manga-title {
+    font-size: 13px;
+    margin-bottom: 5px;
+    line-height: 1.35;
+  }
+
+  .manga-meta {
+    .manga-chapter {
+      font-size: 11px;
+      padding: 2px 6px;
+      max-width: 65%;
+    }
+    .manga-views {
+      font-size: 11px;
+    }
+  }
+
+  .manga-badge {
+    font-size: 9.5px;
+    padding: 2.5px 6px;
+
+    &--type {
+      top: 6px;
+      left: 6px;
+    }
+    &--status {
+      top: 6px;
+      right: 6px;
+    }
+    &--rating {
+      bottom: 6px;
+      right: 6px;
+    }
+  }
 }

@@ -12,7 +12,8 @@ import {
   FaImage,
   FaFeatherAlt,
   FaSyncAlt,
-  FaCompass
+  FaCompass,
+  FaLayerGroup
 } from "react-icons/fa";
 import { fetchStories, fetchGenres } from "../../utils/truyenApi";
 import "./style.scss";
@@ -35,14 +36,16 @@ export default function Manga() {
 
   const listRef = useRef(null);
 
-  // 1. Tải danh sách thể loại sạch và top truyện thịnh hành ban đầu
+  // 1. Tải danh sách thể loại sạch (1 lần khi mount)
   useEffect(() => {
-    // Tải thể loại sạch
     fetchGenres().then((data) => setGenresList(data || []));
+  }, []);
 
-    // Tải top truyện thịnh hành (đọc nhiều nhất)
+  // 2. Tải top truyện thịnh hành theo selectedType (mỗi khi đổi loại truyện)
+  useEffect(() => {
     setTrendingLoading(true);
     fetchStories({
+      type: selectedType,
       sort: "views_desc",
       perPage: 12,
       page: 1
@@ -51,9 +54,9 @@ export default function Manga() {
         setTrendingStories(res?.data || []);
       })
       .finally(() => setTrendingLoading(false));
-  }, []);
+  }, [selectedType]);
 
-  // 2. Tải danh sách truyện theo bộ lọc và phân trang
+  // 3. Tải danh sách truyện theo bộ lọc và phân trang
   const loadStories = useCallback(() => {
     setLoading(true);
     fetchStories({
@@ -79,9 +82,7 @@ export default function Manga() {
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > meta.totalPages || newPage === currentPage) return;
     setCurrentPage(newPage);
-    if (listRef.current) {
-      listRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // Reset về trang 1 khi đổi bộ lọc
@@ -128,37 +129,61 @@ export default function Manga() {
         </div>
 
         {/* Quick Type Selection Pills */}
-        <div className="manga-type-pills">
-          <button
-            className={`type-pill ${selectedType === "" ? "active" : ""}`}
-            onClick={() => handleTypeChange("")}
-          >
-            <FaBookOpen className="me-1" /> Tất Cả
-          </button>
-          <button
-            className={`type-pill manga ${selectedType === "manga" ? "active" : ""}`}
-            onClick={() => handleTypeChange("manga")}
-          >
-            <FaImage className="me-1" /> Truyện Tranh (Manga)
-          </button>
-          <button
-            className={`type-pill novel ${selectedType === "novel" ? "active" : ""}`}
-            onClick={() => handleTypeChange("novel")}
-          >
-            <FaFeatherAlt className="me-1" /> Truyện Chữ (Novel)
-          </button>
+        <div className="manga-type-pills-wrap">
+          <div className="manga-type-pills" role="tablist" aria-label="Chọn định dạng truyện">
+            <button
+              role="tab"
+              aria-selected={selectedType === ""}
+              className={`type-pill ${selectedType === "" ? "active" : ""}`}
+              onClick={() => handleTypeChange("")}
+            >
+              <FaBookOpen className="type-pill__icon" />
+              <span>Tất Cả</span>
+            </button>
+            <button
+              role="tab"
+              aria-selected={selectedType === "manga"}
+              className={`type-pill manga ${selectedType === "manga" ? "active" : ""}`}
+              onClick={() => handleTypeChange("manga")}
+            >
+              <FaImage className="type-pill__icon" />
+              <span>Truyện Tranh</span>
+            </button>
+            <button
+              role="tab"
+              aria-selected={selectedType === "novel"}
+              className={`type-pill novel ${selectedType === "novel" ? "active" : ""}`}
+              onClick={() => handleTypeChange("novel")}
+            >
+              <FaFeatherAlt className="type-pill__icon" />
+              <span>Truyện Chữ</span>
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="manga-sections container-fluid p-0">
         {/* 🔥 SECTION TOP THỊNH HÀNH (ĐỌC NHIỀU) */}
-        {trendingStories.length > 0 && currentPage === 1 && !selectedGenre && (
+        {currentPage === 1 && !selectedGenre && (
           <div className="manga-block manga-block--trending">
             <div className="manga-block__header">
               <h3 className="manga-block__title">
-                <FaFire className="text-danger" /> <span>Truyện Thịnh Hành & Đọc Nhiều</span>
+                <FaFire className="text-danger" />{" "}
+                <span>
+                  {selectedType === "manga"
+                    ? "Truyện Tranh Thịnh Hành"
+                    : selectedType === "novel"
+                    ? "Truyện Chữ Thịnh Hành"
+                    : "Truyện Thịnh Hành & Đọc Nhiều"}
+                </span>
               </h3>
-              <span className="manga-block__sub">Top những tác phẩm được yêu thích nhất</span>
+              <span className="manga-block__sub">
+                {selectedType === "manga"
+                  ? "Top truyện tranh & comic được đọc nhiều nhất"
+                  : selectedType === "novel"
+                  ? "Top tiểu thuyết & truyện chữ được đọc nhiều nhất"
+                  : "Top những tác phẩm được yêu thích nhất"}
+              </span>
             </div>
 
             {trendingLoading ? (
@@ -173,13 +198,13 @@ export default function Manga() {
                   </div>
                 ))}
               </div>
-            ) : (
+            ) : trendingStories.length > 0 ? (
               <div className="comicList">
                 {trendingStories.slice(0, 12).map((item) => (
                   <ComicCard key={item.id || item.slug} comic={item} />
                 ))}
               </div>
-            )}
+            ) : null}
           </div>
         )}
 
@@ -187,8 +212,17 @@ export default function Manga() {
         <div className="manga-block" ref={listRef}>
           <div className="manga-block__header d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
             <h3 className="manga-block__title mb-0">
-              <FaCompass className="text-primary" /> <span>Khám Phá Truyện</span>
-              {meta.total > 0 && <span className="manga-count-badge">({meta.total} bộ)</span>}
+              <FaCompass className="text-primary" />{" "}
+              <span>
+                {selectedType === "manga"
+                  ? "Khám Phá Truyện Tranh"
+                  : selectedType === "novel"
+                  ? "Khám Phá Truyện Chữ"
+                  : "Khám Phá Truyện"}
+              </span>
+              {meta.total > 0 && (
+                <span className="manga-count-badge">({meta.total.toLocaleString()} bộ)</span>
+              )}
             </h3>
 
             {(selectedType || selectedGenre || selectedStatus || selectedSort !== "updated_desc") && (
@@ -200,7 +234,34 @@ export default function Manga() {
 
           {/* Filter Bar Controls */}
           <div className="manga-filter-bar">
-            {/* 1. Sắp xếp */}
+            {/* 1. Định dạng truyện */}
+            <div className="filter-group">
+              <label className="filter-label">
+                <FaLayerGroup className="me-1" /> Định dạng:
+              </label>
+              <div className="filter-pills">
+                <button
+                  className={`filter-btn ${selectedType === "" ? "active" : ""}`}
+                  onClick={() => handleTypeChange("")}
+                >
+                  Tất cả
+                </button>
+                <button
+                  className={`filter-btn manga ${selectedType === "manga" ? "active" : ""}`}
+                  onClick={() => handleTypeChange("manga")}
+                >
+                  <FaImage className="me-1" /> Truyện tranh
+                </button>
+                <button
+                  className={`filter-btn novel ${selectedType === "novel" ? "active" : ""}`}
+                  onClick={() => handleTypeChange("novel")}
+                >
+                  <FaFeatherAlt className="me-1" /> Truyện chữ
+                </button>
+              </div>
+            </div>
+
+            {/* 2. Sắp xếp */}
             <div className="filter-group">
               <label className="filter-label">
                 <FaFilter className="me-1" /> Sắp xếp:

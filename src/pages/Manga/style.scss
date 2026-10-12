@@ -70,27 +70,43 @@
 }
 
 /* QUICK TYPE SELECTION PILLS */
+.manga-type-pills-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .manga-type-pills {
   display: inline-flex;
-  gap: 10px;
-  background: rgba(15, 23, 42, 0.7);
-  padding: 6px;
-  border-radius: 16px;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.75);
+  padding: 4px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 
   .type-pill {
     display: inline-flex;
     align-items: center;
-    padding: 9px 20px;
-    border-radius: 12px;
-    font-size: 13.5px;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 9px;
+    font-size: 13px;
     font-weight: 600;
     color: #94a3b8;
     background: transparent;
-    border: none;
+    border: 1px solid transparent;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+    white-space: nowrap;
+
+    &__icon {
+      font-size: 12.5px;
+      flex-shrink: 0;
+    }
 
     &:hover {
       color: #fff;
@@ -100,17 +116,20 @@
     &.active {
       color: #fff;
       background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.45);
+      border-color: rgba(167, 139, 250, 0.3);
+      box-shadow: 0 2px 12px rgba(99, 102, 241, 0.4);
     }
 
     &.manga.active {
       background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-      box-shadow: 0 4px 18px rgba(6, 182, 212, 0.45);
+      border-color: rgba(56, 189, 248, 0.3);
+      box-shadow: 0 2px 12px rgba(6, 182, 212, 0.4);
     }
 
     &.novel.active {
       background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-      box-shadow: 0 4px 18px rgba(168, 85, 247, 0.45);
+      border-color: rgba(236, 72, 153, 0.3);
+      box-shadow: 0 2px 12px rgba(168, 85, 247, 0.4);
     }
   }
 }
@@ -241,6 +260,18 @@
       color: #fff;
       font-weight: 600;
       box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+    }
+
+    &.manga.active {
+      background: #0ea5e9;
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
+    }
+
+    &.novel.active {
+      background: #a855f7;
+      border-color: #c084fc;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
     }
   }
 }
@@ -1070,28 +1101,79 @@
   }
 
   .manga-hero {
-    padding: 35px 12px 25px;
+    padding: 24px 10px 18px;
+    margin-bottom: 20px;
+
+    &__badge {
+      font-size: 11px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
+    }
 
     &__title {
-      font-size: 26px;
+      font-size: 24px;
+      margin-bottom: 14px;
     }
 
-    &__desc {
-      font-size: 13px;
-      margin-bottom: 20px;
+    &__search-wrap {
+      margin-bottom: 16px;
     }
+  }
+
+  .manga-type-pills-wrap {
+    width: 100%;
+    max-width: 360px;
   }
 
   .manga-type-pills {
     width: 100%;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 3px;
+    border-radius: 10px;
 
     .type-pill {
-      flex: 1;
-      padding: 8px 10px;
-      font-size: 11.5px;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
+      gap: 5px;
+      padding: 6px 3px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+
+      &__icon {
+        font-size: 11px;
+      }
     }
+  }
+
+  .manga-block {
+    margin-bottom: 30px;
+
+    &__header {
+      margin-bottom: 14px;
+    }
+
+    &__title {
+      font-size: 18px;
+      gap: 8px;
+    }
+
+    &__sub {
+      font-size: 11.5px;
+    }
+  }
+
+  .manga-count-badge {
+    font-size: 12px;
+  }
+
+  .btn-reset-filters {
+    padding: 5px 10px;
+    font-size: 11px;
   }
 
   .manga-filter-bar {
@@ -1099,28 +1181,76 @@
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    border-radius: 14px;
+    margin-bottom: 18px;
   }
 
   .filter-group {
-    justify-content: flex-start;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+
+    .filter-label {
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
   }
 
   .filter-pills {
+    width: 100%;
     overflow-x: auto;
     flex-wrap: nowrap;
     padding-bottom: 4px;
-    width: 100%;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 5px 10px;
+      font-size: 11.5px;
+    }
   }
 
   .filter-group-row {
     width: 100%;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
 
     .filter-dropdown-wrap {
-      flex: 1;
+      width: 100%;
+
       .filter-select {
         width: 100%;
+        padding: 7px 8px;
+        font-size: 11.5px;
       }
+    }
+  }
+
+  .manga-pagination {
+    margin-top: 25px;
+    padding: 10px 0;
+    gap: 4px;
+
+    .page-btn {
+      min-width: 34px;
+      height: 34px;
+      font-size: 12px;
+      padding: 0 6px;
+      border-radius: 8px;
+    }
+
+    .page-numbers {
+      gap: 4px;
     }
   }
 

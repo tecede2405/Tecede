@@ -673,7 +673,10 @@ function MusicCategory() {
                 <div className="right-column">
                   {playlist[currentIndex] && (
                     <div className="now-playing-section mb-4">
-                      <h5 className="right-panel-title mb-3">Đang phát</h5>
+                      <h5 className="right-panel-title mb-3">
+                        <FaCompactDisc className={`panel-title-icon playing-icon ${isPlaying ? "spinning" : ""}`} />
+                        <span className="panel-title-text">Đang phát</span>
+                      </h5>
                      <div
                         className="now-playing-card"
                         style={{
@@ -713,7 +716,10 @@ function MusicCategory() {
 
                   <div className="up-next-section">
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h5 className="right-panel-title m-0">Tiếp theo</h5>
+                      <h5 className="right-panel-title m-0">
+                        <FaListUl className="panel-title-icon next-icon" />
+                        <span className="panel-title-text">Tiếp theo</span>
+                      </h5>
                       <span className="clear-queue-btn">Lượt nghe</span>
                     </div>
                     
