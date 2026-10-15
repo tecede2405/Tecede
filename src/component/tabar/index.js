@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter, FaAndroid, FaHandHoldingHeart, FaTv, FaLaptopCode } from "react-icons/fa";
+import { FaFilm, FaMusic, FaGlobeAsia, FaBook, FaFacebook, FaFilter, FaHandHoldingHeart, FaTv, FaLaptopCode, FaCalendarAlt } from "react-icons/fa";
 import { SiGooglegemini } from "react-icons/si";
 import { GoChevronDown, GoChevronRight } from "react-icons/go"; 
 import { NavLink, useNavigate } from "react-router-dom";
@@ -145,7 +145,6 @@ function Tabbar({ isOpen, onClose }) {
               <FaBook style={{ fontSize: "16px" }} />
               <span className="tab-label">Đọc truyện</span>
             </span>
-            <span className="badge-hot">Mở lại 12/10/2026</span>
           </NavLink>
         </div>
 
@@ -189,13 +188,14 @@ function Tabbar({ isOpen, onClose }) {
           </NavLink>
         </div>
 
-        {/* TẢI APP ANDROID */}
+        {/* LỊCH VÀ SỰ KIỆN */}
         <div className="tab-parent">
-          <NavLink to="/tai-app" className="tab-link-direct" onClick={handleLinkClick}>
+          <NavLink to="/lich-su-kien" className="tab-link-direct" onClick={handleLinkClick}>
             <span className="title">
-              <FaAndroid style={{ fontSize: "16px" }} />
-              <span className="tab-label">Tải app Android</span>
+              <FaCalendarAlt style={{ fontSize: "16px" }} />
+              <span className="tab-label">Lịch &amp; Sự kiện</span>
             </span>
+            <span className="badge-hot" style={{ background: "linear-gradient(135deg, #f43f5e, #ec4899)" }}>Mới</span>
           </NavLink>
         </div>
 

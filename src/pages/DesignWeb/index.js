@@ -87,11 +87,6 @@ function DesignWeb() {
         <p className="dw-hero__desc">
           Khởi tạo sự hiện diện trực tuyến mạnh mẽ cho cá nhân hoặc doanh nghiệp của bạn với các giải pháp website tùy chỉnh, chi phí hợp lý.
         </p>
-
-        <button className="dw-hero__cta-btn" onClick={handleContact}>
-          <FaFacebookMessenger style={{ marginRight: "8px", fontSize: "18px" }} />
-          Nhận Báo Giá & Tư Vấn Miễn Phí
-        </button>
       </section>
 
       {/* ─── PRICING CARDS ─── */}

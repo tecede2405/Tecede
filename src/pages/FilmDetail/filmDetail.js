@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { FaPlay, FaHeart, FaRegHeart, FaSyncAlt } from "react-icons/fa";
+import { FaPlay, FaHeart, FaRegHeart, FaServer, FaListUl, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { Helmet } from "react-helmet-async";
 import { useFavoriteToggle } from "../../hooks/useFavorites";
 import { useAuth } from "../../context/AuthContext";
@@ -28,8 +28,47 @@ export default function MovieDetail() {
   const [sources, setSources] = useState([]);
   const [currentServer, setCurrentServer] = useState(0); 
   const [loading, setLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [imgConfig, setImgConfig] = useState({ poster: "", thumb: "" });
+  const [showFullDesc, setShowFullDesc] = useState(false); // Mobile
+  const [isDescExpanded, setIsDescExpanded] = useState(false); // PC / Laptop
+  const [isDescOverflowing, setIsDescOverflowing] = useState(false);
+  const descRef = useRef(null);
+
+  const cleanDescription = useMemo(() => {
+    return movie?.content?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+  }, [movie?.content]);
+
+  useEffect(() => {
+    setIsDescExpanded(false);
+    setIsDescOverflowing(false);
+    setShowFullDesc(false);
+  }, [slug]);
+
+  useEffect(() => {
+    if (!cleanDescription) {
+      setIsDescOverflowing(false);
+      return;
+    }
+
+    const checkOverflow = () => {
+      if (descRef.current && !isDescExpanded) {
+        const el = descRef.current;
+        const hasOverflow = el.scrollHeight > el.clientHeight + 3;
+        setIsDescOverflowing(hasOverflow);
+      }
+    };
+
+    const timer = setTimeout(checkOverflow, 80);
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(checkOverflow);
+    }
+
+    window.addEventListener("resize", checkOverflow);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [cleanDescription, isDescExpanded]);
 
   const fetchMovieDetail = useCallback(async (forceRefresh = false) => {
     setLoading(true);
@@ -69,7 +108,6 @@ export default function MovieDetail() {
       // Nếu chưa gọi refresh mà data thiếu m3u8 hoặc không có tập -> tự động gọi ?refresh=true
       if (!shouldRefresh && (!data.success || !m || epList.length === 0 || lacksM3u8)) {
         console.log(`[FilmDetail] Phim ${slug} chưa có m3u8 (NC: ${isNc}), đang tự động gọi ?refresh=true...`);
-        setIsRefreshing(true);
         try {
           const refRes = await fetch(`${baseUrl}?refresh=true`);
           const refData = await refRes.json();
@@ -79,8 +117,6 @@ export default function MovieDetail() {
           }
         } catch (refErr) {
           console.warn("[FilmDetail] Lỗi refresh phim:", refErr);
-        } finally {
-          setIsRefreshing(false);
         }
       }
 
@@ -218,9 +254,13 @@ export default function MovieDetail() {
           </div>
 
           <div className="episodes-section mt-3">
-            <h5 className="mt-3 mb-3 fst-italic">Danh Sách Server</h5>
+            <h5 className="section-heading">
+              <FaServer className="heading-icon" /> Danh Sách Server
+            </h5>
             <div className="server-tabs d-flex gap-2"><div className="sk-server-tab skeleton-animate"></div></div>
-            <h5 className="mt-3 mb-3 fst-italic">Danh Sách Tập</h5>
+            <h5 className="section-heading">
+              <FaListUl className="heading-icon" /> Danh Sách Tập
+            </h5>
             <div className="episode-grid">
               {[...Array(10)].map((_, i) => <div key={i} className="sk-ep-btn skeleton-animate"></div>)}
             </div>
@@ -239,19 +279,18 @@ export default function MovieDetail() {
                 <h1 className="title-vn">{movie.name}</h1>
                 {movie.origin_name && <h2 className="title-en">{movie.origin_name} {movie.year ? `(${movie.year})` : ""}</h2>}
                 <div className="tag-container">
-                  <Tag text={movie.quality} color="#e50914" />
-                  <Tag text={movie.lang} color="#007bff" />
-                  <Tag text={movie.time} color="#9D4EDD" />
+                  <Tag text={movie.quality} color="#a855f7" />
+                  <Tag text={movie.lang} color="#06b6d4" />
+                  <Tag text={movie.time} color="#ec4899" />
                   {movie.episode_current && (
-                    <Tag text={`Trạng thái: ${movie.episode_current}`} color="#FF8500" />
+                    <Tag text={`Trạng thái: ${movie.episode_current}`} color="#ef4444" />
                   )}
                   {movie.episode_total && (
-                    <Tag text={`Tổng: ${movie.episode_total} tập`} color="#28a745" />
+                    <Tag text={`Tổng: ${movie.episode_total} tập`} color="#10b981" />
                   )}
                   {Array.isArray(movie.country) && movie.country.map(c => (
-                    <Tag key={c.id} text={`Quốc gia: ${c.name}`} color="#ffc107" />
+                    <Tag key={c.id} text={`Quốc gia: ${c.name}`} color="#f59e0b" />
                   ))}
-                  
                 </div>
                 <div className="action-buttons">
                   <button className="btn-play" onClick={() => {
@@ -261,18 +300,6 @@ export default function MovieDetail() {
                   }}>
                     <FaPlay className="me-1 mb-1" /> XEM NGAY
                   </button>
-
-                  {user?.role === "admin" && (
-                    <button 
-                      className="btn-refresh" 
-                      onClick={() => fetchMovieDetail(true)}
-                      disabled={isRefreshing || loading}
-                      title="Làm mới nguồn và cập nhật m3u8 (Chỉ dành cho Admin)"
-                    >
-                      <FaSyncAlt className={`me-1 ${isRefreshing ? "spin" : ""}`} /> 
-                      {isRefreshing ? "Đang làm mới..." : "Làm mới nguồn"}
-                    </button>
-                  )}
 
                   {user && (
                     <button
@@ -286,7 +313,41 @@ export default function MovieDetail() {
                     </button>
                   )}
                 </div>
-                <p className="movie_description">{movie.content?.replace(/<\/?[^>]+(>|$)/g, "") || "Đang cập nhật..."}</p>
+
+                <div className="movie_description_wrapper">
+                  {/* Nút xem/đóng nội dung (Đặc biệt thẩm mỹ trên Mobile) */}
+                  <button 
+                    type="button"
+                    className={`mobile-desc-toggle-btn ${showFullDesc ? "active" : ""}`}
+                    onClick={() => setShowFullDesc(!showFullDesc)}
+                  >
+                    <span>{showFullDesc ? "Đóng nội dung" : "Xem nội dung"}</span>
+                    {showFullDesc ? <FaChevronUp className="chevron-icon" /> : <FaChevronDown className="chevron-icon" />}
+                  </button>
+
+                  <div className={`movie_description_box ${showFullDesc ? "open" : ""}`}>
+                    <p 
+                      ref={descRef}
+                      className={`movie_description ${isDescExpanded ? "expanded" : "clamped"}`}
+                    >
+                      {cleanDescription || "Đang cập nhật..."}
+                    </p>
+                    {isDescOverflowing && (
+                      <button
+                        type="button"
+                        className="desktop-desc-toggle-btn"
+                        onClick={() => setIsDescExpanded(!isDescExpanded)}
+                      >
+                        <span>{isDescExpanded ? "Thu gọn" : "Xem thêm"}</span>
+                        {isDescExpanded ? (
+                          <FaChevronUp className="desc-chevron" />
+                        ) : (
+                          <FaChevronDown className="desc-chevron" />
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -294,7 +355,9 @@ export default function MovieDetail() {
           <div className="episodes-section mt-3">
             {allServers.length > 0 && (
               <>
-                <h5 className="mt-3 mb-3 fst-italic">Danh Sách Server</h5>
+                <h5 className="section-heading">
+                  <FaServer className="heading-icon" /> Danh Sách Server
+                </h5>
                 <div className="server-tabs">
                   {allServers.map((s, i) => (
                     <button key={i} className={i === currentServer ? "active" : ""} onClick={() => setCurrentServer(i)}>
@@ -307,7 +370,9 @@ export default function MovieDetail() {
 
             {episodes.length > 0 && (
               <>
-                <h5 className="mt-3 mb-3 fst-italic">Danh Sách Tập</h5>
+                <h5 className="section-heading">
+                  <FaListUl className="heading-icon" /> Danh Sách Tập
+                </h5>
                 <div className="episode-grid">
                   {episodes.map(ep => (
                     <button
@@ -336,5 +401,18 @@ export default function MovieDetail() {
 
 function Tag({ text, color }) {
   if (!text) return null;
-  return <span className="info-tag" style={{ borderLeft: `3px solid ${color || '#444'}` }}>{text}</span>;
+  return (
+    <span 
+      className="info-tag" 
+      style={color ? {
+        borderColor: `${color}66`,
+        background: `linear-gradient(135deg, ${color}20, ${color}0a)`,
+        boxShadow: `0 0 10px ${color}1a`,
+        color: '#f8fafc'
+      } : {}}
+    >
+      <span className="tag-dot" style={{ backgroundColor: color || '#10b981' }} />
+      {text}
+    </span>
+  );
 }

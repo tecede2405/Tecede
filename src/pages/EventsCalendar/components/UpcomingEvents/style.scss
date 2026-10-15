@@ -1,0 +1,358 @@
+.upcoming-events-wrapper {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+/* HERO COUNTDOWN BANNER (COMPACT & SLEEK) */
+.next-event-banner {
+  position: relative;
+  background: rgba(15, 20, 31, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 15px 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  backdrop-filter: blur(12px);
+  margin-bottom: 16px;
+
+  @media (max-width: 768px) {
+    padding: 16px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .banner-glow-ambient {
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  &.theme-bg-pink {
+    border-color: rgba(244, 63, 94, 0.35);
+    .banner-glow-ambient { background: #f43f5e; }
+    .btn-apply-theme { background: linear-gradient(135deg, #f43f5e, #ec4899); }
+  }
+
+  &.theme-bg-tet {
+    border-color: rgba(239, 68, 68, 0.35);
+    .banner-glow-ambient { background: #ef4444; }
+    .btn-apply-theme { background: linear-gradient(135deg, #ef4444, #eab308); color: #000; }
+  }
+
+  &.theme-bg-noel {
+    border-color: rgba(6, 182, 212, 0.35);
+    .banner-glow-ambient { background: #06b6d4; }
+    .btn-apply-theme { background: linear-gradient(135deg, #10b981, #06b6d4); }
+  }
+
+  &.theme-bg-national {
+    border-color: rgba(220, 38, 38, 0.35);
+    .banner-glow-ambient { background: #dc2626; }
+    .btn-apply-theme { background: linear-gradient(135deg, #dc2626, #facc15); color: #000; }
+  }
+
+  &.theme-bg-midautumn {
+    border-color: rgba(245, 158, 11, 0.35);
+    .banner-glow-ambient { background: #f59e0b; }
+    .btn-apply-theme { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #000; }
+  }
+
+  &.theme-bg-halloween {
+    border-color: rgba(249, 115, 22, 0.35);
+    .banner-glow-ambient { background: #f97316; }
+    .btn-apply-theme { background: linear-gradient(135deg, #f97316, #a855f7); }
+  }
+
+  .banner-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    max-width: 650px;
+  }
+
+  .banner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #cbd5e1;
+    letter-spacing: 0.6px;
+    margin-bottom: 6px;
+
+    .live-pulse {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #f43f5e;
+      box-shadow: 0 0 6px #f43f5e;
+    }
+  }
+
+  .next-event-title {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+
+  .next-event-date-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+
+    .date-badge {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .lunar-tag {
+      font-size: 12.5px;
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    .category-pill {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+    }
+  }
+
+  .next-event-desc {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.45;
+    margin: 0 0 14px 0;
+  }
+
+  /* COUNTDOWN TIMER BOXES (COMPACT) */
+  .countdown-timer-grid {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+
+    .timer-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(8, 12, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 6px 12px;
+      min-width: 54px;
+
+      @media (max-width: 600px) {
+        min-width: 46px;
+        padding: 5px 8px;
+      }
+
+      .unit-value {
+        font-family: "SF Mono", Consolas, monospace;
+        font-size: clamp(18px, 2.5vw, 22px);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.1;
+      }
+
+      .unit-label {
+        font-size: 9px;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 0.6px;
+        margin-top: 2px;
+      }
+    }
+
+    .unit-colon {
+      font-size: 18px;
+      font-weight: 700;
+      color: #64748b;
+    }
+  }
+
+  /* BUTTONS */
+  .banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .btn-apply-theme {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 7px;
+      border: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.25s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    .btn-view-detail {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+      }
+    }
+  }
+
+  .banner-theme-icon-wrap {
+    flex-shrink: 0;
+    opacity: 0.14;
+    pointer-events: none;
+    transform: rotate(10deg);
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    .big-floating-icon {
+      font-size: 100px;
+      color: #ffffff;
+    }
+  }
+}
+
+/* DANH SÁCH SỰ KIỆN CÒN LẠI TRONG NĂM (COMPACT) */
+.upcoming-sub-list {
+  background: rgba(15, 20, 31, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 20px;
+  backdrop-filter: blur(12px);
+
+  @media (max-width: 600px) {
+    padding: 14px;
+  }
+
+  .sub-list-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin: 0 0 12px 0;
+  }
+
+  .sub-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+
+    .sub-item-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(10, 14, 23, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+
+      &:hover {
+        background: rgba(56, 189, 248, 0.1);
+        border-color: rgba(56, 189, 248, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .sub-item-icon-box {
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+
+        &.box-pink { background: rgba(244, 63, 94, 0.15); color: #f43f5e; }
+        &.box-tet { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        &.box-noel { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+        &.box-national { background: rgba(220, 38, 38, 0.15); color: #dc2626; }
+        &.box-midautumn { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        &.box-halloween { background: rgba(249, 115, 22, 0.15); color: #f97316; }
+        &.box-default { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+      }
+
+      .sub-item-info {
+        flex: 1;
+        overflow: hidden;
+
+        .sub-item-name {
+          font-size: 13px;
+          font-weight: 700;
+          color: #ffffff;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        .sub-item-date {
+          font-size: 11.5px;
+          color: #94a3b8;
+          margin-top: 1px;
+
+          .lunar-note {
+            color: #fbbf24;
+          }
+        }
+      }
+
+      .sub-item-badge {
+        font-size: 11px;
+        font-weight: 700;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.1);
+        padding: 2px 7px;
+        border-radius: 5px;
+        flex-shrink: 0;
+      }
+    }
+  }
+}

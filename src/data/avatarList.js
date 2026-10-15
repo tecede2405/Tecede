@@ -1,6 +1,5 @@
 const avatarList = [
   "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482740arZ/anh-mo-ta.png",
-  "https://khoanhdep.com/wp-content/uploads/2025/09/avatar-bua-16.jpg",
   "https://img7.thuthuatphanmem.vn/uploads/2023/10/13/avatar-bua-dang-yeu_044336575.png",
   "https://jbagy.me/wp-content/uploads/2025/03/Hinh-anh-doremon-cute-1.jpg",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOxsddSOh-QKaSnc9V0HfAi48ffU8nYeCLhA&s",
@@ -23,7 +22,6 @@ const avatarList = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6H1FpSpU4CzUnPE0cdcaiIOO1z0suxFo9hQ&s",
   "https://mautranhve.vn/wp-content/uploads/2025/10/anh-shinichi-ngau.jpg",
   "https://i.pinimg.com/originals/d2/fa/fb/d2fafb40987889bd6b18652a63d23de9.jpg",
-  "https://khoanhdep.com/wp-content/uploads/2026/02/meme-do-mixi-14.jpg",
   "https://avatarfiles.alphacoders.com/340/thumb-1920-340900.jpg",
   "https://avatarfiles.alphacoders.com/377/thumb-1920-377502.jpg",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoOH6gbxP9do4-RtkDzHyFZ0nzReVghLx96A&s",

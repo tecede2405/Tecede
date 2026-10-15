@@ -188,7 +188,7 @@ function Layout() {
                         <FaHeart className="icon-red" /> <span>Phim yêu thích</span>
                       </button>
                       <button className="menu-action-btn" onClick={() => navigate("/profile")}>
-                        <MdOutlineAccountCircle className="icon-purple" /> <span>Đổi tên / avatar</span>
+                        <MdOutlineAccountCircle className="icon-purple" /> <span>Trang cá nhân</span>
                       </button>
                       <button
                         className="logout-btn"

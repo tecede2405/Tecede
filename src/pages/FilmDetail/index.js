@@ -4,6 +4,7 @@ import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
 import { MdOutlineStorage, MdOutlineTune } from "react-icons/md";
 import { FaBackwardStep, FaForwardStep } from "react-icons/fa6";
+import { FaCommentDots, FaReply, FaPaperPlane } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
@@ -25,6 +26,23 @@ const SOURCE_NAMES = {
   nguonc: "NC",
   vm: "VM",
   vsmov: "VM"
+};
+
+const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=User&background=1e293b&color=cbd5e1&size=128";
+
+const getDefaultAvatar = (name) => {
+  if (!name) return DEFAULT_AVATAR;
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1e293b&color=cbd5e1&size=128`;
+};
+
+const isValidAvatar = (url) => {
+  return Boolean(
+    url && 
+    typeof url === "string" && 
+    url.trim() !== "" && 
+    url !== "null" && 
+    url !== "undefined"
+  );
 };
 
 export default function FilmDetail() {
@@ -535,6 +553,43 @@ export default function FilmDetail() {
     }
   };
 
+  const allUserNames = useMemo(() => {
+    const names = new Set();
+    comments.forEach((c) => {
+      if (c.display_name) names.add(c.display_name.trim());
+      if (Array.isArray(c.replies)) {
+        c.replies.forEach((r) => {
+          if (r.display_name) names.add(r.display_name.trim());
+        });
+      }
+    });
+    return Array.from(names).sort((a, b) => b.length - a.length);
+  }, [comments]);
+
+  const renderCommentContent = useCallback((content) => {
+    if (!content) return "";
+    const escapedCandidates = allUserNames.map((name) =>
+      name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    );
+    let pattern;
+    if (escapedCandidates.length > 0) {
+      pattern = new RegExp("(@(?:" + escapedCandidates.join("|") + "|[\\p{L}\\p{N}_]+))", "gu");
+    } else {
+      pattern = /(@[\p{L}\p{N}_]+)/gu;
+    }
+
+    return content.split(pattern).map((part, index) => {
+      if (part.startsWith("@")) {
+        return (
+          <span key={index} className="mention-tag">
+            {part}
+          </span>
+        );
+      }
+      return part;
+    });
+  }, [allUserNames]);
+
   if (!movie || !currentVideo || servers.length === 0) {
     return (
       <div className="movie-loading">
@@ -731,256 +786,247 @@ export default function FilmDetail() {
             </div>
 
             {/* ================= COMMENT SECTION ================= */}
-            <div className="comment-section mt-5">
-              <h4 className="mb-3 text-white">Bình luận ({comments.length})</h4>
-              
-              <div className="mb-3">
-                <textarea
-                  value={commentInput}
-                  onChange={(e) => setCommentInput(e.target.value)}
-                  placeholder="Viết bình luận..."
-                  className="mb-2 p-3"
-                  style={{ background: "#111", color: "white", border: "1px solid #333", margin: "0", borderRadius: 7, width: "100%" }}
-                />
-                <button onClick={() => submitComment()} className="btn btn-danger">Gửi</button>
+            <div className="comment-section">
+              <div className="comment-section__header">
+                <div className="comment-section__title-wrap">
+                  <FaCommentDots className="comment-section__title-icon" />
+                  <h4 className="comment-section__title">Bình luận</h4>
+                  <span className="comment-section__count">{comments.length}</span>
+                </div>
               </div>
 
-              <div>
-                {comments.map((c) => (
-                  <div key={c.id} style={{ background: "#1a1a1a", padding: 12, borderRadius: 6, marginBottom: 12, border: "1px solid #333" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      {c.avatar ? (
-                        <img
-                          src={c.avatar}
-                          alt="avatar"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "/default-avatar.png";
+              {/* Khung nhập bình luận chính */}
+              <div className="comment-box-card">
+                <div className="comment-box-card__body">
+                  <textarea
+                    value={commentInput}
+                    onChange={(e) => setCommentInput(e.target.value)}
+                    placeholder="Viết cảm nghĩ của bạn về tập phim này..."
+                    className="comment-box-card__textarea"
+                    rows={3}
+                  />
+                </div>
+                <div className="comment-box-card__footer">
+                  <span className="comment-box-card__hint">
+                    Hãy bình luận văn minh và lịch sự nhé!
+                  </span>
+                  <button
+                    onClick={() => submitComment()}
+                    className="btn-comment-submit"
+                    disabled={!commentInput.trim()}
+                  >
+                    <FaPaperPlane className="btn-icon" />
+                    <span>Gửi</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Danh sách bình luận */}
+              <div className="comment-list">
+                {comments.length === 0 ? (
+                  <div className="comment-list__empty">
+                    <FaCommentDots className="empty-icon" />
+                    <p>Chưa có bình luận nào. Hãy là người đầu tiên chia sẻ cảm nghĩ!</p>
+                  </div>
+                ) : (
+                  comments.map((c) => (
+                    <div key={c.id} className="comment-card">
+                      <div className="comment-card__header">
+                        <div className="comment-card__avatar-wrap">
+                          {isValidAvatar(c.avatar) ? (
+                            <img
+                              src={c.avatar}
+                              alt={c.display_name || "avatar"}
+                              width={36}
+                              height={36}
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = getDefaultAvatar(c.display_name);
+                              }}
+                              loading="lazy"
+                              className="comment-card__avatar"
+                            />
+                          ) : (
+                            <div className="comment-card__avatar comment-card__avatar--fallback">
+                              {getAvatarLetter(c.display_name)}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="comment-card__meta">
+                          <div className="comment-card__author-row">
+                            <span className="comment-card__author-name">
+                              {c.display_name || "User"}
+                            </span>
+                            {c.display_name === "Tecede" && <VerifiedBadge />}
+                            <span className="comment-card__dot">•</span>
+                            <span className="comment-card__time">
+                              {formatVietnamTime(c.created_at)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="comment-card__body">
+                        <p className="comment-card__content">{renderCommentContent(c.content)}</p>
+                      </div>
+
+                      <div className="comment-card__actions">
+                        <button
+                          onClick={() => {
+                            if (replyBox === c.id) {
+                              setReplyBox(null);
+                              setReplyInput("");
+                            } else {
+                              setReplyBox(c.id);
+                              setReplyInput(`@${c.display_name || "User"} `);
+                            }
                           }}
-                          loading="lazy"
-                          style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: "50%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: "50%",
-                            background: "#e50914",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: "bold",
-                            color: "white",
-                            textTransform: "uppercase",
-                          }}
+                          className={`btn-reply-toggle ${replyBox === c.id ? "active" : ""}`}
                         >
-                          {getAvatarLetter(c.display_name)}
+                          <FaReply className="reply-icon" />
+                          <span>{replyBox === c.id ? "Đóng" : "Trả lời"}</span>
+                        </button>
+                      </div>
+
+                      {/* Hộp phản hồi cấp 1 */}
+                      {replyBox === c.id && (
+                        <div className="comment-reply-box">
+                          <textarea
+                            value={replyInput}
+                            onChange={(e) => setReplyInput(e.target.value)}
+                            placeholder="Nhập câu trả lời..."
+                            className="comment-reply-box__textarea"
+                            rows={2}
+                            autoFocus
+                          />
+                          <div className="comment-reply-box__actions">
+                            <button
+                              onClick={() => {
+                                setReplyBox(null);
+                                setReplyInput("");
+                              }}
+                              className="btn-reply-cancel"
+                            >
+                              Hủy
+                            </button>
+                            <button
+                              onClick={() => submitComment(c.id)}
+                              className="btn-reply-submit"
+                              disabled={!replyInput.trim()}
+                            >
+                              <FaPaperPlane className="btn-icon" />
+                              <span>Gửi</span>
+                            </button>
+                          </div>
                         </div>
                       )}
 
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <b style={{ color: "#fff" }}>
-                          {c.display_name || "User"}
-                        </b>
-                        {c.display_name === "Tecede" && <VerifiedBadge />}
-                        <i style={{ fontSize: 11, color: "#999" }}>{formatVietnamTime(c.created_at)}</i>
-                      </div>
-                    </div>
-                    <p style={{ margin: "6px 0", color: "#ccc", fontSize: 14 }}>{c.content}</p>
-                    <button
-                      onClick={() => {
-                        if (replyBox === c.id) {
-                          setReplyBox(null);
-                          setReplyInput("");
-                        } else {
-                          setReplyBox(c.id);
-                          setReplyInput(`@${c.display_name || "User"} `);
-                        }
-                      }}
-                      style={{
-                        fontSize: 12,
-                        background: "#333",
-                        color: "white",
-                        border: "none",
-                        padding: "4px 10px",
-                        borderRadius: 4,
-                        cursor: "pointer"
-                      }}
-                    >
-                      Trả lời
-                    </button>
-
-                    {/* Hộp phản hồi cấp 1 */}
-                    {replyBox === c.id && (
-                      <div style={{ marginTop: 10, marginLeft: 10 }}>
-                        <textarea
-                          value={replyInput}
-                          onChange={(e) => setReplyInput(e.target.value)}
-                          placeholder="Viết trả lời..."
-                          style={{
-                            width: "100%",
-                            padding: 8,
-                            background: "#111",
-                            color: "white",
-                            border: "1px solid #333",
-                            borderRadius: 4
-                          }}
-                        />
-                        <button
-                          onClick={() => submitComment(c.id)}
-                          style={{
-                            marginTop: 5,
-                            padding: "5px 12px",
-                            background: "#e50914",
-                            color: "white",
-                            border: "none",
-                            borderRadius: 4
-                          }}
-                        >
-                          Gửi
-                        </button>
-                      </div>
-                    )}
-
-                    {/* Danh sách các bình luận con (Replies) */}
-                    {c.replies?.length > 0 && (
-                      <div style={{ marginLeft: 20, marginTop: 10 }}>
-                        {c.replies.map((r) => (
-                          <div
-                            key={r.id}
-                            style={{
-                              background: "#111",
-                              padding: 10,
-                              borderRadius: 5,
-                              marginBottom: 8,
-                              border: "1px solid #222"
-                            }}
-                          >
-                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                              {r.avatar ? (
-                                <img
-                                  src={r.avatar}
-                                  alt="avatar"
-                                  loading="lazy"
-                                  onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = "/default-avatar.png";
-                                  }}
-                                  style={{
-                                    width: 28,
-                                    height: 28,
-                                    borderRadius: "50%",
-                                    objectFit: "cover",
-                                  }}
-                                />
-                              ) : (
-                                <div
-                                  style={{
-                                    width: 28,
-                                    height: 28,
-                                    borderRadius: "50%",
-                                    background: "#444",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    fontWeight: "bold",
-                                    color: "white",
-                                    fontSize: 12
-                                  }}
-                                >
-                                  {getAvatarLetter(r.display_name)}
+                      {/* Danh sách các bình luận con (Replies) */}
+                      {c.replies?.length > 0 && (
+                        <div className="comment-replies">
+                          {c.replies.map((r) => (
+                            <div key={r.id} className="reply-card">
+                              <div className="reply-card__header">
+                                <div className="reply-card__avatar-wrap">
+                                  {isValidAvatar(r.avatar) ? (
+                                    <img
+                                      src={r.avatar}
+                                      alt={r.display_name || "avatar"}
+                                      width={28}
+                                      height={28}
+                                      loading="lazy"
+                                      onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = getDefaultAvatar(r.display_name);
+                                      }}
+                                      className="reply-card__avatar"
+                                    />
+                                  ) : (
+                                    <div className="reply-card__avatar reply-card__avatar--fallback">
+                                      {getAvatarLetter(r.display_name)}
+                                    </div>
+                                  )}
                                 </div>
-                              )}
 
-                              <b style={{ fontSize: 10, display: "flex", alignItems: "center", color: "#fff" }}>
-                                {r.display_name || "User"}
-                                {r.display_name === "Tecede" && <VerifiedBadge />}
-                              </b>
-
-                              <i style={{ fontSize: 10, color: "#999" }}>{formatVietnamTime(r.created_at)}</i>
-                            </div>
-
-                            {/* Logic Highlight Tag @User */}
-                            <p style={{ margin: "4px 0", fontSize: 11, color: "#ddd", lineHeight: 1.5 }}>
-                              {r.content.split(/(@\w+)/g).map((part, index) => {
-                                if (part.startsWith("@")) {
-                                  return (
-                                    <span key={index} style={{ color: "#4da6ff", fontWeight: 600 }}>
-                                      {part}
+                                <div className="reply-card__meta">
+                                  <div className="reply-card__author-row">
+                                    <span className="reply-card__author-name">
+                                      {r.display_name || "User"}
                                     </span>
-                                  );
-                                }
-                                return part;
-                              })}
-                            </p>
+                                    {r.display_name === "Tecede" && <VerifiedBadge />}
+                                    <span className="reply-card__dot">•</span>
+                                    <span className="reply-card__time">
+                                      {formatVietnamTime(r.created_at)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
 
-                            <button
-                              onClick={() => {
-                                if (replyBox === r.id) {
-                                  setReplyBox(null);
-                                  setReplyInput("");
-                                } else {
-                                  setReplyBox(r.id);
-                                  setReplyInput(`@${r.display_name || "User"} `);
-                                }
-                              }}
-                              style={{
-                                marginTop: 4,
-                                fontSize: 11,
-                                background: "#2a2a2a",
-                                color: "#ddd",
-                                border: "1px solid #333",
-                                padding: "3px 10px",
-                                borderRadius: 999,
-                                cursor: "pointer",
-                              }}
-                            >
-                              Trả lời
-                            </button>
+                              {/* Logic Highlight Tag @User */}
+                              <div className="reply-card__body">
+                                <p className="reply-card__content">
+                                  {renderCommentContent(r.content)}
+                                </p>
+                              </div>
 
-                            {/* Hộp phản hồi lồng nhau */}
-                            {replyBox === r.id && (
-                              <div style={{ marginTop: 10 }}>
-                                <textarea
-                                  value={replyInput}
-                                  onChange={(e) => setReplyInput(e.target.value)}
-                                  placeholder={`Trả lời @${r.display_name || "User"}...`}
-                                  style={{
-                                    width: "100%",
-                                    padding: 8,
-                                    background: "#111",
-                                    color: "white",
-                                    border: "1px solid #333",
-                                    borderRadius: 4
-                                  }}
-                                />
+                              <div className="reply-card__actions">
                                 <button
-                                  onClick={() => submitComment(c.id)}
-                                  style={{
-                                    marginTop: 5,
-                                    padding: "5px 12px",
-                                    background: "#e50914",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: 4
+                                  onClick={() => {
+                                    if (replyBox === r.id) {
+                                      setReplyBox(null);
+                                      setReplyInput("");
+                                    } else {
+                                      setReplyBox(r.id);
+                                      setReplyInput(`@${r.display_name || "User"} `);
+                                    }
                                   }}
+                                  className={`btn-reply-toggle btn-reply-toggle--mini ${replyBox === r.id ? "active" : ""}`}
                                 >
-                                  Gửi
+                                  <FaReply className="reply-icon" />
+                                  <span>{replyBox === r.id ? "Đóng" : "Trả lời"}</span>
                                 </button>
                               </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+
+                              {/* Hộp phản hồi lồng nhau */}
+                              {replyBox === r.id && (
+                                <div className="comment-reply-box comment-reply-box--nested">
+                                  <textarea
+                                    value={replyInput}
+                                    onChange={(e) => setReplyInput(e.target.value)}
+                                    placeholder={`Trả lời @${r.display_name || "User"}...`}
+                                    className="comment-reply-box__textarea"
+                                    rows={2}
+                                    autoFocus
+                                  />
+                                  <div className="comment-reply-box__actions">
+                                    <button
+                                      onClick={() => {
+                                        setReplyBox(null);
+                                        setReplyInput("");
+                                      }}
+                                      className="btn-reply-cancel"
+                                    >
+                                      Hủy
+                                    </button>
+                                    <button
+                                      onClick={() => submitComment(c.id)}
+                                      className="btn-reply-submit"
+                                      disabled={!replyInput.trim()}
+                                    >
+                                      <FaPaperPlane className="btn-icon" />
+                                      <span>Gửi</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 

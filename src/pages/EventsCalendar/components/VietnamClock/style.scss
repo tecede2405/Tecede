@@ -1,0 +1,236 @@
+.vn-clock-wrapper {
+  width: 100%;
+  margin-bottom: 0;
+
+  .vn-clock-card {
+    background: rgba(15, 20, 31, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    @media (max-width: 600px) {
+      padding: 10px 10px;
+    }
+  }
+
+  /* TOP PILLS */
+  .vn-clock-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+
+    .vn-timezone-pill,
+    .vn-solar-term-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .vn-timezone-pill {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+
+      .live-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 6px #22c55e;
+        animation: pulse-live 1.6s infinite;
+      }
+    }
+
+    .vn-solar-term-pill {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #fbbf24;
+
+      strong {
+        color: #fef08a;
+      }
+    }
+  }
+
+  /* DIGITAL CLOCK (COMPACT & NEAT) */
+  .vn-digital-clock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 6px 0 14px 0;
+
+    .digit-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(8, 12, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9px;
+      padding: 7px 11px;
+      min-width: 52px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+
+      @media (max-width: 600px) {
+        min-width: 42px;
+        padding: 4px 6px;
+      }
+
+      .digit-number {
+        font-family: "SF Mono", Consolas, "Courier New", monospace;
+        font-size: clamp(22px, 2.5vw, 28px);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1;
+        letter-spacing: 1px;
+        text-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+      }
+
+      .digit-label {
+        font-size: 8.5px;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 0.6px;
+        margin-top: 3px;
+      }
+    }
+
+    .colon-separator {
+      font-size: 20px;
+      font-weight: 800;
+      color: #38bdf8;
+      animation: blink-colon 1s infinite;
+      user-select: none;
+    }
+  }
+
+  /* DATE DUAL BLOCKS (LỊCH DƯƠNG TRÊN, LỊCH ÂM DƯỚI - FULL WIDTH) */
+  .vn-date-dual-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: 4px;
+    flex: 1;
+
+    @media (max-width: 900px) {
+      flex: none;
+    }
+
+    .date-tile {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 9px 14px;
+      border-radius: 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      flex: 1;
+
+      @media (max-width: 900px) {
+        flex: none;
+      }
+
+      &.solar-tile {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 20, 31, 0.6) 100%);
+        border-color: rgba(56, 189, 248, 0.2);
+
+        .tile-badge {
+          color: #38bdf8;
+        }
+
+        .tile-main-date strong {
+          color: #38bdf8;
+        }
+      }
+
+      &.lunar-tile {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 20, 31, 0.6) 100%);
+        border-color: rgba(245, 158, 11, 0.2);
+
+        .tile-badge.lunar {
+          color: #fbbf24;
+        }
+
+        .tile-main-date strong {
+          color: #fbbf24;
+        }
+      }
+
+      .tile-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        margin-bottom: 1px;
+      }
+
+      .tile-day-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #f1f5f9;
+      }
+
+      .tile-main-date {
+        font-size: 14.5px;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.2px;
+      }
+
+      .tile-sub {
+        font-size: 10.5px;
+        color: #94a3b8;
+        margin-top: 1px;
+      }
+    }
+  }
+
+  /* THEME OVERRIDES */
+  &--pink .vn-clock-card {
+    border-color: rgba(244, 63, 94, 0.25);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(244, 63, 94, 0.1);
+    .digit-box .digit-number { text-shadow: 0 0 16px rgba(244, 63, 94, 0.45); }
+    .colon-separator { color: #f43f5e; }
+  }
+
+  &--tet .vn-clock-card {
+    border-color: rgba(239, 68, 68, 0.25);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(239, 68, 68, 0.12);
+    .digit-box .digit-number { text-shadow: 0 0 16px rgba(239, 68, 68, 0.5); }
+    .colon-separator { color: #ef4444; }
+  }
+
+  &--noel .vn-clock-card {
+    border-color: rgba(6, 182, 212, 0.25);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(6, 182, 212, 0.12);
+    .digit-box .digit-number { text-shadow: 0 0 16px rgba(6, 182, 212, 0.45); }
+    .colon-separator { color: #06b6d4; }
+  }
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes blink-colon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}

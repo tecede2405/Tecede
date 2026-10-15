@@ -8,7 +8,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-coverflow";
 import { EffectFade, EffectCoverflow } from "swiper/modules";
 import { useMovies } from "../../context/MoviesContext";
-import { FaPlay} from "react-icons/fa"; 
+import { FaPlay, FaInfoCircle, FaFire } from "react-icons/fa"; 
 import "./style.scss";
 
 const MovieRow = () => {
@@ -99,9 +99,9 @@ const MovieRow = () => {
               observer={true}
               observeParents={true}
               coverflowEffect={{
-                rotate: 0,
-                stretch: 30,
-                depth: 150,
+                rotate: -28,
+                stretch: 16,
+                depth: 140,
                 modifier: 1,
                 scale: 0.85,
                 slideShadows: false, 
@@ -114,8 +114,7 @@ const MovieRow = () => {
               {movies.map((movie, index) => (
                 <SwiperSlide key={index}>
                 {isMobile ? (
-                  <div
-                    className="mobile-coverflow-card">
+                  <div className="mobile-coverflow-card">
                     <img
                       src={movie.image}
                       alt={movie.title}
@@ -129,12 +128,34 @@ const MovieRow = () => {
             </Swiper>
 
             {/* HIỂN THỊ THÔNG TIN KHI Ở MOBILE (Nằm ngoài swiper) */}
-            {/* 1. HIỂN THỊ THÔNG TIN KHI Ở MOBILE */}
             {isMobile && activeMovie && (
               <div className="mobile-active-info">
+                {/* 1. Tên phim */}
                 <h2 className="mobile-title">{activeMovie.title}</h2>
-                <p className="mobile-origin">{activeMovie.origin_name}</p>
-                
+                {activeMovie.origin_name && (
+                  <p className="mobile-origin">{activeMovie.origin_name}</p>
+                )}
+
+                {/* 2. Meta tags (Episode, Lang, Quality) đưa lên TRÊN nút bấm */}
+                <div className="mobile-meta">
+                  {activeMovie.episode_current && (
+                    <span className="meta-tag episode-tag">
+                      <FaFire className="tag-icon" /> {activeMovie.episode_current}
+                    </span>
+                  )}
+                  {activeMovie.lang && (
+                    <span className="meta-tag lang-tag">
+                      {activeMovie.lang}
+                    </span>
+                  )}
+                  {activeMovie.quality && (
+                    <span className="meta-tag quality-tag">
+                      {activeMovie.quality}
+                    </span>
+                  )}
+                </div>
+
+                {/* 3. Nút hành động: Xem ngay & Thông tin */}
                 <div className="mobile-actions">
                   <button 
                     className="btn-play" 
@@ -142,14 +163,13 @@ const MovieRow = () => {
                   >
                     <FaPlay /> Xem ngay
                   </button>
+                  <button 
+                    className="btn-info" 
+                    onClick={() => navigate(`/chi-tiet/${activeMovie.path}`)}
+                  >
+                    <FaInfoCircle /> Thông tin
+                  </button>
                 </div>
-
-                <div className="mobile-meta">
-                  {activeMovie.episode_current && <span className="meta-tag">{activeMovie.episode_current}</span>}
-                  <span className="meta-tag">{activeMovie.lang || "N/A"}</span>
-                </div>
-
-                <p className="mobile-desc">{activeMovie.content}</p>
               </div>
             )}
 

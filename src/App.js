@@ -56,6 +56,7 @@ import SellGeminiPro from "./pages/SellGeminiPro/index";
 import DownloadApp from "./pages/DownloadApp/index";
 import DownloadAppTV from "./pages/DownloadAppTV/index";
 import DesignWeb from "./pages/DesignWeb/index";
+import EventsCalendar from "./pages/EventsCalendar/index";
 // UI
 // import Squares from "./component/SquaresBackgound/index";
 
@@ -139,6 +140,8 @@ function App() {
                   <Route path="/ban-gemini-pro" element={<SellGeminiPro />} />
                   <Route path="/tai-app" element={<DownloadApp />} />
                   <Route path="/tai-app-tv" element={<DownloadAppTV />} />
+                  <Route path="/lich-su-kien" element={<EventsCalendar />} />
+                  <Route path="/lich-va-su-kien" element={<EventsCalendar />} />
                   <Route path="/design-web" element={<DesignWeb />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/404closed" element={<TemporaryClosed404 />} />

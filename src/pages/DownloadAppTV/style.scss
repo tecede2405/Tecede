@@ -1,118 +1,831 @@
-@import "../DownloadApp/style.scss";
+/* ======================================================
+   DOWNLOAD APP TV - MODERN HIGH-TECH STYLING
+====================================================== */
 
-/* ── Download TV Specific Styles ── */
+.download-tv-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background-color: #070a12;
+  color: #f1f5f9;
+  padding: 30px 16px 80px;
+  overflow: hidden;
 
-.download-instructions-tv {
-  margin-bottom: 40px;
+  /* Ambient glow backgrounds */
+  .download-tv__bg-glow {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(100px);
+
+    &--top {
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 550px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, rgba(99, 102, 241, 0.08) 60%, transparent 80%);
+    }
+
+    &--bottom {
+      bottom: 8%;
+      right: 5%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+    }
+  }
+
+  .download-tv__container {
+    position: relative;
+    z-index: 1;
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+}
+
+/* ================= HERO HEADER ================= */
+.download-tv-hero {
+  text-align: center;
+  padding: 10px 0 36px;
+
+  .hero-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38bdf8;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+
+    .badge-icon {
+      font-size: 14px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+      animation: pulseAnimation 2s infinite ease-in-out;
+    }
+  }
 
   &__title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 24px;
-    text-align: center;
+    font-size: clamp(24px, 4.5vw, 40px);
+    font-weight: 800;
+    line-height: 1.25;
+    color: #ffffff;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+
+    .highlight-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  &__desc {
+    font-size: clamp(14px, 2vw, 15.5px);
+    color: #94a3b8;
+    max-width: 680px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+
+    strong {
+      color: #f1f5f9;
+    }
+  }
+
+  &__specs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: #64748b;
+
+    .spec-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      .spec-icon {
+        color: #38bdf8;
+        font-size: 14px;
+      }
+    }
+
+    .spec-dot {
+      color: #334155;
+    }
   }
 }
 
-.tv-instructions-grid {
+@keyframes pulseAnimation {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ================= 2-COLUMN SHOWCASE (PC: LEFT/RIGHT, MOBILE: TOP/BOTTOM) ================= */
+.tv-showcase-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 36px;
+  align-items: center;
+  margin-bottom: 50px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 992px) {
     grid-template-columns: 1fr;
+    gap: 28px;
   }
 }
 
-.tv-method-col {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
-  
-  .method-header {
-    margin-bottom: 16px;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-    padding-bottom: 16px;
+/* Cột Trái: Smart TV Mockup */
+.tv-mockup-col {
+  width: 100%;
 
-    h3 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
+  @media (max-width: 992px) {
+    order: 1; /* Màn mobile: Ảnh nằm trên */
+  }
+
+  .tv-frame {
+    width: 100%;
+    margin: 0 auto;
+
+    &__bezel {
+      background: #0d121c;
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 8px;
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.7),
+        0 0 35px rgba(56, 189, 248, 0.12),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        box-shadow: 
+          0 24px 60px rgba(0, 0, 0, 0.8),
+          0 0 45px rgba(56, 189, 248, 0.2);
+      }
+    }
+
+    &__screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+
+      .tv-screenshot-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .tv-screen-glare {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+        pointer-events: none;
+      }
+    }
+
+    &__stand {
+      width: 38px;
+      height: 14px;
+      background: linear-gradient(180deg, #1e293b, #0f172a);
+      margin: 0 auto;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    &__base {
+      width: 120px;
+      height: 5px;
+      background: linear-gradient(90deg, #1e293b, #334155, #1e293b);
+      border-radius: 999px;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .tv-mockup-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 14px;
+    text-align: center;
+
+    .caption-icon {
+      color: #38bdf8;
+      font-size: 14px;
+    }
+
+    strong {
+      color: #f1f5f9;
+    }
+  }
+}
+
+/* Cột Phải: Downloader Card */
+.tv-downloader-col {
+  width: 100%;
+
+  @media (max-width: 992px) {
+    order: 2; /* Màn mobile: Downloader-card nằm dưới */
+  }
+}
+
+.downloader-card {
+  background: rgba(15, 20, 31, 0.88);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(249, 115, 22, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.14) 0%, rgba(15, 20, 31, 0.6) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fb923c;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  &__body {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* Big Code Box */
+.code-box-wrapper {
+  background: rgba(8, 12, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 16px;
+  transition: border-color 0.25s ease;
+
+  &:hover {
+    border-color: rgba(249, 115, 22, 0.5);
+  }
+
+  .code-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .code-box-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fb923c;
+    letter-spacing: 0.6px;
+  }
+
+  .code-box-sublabel {
+    font-size: 11px;
+    color: #64748b;
+  }
+
+  .code-box-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .code-number {
+      font-family: "SF Mono", Consolas, "Courier New", monospace;
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #ffffff;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+      line-height: 1;
+    }
+
+    .btn-copy-code {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(249, 115, 22, 0.35);
+      transition: all 0.2s ease;
+
+      .icon {
+        font-size: 12px;
+      }
+
+      &:hover {
+        background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+        box-shadow: 0 5px 16px rgba(249, 115, 22, 0.5);
+        transform: translateY(-1px);
+      }
+
+      &.copied {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 3px 12px rgba(16, 185, 129, 0.4);
+      }
+    }
+  }
+}
+
+/* Short URL Row */
+.shorturl-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 8px 14px;
+
+  .shorturl-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .shorturl-label {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .shorturl-code {
+      font-family: monospace;
+      font-size: 13px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-weight: 700;
+    }
+  }
+
+  .shorturl-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .btn-copy-link,
+    .btn-open-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      .icon {
+        font-size: 10.5px;
+      }
+    }
+
+    .btn-copy-link {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+      }
+
+      &.copied {
+        background: rgba(16, 185, 129, 0.2);
+        border-color: rgba(16, 185, 129, 0.4);
+        color: #34d399;
+      }
+    }
+
+    .btn-open-link {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #38bdf8;
+
+      &:hover {
+        background: rgba(56, 189, 248, 0.22);
+        color: #7dd3fc;
+      }
+    }
+  }
+}
+
+/* Destination Row */
+.destination-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  .destination-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+
+    .destination-label {
+      color: #64748b;
+    }
+
+    .destination-value {
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+  }
+
+  .btn-direct-apk {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    .icon {
+      font-size: 10.5px;
+    }
+
+    &:hover {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Primary Download Button inside Card */
+.btn-tv-download-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #e50914 0%, #ff2d3b 100%);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
+  transition: all 0.25s ease;
+
+  .btn-icon {
+    font-size: 14px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.5);
+    background: linear-gradient(135deg, #f21823 0%, #ff4552 100%);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ================= STEP-BY-STEP SECTION ================= */
+.install-steps-section {
+  margin-bottom: 50px;
+
+  .section-title-wrap {
+    margin-bottom: 30px;
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: #94a3b8;
       margin: 0;
     }
   }
 
-  .method-meta {
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-    
-    p {
-      margin-bottom: 6px;
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 22px;
+
+    @media (max-width: 860px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .step-card {
+    position: relative;
+    background: rgba(15, 20, 31, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    padding: 24px 20px;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
+
+    &:hover {
+      background: rgba(20, 27, 42, 0.85);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    &__badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.5px;
+    }
+
+    &__icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .method-require {
-      color: rgba(255, 255, 255, 0.6);
-    }
-  }
-
-  .method-steps {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
+      justify-content: center;
       margin-bottom: 16px;
-      font-size: 14px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.75);
-      position: relative;
-      padding-left: 20px;
 
-      &::before {
-        content: "•";
-        position: absolute;
-        left: 0;
-        top: 0;
-        color: #3ddc84;
-        font-weight: bold;
+      .step-icon {
+        font-size: 19px;
       }
+
+      &--orange {
+        background: rgba(249, 115, 22, 0.15);
+        color: #fb923c;
+        border: 1px solid rgba(249, 115, 22, 0.3);
+      }
+
+      &--cyan {
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+      }
+
+      &--green {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+    }
+
+    &__title {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    &__desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin: 0;
 
       strong {
-        color: #fff;
+        color: #f1f5f9;
+      }
+    }
+  }
+
+  .install-note-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #fef3c7;
+
+    .note-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .note-content {
+      flex: 1;
+
+      strong {
+        color: #fbbf24;
       }
 
-      &:last-child {
-        margin-bottom: 0;
+      em {
+        color: #ffffff;
+        font-style: normal;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 1px 6px;
+        border-radius: 4px;
       }
     }
   }
 }
 
-/* Custom button color for TV Hero */
-.download-tv-page .download-hero__btn {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.3);
+/* ================= ALTERNATIVE METHODS ================= */
+.alt-methods-section {
+  margin-bottom: 20px;
 
-  &:hover {
-    box-shadow: 0 10px 36px rgba(59, 130, 246, 0.45);
+  .alt-section-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 18px;
+  }
+
+  .alt-methods-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .alt-method-card {
+    background: rgba(15, 20, 31, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 22px;
+    backdrop-filter: blur(8px);
+
+    .alt-method-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+      .alt-icon {
+        font-size: 19px;
+
+        &--purple { color: #a855f7; }
+        &--blue { color: #3b82f6; }
+      }
+
+      .alt-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+      }
+    }
+
+    .alt-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        position: relative;
+        padding-left: 18px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #94a3b8;
+        margin-bottom: 8px;
+
+        &::before {
+          content: "•";
+          position: absolute;
+          left: 4px;
+          color: #38bdf8;
+          font-weight: bold;
+          font-size: 15px;
+          top: -2px;
+        }
+
+        strong {
+          color: #f1f5f9;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
   }
 }
 
-.download-tv-page .download-hero__icon {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.35);
-}
+/* ================= RESPONSIVE ADJUSTMENTS ================= */
+@media (max-width: 768px) {
+  .download-tv-wrapper {
+    padding: 20px 12px 50px;
+  }
 
-.download-tv-page .download-hero__badge {
-  color: #60a5fa;
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  .downloader-card {
+    border-radius: 16px;
+
+    &__header {
+      padding: 16px 18px;
+    }
+
+    &__body {
+      padding: 18px 14px;
+    }
+  }
+
+  .code-box-wrapper {
+    padding: 14px;
+
+    .code-box-display {
+      .code-number {
+        font-size: 30px;
+        letter-spacing: 4px;
+      }
+
+      .btn-copy-code {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .shorturl-row {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .shorturl-actions {
+      width: 100%;
+
+      .btn-copy-link,
+      .btn-open-link {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+  }
+
+  .destination-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

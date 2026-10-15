@@ -23,7 +23,7 @@
 .dw-hero {
   position: relative;
   text-align: center;
-  padding: 60px 20px 40px;
+  padding: 60px 20px 20px;
   overflow: hidden;
 
   &__glow {
@@ -88,11 +88,12 @@
   }
 
   &__desc {
-    font-size: 16px;
+    font-size: 14px;
+    font-style: italic;
     color: #a1a1aa;
     max-width: 600px;
-    margin: 0 auto 32px;
-    line-height: 1.7;
+    margin: 0 auto 16px;
+    line-height: 1.6;
   }
 
   &__cta-btn {
@@ -123,7 +124,7 @@
   margin-bottom: 40px;
   
   h2 {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
     margin-bottom: 12px;
     color: #fff;
@@ -139,7 +140,7 @@
 .dw-plans {
   padding: 0 16px;
   margin-bottom: 60px;
-  margin-top: 40px;
+  margin-top: 10px;
 
   &__grid {
     display: grid;
@@ -402,7 +403,7 @@
 }
 
 /* ─── RESPONSIVE ─── */
-@media (max-width: 768px) {
+@media (max-width: 650px) {
   .dw-hero {
     &__title {
       font-size: 1.8rem;
@@ -415,7 +416,7 @@
   
   .dw-plans__grid {
     grid-template-columns: 1fr;
-    max-width: 400px;
+    max-width: 800px;
   }
 
   .dw-features__grid {

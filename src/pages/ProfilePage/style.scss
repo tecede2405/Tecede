@@ -1,198 +1,1067 @@
-.profile-page {
-  max-width: 1000px;
-  margin: 30px auto;
-  color: white;
-  padding: 20px;
-  background: #141414;
-  border-radius: 12px;
-  border: 1px solid #222;
+/* ==========================================================================
+   FACEBOOK-STYLE PROFILE PAGE (FULL PAGE WIDTH - DARK THEME)
+   ========================================================================== */
 
-  h2 {
-    margin-bottom: 20px;
-    font-weight: 600;
+.fb-profile-page {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  margin: 0;
+  padding: 0 0 60px 0;
+  color: #f1f5f9;
+  background: #0b0f17;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.fb-container {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3.5vw, 48px);
+  box-sizing: border-box;
+}
+
+.fb-profile-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  gap: 16px;
+  color: #94a3b8;
+  font-size: 15px;
+
+  .loading-spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(229, 9, 20, 0.2);
+    border-top-color: #e50914;
+    border-radius: 50%;
+    animation: fb-spin 0.8s linear infinite;
+  }
+}
+
+@keyframes fb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================= 1. KHUNG BACKGROUND ẢNH NỀN (FULL PAGE WIDTH, DEFAULT MÀU TỐI) ================= */
+.fb-cover-banner {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: 
+    radial-gradient(ellipse at 85% 20%, rgba(229, 9, 20, 0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 15% 80%, rgba(56, 189, 248, 0.18) 0%, transparent 50%),
+    linear-gradient(135deg, #070a12 0%, #101625 50%, #090d18 100%);
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    height: 150px;
   }
 
-  /* ===== AVATAR PREVIEW ===== */
-  &__avatar-preview {
-    text-align: center;
-    margin-bottom: 20px;
+  @media (max-width: 600px) {
+    height: 125px;
+  }
 
-    img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #e50914;
-      transition: 0.2s;
+  // Lưới hoa văn chìm tinh tế
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    opacity: 0.65;
+  }
 
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
+  // Dải sáng viền trên cinema
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #e50914 30%, #38bdf8 70%, transparent);
+    opacity: 0.9;
+  }
 
-    .fallback {
-      width: 100px;
-      height: 100px;
+  .fb-cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 35%, rgba(11, 15, 23, 0.9) 100%);
+    pointer-events: none;
+  }
+
+  .fb-cover-badge {
+    position: absolute;
+    top: 20px;
+    right: clamp(16px, 3.5vw, 48px);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    background: rgba(10, 14, 23, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    font-size: 12px;
+    font-weight: 600;
+    color: #e2e8f0;
+    letter-spacing: 0.5px;
+    z-index: 2;
+
+    .cover-glow-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #e50914;
+      box-shadow: 0 0 8px #e50914;
+    }
+  }
+}
+
+/* ================= 2. KHU VỰC HEADER PROFILE (FULL-WIDTH BAR) ================= */
+.fb-profile-header-bar {
+  width: 100%;
+  background: #0f1422;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fb-profile-header {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 20px;
+    gap: 16px;
+  }
+
+  &__left {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    flex: 1;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+  }
+
+  /* AVATAR TRÒN BỰ NẰM BÊN TRÁI ĐÈ LÊN CẠNH ĐÁY ẢNH NỀN */
+  .fb-avatar-container {
+    position: relative;
+    width: 154px;
+    height: 154px;
+    flex-shrink: 0;
+    margin-top: -65px; /* Đè lên cạnh đáy ảnh nền */
+    border-radius: 50%;
+    z-index: 5;
+
+    @media (max-width: 768px) {
+      width: 114px;
+      height: 114px;
+      margin-top: -55px;
+    }
+
+    .fb-avatar-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 5px solid #0f1422; /* Khắc đường cắt chuẩn Facebook trên nền tối */
+      background: #1a2335;
+      overflow: hidden;
+      box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.65),
+        0 0 20px rgba(229, 9, 20, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      font-weight: bold;
+
+      @media (max-width: 768px) {
+        border-width: 4px;
+      }
+
+      .fb-avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+
+      .fb-avatar-fallback {
+        font-size: 52px;
+        font-weight: 800;
+        color: #ffffff;
+        background: linear-gradient(135deg, #e50914, #b20710);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+        @media (max-width: 768px) {
+          font-size: 38px;
+        }
+      }
     }
-  }
 
-  /* ===== INPUT ===== */
-  &__field {
-    margin-bottom: 20px;
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      color: #ccc;
-      font-size: 14px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      background: #111;
-      color: white;
-      border: 1px solid #333;
-      border-radius: 6px;
+    /* ICON ĐỔI AVATAR (MÁY ẢNH) ĐÈ LÊN AVATAR - MÀU TỐI THEME WEB */
+    .fb-camera-btn {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1e2638;
+      border: 3px solid #0f1422;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+      padding: 0;
       outline: none;
 
-      &:focus {
-        border-color: #e50914;
+      @media (max-width: 768px) {
+        width: 34px;
+        height: 34px;
+        border-width: 2.5px;
+      }
+
+      .camera-icon {
+        font-size: 16px;
+        transition: transform 0.2s ease, color 0.2s ease;
+
+        @media (max-width: 768px) {
+          font-size: 14px;
+        }
+      }
+
+      &:hover {
+        background: #2a354c;
+        border-color: #0b0f17;
+        color: #38bdf8;
+        transform: scale(1.12);
+        box-shadow: 0 6px 18px rgba(56, 189, 248, 0.35);
+
+        .camera-icon {
+          transform: rotate(-10deg);
+        }
+      }
+
+      &:active {
+        transform: scale(0.96);
       }
     }
   }
 
-  /* ===== AVATAR LIST ===== */
-  &__avatar-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  /* KHỐI NỘI DUNG: TÊN USER, THÀNH VIÊN, TÊN ĐĂNG NHẬP */
+  .fb-user-details {
+    padding-bottom: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    @media (max-width: 900px) {
+      align-items: center;
+      padding-bottom: 0;
+    }
+
+    .fb-user-name-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      @media (max-width: 900px) {
+        justify-content: center;
+      }
+
+      .fb-user-name {
+        font-size: 26px;
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0;
+        letter-spacing: -0.3px;
+        line-height: 1.2;
+
+        @media (max-width: 768px) {
+          font-size: 21px;
+        }
+      }
+
+      .fb-verified-wrap {
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+
+    .fb-user-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: auto;
+      max-width: 100%;
+
+      @media (max-width: 900px) {
+        justify-content: center;
+      }
+
+      .fb-username-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #94a3b8;
+        width: auto;
+        flex: none;
+
+        .meta-at {
+          color: #e50914;
+          font-weight: 700;
+        }
+      }
+
+      .fb-meta-dot {
+        color: #475569;
+        font-size: 12px;
+        flex: none;
+      }
+
+      /* ======================================================================
+         FIX ROLE BADGE GỌN GÀNG, KHÔNG BỊ PHÌNH TO / DÀI BỞI GLOBAL CSS
+         ====================================================================== */
+      .fb-role-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: fit-content !important;
+        height: auto !important;
+        min-height: 0 !important;
+        padding: 3px 10px !important;
+        border-radius: 999px !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.2px !important;
+        line-height: 1.3 !important;
+        white-space: nowrap !important;
+        flex: none !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+
+        .role-icon {
+          font-size: 10.5px;
+          margin-right: 4px;
+          flex-shrink: 0;
+        }
+
+        &--member {
+          background: rgba(56, 189, 248, 0.12) !important;
+          color: #38bdf8 !important;
+          border: 1px solid rgba(56, 189, 248, 0.28) !important;
+        }
+
+        &--admin {
+          background: rgba(229, 9, 20, 0.15) !important;
+          color: #f87171 !important;
+          border: 1px solid rgba(229, 9, 20, 0.35) !important;
+        }
+      }
+    }
+
+    .fb-avatar-pending-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.25);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-top: 4px;
+      width: fit-content;
+
+      @media (max-width: 900px) {
+        margin: 4px auto 0 auto;
+      }
+
+      .icon {
+        font-size: 11px;
+      }
+    }
+  }
+
+  /* NÚT ACTION PHÍA BÊN PHẢI */
+  &__actions {
+    display: flex;
+    align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    padding-bottom: 6px;
 
-    img {
+    @media (max-width: 900px) {
       width: 100%;
-      aspect-ratio: 1/1;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: 0.2s;
-
-      &:hover {
-        transform: scale(1.08);
-      }
-
-      &.active {
-        border: 3px solid #e50914;
-        transform: scale(1.08);
-      }
+      justify-content: center;
+      padding-bottom: 0;
     }
-  }
 
-  /* ===== BUTTON ===== */
-  &__btn {
-    width: 100%;
-    padding: 12px;
-    background: #555;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: not-allowed;
-    transition: 0.2s;
-
-    &.active {
-      background: #e50914;
+    .fb-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
       cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
 
-      &:hover {
-        background: #ff2a2a;
+      .icon {
+        font-size: 13px;
       }
-    }
-  }
-   &__show-more {
-    margin-top: 15px;
-    text-align: center;
-    color: #b4a4a5;
-    cursor: pointer;
-    font-weight: 600;
-    transition: .25s;
-    width: 150px;
 
-    &:hover {
-      color: #3baaff;
+      &--reset {
+        background: #1e2638;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #cbd5e1;
+
+        &:hover {
+          background: #2a3449;
+          color: #ffffff;
+          border-color: rgba(255, 255, 255, 0.25);
+        }
+      }
+
+      &--save {
+        background: #1e2638;
+        color: #64748b;
+        cursor: not-allowed;
+
+        &.active {
+          background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+          color: #ffffff;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+
+          &:hover {
+            background: linear-gradient(135deg, #ff1e27 0%, #c40812 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.5);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+      }
     }
   }
 }
-// Khung bọc khu vực Upload ảnh từ máy
-.custom-file-upload {
-  width: 100%;
-  margin-top: 6px;
 
-  // Ẩn cái input thô kệch mặc định của HTML đi
-  input[type="file"] {
+/* ================= 3. FACEBOOK STYLE NAVIGATION TABS BAR (FULL WIDTH) ================= */
+.fb-nav-tabs-bar {
+  width: 100%;
+  background: #0d121c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fb-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
     display: none;
   }
 
-  // Tạo dáng lại cho chiếc Label biến thành nút bấm sang xịn mịn
-  .upload-btn-styled {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: #2a2a2a;
-    color: #e2e8f0;
-    padding: 12px 20px;
-    border-radius: 8px;
-    border: 1px dashed #444;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.25s ease;
-    text-align: center;
+  @media (max-width: 768px) {
+    gap: 4px;
+  }
 
-    .icon {
-      font-size: 18px;
-      color: #e50914; // Màu đỏ accent giống style của bạn
+  .fb-tab-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    @media (max-width: 768px) {
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .tab-icon {
+      font-size: 14px;
     }
 
     &:hover {
-      background: #333;
-      border-color: #e50914;
-      color: #fff;
-      box-shadow: 0 0 10px rgba(229, 9, 20, 0.2);
+      color: #ffffff;
+    }
+
+    &.active {
+      color: #ffffff;
+      font-weight: 700;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #e50914;
+        border-radius: 3px 3px 0 0;
+      }
     }
   }
 }
 
-// Giữ lại căn giữa cho Vòng tròn avatar preview
-.profile-page__avatar-view {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  border: 3px solid #e50914;
-  margin: 0 auto 20px auto;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #2a2a2a;
+/* ================= 4. TAB CONTENTS ================= */
+.fb-content-wrap {
+  width: 100%;
+  padding-top: 28px;
+}
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.fb-tab-content {
+  width: 100%;
+}
+
+/* THÔNG BÁO VĂN MINH */
+.fb-notice-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 18px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: 10px;
+  margin-bottom: 24px;
+  color: #fbbf24;
+  font-size: 13.5px;
+  line-height: 1.5;
+
+  .notice-icon {
+    font-size: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
   }
 
-  .fallback {
-    font-size: 36px;
-    font-weight: bold;
-    color: #fff;
+  strong {
+    color: #fef08a;
+  }
+}
+
+/* FORM GRID */
+.fb-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.fb-field-group {
+  margin-bottom: 20px;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 8px;
+
+    .field-icon {
+      color: #e50914;
+      font-size: 13px;
+    }
+  }
+
+  .field-desc {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.4;
+  }
+}
+
+.fb-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100%;
+    padding: 11px 50px 11px 14px;
+    background: #080c14;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #e50914;
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.18);
+    }
+
+    &::placeholder {
+      color: #475569;
+    }
+  }
+
+  .char-count {
+    position: absolute;
+    right: 14px;
+    font-size: 11px;
+    color: #64748b;
+    pointer-events: none;
+  }
+
+  &--disabled {
+    input {
+      background: #0d121c;
+      border-color: rgba(255, 255, 255, 0.06);
+      color: #94a3b8;
+      cursor: not-allowed;
+      padding-right: 90px;
+    }
+
+    .locked-badge {
+      position: absolute;
+      right: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+  }
+}
+
+/* DROPZONE TẢI ẢNH */
+.fb-upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+  background: #080c14;
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: #e50914;
+    background: rgba(229, 9, 20, 0.04);
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.15);
+
+    .dropzone-icon-ring {
+      background: rgba(229, 9, 20, 0.18);
+      color: #e50914;
+      transform: scale(1.08);
+    }
+  }
+
+  .dropzone-icon-ring {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+    transition: all 0.25s ease;
+  }
+
+  .dropzone-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 4px;
+  }
+
+  .dropzone-subtitle {
+    font-size: 11.5px;
+    color: #64748b;
+  }
+}
+
+/* GỢI Ý KHO AVATAR NHANH */
+.fb-quick-avatars {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  .quick-avatars-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+
+    .view-all-link {
+      background: none;
+      border: none;
+      color: #38bdf8;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .quick-avatars-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .quick-avatar-item {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      &:hover {
+        transform: scale(1.1);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      &.active {
+        border-color: #e50914;
+        box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+        transform: scale(1.08);
+
+        .item-check {
+          position: absolute;
+          inset: 0;
+          background: rgba(229, 9, 20, 0.45);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+/* FOOTER SUBMIT */
+.fb-form-footer {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+
+  .fb-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: #64748b;
+    background: #1e2638;
+    cursor: not-allowed;
+    transition: all 0.2s ease;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      justify-content: center;
+    }
+
+    &.active {
+      background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+
+      &:hover {
+        background: linear-gradient(135deg, #ff1e27 0%, #c40812 100%);
+        box-shadow: 0 6px 22px rgba(229, 9, 20, 0.55);
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+/* ================= TAB 2: KHO AVATAR ================= */
+.fb-avatars-intro {
+  margin-bottom: 20px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+  }
+
+  p {
+    font-size: 13.5px;
+    color: #94a3b8;
+    margin: 0;
+  }
+}
+
+.fb-avatars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+    gap: 10px;
+  }
+
+  .fb-avatar-tile {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid rgba(255, 255, 255, 0.08);
+    background: #0f1422;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &:hover {
+      transform: scale(1.12);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+    }
+
+    &.active {
+      border-color: #e50914;
+      box-shadow: 0 0 16px rgba(229, 9, 20, 0.6);
+      transform: scale(1.1);
+
+      .tile-check-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(229, 9, 20, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .check-icon {
+          color: #ffffff;
+          font-size: 18px;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+        }
+      }
+    }
+  }
+}
+
+.fb-avatars-toggle {
+  text-align: center;
+  margin-top: 10px;
+
+  .fb-toggle-btn {
+    padding: 9px 22px;
+    background: #182030;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    color: #38bdf8;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #202b40;
+      color: #ffffff;
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+  }
+}
+
+.fb-floating-save-bar {
+  margin-top: 24px;
+  padding: 12px 20px;
+  background: rgba(229, 9, 20, 0.12);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+
+  .bar-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    background: #e50914;
+    border: none;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #ff2a2a;
+    }
+  }
+}
+
+/* ================= TAB 3: THÔNG TIN TÀI KHOẢN ================= */
+.fb-account-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+
+  .summary-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    background: #0f1422;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #182030;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+
+      .summary-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+
+      .summary-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &.fb-role-admin {
+          color: #f87171;
+        }
+
+        &.fb-role-member {
+          color: #38bdf8;
+        }
+      }
+    }
   }
 }

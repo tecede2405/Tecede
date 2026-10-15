@@ -1,0 +1,298 @@
+/* ==========================================================================
+   LỊCH & SỰ KIỆN VIỆT NAM (EVENTS & CALENDAR PAGE)
+   ========================================================================== */
+
+.events-page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  background: #090d16;
+  color: #f1f5f9;
+  overflow-x: hidden;
+  padding: 30px 0 80px 0;
+  transition: background 0.6s ease;
+
+  @media (max-width: 768px) {
+    padding: 16px 0 60px 0;
+  }
+
+  /* THEME BACKGROUND VARIANTS */
+  &.page-theme-pink {
+    background: radial-gradient(circle at 50% 0%, #1f0b1a 0%, #0c050a 60%, #070306 100%);
+    .highlight-text { color: #f43f5e; text-shadow: 0 0 25px rgba(244, 63, 94, 0.4); }
+  }
+
+  &.page-theme-tet {
+    background: radial-gradient(circle at 50% 0%, #290808 0%, #0f0303 60%, #070101 100%);
+    .highlight-text { color: #ef4444; text-shadow: 0 0 25px rgba(239, 68, 68, 0.45); }
+  }
+
+  &.page-theme-noel {
+    background: radial-gradient(circle at 50% 0%, #072224 0%, #031011 60%, #020708 100%);
+    .highlight-text { color: #06b6d4; text-shadow: 0 0 25px rgba(6, 182, 212, 0.4); }
+  }
+
+  &.page-theme-national {
+    background: radial-gradient(circle at 50% 0%, #240b0f 0%, #0e0405 60%, #070203 100%);
+    .highlight-text { color: #facc15; text-shadow: 0 0 25px rgba(250, 204, 21, 0.4); }
+  }
+
+  &.page-theme-midautumn {
+    background: radial-gradient(circle at 50% 0%, #1a1332 0%, #0b0716 60%, #05030b 100%);
+    .highlight-text { color: #f59e0b; text-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }
+  }
+
+  &.page-theme-halloween {
+    background: radial-gradient(circle at 50% 0%, #230b30 0%, #0e0414 60%, #060209 100%);
+    .highlight-text { color: #f97316; text-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
+  }
+
+  &.page-theme-default {
+    background: radial-gradient(circle at 50% 0%, #0f1628 0%, #080c14 60%, #05070c 100%);
+    .highlight-text { color: #38bdf8; text-shadow: 0 0 25px rgba(56, 189, 248, 0.4); }
+  }
+}
+
+.events-main-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 clamp(14px, 2.5vw, 28px);
+  box-sizing: border-box;
+}
+
+/* ================= HERO HEADER ================= */
+.events-hero-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 24px auto;
+
+  .hero-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 12px;
+    backdrop-filter: blur(8px);
+
+    .badge-icon {
+      color: #38bdf8;
+      font-size: 13px;
+    }
+  }
+
+  .events-hero-title {
+    font-size: clamp(22px, 3.8vw, 34px);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    margin: 0 0 14px 0;
+    letter-spacing: -0.5px;
+  }
+}
+
+/* THEME SELECTOR PANEL (COMPACT & NEAT) */
+.theme-selector-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(15, 20, 31, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 6px 14px;
+  backdrop-filter: blur(12px);
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    border-radius: 14px;
+    padding: 10px 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .selector-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #cbd5e1;
+    white-space: nowrap;
+
+    .icon {
+      color: #facc15;
+    }
+  }
+
+  .theme-pills-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    .theme-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .pill-icon {
+        color: var(--pill-color, #38bdf8);
+        font-size: 11px;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+        transform: translateY(-1px);
+      }
+
+      &.active {
+        background: var(--pill-color, #38bdf8);
+        border-color: var(--pill-color, #38bdf8);
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+
+        .pill-icon {
+          color: #ffffff;
+        }
+      }
+    }
+
+    .effect-toggle-btn,
+    .sound-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &.on {
+        color: #4ade80;
+        border-color: rgba(74, 222, 128, 0.3);
+      }
+
+      &.off {
+        color: #64748b;
+        opacity: 0.7;
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+    }
+  }
+}
+
+/* ================= 2-COLUMN SECTION ================= */
+.events-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+  margin-bottom: 20px;
+
+  .grid-col-clock {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .vn-clock-wrapper {
+      height: 100%;
+      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+
+      .vn-clock-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  .grid-col-calendar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .cal-grid-card {
+      height: 100%;
+      margin-bottom: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin: 0 auto 20px auto;
+    gap: 16px;
+    align-items: start;
+
+    .grid-col-clock,
+    .grid-col-calendar {
+      height: auto;
+    }
+
+    .grid-col-clock .vn-clock-wrapper,
+    .grid-col-clock .vn-clock-wrapper .vn-clock-card,
+    .grid-col-calendar .cal-grid-card {
+      height: auto;
+    }
+  }
+}
+
+/* AMBIENT GLOWS */
+.events-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+  opacity: 0.15;
+  z-index: 2;
+
+  &.glow-top {
+    top: 50px;
+    left: 20%;
+    width: 500px;
+    height: 400px;
+    background: #38bdf8;
+  }
+
+  &.glow-bottom {
+    bottom: 200px;
+    right: 15%;
+    width: 600px;
+    height: 500px;
+    background: #e50914;
+  }
+}
