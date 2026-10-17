@@ -11,6 +11,7 @@ import { MoviesProvider } from "./context/MoviesContext";
 import { DonateProvider } from "./context/DonateContext";
 import { MusicProvider } from "./context/MusicContext";
 import { CommentProvider } from "./context/CommentContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
@@ -29,9 +30,11 @@ root.render(
           <DonateProvider>
             <MusicProvider>
               <CommentProvider>
-                <BrowserRouter>
-                  <App />
-                </BrowserRouter>
+                <ThemeProvider>
+                  <BrowserRouter>
+                    <App />
+                  </BrowserRouter>
+                </ThemeProvider>
               </CommentProvider>
             </MusicProvider>
           </DonateProvider>

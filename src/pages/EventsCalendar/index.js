@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { THEMES, getDefaultThemeForDate } from "./utils/eventsData";
+import { useNavigate } from "react-router-dom";
+import { useAppTheme } from "../../context/ThemeContext";
 import EventThemeCanvas from "./components/EventThemeCanvas/index";
 import VietnamClock from "./components/VietnamClock/index";
 import CalendarGrid from "./components/CalendarGrid/index";
@@ -20,13 +21,10 @@ import {
   FaVolumeMute
 } from "react-icons/fa";
 import { FaWandMagicSparkles, FaCalendarDays } from "react-icons/fa6";
-import Swal from "sweetalert2";
 import { 
   playClickSound, 
   playHoverSound, 
-  playThemeChime, 
-  getSoundPreference, 
-  setSoundPreference 
+  playThemeChime
 } from "./utils/soundEffects";
 import "./style.scss";
 
@@ -40,82 +38,30 @@ const THEME_BUTTONS = [
   { id: "default", name: "Vũ Trụ 3D", icon: FaStar, color: "#38bdf8" }
 ];
 
-const STORAGE_KEY_THEME = "tecede_events_theme";
-const STORAGE_KEY_EFFECT = "tecede_events_effect";
-
 export default function EventsCalendar() {
-  // Lấy theme từ localStorage nếu người dùng từng chọn, ngược lại nhận diện theo thời gian thực
-  const [activeTheme, setActiveTheme] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_THEME);
-      if (saved && THEMES[saved]) return saved;
-    } catch (e) {
-      // ignore
-    }
-    return getDefaultThemeForDate(new Date());
-  });
-
-  const [isEffectEnabled, setIsEffectEnabled] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY_EFFECT);
-      if (saved !== null) return saved === "true";
-    } catch (e) {
-      // ignore
-    }
-    return true;
-  });
-
-  const [isSoundEnabled, setIsSoundEnabled] = useState(() => getSoundPreference());
+  const navigate = useNavigate();
+  const { 
+    activeTheme, 
+    isEffectEnabled, 
+    isSoundEnabled, 
+    applyTheme, 
+    toggleEffect, 
+    toggleSound 
+  } = useAppTheme();
 
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleApplyTheme = (themeId) => {
-    setActiveTheme(themeId);
-    try {
-      localStorage.setItem(STORAGE_KEY_THEME, themeId);
-    } catch (e) {
-      // ignore
-    }
-
-    const themeConfig = THEMES[themeId] || THEMES.default;
-
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 1800,
-      background: "#181e2e",
-      color: "#fff",
-      timerProgressBar: true
-    });
-    Toast.fire({
-      icon: "success",
-      title: `Đã chuyển sang không gian: ${themeConfig.name}`
-    });
+    applyTheme(themeId);
   };
 
   const handleToggleEffect = () => {
-    setIsEffectEnabled((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem(STORAGE_KEY_EFFECT, String(next));
-      } catch (e) {
-        // ignore
-      }
-      return next;
-    });
+    toggleEffect();
   };
 
   const handleToggleSound = () => {
-    setIsSoundEnabled((prev) => {
-      const next = !prev;
-      setSoundPreference(next);
-      if (next) {
-        playClickSound();
-      }
-      return next;
-    });
+    toggleSound();
   };
 
   const handleSelectDate = (day, month, year, events = []) => {
@@ -184,6 +130,21 @@ export default function EventsCalendar() {
                   </button>
                 );
               })}
+
+              <button
+                type="button"
+                className="theme-pill-btn"
+                onClick={() => {
+                  playClickSound();
+                  navigate("/chu-de");
+                }}
+                onMouseEnter={playHoverSound}
+                style={{ "--pill-color": "#a855f7" }}
+                title="Mở kho 13 chủ đề website"
+              >
+                <FaWandMagicSparkles className="pill-icon" />
+                <span>Kho 13 Chủ Đề</span>
+              </button>
 
               {/* TOGGLE EFFECT BUTTON */}
               <button

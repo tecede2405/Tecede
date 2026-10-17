@@ -84,18 +84,14 @@ function DesignWeb() {
           <span className="dw-hero__title--gradient">Tối Ưu - Giá Học Sinh Sinh Viên</span>
         </h1>
 
-        <p className="dw-hero__desc">
-          Khởi tạo sự hiện diện trực tuyến mạnh mẽ cho cá nhân hoặc doanh nghiệp của bạn với các giải pháp website tùy chỉnh, chi phí hợp lý.
-        </p>
-      </section>
-
-      {/* ─── PRICING CARDS ─── */}
-      <section className="dw-plans">
         <div className="dw-section-header">
           <h2>Bảng Giá Dịch Vụ</h2>
           <p>Lựa chọn gói thiết kế phù hợp với nhu cầu và ngân sách của bạn</p>
         </div>
-        
+      </section>
+
+      {/* ─── PRICING CARDS ─── */}
+      <section className="dw-plans">
         <div className="dw-plans__grid">
           {plans.map((plan) => (
             <div

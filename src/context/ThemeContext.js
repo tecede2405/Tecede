@@ -1,0 +1,217 @@
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { THEMES, getDefaultThemeForDate } from "../pages/EventsCalendar/utils/eventsData";
+import { 
+  playClickSound, 
+  playThemeChime, 
+  getSoundPreference, 
+  setSoundPreference 
+} from "../utils/soundEffects";
+import Swal from "sweetalert2";
+
+export const STORAGE_KEY_THEME = "tecede_events_theme";
+export const STORAGE_KEY_EFFECT = "tecede_events_effect";
+export const STORAGE_KEY_SOUND = "tecede_events_sound";
+export const STORAGE_KEY_GLOBAL = "tecede_global_theme_enabled";
+
+const ThemeContext = createContext();
+
+export function ThemeProvider({ children }) {
+  // 1. Theme hiện tại
+  const [activeTheme, setActiveTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_THEME);
+      if (saved && THEMES[saved]) return saved;
+    } catch (e) {}
+    try {
+      return getDefaultThemeForDate(new Date()) || "default";
+    } catch (e) {
+      return "default";
+    }
+  });
+
+  // 2. Hiệu ứng hạt 3D
+  const [isEffectEnabled, setIsEffectEnabled] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_EFFECT);
+      if (saved !== null) return saved === "true";
+    } catch (e) {}
+    return true;
+  });
+
+  // 3. Âm thanh giao diện
+  const [isSoundEnabled, setIsSoundEnabled] = useState(() => getSoundPreference());
+
+  // 4. Bật chủ đề toàn cục mọi trang (default: true)
+  const [isGlobalThemeEnabled, setIsGlobalThemeEnabled] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_GLOBAL);
+      if (saved !== null) return saved === "true";
+    } catch (e) {}
+    return true;
+  });
+
+  // Đồng bộ class lên document.body cho toàn bộ website
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const body = document.body;
+
+    // Xóa tất cả các class theme cũ
+    const classesToRemove = [];
+    body.classList.forEach((cls) => {
+      if (cls.startsWith("site-theme-") || cls === "site-theme-active") {
+        classesToRemove.push(cls);
+      }
+    });
+    classesToRemove.forEach((cls) => body.classList.remove(cls));
+
+    const isWatchPage = typeof window !== "undefined" && window.location.pathname.startsWith("/xem-phim");
+
+    if (isGlobalThemeEnabled && activeTheme && !isWatchPage) {
+      body.classList.add("site-theme-active");
+      body.classList.add(`site-theme-${activeTheme}`);
+    }
+  }, [activeTheme, isGlobalThemeEnabled]);
+
+  // Áp dụng chủ đề mới
+  const applyTheme = useCallback((themeId, { playSound = true, showToast = true } = {}) => {
+    const validTheme = THEMES[themeId] ? themeId : "default";
+    setActiveTheme(validTheme);
+    setIsGlobalThemeEnabled(true);
+
+    try {
+      localStorage.setItem(STORAGE_KEY_THEME, validTheme);
+      localStorage.setItem(STORAGE_KEY_GLOBAL, "true");
+    } catch (e) {}
+
+    if (playSound) {
+      playClickSound();
+      playThemeChime();
+    }
+
+    if (showToast) {
+      const config = THEMES[validTheme] || THEMES.default;
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+        background: "#181e2e",
+        color: "#fff",
+        timerProgressBar: true
+      });
+      Toast.fire({
+        icon: "success",
+        title: `Đã kích hoạt chủ đề: ${config.name}`
+      });
+    }
+  }, []);
+
+  // Tắt chủ đề (về giao diện gốc mặc định)
+  const disableTheme = useCallback(({ playSound = true, showToast = true } = {}) => {
+    setIsGlobalThemeEnabled(false);
+    try {
+      localStorage.setItem(STORAGE_KEY_GLOBAL, "false");
+    } catch (e) {}
+
+    if (playSound) {
+      playClickSound();
+    }
+
+    if (showToast) {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1800,
+        background: "#181e2e",
+        color: "#fff"
+      });
+      Toast.fire({
+        icon: "info",
+        title: "Đã tắt chủ đề, trở về giao diện mặc định"
+      });
+    }
+  }, []);
+
+  // Bật/tắt hiệu ứng hạt
+  const toggleEffect = useCallback(() => {
+    setIsEffectEnabled((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(STORAGE_KEY_EFFECT, String(next));
+      } catch (e) {}
+      playClickSound();
+      return next;
+    });
+  }, []);
+
+  // Bật/tắt âm thanh
+  const toggleSound = useCallback(() => {
+    setIsSoundEnabled((prev) => {
+      const next = !prev;
+      setSoundPreference(next);
+      if (next) {
+        playClickSound();
+      }
+      return next;
+    });
+  }, []);
+
+  // Bật/tắt chế độ toàn cục
+  const toggleGlobalTheme = useCallback(() => {
+    setIsGlobalThemeEnabled((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(STORAGE_KEY_GLOBAL, String(next));
+      } catch (e) {}
+      playClickSound();
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1800,
+        background: "#181e2e",
+        color: "#fff"
+      });
+      Toast.fire({
+        icon: next ? "success" : "info",
+        title: next ? "Đã bật chủ đề cho toàn bộ website" : "Đã tắt chủ đề toàn cục"
+      });
+
+      return next;
+    });
+  }, []);
+
+  const currentThemeConfig = THEMES[activeTheme] || THEMES.default;
+
+  return (
+    <ThemeContext.Provider
+      value={{
+        activeTheme,
+        currentThemeConfig,
+        themes: THEMES,
+        isEffectEnabled,
+        isSoundEnabled,
+        isGlobalThemeEnabled,
+        applyTheme,
+        disableTheme,
+        toggleEffect,
+        toggleSound,
+        toggleGlobalTheme
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useAppTheme() {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useAppTheme must be used within a ThemeProvider");
+  }
+  return context;
+}
+
+export default ThemeContext;

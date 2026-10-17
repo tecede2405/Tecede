@@ -51,6 +51,36 @@
     background: radial-gradient(circle at 50% 0%, #0f1628 0%, #080c14 60%, #05070c 100%);
     .highlight-text { color: #38bdf8; text-shadow: 0 0 25px rgba(56, 189, 248, 0.4); }
   }
+
+  &.page-theme-cyberpunk {
+    background: radial-gradient(circle at 50% 0%, #1a082e 0%, #0c0417 60%, #06020c 100%);
+    .highlight-text { color: #a855f7; text-shadow: 0 0 25px rgba(168, 85, 247, 0.45); }
+  }
+
+  &.page-theme-ocean {
+    background: radial-gradient(circle at 50% 0%, #062238 0%, #031220 60%, #020911 100%);
+    .highlight-text { color: #0284c7; text-shadow: 0 0 25px rgba(2, 132, 199, 0.4); }
+  }
+
+  &.page-theme-sakura {
+    background: radial-gradient(circle at 50% 0%, #2b0c22 0%, #130510 60%, #0a0208 100%);
+    .highlight-text { color: #ec4899; text-shadow: 0 0 25px rgba(236, 72, 153, 0.4); }
+  }
+
+  &.page-theme-aurora {
+    background: radial-gradient(circle at 50% 0%, #072922 0%, #041612 60%, #020c0a 100%);
+    .highlight-text { color: #10b981; text-shadow: 0 0 25px rgba(16, 185, 129, 0.45); }
+  }
+
+  &.page-theme-sunset {
+    background: radial-gradient(circle at 50% 0%, #301205 0%, #150802 60%, #0b0401 100%);
+    .highlight-text { color: #ea580c; text-shadow: 0 0 25px rgba(234, 88, 12, 0.45); }
+  }
+
+  &.page-theme-matrix {
+    background: radial-gradient(circle at 50% 0%, #05260c 0%, #031406 60%, #010a03 100%);
+    .highlight-text { color: #22c55e; text-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
+  }
 }
 
 .events-main-container {

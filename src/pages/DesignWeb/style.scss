@@ -74,11 +74,11 @@
   }
 
   &__title {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-size: clamp(1.35rem, 3.2vw, 1.95rem);
     font-weight: 800;
     color: #fff;
-    line-height: 1.2;
-    margin-bottom: 20px;
+    line-height: 1.3;
+    margin-bottom: 16px;
 
     &--gradient {
       background: linear-gradient(135deg, #a855f7, #3b82f6);
@@ -121,18 +121,19 @@
 /* ─── SECTION HEADER ─── */
 .dw-section-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 16px;
   
   h2 {
-    font-size: 28px;
+    font-size: clamp(20px, 3.2vw, 26px);
     font-weight: 800;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     color: #fff;
   }
 
   p {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
   }
 }
 
@@ -303,7 +304,7 @@
 
   &__check {
     font-size: 16px;
-    color: #a855f7;
+    color: #22c55e;
     flex-shrink: 0;
     margin-top: 2px;
   }
@@ -406,7 +407,7 @@
 @media (max-width: 650px) {
   .dw-hero {
     &__title {
-      font-size: 1.8rem;
+      font-size: 1.35rem;
     }
     &__cta-btn {
       padding: 12px 20px;

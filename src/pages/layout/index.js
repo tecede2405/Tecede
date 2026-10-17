@@ -3,11 +3,14 @@ import "./layout.scss";
 import Tabbar from "../../component/tabar/index";
 import { useState, useEffect, useRef } from "react";
 
-import { FaTimes, FaBars, FaHome, FaBookOpen, FaHeadphones, FaMusic, FaHeart, FaChevronDown, FaHandHoldingHeart, FaPhoneVolume, FaEnvelope, FaHashtag } from "react-icons/fa";
+import { FaTimes, FaBars, FaHome, FaBookOpen, FaHeadphones, FaMusic, FaHeart, FaChevronDown, FaHandHoldingHeart, FaPhoneVolume, FaEnvelope, FaHashtag, FaPalette } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
+import { useAppTheme } from "../../context/ThemeContext";
+import EventThemeCanvas from "../EventsCalendar/components/EventThemeCanvas/index";
+import { playClickSound, playHoverSound } from "../../utils/soundEffects";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
 
 function Layout() {
@@ -22,6 +25,7 @@ function Layout() {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith("/admin");
   const { user, logout } = useAuth();
+  const { activeTheme, isEffectEnabled, isGlobalThemeEnabled } = useAppTheme();
 
   const DarkSwal = Swal.mixin({
     background: "#1f1f1f",
@@ -36,11 +40,37 @@ function Layout() {
     hideClass: { popup: "animate__animated animate__fadeOutUp" }
   });
 
+  const isWatchPage = location.pathname.startsWith("/xem-phim");
+
   useEffect(() => {
     setShowUserMenu(false);
     setShowMusicMenu(false);
     setShowTabbar(false);
   }, [location.pathname]);
+
+  // Tự động tắt hiệu ứng theme khi vào trang xem phim để tránh giật lag / phân tâm, mở lại khi rời đi
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const body = document.body;
+
+    const clearThemeClasses = () => {
+      const classesToRemove = [];
+      body.classList.forEach((cls) => {
+        if (cls.startsWith("site-theme-") || cls === "site-theme-active") {
+          classesToRemove.push(cls);
+        }
+      });
+      classesToRemove.forEach((cls) => body.classList.remove(cls));
+    };
+
+    if (isGlobalThemeEnabled && activeTheme && !isWatchPage) {
+      clearThemeClasses();
+      body.classList.add("site-theme-active");
+      body.classList.add(`site-theme-${activeTheme}`);
+    } else {
+      clearThemeClasses();
+    }
+  }, [location.pathname, activeTheme, isGlobalThemeEnabled, isWatchPage]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -135,13 +165,22 @@ function Layout() {
             </div>
           </div>
 
-          {/* Cụm này LUÔN HIỆN kể cả trên Mobile (Heart, History) */}
+          {/* Cụm này LUÔN HIỆN kể cả trên Mobile (Heart, History, Theme) */}
           <div className="action-icons">
             <NavLink to="/ung-ho" className={({ isActive }) => isActive ? "act-icon active" : "act-icon"} title="Ủng hộ">
               <FaHandHoldingHeart />
             </NavLink>
             <NavLink to="/history" className={({ isActive }) => isActive ? "act-icon active" : "act-icon"} title="Lịch sử xem">
               <FaClockRotateLeft />
+            </NavLink>
+            <NavLink 
+              to="/chu-de" 
+              className={({ isActive }) => isActive ? "act-icon active" : "act-icon"} 
+              title="Chủ đề & Giao diện"
+              onClick={playClickSound}
+              onMouseEnter={playHoverSound}
+            >
+              <FaPalette />
             </NavLink>
           </div>
 
@@ -190,6 +229,17 @@ function Layout() {
                       <button className="menu-action-btn" onClick={() => navigate("/profile")}>
                         <MdOutlineAccountCircle className="icon-purple" /> <span>Trang cá nhân</span>
                       </button>
+                      <button 
+                        className="menu-action-btn" 
+                        onClick={() => { 
+                          playClickSound(); 
+                          navigate("/chu-de"); 
+                          setShowUserMenu(false); 
+                        }}
+                        onMouseEnter={playHoverSound}
+                      >
+                        <FaPalette className="icon-purple" /> <span>Chủ đề & Giao diện</span>
+                      </button>
                       <button
                         className="logout-btn"
                         onClick={() => {
@@ -214,6 +264,17 @@ function Layout() {
         <>
           <div className="tabbar-overlay" onClick={() => setShowTabbar(false)} />
           <Tabbar isOpen={showTabbar} onClose={() => setShowTabbar(false)} />
+        </>
+      )}
+
+      {/* GLOBAL THEME PARTICLES & AMBIENT GLOW */}
+      {isGlobalThemeEnabled && !isWatchPage && (
+        <>
+          <div className="global-theme-glow glow-top" />
+          <div className="global-theme-glow glow-bottom" />
+          {isEffectEnabled && !location.pathname.startsWith("/lich-") && (
+            <EventThemeCanvas theme={activeTheme} isEnabled={isEffectEnabled} />
+          )}
         </>
       )}
 

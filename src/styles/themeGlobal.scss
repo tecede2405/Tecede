@@ -1,0 +1,211 @@
+/* ==========================================================================
+   GLOBAL THEME ENGINE & AMBIENT ATMOSPHERE
+   Applies when active theme is turned on globally across all pages
+   ========================================================================== */
+
+/* AMBIENT GLOWS */
+.global-theme-glow {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.18;
+  transition: all 0.8s ease;
+
+  &.glow-top {
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 320px;
+  }
+
+  &.glow-bottom {
+    bottom: -150px;
+    right: 5%;
+    width: 500px;
+    height: 300px;
+  }
+}
+
+/* THEME SPECIFIC ATMOSPHERES */
+body.site-theme-active {
+  transition: background-color 0.5s ease;
+
+  /* PINK (20/10 & 8/3) */
+  &.site-theme-pink {
+    .global-theme-glow { background: #f43f5e; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(244, 63, 94, 0.25);
+      background-color: rgba(14, 7, 12, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(19, 7, 16, 0.9), rgba(19, 7, 16, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* TET PHÁO HOA */
+  &.site-theme-tet {
+    .global-theme-glow { background: #ef4444; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(239, 68, 68, 0.25);
+      background-color: rgba(18, 5, 5, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(24, 6, 6, 0.9), rgba(24, 6, 6, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* NOEL BĂNG TUYẾT */
+  &.site-theme-noel {
+    .global-theme-glow { background: #06b6d4; opacity: 0.2; }
+    .header {
+      border-bottom-color: rgba(6, 182, 212, 0.25);
+      background-color: rgba(5, 16, 18, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(4, 18, 20, 0.9), rgba(4, 18, 20, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* DÂN TỘC CỜ ĐỎ SAO VÀNG */
+  &.site-theme-national {
+    .global-theme-glow { background: #dc2626; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(250, 204, 21, 0.3);
+      background-color: rgba(18, 6, 8, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(22, 7, 9, 0.9), rgba(22, 7, 9, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* TRĂNG RẰM & TRUNG THU */
+  &.site-theme-midautumn {
+    .global-theme-glow { background: #f59e0b; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(245, 158, 11, 0.25);
+      background-color: rgba(14, 11, 26, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(16, 12, 30, 0.9), rgba(16, 12, 30, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* HALLOWEEN */
+  &.site-theme-halloween {
+    .global-theme-glow { background: #f97316; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(249, 115, 22, 0.3);
+      background-color: rgba(18, 8, 26, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(20, 8, 28, 0.9), rgba(20, 8, 28, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* CYBERPUNK NEON 2077 */
+  &.site-theme-cyberpunk {
+    .global-theme-glow { background: #a855f7; opacity: 0.25; }
+    .header {
+      border-bottom-color: rgba(168, 85, 247, 0.35);
+      background-color: rgba(14, 6, 26, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(17, 7, 34, 0.9), rgba(17, 7, 34, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* ĐẠI DƯƠNG SÂU THẲM */
+  &.site-theme-ocean {
+    .global-theme-glow { background: #0284c7; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(2, 132, 199, 0.3);
+      background-color: rgba(3, 16, 28, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(3, 20, 36, 0.9), rgba(3, 20, 36, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* HOA ANH ĐÀO SAKURA */
+  &.site-theme-sakura {
+    .global-theme-glow { background: #ec4899; opacity: 0.2; }
+    .header {
+      border-bottom-color: rgba(236, 72, 153, 0.3);
+      background-color: rgba(20, 8, 17, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(26, 9, 21, 0.9), rgba(26, 9, 21, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* BẮC CỰC QUANG AURORA */
+  &.site-theme-aurora {
+    .global-theme-glow { background: #10b981; opacity: 0.2; }
+    .header {
+      border-bottom-color: rgba(16, 185, 129, 0.3);
+      background-color: rgba(5, 20, 16, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(6, 25, 20, 0.9), rgba(6, 25, 20, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* RỪNG THU HOÀNG HÔN */
+  &.site-theme-sunset {
+    .global-theme-glow { background: #ea580c; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(234, 88, 12, 0.3);
+      background-color: rgba(22, 10, 5, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(28, 11, 6, 0.9), rgba(28, 11, 6, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* MATRIX DIGITAL RAIN */
+  &.site-theme-matrix {
+    .global-theme-glow { background: #22c55e; opacity: 0.22; }
+    .header {
+      border-bottom-color: rgba(34, 197, 94, 0.35);
+      background-color: rgba(4, 18, 7, 0.95);
+      backdrop-filter: blur(12px);
+    }
+    .app-wrapper::before {
+      background-image: linear-gradient(rgba(4, 22, 9, 0.9), rgba(4, 22, 9, 0.92)),
+        url("https://i.ibb.co/20bFCcHZ/VN-vi-20260105-TRIFECTA-perspective-ec5c484f-840e-4d19-9f35-b9e6a0eef2c7-medium.webp");
+    }
+  }
+
+  /* DEFAULT VŨ TRỤ */
+  &.site-theme-default {
+    .global-theme-glow { background: #38bdf8; opacity: 0.16; }
+    .header {
+      border-bottom-color: rgba(56, 189, 248, 0.2);
+    }
+  }
+}

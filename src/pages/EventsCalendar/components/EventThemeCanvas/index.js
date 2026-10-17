@@ -23,19 +23,21 @@ function EventThemeCanvas({ theme = "default", isEnabled = true }) {
     let animationFrameId;
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = 1;
 
     // Xử lý Resize
     const handleResize = () => {
       width = canvas.parentElement?.clientWidth || window.innerWidth;
       height = canvas.parentElement?.clientHeight || window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.scale(dpr, dpr);
+      // Trên mobile dùng dpr 1 để tiết kiệm GPU/pin, trên PC tối đa 1.5
+      dpr = width < 768 ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     // MOUSE INTERACTION
     let mouse = { x: width / 2, y: height / 2, moved: false };
@@ -45,7 +47,7 @@ function EventThemeCanvas({ theme = "default", isEnabled = true }) {
       mouse.y = e.clientY - rect.top;
       mouse.moved = true;
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     // =========================================================================
     // 1. PARTICLES INITIALIZATION BASED ON THEME
@@ -219,6 +221,119 @@ function EventThemeCanvas({ theme = "default", isEnabled = true }) {
       }
     };
 
+    // --- H. THEME CYBERPUNK: Neon laser nodes & pulses ---
+    const initCyberpunk = () => {
+      const count = width < 768 ? 35 : 65;
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 3.5 + 1.5,
+          speedY: -(Math.random() * 1.8 + 0.8),
+          speedX: (Math.random() - 0.5) * 0.4,
+          color: Math.random() > 0.5 ? "#a855f7" : "#06b6d4",
+          alpha: Math.random() * 0.7 + 0.3,
+          pulse: Math.random() * Math.PI * 2
+        });
+      }
+    };
+
+    // --- I. THEME OCEAN: Rising bubbles ---
+    const initOcean = () => {
+      const count = width < 768 ? 25 : 50;
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 4 + 2,
+          speedY: Math.random() * 1.2 + 0.6,
+          wobbleSpeed: Math.random() * 0.03 + 0.015,
+          angle: Math.random() * Math.PI * 2,
+          alpha: Math.random() * 0.5 + 0.3
+        });
+      }
+    };
+
+    // --- J. THEME SAKURA: Cherry blossom petals ---
+    const initSakura = () => {
+      const count = width < 768 ? 30 : 60;
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height - height,
+          size: Math.random() * 9 + 6,
+          speedY: Math.random() * 1.3 + 0.7,
+          speedX: Math.random() * 0.9 + 0.5,
+          rotX: Math.random() * Math.PI * 2,
+          rotY: Math.random() * Math.PI * 2,
+          rotZ: Math.random() * Math.PI * 2,
+          rotSpeedX: (Math.random() - 0.5) * 0.03,
+          rotSpeedY: (Math.random() - 0.5) * 0.03,
+          rotSpeedZ: (Math.random() - 0.5) * 0.02,
+          color: Math.random() > 0.4 ? "#f472b6" : (Math.random() > 0.5 ? "#fbcfe8" : "#fb7185"),
+          alpha: Math.random() * 0.7 + 0.3
+        });
+      }
+    };
+
+    // --- K. THEME AURORA: Northern lights glow ---
+    const initAurora = () => {
+      const count = width < 768 ? 35 : 65;
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 5 + 3,
+          speedX: (Math.random() - 0.5) * 0.6,
+          speedY: (Math.random() - 0.5) * 0.6,
+          pulse: Math.random() * Math.PI * 2,
+          pulseSpeed: Math.random() * 0.02 + 0.01,
+          color: Math.random() > 0.5 ? "16, 185, 129" : "139, 92, 246"
+        });
+      }
+    };
+
+    // --- L. THEME SUNSET: Autumn leaves ---
+    const initSunset = () => {
+      const count = width < 768 ? 25 : 50;
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height - height,
+          size: Math.random() * 8 + 5,
+          speedY: Math.random() * 1.2 + 0.6,
+          speedX: Math.sin(Math.random() * Math.PI) * 1.2,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.04,
+          color: Math.random() > 0.5 ? "#ea580c" : (Math.random() > 0.5 ? "#f59e0b" : "#dc2626"),
+          alpha: Math.random() * 0.7 + 0.3
+        });
+      }
+    };
+
+    // --- M. THEME MATRIX: Digital rain ---
+    const initMatrix = () => {
+      const colWidth = 24;
+      const cols = Math.floor(width / colWidth);
+      particles = [];
+      const chars = "0123456789ABCDEF01TECEDE";
+      for (let i = 0; i < cols; i++) {
+        particles.push({
+          x: i * colWidth + 8,
+          y: Math.random() * -height,
+          speedY: Math.random() * 2.5 + 2,
+          char: chars[Math.floor(Math.random() * chars.length)],
+          updateTimer: 0,
+          size: Math.random() * 3 + 12
+        });
+      }
+    };
+
     // Khởi tạo theo theme
     if (theme === "pink") initPink();
     else if (theme === "tet") fireworks = [];
@@ -226,6 +341,12 @@ function EventThemeCanvas({ theme = "default", isEnabled = true }) {
     else if (theme === "national") initNational();
     else if (theme === "midautumn") initMidautumn();
     else if (theme === "halloween") initHalloween();
+    else if (theme === "cyberpunk") initCyberpunk();
+    else if (theme === "ocean") initOcean();
+    else if (theme === "sakura") initSakura();
+    else if (theme === "aurora") initAurora();
+    else if (theme === "sunset") initSunset();
+    else if (theme === "matrix") initMatrix();
     else initDefault();
 
     // =========================================================================
@@ -430,6 +551,172 @@ function EventThemeCanvas({ theme = "default", isEnabled = true }) {
           ctx.fill();
           ctx.restore();
         });
+      }
+
+      // --- THEME CYBERPUNK: NEON LASER NODES ---
+      else if (theme === "cyberpunk") {
+        particles.forEach((p) => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.pulse += 0.05;
+
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+
+          const currentSize = p.size + Math.sin(p.pulse) * 1;
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(1, currentSize), 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      // --- THEME OCEAN: BUBBLES WITH SPECULAR REFLECTION ---
+      else if (theme === "ocean") {
+        particles.forEach((p) => {
+          p.y -= p.speedY;
+          p.angle += p.wobbleSpeed;
+          const wobbleX = p.x + Math.sin(p.angle) * 15;
+
+          if (p.y < -20) {
+            p.y = height + 20;
+            p.x = Math.random() * width;
+          }
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(wobbleX, p.y, p.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(125, 211, 252, 0.5)";
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+
+          // Highlight điểm sáng phản chiếu
+          ctx.beginPath();
+          ctx.arc(wobbleX - p.radius * 0.35, p.y - p.radius * 0.35, p.radius * 0.25, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      // --- THEME SAKURA: CHERRY BLOSSOM PETALS ---
+      else if (theme === "sakura") {
+        particles.forEach((p) => {
+          p.y += p.speedY;
+          p.x += p.speedX + Math.sin(p.rotZ) * 0.8;
+          p.rotX += p.rotSpeedX;
+          p.rotY += p.rotSpeedY;
+          p.rotZ += p.rotSpeedZ;
+
+          if (p.y > height + 20) {
+            p.y = -20;
+            p.x = Math.random() * width - 50;
+          }
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotZ);
+          ctx.scale(Math.cos(p.rotX), Math.sin(p.rotY));
+          ctx.globalAlpha = p.alpha;
+
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(-p.size / 2, -p.size / 2, -p.size / 2, p.size / 2, 0, p.size);
+          ctx.bezierCurveTo(p.size / 2, p.size / 2, p.size / 2, -p.size / 2, 0, 0);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      // --- THEME AURORA: NORTHERN LIGHTS GLOW ---
+      else if (theme === "aurora") {
+        particles.forEach((p) => {
+          p.pulse += p.pulseSpeed;
+          p.x += p.speedX;
+          p.y += p.speedY + Math.sin(p.pulse) * 0.3;
+
+          if (p.x < -30) p.x = width + 30;
+          if (p.x > width + 30) p.x = -30;
+          if (p.y < -30) p.y = height + 30;
+          if (p.y > height + 30) p.y = -30;
+
+          const currentAlpha = Math.sin(p.pulse) * 0.35 + 0.45;
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${p.color}, ${Math.max(0.1, currentAlpha)})`;
+          ctx.shadowBlur = 16;
+          ctx.shadowColor = `rgba(${p.color}, 0.9)`;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      // --- THEME SUNSET: AUTUMN MAPLE LEAVES ---
+      else if (theme === "sunset") {
+        particles.forEach((p) => {
+          p.y += p.speedY;
+          p.x += p.speedX + Math.sin(p.rot) * 0.6;
+          p.rot += p.rotSpeed;
+
+          if (p.y > height + 20) {
+            p.y = -20;
+            p.x = Math.random() * width;
+          }
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+
+          ctx.beginPath();
+          ctx.moveTo(0, -p.size);
+          ctx.lineTo(p.size * 0.6, -p.size * 0.3);
+          ctx.lineTo(p.size, 0);
+          ctx.lineTo(p.size * 0.4, p.size * 0.6);
+          ctx.lineTo(0, p.size);
+          ctx.lineTo(-p.size * 0.4, p.size * 0.6);
+          ctx.lineTo(-p.size, 0);
+          ctx.lineTo(-p.size * 0.6, -p.size * 0.3);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      // --- THEME MATRIX: DIGITAL CODE RAIN ---
+      else if (theme === "matrix") {
+        ctx.save();
+        ctx.fillStyle = "#22c55e";
+        ctx.shadowColor = "#22c55e";
+        ctx.shadowBlur = 8;
+
+        particles.forEach((p) => {
+          p.y += p.speedY;
+          p.updateTimer++;
+          if (p.updateTimer > 12) {
+            const chars = "0123456789ABCDEF01TECEDE";
+            p.char = chars[Math.floor(Math.random() * chars.length)];
+            p.updateTimer = 0;
+          }
+
+          if (p.y > height) {
+            p.y = Math.random() * -60;
+          }
+
+          ctx.font = `${p.size}px monospace`;
+          ctx.fillText(p.char, p.x, p.y);
+        });
+        ctx.restore();
       }
 
       // --- THEME DEFAULT: 3D WARP STARFIELD ---

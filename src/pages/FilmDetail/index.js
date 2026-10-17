@@ -9,6 +9,7 @@ import { useAuth } from "../../context/AuthContext";
 import { VerifiedBadge } from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
 import HlsPlayer from "../../component/HlsPlayer";
+import useScreenWakeLock from "../../hooks/useScreenWakeLock";
 import "./style.scss";
 
 // TẠO BỘ NHỚ ĐỆM (CACHE) Ở NGOÀI COMPONENT ĐỂ KHÔNG BỊ MẤT KHI RE-RENDER
@@ -46,6 +47,9 @@ const isValidAvatar = (url) => {
 };
 
 export default function FilmDetail() {
+  // Giữ màn hình luôn sáng khi xem phim (kể cả iframe embed và fullscreen)
+  useScreenWakeLock(true);
+
   const { slug, server, episodeSlug } = useParams();
   const navigate = useNavigate();
   const location = useLocation(); 
@@ -629,7 +633,7 @@ export default function FilmDetail() {
                     src={currentVideo.embedUrl}
                     title={`Phim ${movie.name} - ${currentVideo.name}`}
                     className="w-100 h-100"
-                    allow="autoplay; encrypted-media; picture-in-picture;"
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture; screen-wake-lock;"
                     allowFullScreen
                     referrerPolicy="strict-origin-when-cross-origin"
                     frameBorder="0"
