@@ -104,6 +104,7 @@ function GenreCarousel() {
                 <h3 className="genre-carousel__card-title">
                   {item.title}
                 </h3>
+                <div className="genre-carousel__card-divider" />
                 <p className="genre-carousel__card-desc">
                   {item.desc}
                 </p>

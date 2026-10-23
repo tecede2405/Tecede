@@ -1290,3 +1290,213 @@
   }
 }
 
+
+
+/* ========================================= */
+/* THÔNG BÁO LỖI SERVER / SUSPEND / NGHẼN */
+/* ========================================= */
+.music-server-error-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 30px 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+.music-server-error-card {
+  max-width: 540px;
+  width: 100%;
+  background: rgba(30, 20, 48, 0.85);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  border-radius: 20px;
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(168, 85, 247, 0.12);
+  backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6);
+  }
+
+  .error-pulse-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    font-size: 12px;
+    font-weight: 600;
+    color: #f87171;
+    margin-bottom: 20px;
+
+    .dot-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+      animation: pulseAlert 1.5s infinite;
+    }
+  }
+
+  .error-icon-circle {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.25), rgba(30, 20, 48, 0.9));
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 24px rgba(168, 85, 247, 0.2);
+
+    .server-main-icon {
+      font-size: 32px;
+      color: #c084fc;
+    }
+
+    .alert-badge-icon {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      font-size: 18px;
+      color: #f59e0b;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+    }
+  }
+
+  .error-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .error-message {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #e2e8f0;
+    margin-bottom: 22px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 14px 18px;
+    border-radius: 12px;
+    border-left: 3px solid #ec4899;
+  }
+
+  .error-category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 26px;
+
+    .cat-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .cat-text {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+
+      .cat-label {
+        font-size: 11px;
+        color: #9ca3af;
+      }
+
+      .cat-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #f3e8ff;
+      }
+    }
+  }
+
+  .error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+
+    .btn-fanpage-contact {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 22px;
+      background: linear-gradient(135deg, #1877f2, #0d6efd);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+      transition: all 0.25s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(24, 119, 242, 0.5);
+        color: #fff;
+      }
+    }
+
+    .btn-retry-fetch {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e5e7eb;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+@keyframes pulseAlert {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@media (max-width: 480px) {
+  .music-server-error-card {
+    padding: 24px 16px;
+
+    .error-title { font-size: 17px; }
+    .error-message { font-size: 13.5px; padding: 12px 14px; }
+    .error-actions {
+      flex-direction: column;
+      .btn-fanpage-contact, .btn-retry-fetch {
+        width: 100%;
+      }
+    }
+  }
+}

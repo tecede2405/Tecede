@@ -140,7 +140,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 14px 16px;
+    padding: 10px 14px 10px;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -148,45 +148,74 @@
   }
 
   &__card-title {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 4px;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
     color: #fff;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.85);
+    letter-spacing: 0.2px;
     transition: color 0.3s ease;
   }
 
+  &__card-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.1) 80%,
+      transparent 100%
+    );
+    margin: 6px 0 5px;
+    transition: all 0.3s ease;
+  }
+
   &__card-desc {
-    font-size: 12px;
+    font-size: 11px;
     color: #cbd5e1;
-    opacity: 0.9;
-    font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    opacity: 0.85;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    letter-spacing: 0.1px;
   }
 
   &__card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
-    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5), 0 0 16px rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.4);
 
     .genre-carousel__bg img {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
     
     .genre-carousel__overlay {
       background: linear-gradient(
         to top,
-        rgba(0, 0, 0, 0.85) 0%,
-        rgba(0, 0, 0, 0.2) 60%,
+        rgba(10, 8, 20, 0.96) 0%,
+        rgba(10, 8, 20, 0.5) 50%,
         transparent 100%
       );
     }
     
     .genre-carousel__card-title {
       color: #fcd34d;
+    }
+
+    .genre-carousel__card-divider {
+      background: linear-gradient(
+        90deg,
+        #fcd34d 0%,
+        rgba(168, 85, 247, 0.6) 60%,
+        transparent 100%
+      );
     }
   }
 }
@@ -231,20 +260,25 @@
     }
     
     &__card {
-      height: 85px;
+      height: 92px;
       border-radius: 12px;
     }
     
     &__card-title {
-      font-size: 14px;
+      font-size: 13.5px;
+    }
+    
+    &__card-divider {
+      margin: 4px 0 4px;
     }
     
     &__card-desc {
-      font-size: 11px;
+      font-size: 10px;
+      opacity: 0.8;
     }
     
     &__content {
-      padding: 10px 12px;
+      padding: 8px 10px 8px;
     }
   }
 }
