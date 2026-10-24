@@ -85,7 +85,8 @@ export default function ThemesPage() {
     return themeList.filter((t) => t.category === selectedCategory);
   }, [themeList, selectedCategory]);
 
-  const activeConfig = themes[activeTheme] || themes.default;
+  const isThemeActive = Boolean(isGlobalThemeEnabled && activeTheme);
+  const activeConfig = (activeTheme && themes[activeTheme]) || themes.default;
   const ActiveIcon = THEME_ICONS[activeConfig?.icon] || FaStar;
 
   return (
@@ -113,26 +114,26 @@ export default function ThemesPage() {
 
           {/* HIỂN THỊ THEME ĐANG DÙNG */}
           <div 
-            className={`active-theme-banner ${!isGlobalThemeEnabled ? "is-disabled" : ""}`}
-            style={{ borderColor: isGlobalThemeEnabled ? (activeConfig?.primaryColor || "#38bdf8") : "rgba(255, 255, 255, 0.15)" }}
+            className={`active-theme-banner ${!isThemeActive ? "is-disabled" : ""}`}
+            style={{ borderColor: isThemeActive ? (activeConfig?.primaryColor || "#38bdf8") : "rgba(255, 255, 255, 0.15)" }}
           >
             <div className="banner-left">
               <div 
                 className="banner-icon-box"
-                style={{ background: isGlobalThemeEnabled ? (activeConfig?.primaryColor || "#38bdf8") : "#475569" }}
+                style={{ background: isThemeActive ? (activeConfig?.primaryColor || "#38bdf8") : "#475569" }}
               >
-                {isGlobalThemeEnabled ? <ActiveIcon /> : <FaPowerOff />}
+                {isThemeActive ? <ActiveIcon /> : <FaPowerOff />}
               </div>
               <div className="banner-text">
                 <span className="banner-label">
-                  {isGlobalThemeEnabled ? "Đang áp dụng toàn trang:" : "Trạng thái giao diện:"}
+                  {isThemeActive ? "Đang áp dụng toàn trang:" : "Trạng thái giao diện:"}
                 </span>
                 <span className="banner-name">
-                  {isGlobalThemeEnabled ? activeConfig?.name : "Giao diện gốc mặc định (Chủ đề đang tắt)"}
+                  {isThemeActive ? activeConfig?.name : "Giao diện gốc mặc định (Chủ đề đang tắt)"}
                 </span>
               </div>
             </div>
-            {isGlobalThemeEnabled && (
+            {isThemeActive && (
               <div className="banner-badges">
                 <span className="badge-pill">{activeConfig?.badge}</span>
               </div>
@@ -151,7 +152,7 @@ export default function ThemesPage() {
             {/* 1. NÚT TẮT / BẬT CHỦ ĐỀ */}
             <button
               type="button"
-              className={`ctrl-btn ${!isGlobalThemeEnabled ? "btn-danger-active" : ""}`}
+              className={`ctrl-btn ${!isThemeActive ? "btn-danger-active" : ""}`}
               onClick={() => {
                 if (isGlobalThemeEnabled) {
                   disableTheme();
@@ -166,7 +167,7 @@ export default function ThemesPage() {
               <div className="ctrl-text">
                 <span className="ctrl-title">Tắt chủ đề</span>
                 <span className="ctrl-desc">
-                  {isGlobalThemeEnabled ? "Bấm để tắt" : "Đang tắt (Gốc)"}
+                  {isThemeActive ? "Bấm để tắt" : "Đang tắt (Gốc)"}
                 </span>
               </div>
             </button>
@@ -245,7 +246,7 @@ export default function ThemesPage() {
         <div className="themes-compact-grid">
           {filteredThemes.map((theme) => {
             const IconComp = THEME_ICONS[theme.icon] || FaStar;
-            const isCurrent = isGlobalThemeEnabled && activeTheme === theme.id;
+            const isCurrent = Boolean(isThemeActive && activeTheme === theme.id);
 
             return (
               <div

@@ -58,6 +58,13 @@ import DownloadAppTV from "./pages/DownloadAppTV/index";
 import DesignWeb from "./pages/DesignWeb/index";
 import EventsCalendar from "./pages/EventsCalendar/index";
 import ThemesPage from "./pages/ThemesPage/index";
+import YouTubePremium from "./pages/YouTubePremium/index";
+import YouTubeWatch from "./pages/YouTubePremium/YouTubeWatch/index";
+import YouTubeSearch from "./pages/YouTubePremium/YouTubeSearch/index";
+import YouTubeChannel from "./pages/YouTubePremium/YouTubeChannel/index";
+import YouTubePlaylist from "./pages/YouTubePremium/YouTubePlaylist/index";
+import { TecedeYtPlayerProvider } from "./context/TecedeYtPlayerContext";
+import TecedeYtMiniPlayer from "./pages/YouTubePremium/components/TecedeYtMiniPlayer";
 // UI
 // import Squares from "./component/SquaresBackgound/index";
 
@@ -85,7 +92,7 @@ function App() {
 
 
   return (
-    <>
+    <TecedeYtPlayerProvider>
       {loading ? (
         <Loading />
       ) : (
@@ -106,6 +113,18 @@ function App() {
               <ScrollToTop />
 
               <Routes>
+                {/* ── Standalone TecedeYT (Giao diện độc lập không Header / Footer web) ── */}
+                <Route path="/tecede-yt" element={<YouTubePremium />} />
+                <Route path="/tecede-yt/watch/:videoId" element={<YouTubeWatch />} />
+                <Route path="/tecede-yt/search" element={<YouTubeSearch />} />
+                <Route path="/tecede-yt/channel/:channelId" element={<YouTubeChannel />} />
+                <Route path="/tecede-yt/playlist/:playlistId" element={<YouTubePlaylist />} />
+                <Route path="/youtube-premium" element={<YouTubePremium />} />
+                <Route path="/youtube-premium/watch/:videoId" element={<YouTubeWatch />} />
+                <Route path="/youtube-premium/search" element={<YouTubeSearch />} />
+                <Route path="/youtube-premium/channel/:channelId" element={<YouTubeChannel />} />
+                <Route path="/youtube-premium/playlist/:playlistId" element={<YouTubePlaylist />} />
+
                 <Route path="/" element={<Layout />}>
                   <Route index element={<Home />} />
                   <Route path="/login" element={<LoginPage />} />
@@ -196,13 +215,15 @@ function App() {
 
               {/* Cửa sổ nhạc Mini PIP nổi góc phải khi duyệt các trang khác */}
               <MiniFloatingPlayer />
+              {/* Cửa sổ video TecedeYT Mini thu nhỏ nổi góc phải */}
+              <TecedeYtMiniPlayer />
             </div>
           </div>
         </>
       )}
 
       <Analytics />
-    </>
+    </TecedeYtPlayerProvider>
   );
 }
 

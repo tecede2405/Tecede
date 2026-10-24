@@ -207,6 +207,22 @@
           color: #ffffff;
         }
       }
+
+      &.default-off-pill {
+        border-color: rgba(239, 68, 68, 0.25);
+        .pill-icon {
+          color: #ef4444;
+        }
+        &.active {
+          background: rgba(239, 68, 68, 0.2);
+          border-color: #ef4444;
+          color: #ffffff;
+          box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+          .pill-icon {
+            color: #ef4444;
+          }
+        }
+      }
     }
 
     .effect-toggle-btn,

@@ -12,12 +12,12 @@ import "./style.scss";
  * - halloween: Đốm lửa ma thuật & Dơi bay huyền bí
  * - default: Trường sao 3D vũ trụ chiều sâu
  */
-function EventThemeCanvas({ theme = "default", isEnabled = true }) {
+function EventThemeCanvas({ theme, isEnabled = true }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !isEnabled) return;
+    if (!canvas || !isEnabled || !theme || theme === "none") return;
 
     const ctx = canvas.getContext("2d", { alpha: true });
     let animationFrameId;
@@ -772,7 +772,7 @@ function EventThemeCanvas({ theme = "default", isEnabled = true }) {
     };
   }, [theme, isEnabled]);
 
-  if (!isEnabled) return null;
+  if (!isEnabled || !theme || theme === "none") return null;
 
   return (
     <div className={`theme-canvas-container theme-canvas--${theme}`}>

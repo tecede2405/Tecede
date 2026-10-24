@@ -18,7 +18,8 @@ import {
   FaGhost,
   FaStar,
   FaVolumeUp,
-  FaVolumeMute
+  FaVolumeMute,
+  FaPowerOff
 } from "react-icons/fa";
 import { FaWandMagicSparkles, FaCalendarDays } from "react-icons/fa6";
 import { 
@@ -44,7 +45,9 @@ export default function EventsCalendar() {
     activeTheme, 
     isEffectEnabled, 
     isSoundEnabled, 
+    isGlobalThemeEnabled,
     applyTheme, 
+    disableTheme,
     toggleEffect, 
     toggleSound 
   } = useAppTheme();
@@ -71,8 +74,11 @@ export default function EventsCalendar() {
     }
   };
 
+  const isThemeActive = Boolean(isGlobalThemeEnabled && activeTheme);
+
   return (
-    <div className={`events-page-wrapper page-theme-${activeTheme}`}>
+    <div className={`events-page-wrapper ${isThemeActive ? `page-theme-${activeTheme}` : "page-theme-none"}`}>
+
       <Helmet>
         <title>Lịch &amp; Sự Kiện Việt Nam - Tra Cứu Lịch Âm Dương, Giờ Hoàng Đạo &amp; Ngày Lễ</title>
         <meta
@@ -82,11 +88,17 @@ export default function EventsCalendar() {
       </Helmet>
 
       {/* CANVAS 3D/2D HIỆU ỨNG NỀN HIỆU NĂNG CAO */}
-      <EventThemeCanvas theme={activeTheme} isEnabled={isEffectEnabled} />
+      {isThemeActive && isEffectEnabled && (
+        <EventThemeCanvas theme={activeTheme} isEnabled={isEffectEnabled} />
+      )}
 
       {/* AMBIENT GLOW BACKGROUNDS */}
-      <div className="events-bg-glow glow-top" />
-      <div className="events-bg-glow glow-bottom" />
+      {isThemeActive && (
+        <>
+          <div className="events-bg-glow glow-top" />
+          <div className="events-bg-glow glow-bottom" />
+        </>
+      )}
 
       <div className="events-main-container">
         
@@ -109,9 +121,24 @@ export default function EventsCalendar() {
             </div>
 
             <div className="theme-pills-row">
+              <button
+                type="button"
+                className={`theme-pill-btn default-off-pill ${!isThemeActive ? "active" : ""}`}
+                onClick={() => {
+                  playClickSound();
+                  disableTheme();
+                }}
+                onMouseEnter={playHoverSound}
+                style={{ "--pill-color": "#64748b" }}
+                title="Tắt chủ đề, quay về giao diện mặc định"
+              >
+                <FaPowerOff className="pill-icon" />
+                <span>Mặc định (Tắt)</span>
+              </button>
+
               {THEME_BUTTONS.map((t) => {
                 const IconComponent = t.icon;
-                const isActive = activeTheme === t.id;
+                const isActive = isThemeActive && activeTheme === t.id;
                 return (
                   <button
                     key={t.id}

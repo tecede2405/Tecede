@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { THEMES, getDefaultThemeForDate } from "../pages/EventsCalendar/utils/eventsData";
+import { THEMES } from "../pages/EventsCalendar/utils/eventsData";
 import { 
   playClickSound, 
   playThemeChime, 
@@ -16,38 +16,40 @@ export const STORAGE_KEY_GLOBAL = "tecede_global_theme_enabled";
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  // 1. Theme hiện tại
+  // 1. Theme hiện tại (Mặc định là null / tắt trừ khi user chủ động chọn và bật)
   const [activeTheme, setActiveTheme] = useState(() => {
     try {
+      const isGlobal = localStorage.getItem(STORAGE_KEY_GLOBAL);
       const saved = localStorage.getItem(STORAGE_KEY_THEME);
-      if (saved && THEMES[saved]) return saved;
+      if (isGlobal === "true" && saved && THEMES[saved]) {
+        return saved;
+      }
     } catch (e) {}
-    try {
-      return getDefaultThemeForDate(new Date()) || "default";
-    } catch (e) {
-      return "default";
-    }
+    return null;
   });
 
-  // 2. Hiệu ứng hạt 3D
+  // 2. Hiệu ứng hạt 3D (Mặc định tắt, chỉ bật khi user chủ động bật chủ đề)
   const [isEffectEnabled, setIsEffectEnabled] = useState(() => {
     try {
+      const isGlobal = localStorage.getItem(STORAGE_KEY_GLOBAL);
       const saved = localStorage.getItem(STORAGE_KEY_EFFECT);
-      if (saved !== null) return saved === "true";
+      if (isGlobal === "true" && saved !== null) {
+        return saved === "true";
+      }
     } catch (e) {}
-    return true;
+    return false;
   });
 
   // 3. Âm thanh giao diện
   const [isSoundEnabled, setIsSoundEnabled] = useState(() => getSoundPreference());
 
-  // 4. Bật chủ đề toàn cục mọi trang (default: true)
+  // 4. Bật chủ đề toàn cục mọi trang (Mặc định là TẮT / false)
   const [isGlobalThemeEnabled, setIsGlobalThemeEnabled] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_GLOBAL);
-      if (saved !== null) return saved === "true";
+      return saved === "true";
     } catch (e) {}
-    return true;
+    return false;
   });
 
   // Đồng bộ class lên document.body cho toàn bộ website
@@ -72,15 +74,17 @@ export function ThemeProvider({ children }) {
     }
   }, [activeTheme, isGlobalThemeEnabled]);
 
-  // Áp dụng chủ đề mới
+  // Áp dụng chủ đề mới (Lưu lại lựa chọn của người dùng)
   const applyTheme = useCallback((themeId, { playSound = true, showToast = true } = {}) => {
     const validTheme = THEMES[themeId] ? themeId : "default";
     setActiveTheme(validTheme);
     setIsGlobalThemeEnabled(true);
+    setIsEffectEnabled(true);
 
     try {
       localStorage.setItem(STORAGE_KEY_THEME, validTheme);
       localStorage.setItem(STORAGE_KEY_GLOBAL, "true");
+      localStorage.setItem(STORAGE_KEY_EFFECT, "true");
     } catch (e) {}
 
     if (playSound) {
@@ -106,11 +110,15 @@ export function ThemeProvider({ children }) {
     }
   }, []);
 
-  // Tắt chủ đề (về giao diện gốc mặc định)
+  // Tắt chủ đề (về giao diện gốc mặc định của website)
   const disableTheme = useCallback(({ playSound = true, showToast = true } = {}) => {
+    setActiveTheme(null);
     setIsGlobalThemeEnabled(false);
+    setIsEffectEnabled(false);
     try {
+      localStorage.removeItem(STORAGE_KEY_THEME);
       localStorage.setItem(STORAGE_KEY_GLOBAL, "false");
+      localStorage.setItem(STORAGE_KEY_EFFECT, "false");
     } catch (e) {}
 
     if (playSound) {
@@ -161,8 +169,18 @@ export function ThemeProvider({ children }) {
   const toggleGlobalTheme = useCallback(() => {
     setIsGlobalThemeEnabled((prev) => {
       const next = !prev;
+      if (!next) {
+        setActiveTheme(null);
+      } else {
+        setActiveTheme((current) => current || "default");
+      }
       try {
         localStorage.setItem(STORAGE_KEY_GLOBAL, String(next));
+        if (!next) {
+          localStorage.removeItem(STORAGE_KEY_THEME);
+        } else {
+          localStorage.setItem(STORAGE_KEY_THEME, activeTheme || "default");
+        }
       } catch (e) {}
       playClickSound();
 
@@ -181,9 +199,9 @@ export function ThemeProvider({ children }) {
 
       return next;
     });
-  }, []);
+  }, [activeTheme]);
 
-  const currentThemeConfig = THEMES[activeTheme] || THEMES.default;
+  const currentThemeConfig = (activeTheme && THEMES[activeTheme]) ? THEMES[activeTheme] : THEMES.default;
 
   return (
     <ThemeContext.Provider

@@ -40,7 +40,7 @@ function Layout() {
     hideClass: { popup: "animate__animated animate__fadeOutUp" }
   });
 
-  const isWatchPage = location.pathname.startsWith("/xem-phim");
+  const isWatchPage = location.pathname.startsWith("/xem-phim") || location.pathname.startsWith("/tecede-yt/watch");
 
   useEffect(() => {
     setShowUserMenu(false);
@@ -268,7 +268,7 @@ function Layout() {
       )}
 
       {/* GLOBAL THEME PARTICLES & AMBIENT GLOW */}
-      {isGlobalThemeEnabled && !isWatchPage && (
+      {isGlobalThemeEnabled && activeTheme && !isWatchPage && (
         <>
           <div className="global-theme-glow glow-top" />
           <div className="global-theme-glow glow-bottom" />
