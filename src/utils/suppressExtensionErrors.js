@@ -47,15 +47,16 @@ if (typeof window !== "undefined") {
     // Bỏ qua nếu môi trường không cho phép defineProperty
   }
 
-  // 2. Chặn lỗi từ Chrome Extension bắn vào React Dev Error Overlay
+  // 2. Chặn lỗi từ Chrome Extension bắn vào React Dev Error Overlay & Chrome WebGPU Warning
   const isExtensionError = (error, filename, message) => {
     const msg = message || error?.message || "";
     const file = filename || error?.stack || "";
     if (typeof file === "string" && (file.includes("chrome-extension://") || file.includes("moz-extension://"))) {
       return true;
     }
-    if (typeof msg === "string" && msg.includes("responseText") && msg.includes("XMLHttpRequest")) {
-      return true;
+    if (typeof msg === "string") {
+      if (msg.includes("responseText") && msg.includes("XMLHttpRequest")) return true;
+      if (msg.includes("powerPreference") || msg.includes("requestAdapter")) return true;
     }
     return false;
   };

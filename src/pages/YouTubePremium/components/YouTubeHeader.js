@@ -58,9 +58,7 @@ export default function YouTubeHeader({
   const { activeVideo, minimizePlayer } = useTecedeYtPlayer();
 
   const handleNavWithMinimize = (e, targetPath) => {
-    const isWatch =
-      location.pathname.startsWith("/tecede-yt/watch/") ||
-      location.pathname.startsWith("/youtube-premium/watch/");
+    const isWatch = location.pathname.startsWith("/tecede-yt/watch/");
     if (isWatch && activeVideo) {
       e.preventDefault();
       minimizePlayer(activeVideo);
@@ -148,9 +146,7 @@ export default function YouTubeHeader({
     }
 
     // 3. Nếu đang ở trang xem video, thu nhỏ video xuống góc
-    const isWatch =
-      location.pathname.startsWith("/tecede-yt/watch/") ||
-      location.pathname.startsWith("/youtube-premium/watch/");
+    const isWatch = location.pathname.startsWith("/tecede-yt/watch/");
     if (isWatch && activeVideo) {
       minimizePlayer(activeVideo);
     }

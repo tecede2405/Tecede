@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import YouTubeHeader from "../components/YouTubeHeader";
 import VideoCard from "../components/VideoCard";
@@ -19,12 +19,10 @@ import {
   FaThumbsUp, 
   FaThumbsDown, 
   FaShare, 
-  FaCheckCircle, 
-  FaHeart, 
-  FaExternalLinkAlt, 
   FaSpinner,
   FaClone,
-  FaExpand
+  FaExpand,
+  FaEllipsisH
 } from "react-icons/fa";
 import { useTecedeYtPlayer } from "../../../context/TecedeYtPlayerContext";
 import Swal from "sweetalert2";
@@ -38,10 +36,9 @@ export default function YouTubeWatch() {
   const [playerMode, setPlayerMode] = useState("direct"); // "direct" | "embed"
 
   // Details state
-  const [isDescExpanded, setIsDescExpanded] = useState(false);
+  const [isTitleExpanded, setIsTitleExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const [isSubscribed, setIsSubscribed] = useState(false);
 
   // Related videos state
   const [relatedVideos, setRelatedVideos] = useState([]);
@@ -87,7 +84,7 @@ export default function YouTubeWatch() {
     let isMounted = true;
     setStreamData(null);
     setIsLiked(false);
-    setIsDescExpanded(false);
+    setIsTitleExpanded(false);
     setShowAllComments(false);
 
     // Scroll to top
@@ -143,15 +140,29 @@ export default function YouTubeWatch() {
               .replace("/c/", "")
               .replace("/user/", "")
               .trim();
+            const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(oembed.author_name || "Creator")}&background=dc2626&color=ffffff&size=100`;
+
             setStreamData({
               title: oembed.title,
               uploader: oembed.author_name,
               uploaderUrl: oembed.author_url,
               uploaderId: rawAuthor || oembed.author_name,
+              uploaderAvatar: fallbackAvatar,
               thumbnailUrl: oembed.thumbnail_url,
               views: 0,
               likes: 0
             });
+
+            // Tìm kiếm avatar thực của kênh ngầm
+            fetchSearch(rawAuthor || oembed.author_name, "channels")
+              .then((chRes) => {
+                if (isMounted && chRes?.items?.[0]?.thumbnail) {
+                  const chAvatar = cleanImageUrl(chRes.items[0].thumbnail);
+                  setStreamData((prev) => (prev ? { ...prev, uploaderAvatar: chAvatar } : prev));
+                }
+              })
+              .catch(() => {});
+
             saveWatchHistory({
               id: videoId,
               title: oembed.title,
@@ -234,22 +245,79 @@ export default function YouTubeWatch() {
   const uploaderAvatar = rawAvatar 
     ? cleanImageUrl(rawAvatar) 
     : `https://ui-avatars.com/api/?name=${encodeURIComponent(uploader)}&background=27272a&color=f4f4f5&size=80`;
-  const uploaderVerified = streamData?.uploaderVerified;
   const description = streamData?.description || "";
 
   const rawChannel = streamData?.uploaderId || (streamData?.uploaderUrl && streamData.uploaderUrl.replace("https://www.youtube.com/", "").replace("/channel/", "").replace("/c/", "").replace("/user/", "").trim()) || uploader;
   const channelUrl = rawChannel ? `/tecede-yt/channel/${encodeURIComponent(rawChannel)}` : `/tecede-yt/search?q=${encodeURIComponent(uploader)}&filter=videos`;
 
-  const { isMini, setActiveVideo, maximizePlayer } = useTecedeYtPlayer();
+  const { isMini, setActiveVideo, maximizePlayer, minimizePlayer, setDragProgress } = useTecedeYtPlayer();
+
+  const handleMinimize = () => {
+    minimizePlayer({
+      videoId,
+      title: streamData?.title || "Video",
+      uploader: streamData?.uploader || "YouTube Creator",
+      thumbnailUrl: streamData?.thumbnailUrl || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+      playerMode
+    });
+  };
+
+  // Gesture vuốt xuống từ khu vực player hoặc đầu trang trên Mobile để thu nhỏ thành miniplayer
+  const touchStartY = useRef(0);
+  const touchStartX = useRef(0);
+  const isDraggingDown = useRef(false);
+
+  const handleTouchStart = (e) => {
+    // Chỉ kích hoạt khi đang ở đầu trang (window.scrollY <= 30px) để không tranh chấp với cuộn trang tự nhiên
+    if (window.scrollY > 30 || isMini) return;
+    const touch = e.touches[0];
+    touchStartY.current = touch.clientY;
+    touchStartX.current = touch.clientX;
+    isDraggingDown.current = false;
+  };
+
+  const handleTouchMove = (e) => {
+    if (isMini || window.scrollY > 30) return;
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - touchStartY.current;
+    const deltaX = Math.abs(touch.clientX - touchStartX.current);
+
+    // Người dùng vuốt xuống rõ rệt (deltaY > 15px và thẳng đứng hơn nằm ngang)
+    if (deltaY > 15 && deltaY > deltaX * 1.2) {
+      isDraggingDown.current = true;
+      const progress = Math.min(Math.max(deltaY / 220, 0), 1);
+      if (setDragProgress) {
+        setDragProgress(progress);
+      }
+    } else if (deltaY < 0 && isDraggingDown.current) {
+      if (setDragProgress) setDragProgress(0);
+      isDraggingDown.current = false;
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!isDraggingDown.current) return;
+    const touch = e.changedTouches[0];
+    const deltaY = touch.clientY - touchStartY.current;
+
+    if (setDragProgress) setDragProgress(0);
+    isDraggingDown.current = false;
+
+    // Ngưỡng vuốt qua 80px -> Tự động thu nhỏ thành miniplayer
+    if (deltaY > 80) {
+      handleMinimize();
+    }
+  };
 
   // Đồng bộ activeVideo khi vào trang watch
   useEffect(() => {
-    if (videoId && streamData?.title) {
+    if (videoId) {
       setActiveVideo((prev) => ({
+        ...(prev || {}),
         videoId,
-        title: streamData.title,
-        uploader: streamData.uploader || "YouTube Creator",
-        thumbnailUrl: streamData.thumbnailUrl || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        title: streamData?.title || prev?.title || "Video",
+        uploader: streamData?.uploader || prev?.uploader || "YouTube Creator",
+        thumbnailUrl: streamData?.thumbnailUrl || prev?.thumbnailUrl || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
         playerMode,
         currentTime: prev?.videoId === videoId ? (prev.currentTime || 0) : 0
       }));
@@ -257,10 +325,26 @@ export default function YouTubeWatch() {
   }, [videoId, streamData, playerMode, setActiveVideo]);
 
   return (
-    <div className="yt-page yt-theme-dark">
+    <div 
+      className="yt-page yt-theme-dark yt-watch-swipeable"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <YouTubeHeader />
 
       <main className="yt-watch-container">
+        {/* Nút vuốt / thu nhỏ nhanh trên Mobile giống YouTube App */}
+        {!isMini && (
+          <div 
+            className="yt-mobile-swipe-indicator" 
+            onClick={handleMinimize}
+            title="Chạm hoặc vuốt để thu nhỏ video"
+          >
+            <div className="swipe-bar" />
+          </div>
+        )}
+
         <div className="yt-watch-grid">
           {/* CỘT TRÁI: VIDEO PLAYER + DETAILS + COMMENTS */}
           <div className="yt-watch-left">
@@ -288,196 +372,248 @@ export default function YouTubeWatch() {
               </div>
             </div>
 
-            {/* VIDEO TITLE */}
-            <h1 className="yt-watch-title">{title}</h1>
+            {/* 1. KHỐI TITLE VÀ THÔNG SỐ (GIỐNG APP YOUTUBE TRONG ẢNH) */}
+            <div className={`yt-watch-title-card ${isTitleExpanded ? "expanded" : ""}`}>
+              <h1 className="yt-watch-title">
+                {title}
+              </h1>
 
-            {/* CHANNEL & ACTION BUTTONS ROW */}
-            <div className="yt-watch-info-row">
-              <div className="yt-watch-channel">
-                <Link to={channelUrl} className="channel-link-wrap" title={`Kênh ${uploader}`}>
-                  <img 
-                    src={uploaderAvatar} 
-                    alt={uploader} 
-                    className="channel-avatar" 
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(uploader)}&background=27272a&color=f4f4f5&size=80`;
-                    }}
-                  />
-                  <div className="channel-meta">
-                    <span className="channel-name">
-                      {uploader}
-                      {uploaderVerified && <FaCheckCircle className="channel-verified" />}
+              <div className="yt-watch-meta-inline">
+                {likeCount > 0 && (
+                  <>
+                    <span className="stat-text">
+                      {formatViews(likeCount).replace(" lượt xem", "")} lượt thích
                     </span>
-                    <span className="channel-sub-count">Kênh đã xác minh</span>
-                  </div>
-                </Link>
+                    <span className="dot">•</span>
+                  </>
+                )}
+                {views > 0 && (
+                  <span className="stat-text">
+                    {formatViews(views)}
+                  </span>
+                )}
+                {uploadDate && (
+                  <>
+                    {views > 0 && <span className="dot">•</span>}
+                    <span className="stat-text">
+                      {formatTimeAgo(uploadDate)}
+                    </span>
+                  </>
+                )}
                 <button
-                  className={`btn-subscribe ${isSubscribed ? "subscribed" : ""}`}
-                  onClick={() => setIsSubscribed(!isSubscribed)}
+                  type="button"
+                  className="btn-toggle-title-more"
+                  onClick={() => setIsTitleExpanded(!isTitleExpanded)}
+                  title={isTitleExpanded ? "Ẩn bớt mô tả" : "Xem thêm"}
                 >
-                  {isSubscribed ? "Đã đăng ký" : "Đăng ký"}
+                  {isTitleExpanded ? "...ẩn bớt" : "...thêm"}
                 </button>
               </div>
 
-              <div className="yt-watch-actions">
-                {/* LIKE & DISLIKE GROUPED SEAMLESS PILL */}
-                <div className="yt-like-dislike-group">
+              {/* PHẦN MÔ TẢ ĐẦY ĐỦ KHI BẤM ...THÊM */}
+              {isTitleExpanded && (
+                <div className="yt-watch-expanded-desc">
+                  <div className="desc-full-stats">
+                    <span>{formatViews(views)}</span>
+                    {uploadDate && (
+                      <>
+                        <span className="dot">•</span>
+                        <span>{formatTimeAgo(uploadDate)}</span>
+                      </>
+                    )}
+                  </div>
+                  <div className="desc-text-full">
+                    {description || "Không có mô tả cho video này."}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 2. KHỐI KÊNH VÀ CÁC NÚT ACTION (BĂNG NGANG THU GỌN CHUẨN APP) */}
+            <div className="yt-watch-channel-action-row">
+              <div className="yt-channel-pill-group">
+                <Link to={channelUrl} className="channel-avatar-link" title={`Kênh ${uploader}`}>
+                  <img 
+                    src={uploaderAvatar} 
+                    alt={uploader} 
+                    className="channel-avatar-round" 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(uploader)}&background=dc2626&color=ffffff&size=80`;
+                    }}
+                  />
+                </Link>
+                <Link to={channelUrl} className="channel-name-link" title={`Kênh ${uploader}`}>
+                  <span className="channel-name-text">{uploader}</span>
+                </Link>
+              </div>
+
+              <div className="yt-actions-pill-group">
+                {/* LIKE & DISLIKE GROUP */}
+                <div className="action-like-dislike">
                   <button
                     type="button"
-                    className={`action-btn btn-like ${isLiked ? "active" : ""}`}
+                    className={`btn-act ${isLiked ? "active" : ""}`}
                     onClick={handleLikeToggle}
                     title="Thích"
                   >
-                    <FaThumbsUp className="me-1" />
-                    <span>{likeCount > 0 ? formatViews(likeCount).replace(" lượt xem", "") : "Thích"}</span>
+                    <FaThumbsUp />
+                    {likeCount > 0 && <span className="ms-1">{formatViews(likeCount).replace(" lượt xem", "")}</span>}
                   </button>
-                  <div className="like-dislike-divider" />
+                  <div className="div-bar" />
                   <button 
                     type="button" 
-                    className="action-btn btn-dislike" 
+                    className="btn-act" 
                     title="Không thích"
                   >
                     <FaThumbsDown />
                   </button>
                 </div>
 
+                {/* SHARE */}
                 <button 
                   type="button"
-                  className="action-btn" 
+                  className="btn-circle-act" 
                   onClick={handleShare} 
                   title="Chia sẻ video"
                 >
-                  <FaShare className="me-1" />
-                  <span>Chia sẻ</span>
+                  <FaShare />
                 </button>
 
-                <a
-                  href={`https://www.youtube.com/watch?v=${videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="action-btn btn-yt-link"
-                  title="Mở trên YouTube gốc"
-                >
-                  <FaExternalLinkAlt className="me-1" />
-                  <span className="d-none d-sm-inline">YouTube</span>
-                </a>
-              </div>
-            </div>
-
-            {/* COLLAPSIBLE DESCRIPTION */}
-            <div 
-              className={`yt-watch-desc-box ${isDescExpanded ? "expanded" : ""}`}
-              onClick={() => !isDescExpanded && setIsDescExpanded(true)}
-            >
-              <div className="desc-stats-line">
-                <span>{formatViews(views)}</span>
-                {uploadDate && (
-                  <>
-                    <span className="dot">•</span>
-                    <span>{formatTimeAgo(uploadDate)}</span>
-                  </>
-                )}
-              </div>
-
-              <div className="desc-content">
-                {description || "Không có mô tả cho video này."}
-              </div>
-
-              {description && description.length > 150 && (
-                <button
-                  className="btn-toggle-desc"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsDescExpanded(!isDescExpanded);
+                {/* MORE OPTIONS */}
+                <button 
+                  type="button"
+                  className="btn-circle-act" 
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText(`https://www.youtube.com/watch?v=${videoId}`);
+                      Swal.fire({
+                        toast: true,
+                        position: "bottom-end",
+                        icon: "success",
+                        title: "Đã copy link YouTube!",
+                        showConfirmButton: false,
+                        timer: 1800,
+                        background: "#212121",
+                        color: "#fff"
+                      });
+                    }
                   }}
+                  title="Tùy chọn khác"
                 >
-                  {isDescExpanded ? "Ẩn bớt" : "...thêm"}
+                  <FaEllipsisH />
                 </button>
-              )}
+              </div>
             </div>
 
-            {/* COMMENTS SECTION */}
-            <section className="yt-comments-section">
-              <h3 className="comments-heading">
-                Bình luận ({comments.length > 0 ? comments.length : 0})
-              </h3>
+            {/* 3. KHỐI BÌNH LUẬN BOX (BO TRÒN ĐEN, HIỆN 1 COMMENT + AVATAR CHỮ VK ĐÚNG Y NHƯ ẢNH) */}
+            <section className="yt-comments-box-app">
+              <div 
+                className="comments-box-header" 
+                onClick={() => setShowAllComments(!showAllComments)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="header-left">
+                  <span className="title">Bình luận</span>
+                  <span className="count">{comments.length > 0 ? formatViews(comments.length).replace(" lượt xem", "") : "0"}</span>
+                </div>
+                <div className="header-right-dots">
+                  <span className="dot-pill" />
+                </div>
+              </div>
 
               {loadingComments ? (
-                <div className="comments-loading">
+                <div className="comments-loading-box">
                   <FaSpinner className="spinner-icon spinning" />
                   <span>Đang tải bình luận...</span>
                 </div>
               ) : comments.length === 0 ? (
-                <div className="comments-empty">
-                  <span>Chưa có bình luận nào hoặc bình luận bị tắt cho video này.</span>
+                <div className="comments-empty-box">
+                  Chưa có bình luận nào cho video này.
                 </div>
               ) : (
-                <div className="comments-list">
-                  {(showAllComments ? comments : comments.slice(0, 3)).map((comment, index) => (
-                    <div key={comment.commentId || index} className="comment-item">
-                      <img
-                        src={cleanImageUrl(comment.thumbnail) || `https://ui-avatars.com/api/?name=${encodeURIComponent(comment.author || "User")}&background=27272a&color=f4f4f5`}
-                        alt={comment.author}
-                        className="comment-author-avatar"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(comment.author || "User")}&background=27272a&color=f4f4f5`;
-                        }}
-                      />
-                      <div className="comment-body">
-                        <div className="comment-header">
-                          <span className="comment-author">{comment.author}</span>
-                          {comment.verified && <FaCheckCircle className="author-verified" />}
-                          <span className="comment-time">{comment.commentedTime}</span>
+                <div className="comments-box-content">
+                  {/* BÌNH LUẬN ĐẦU TIÊN (HOẶC TẤT CẢ KHI SHOW FULL) */}
+                  {(showAllComments ? comments : comments.slice(0, 1)).map((comment, index) => {
+                    const cleanAuthor = (comment.author || "").replace(/^@+/, "");
+                    const authorInitials = cleanAuthor
+                      .split(" ")
+                      .map((n) => n[0])
+                      .slice(0, 2)
+                      .join("")
+                      .toUpperCase() || "VK";
+
+                    const avatarUrl = comment.thumbnail 
+                      ? cleanImageUrl(comment.thumbnail) 
+                      : null;
+
+                    return (
+                      <div 
+                        key={comment.commentId || index} 
+                        className="comment-row-app"
+                        onClick={() => !showAllComments && setShowAllComments(true)}
+                      >
+                        {avatarUrl ? (
+                          <img
+                            src={avatarUrl}
+                            alt={comment.author}
+                            className="author-avatar-img"
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                            }}
+                          />
+                        ) : null}
+                        <div 
+                          className="author-badge-circle"
+                          style={{ display: avatarUrl ? "none" : "flex" }}
+                        >
+                          {authorInitials}
                         </div>
-                        <p className="comment-text">{comment.commentText}</p>
-                        <div className="comment-footer">
-                          <button className="btn-comment-action">
-                            <FaThumbsUp />
-                            {comment.likeCount > 0 && <span className="ms-1">{comment.likeCount}</span>}
-                          </button>
-                          {comment.hearted && (
-                            <span className="comment-heart" title="Người tạo đã thả tim">
-                              <FaHeart />
-                            </span>
-                          )}
+
+                        <div className="comment-text-app">
+                          <div className="comment-author-line">
+                            <span className="author-name">{comment.author || "Người dùng"}</span>
+                            {comment.commentedTime && (
+                              <span className="comment-time">{comment.commentedTime}</span>
+                            )}
+                          </div>
+                          <p className={`text-content ${!showAllComments ? "line-clamp-2" : ""}`}>
+                            {comment.commentText}
+                          </p>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
 
-                  {/* NÚT XEM THÊM (NẾU DÀI HƠN 3 COMMENT) HOẶC THU GỌN */}
-                  {comments.length > 3 && (
-                    <div className="comments-expand-wrap">
+                  {/* NÚT THU GỌN / XEM THÊM KHI ĐÃ MỞ RỘNG */}
+                  {comments.length > 1 && (
+                    <div className="comments-footer-toggle">
                       <button
                         type="button"
-                        className="btn-expand-comments"
-                        onClick={() => setShowAllComments(!showAllComments)}
+                        className="btn-toggle-comments-state"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowAllComments(!showAllComments);
+                        }}
                       >
                         {showAllComments 
-                          ? "Thu gọn bình luận" 
-                          : `Xem thêm (${comments.length - 3} bình luận khác)`
+                          ? "Ẩn bớt bình luận" 
+                          : `Xem thêm ${comments.length - 1} bình luận khác...`
                         }
                       </button>
                     </div>
                   )}
 
-                  {/* LOAD MORE COMMENTS TỪ API KHI ĐÃ MỞ RỘNG */}
                   {showAllComments && commentNextPage && (
-                    <div className="comments-load-more">
+                    <div className="comments-load-more-btn-wrap">
                       <button
-                        className="btn-load-more-comments"
+                        className="btn-load-more-api"
                         onClick={handleLoadMoreComments}
                         disabled={loadingMoreComments}
                       >
-                        {loadingMoreComments ? (
-                          <>
-                            <FaSpinner className="me-2 spinning" /> Đang tải thêm...
-                          </>
-                        ) : (
-                          "Xem thêm bình luận"
-                        )}
+                        {loadingMoreComments ? <FaSpinner className="spinning" /> : "Tải thêm bình luận"}
                       </button>
                     </div>
                   )}

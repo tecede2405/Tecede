@@ -17,7 +17,8 @@ import {
   FaTrashAlt, 
   FaPlay, 
   FaChevronRight, 
-  FaSpinner 
+  FaSpinner,
+  FaTimes
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -75,9 +76,18 @@ export default function YouTubePremium() {
     setWatchHistory(history);
 
     const recKeywords = getRecommendationKeywords();
-    if (recKeywords && recKeywords.length > 0) {
+    let hiddenKeywords = [];
+    try {
+      hiddenKeywords = JSON.parse(localStorage.getItem("tecede_yt_hidden_chips") || "[]");
+    } catch {}
+
+    const filteredKeywords = (recKeywords || []).filter(
+      (kw) => !hiddenKeywords.includes(kw.toLowerCase())
+    );
+
+    if (filteredKeywords.length > 0) {
       setIsPersonalized(true);
-      const dynamicChips = recKeywords.map((kw) => ({
+      const dynamicChips = filteredKeywords.map((kw) => ({
         label: kw,
         query: kw,
         isCustom: true
@@ -94,6 +104,27 @@ export default function YouTubePremium() {
       setChips(DEFAULT_CHIPS);
     }
   }, []);
+
+  // Xóa / ẩn một chip tùy chỉnh khỏi thanh chips
+  const handleRemoveCustomChip = (e, chipLabel) => {
+    e.stopPropagation();
+    try {
+      const hidden = JSON.parse(localStorage.getItem("tecede_yt_hidden_chips") || "[]");
+      if (!hidden.includes(chipLabel.toLowerCase())) {
+        hidden.push(chipLabel.toLowerCase());
+        localStorage.setItem("tecede_yt_hidden_chips", JSON.stringify(hidden));
+      }
+    } catch {}
+
+    // Loại bỏ chip khỏi state hiện tại
+    setChips((prev) => prev.filter((c) => c.label !== chipLabel));
+
+    // Nếu chip đang được chọn bị xóa, quay về "Tất cả"
+    if (activeChip === chipLabel) {
+      setActiveChip("Tất cả");
+      loadVideos("Tất cả", region);
+    }
+  };
 
   useEffect(() => {
     refreshHistoryAndChips();
@@ -279,7 +310,16 @@ export default function YouTubePremium() {
                   onClick={() => handleChipClick(chip)}
                 >
                   {chip.isCustom && <span className="yt-chip-star">✨</span>}
-                  {chip.label}
+                  <span className="yt-chip-label">{chip.label}</span>
+                  {chip.isCustom && (
+                    <span
+                      className="yt-chip-remove-btn"
+                      onClick={(e) => handleRemoveCustomChip(e, chip.label)}
+                      title={`Xóa chủ đề "${chip.label}"`}
+                    >
+                      <FaTimes />
+                    </span>
+                  )}
                 </button>
               </SwiperSlide>
             );

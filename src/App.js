@@ -119,11 +119,6 @@ function App() {
                 <Route path="/tecede-yt/search" element={<YouTubeSearch />} />
                 <Route path="/tecede-yt/channel/:channelId" element={<YouTubeChannel />} />
                 <Route path="/tecede-yt/playlist/:playlistId" element={<YouTubePlaylist />} />
-                <Route path="/youtube-premium" element={<YouTubePremium />} />
-                <Route path="/youtube-premium/watch/:videoId" element={<YouTubeWatch />} />
-                <Route path="/youtube-premium/search" element={<YouTubeSearch />} />
-                <Route path="/youtube-premium/channel/:channelId" element={<YouTubeChannel />} />
-                <Route path="/youtube-premium/playlist/:playlistId" element={<YouTubePlaylist />} />
 
                 <Route path="/" element={<Layout />}>
                   <Route index element={<Home />} />

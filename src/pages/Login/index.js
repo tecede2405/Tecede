@@ -180,9 +180,6 @@ export default function LoginPage() {
               Đắm chìm không gian <br />
               <span className="highlight-gradient">Điện Ảnh & Âm Nhạc</span>
             </h2>
-            <p className="showcase-desc">
-              Khám phá kho nội dung giải trí không giới hạn.
-            </p>
 
             <div className="showcase-features">
               <div className="feature-item">
@@ -191,7 +188,6 @@ export default function LoginPage() {
                 </div>
                 <div className="feature-text">
                   <h4>Xem phim miễn phí không quảng cáo</h4>
-                  <p>Bom tấn chiếu rạp, anime và series phim cập nhật 24/7</p>
                 </div>
               </div>
 
@@ -201,7 +197,6 @@ export default function LoginPage() {
                 </div>
                 <div className="feature-text">
                   <h4>Nghe nhạc đa dạng thể loại</h4>
-                  <p>Trải nghiệm âm thanh xoay 360° đa chiều sống động</p>
                 </div>
               </div>
 
@@ -211,7 +206,6 @@ export default function LoginPage() {
                 </div>
                 <div className="feature-text">
                   <h4>Streaming Siêu Tốc</h4>
-                  <p>Tối ưu hóa đường truyền xem mượt mà, ổn định</p>
                 </div>
               </div>
             </div>
@@ -247,13 +241,11 @@ export default function LoginPage() {
             </div>
             <div className="mobile-brand-info">
               <h3>Tecede</h3>
-              <p>Xem Phim & Nghe Nhạc Đỉnh Cao</p>
             </div>
           </div>
 
           <div className="auth-header">
             <h2>Đăng nhập</h2>
-            <p>Chào mừng trở lại!</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>

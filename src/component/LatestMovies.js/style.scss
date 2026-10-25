@@ -1,134 +1,328 @@
-.movie-table-wrapper {
+/* ==========================================================================
+   LATEST MOVIES WIDGET (DESIGN PHONG CÁCH YT-WATCH-RIGHT GỌN ĐẸP)
+   ========================================================================== */
+.latest-movies-widget {
   width: 100%;
-  overflow-x: auto;
-  
-  /* Hỗ trợ vuốt chạm mượt mà trên iOS/Safari Mobile */
-  -webkit-overflow-scrolling: touch; 
-  
-  /* Tùy chỉnh thanh cuộn cho đẹp và đỡ thô hơn (Webkit như Chrome, Safari, Edge) */
-  &::-webkit-scrollbar {
-    height: 5px; /* Độ dày thanh cuộn ngang */
-  }
-  &::-webkit-scrollbar-track {
-    background: #111; /* Màu nền đường ray */
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #560450; /* Màu của cục cuộn */
-    border-radius: 4px;
-    &:hover {
-      background: rgb(236, 14, 228); /* Đổi màu khi hover giống nút pagination */
+  margin-bottom: 24px;
+
+  /* HEADER */
+  .latest-movies-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .latest-movies-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: #f3f4f6;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+
+      .title-icon {
+        color: #ef4444;
+        font-size: 15px;
+      }
     }
-  }
-}
 
-.movie-table {
-  width: 100%;
-  border-collapse: collapse;
-  /* RẤT QUAN TRỌNG: Giữ min-width để ép bảng rộng hơn màn hình, kích hoạt overflow-x */
-  min-width: 600px; 
-  color: #eee;
-
-  th,
-  td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #222;
-    white-space: nowrap;
-  }
-
-  th {
-    background: #111111c9;
-    font-size: 14px;
-    color: #aaa;
-  }
-  tr{
-    background:#a0c2c90b;
-  }
-}
-
-/* ===== TÊN ===== */
-.col-name {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  img {
-    width: 50px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 4px;
-    flex-shrink: 0;
-  }
-
-  .title {
-    color: #fff;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 13px;
-    &:hover {
-      color: #0dcaf0;
+    .latest-movies-badge {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.07);
+      padding: 3px 9px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
   }
 
-  .origin {
-    font-size: 11px;
-    color: #999;
-  }
-}
-
-/* ===== TÌNH TRẠNG ===== */
-.status {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-
-  &.full {
-    background: #198754;
+  /* LIST OF COMPACT CARDS (GIỐNG YT-VIDEO-CARD--COMPACT) */
+  .movie-compact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
-  &.updating {
-    background: #ffc107;
-    color: #000;
-  }
-}
-
-/* ===== NGÀY ===== */
-.date {
-  font-size: 13px;
-  color: #ccc;
-}
-.pagination-controls {
-  button {
-    padding: 5px 15px;
-    color: #000;
-    background: rgb(236, 14, 14);
-    border: 0;
-    &:disabled { opacity: 0.5; cursor: not-allowed; }
-  }
-}
-/* ===================== MOBILE ===================== */
-@media (max-width: 768px) {
-  .movie-table {
-    min-width: 100%;
-  }
-
-  th,
-  td {
+  .movie-compact-card {
+    display: flex;
+    gap: 12px;
     padding: 8px;
-    font-size: 13px;
+    border-radius: 12px;
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(4px);
+
+      .compact-thumb-img {
+        transform: scale(1.06);
+      }
+
+      .compact-title {
+        color: #38bdf8;
+      }
+    }
+
+    /* POSTER DẠNG DỌC (TỐI ƯU BỀ RỘNG CHO NỘI DUNG) */
+    .compact-thumb-wrap {
+      width: 64px;
+      height: 92px;
+      flex-shrink: 0;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #18181b;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+
+      .compact-thumb-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+    }
+
+    /* META INFO */
+    .compact-meta {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .compact-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #f3f4f6;
+      margin: 0 0 3px 0;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      transition: color 0.15s ease;
+    }
+
+    .compact-origin {
+      font-size: 11.5px;
+      color: #9ca3af;
+      margin: 0 0 6px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* HÀNG STATS: SỐ TẬP + NGÀY CẬP NHẬT CÙNG HÀNG */
+    .compact-stats {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      color: #9ca3af;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .compact-ep-badge {
+        display: inline-block;
+        padding: 2px 7.5px;
+        border-radius: 4px;
+        font-size: 10.5px;
+        line-height: 1.25;
+        letter-spacing: 0.25px;
+        flex-shrink: 0;
+
+        /* SỐ LIỆU LÀ SỐ: BACKGROUND MÀU VÀNG */
+        &.badge-yellow {
+          background: #ffc107;
+          color: #000;
+          font-weight: 700;
+        }
+
+        /* SỐ LIỆU LÀ CHỮ HOẶC FULL: MÀU XANH LÁ CÂY */
+        &.badge-green {
+          background: #198754;
+          color: #fff;
+          font-weight: 600;
+        }
+      }
+
+      .compact-dot {
+        font-size: 9px;
+        color: #6b7280;
+        flex-shrink: 0;
+      }
+
+      .compact-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 3.5px;
+        color: #9ca3af;
+        font-size: 11px;
+        flex-shrink: 0;
+
+        .clock-icon {
+          font-size: 10px;
+          color: #6b7280;
+        }
+      }
+    }
   }
 
-  .col-name img {
-    width: 40px;
-    height: 56px;
+  /* SKELETON LOADING */
+  .compact-skeletons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .origin {
-    display: none; // ẨN TÊN GỐC
+  .compact-skel-card {
+    display: flex;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 12px;
+
+    .skel-thumb {
+      width: 64px;
+      height: 92px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
+      background-size: 200% 100%;
+      animation: skelShimmer 1.5s infinite;
+      flex-shrink: 0;
+    }
+
+    .skel-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+
+      .skel-line {
+        height: 12px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%);
+        background-size: 200% 100%;
+        animation: skelShimmer 1.5s infinite;
+
+        &.title {
+          width: 85%;
+          height: 14px;
+        }
+        &.sub {
+          width: 55%;
+        }
+      }
+    }
   }
 
-  .date {
-    font-size: 12px;
-    white-space: normal;
+  @keyframes skelShimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* PAGINATION CONTROLS */
+  .latest-movies-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    .btn-page-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f3f4f6;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.25);
+        color: #fff;
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .icon {
+        font-size: 10px;
+      }
+    }
+
+    .page-indicator {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #9ca3af;
+
+      span {
+        color: #f3f4f6;
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================================================== */
+@media (max-width: 576px) {
+  .latest-movies-widget {
+    .movie-compact-card {
+      padding: 6px 4px;
+      gap: 10px;
+
+      .compact-thumb-wrap {
+        width: 56px;
+        height: 82px;
+      }
+
+      .compact-title {
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .compact-origin {
+        font-size: 11px;
+      }
+    }
+
+    .compact-skel-card {
+      padding: 6px 4px;
+      gap: 10px;
+
+      .skel-thumb {
+        width: 56px;
+        height: 82px;
+      }
+    }
   }
 }

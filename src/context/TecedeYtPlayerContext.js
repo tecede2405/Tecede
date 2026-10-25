@@ -6,42 +6,19 @@ const TecedeYtPlayerContext = createContext(null);
 export const TecedeYtPlayerProvider = ({ children }) => {
   const [activeVideo, setActiveVideo] = useState(null);
   const [isMini, setIsMini] = useState(false);
+  const [dragProgress, setDragProgress] = useState(0); // 0 -> 1 khi kéo vuốt trên mobile
   const location = useLocation();
   const navigate = useNavigate();
   const currentTimeRef = useRef(0);
+  const prevRouteRef = useRef("/tecede-yt");
 
-  // Lắng nghe tiến độ phát video từ YouTube Iframe API hoàn toàn ngầm (không gọi re-render React)
+  // Lưu lịch sử đường dẫn trang trước đó (để khi vuốt xuống hoặc minimize quay lại trang trước đó)
   useEffect(() => {
-    const handleWindowMessage = (event) => {
-      try {
-        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
-        if (data && data.info && typeof data.info.currentTime === "number") {
-          const sec = Math.floor(data.info.currentTime);
-          if (sec >= 0) {
-            currentTimeRef.current = sec;
-          }
-        }
-      } catch (err) {}
-    };
-
-    window.addEventListener("message", handleWindowMessage);
-
-    // Gửi lệnh kiểm tra tiến độ mỗi 2s đến iframe (hoàn toàn ngầm trong ref, không gây giật lag)
-    const interval = setInterval(() => {
-      const iframes = document.querySelectorAll("iframe");
-      iframes.forEach((ifr) => {
-        try {
-          ifr.contentWindow?.postMessage(JSON.stringify({ event: "listening" }), "*");
-          ifr.contentWindow?.postMessage(JSON.stringify({ event: "command", func: "getCurrentTime" }), "*");
-        } catch (e) {}
-      });
-    }, 2000);
-
-    return () => {
-      window.removeEventListener("message", handleWindowMessage);
-      clearInterval(interval);
-    };
-  }, []);
+    const isWatch = location.pathname.startsWith("/tecede-yt/watch/");
+    if (!isWatch) {
+      prevRouteRef.current = `${location.pathname}${location.search}`;
+    }
+  }, [location.pathname, location.search]);
 
   // Cập nhật currentTime vào ref (không kích hoạt re-render gây gián đoạn luồng video)
   const updateCurrentTime = (seconds) => {
@@ -53,7 +30,7 @@ export const TecedeYtPlayerProvider = ({ children }) => {
 
   // Đóng miniplayer nếu mở một video hoặc playlist khác
   useEffect(() => {
-    const isWatch = location.pathname.startsWith("/tecede-yt/watch/") || location.pathname.startsWith("/youtube-premium/watch/");
+    const isWatch = location.pathname.startsWith("/tecede-yt/watch/");
     if (isWatch && activeVideo) {
       const match = location.pathname.match(/\/watch\/([^/?]+)/);
       const currentVidId = match ? match[1] : null;
@@ -63,7 +40,7 @@ export const TecedeYtPlayerProvider = ({ children }) => {
       }
     }
 
-    const isPlaylist = location.pathname.startsWith("/tecede-yt/playlist/") || location.pathname.startsWith("/youtube-premium/playlist/");
+    const isPlaylist = location.pathname.startsWith("/tecede-yt/playlist/");
     if (isPlaylist && activeVideo) {
       const match = location.pathname.match(/\/playlist\/([^/?]+)/);
       const currentPlId = match ? match[1] : null;
@@ -79,11 +56,26 @@ export const TecedeYtPlayerProvider = ({ children }) => {
    */
   const minimizePlayer = (videoData) => {
     const timeToKeep = videoData?.currentTime !== undefined ? videoData.currentTime : currentTimeRef.current;
-    setActiveVideo({
-      ...(videoData || {}),
-      currentTime: timeToKeep
+    setActiveVideo((prev) => {
+      const merged = {
+        ...(prev || {}),
+        ...(videoData || {}),
+        currentTime: timeToKeep
+      };
+      return merged.videoId ? merged : prev;
     });
     setIsMini(true);
+  };
+
+  /**
+   * Thu nhỏ video xuống góc phải và quay trở về trang trước đó (như app YouTube)
+   */
+  const minimizeToPreviousPage = (videoData) => {
+    minimizePlayer(videoData);
+    const target = prevRouteRef.current || "/tecede-yt";
+    if (location.pathname !== target) {
+      navigate(target);
+    }
   };
 
   /**
@@ -122,11 +114,15 @@ export const TecedeYtPlayerProvider = ({ children }) => {
         setActiveVideo,
         isMini,
         setIsMini,
+        dragProgress,
+        setDragProgress,
         minimizePlayer,
+        minimizeToPreviousPage,
         maximizePlayer,
         closeMiniPlayer,
         updateCurrentTime,
-        currentTimeRef
+        currentTimeRef,
+        prevRoute: prevRouteRef.current
       }}
     >
       {children}

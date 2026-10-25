@@ -5,22 +5,16 @@ import { FaExpand, FaTimes } from "react-icons/fa";
 import "../style.scss";
 
 export default function TecedeYtMiniPlayer() {
-  const { activeVideo, isMini, maximizePlayer, closeMiniPlayer } = useTecedeYtPlayer();
+  const { activeVideo, isMini, dragProgress = 0, maximizePlayer, closeMiniPlayer } = useTecedeYtPlayer();
   const location = useLocation();
   const [slotRect, setSlotRect] = useState(null);
 
   const videoId = activeVideo?.videoId;
   const title = activeVideo?.title;
 
-  const isWatchPage = activeVideo && (
-    location.pathname.startsWith(`/tecede-yt/watch/`) ||
-    location.pathname.startsWith(`/youtube-premium/watch/`)
-  );
+  const isWatchPage = activeVideo && location.pathname.startsWith(`/tecede-yt/watch/`);
 
-  const isPlaylistPage = activeVideo && (
-    location.pathname.startsWith(`/tecede-yt/playlist/`) ||
-    location.pathname.startsWith(`/youtube-premium/playlist/`)
-  );
+  const isPlaylistPage = activeVideo && location.pathname.startsWith(`/tecede-yt/playlist/`);
 
   const isDockedPage = Boolean(isWatchPage || isPlaylistPage);
 
@@ -119,6 +113,10 @@ export default function TecedeYtMiniPlayer() {
       transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
     };
   } else if (currentRect) {
+    // Hiệu ứng tương tác kéo vuốt mượt mà theo ngón tay trên mobile
+    const translateY = dragProgress ? dragProgress * 80 : 0;
+    const scale = dragProgress ? (1 - dragProgress * 0.15) : 1;
+
     containerStyle = {
       position: "absolute",
       top: `${currentRect.top}px`,
@@ -126,10 +124,12 @@ export default function TecedeYtMiniPlayer() {
       width: `${currentRect.width}px`,
       height: `${currentRect.height}px`,
       zIndex: 25,
-      borderRadius: "14px",
+      borderRadius: dragProgress ? "16px" : "14px",
       overflow: "hidden",
       boxShadow: "0 8px 30px rgba(0, 0, 0, 0.7)",
-      transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+      transform: `translateY(${translateY}px) scale(${scale})`,
+      transformOrigin: "bottom right",
+      transition: dragProgress > 0 ? "none" : "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
     };
   } else {
     containerStyle = {
@@ -146,7 +146,7 @@ export default function TecedeYtMiniPlayer() {
     >
       <iframe
         key={videoId}
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&playsinline=1&modestbranding=1&controls=1&fs=1`}
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`}
         title={title || "TecedeYT Video"}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen

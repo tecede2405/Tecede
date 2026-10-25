@@ -1104,7 +1104,7 @@ function MusicCategory() {
                     <img
                       src={playlist[currentIndex].image}
                       alt={playlist[currentIndex].title}
-                      className={`player-thumb flex-shrink-0 ${isPlaying && !isLoading ? "spinning" : ""}`}
+                      className={`player-thumb flex-shrink-0`}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = currentInfo.img;

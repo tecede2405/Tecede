@@ -102,13 +102,100 @@ export async function pipedFetch(endpoint, options = {}) {
 
 // 1. Trending
 export const fetchTrending = async (region = "VN") => {
-  return pipedFetch(`/trending?region=${encodeURIComponent(region)}`);
+  try {
+    const data = await pipedFetch(`/trending?region=${encodeURIComponent(region)}`);
+    if (Array.isArray(data) && data.length > 0) return data;
+  } catch (e) {
+    console.warn("[PipedAPI] Piped trending failed, attempting Invidious fallback...", e.message);
+  }
+
+  // Invidious fallback cho trending
+  const invidiousHosts = [
+    "https://yt.chocolatemoo53.com/api/v1",
+    "https://invidious.nerdvpn.de/api/v1",
+    "https://inv.nadeko.net/api/v1"
+  ];
+
+  for (const host of invidiousHosts) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 4500);
+      const res = await fetch(`${host}/trending?region=${encodeURIComponent(region)}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const list = await res.json();
+      if (Array.isArray(list) && list.length > 0) {
+        return list.map((item) => ({
+          id: item.videoId,
+          url: `/watch?v=${item.videoId}`,
+          title: item.title,
+          thumbnail: `https://i.ytimg.com/vi/${item.videoId}/hqdefault.jpg`,
+          uploaderName: item.author,
+          uploaderUrl: item.authorUrl,
+          uploaderAvatar: item.authorThumbnails?.[item.authorThumbnails.length - 1]?.url || item.authorThumbnails?.[0]?.url,
+          duration: item.lengthSeconds,
+          views: item.viewCount !== undefined ? item.viewCount : item.viewCountText,
+          uploadedDate: item.published ? new Date(item.published * 1000).toISOString() : (item.publishedText || "")
+        }));
+      }
+    } catch (err) {}
+  }
+
+  return [];
 };
 
 // 2. Search
 export const fetchSearch = async (query, filter = "all") => {
   const q = encodeURIComponent(query);
-  return pipedFetch(`/search?q=${q}&filter=${encodeURIComponent(filter)}`);
+  try {
+    const data = await pipedFetch(`/search?q=${q}&filter=${encodeURIComponent(filter)}`);
+    if (data && (Array.isArray(data.items) || Array.isArray(data))) return data;
+  } catch (e) {
+    console.warn("[PipedAPI] Piped search failed, attempting Invidious fallback...", e.message);
+  }
+
+  // Invidious fallback cho search
+  const invType = filter === "videos" ? "video" : filter === "channels" ? "channel" : filter === "playlists" ? "playlist" : "all";
+  const invidiousHosts = [
+    "https://yt.chocolatemoo53.com/api/v1",
+    "https://invidious.nerdvpn.de/api/v1",
+    "https://inv.nadeko.net/api/v1"
+  ];
+
+  for (const host of invidiousHosts) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 4500);
+      const res = await fetch(`${host}/search?q=${q}&type=${invType}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const list = await res.json();
+      if (Array.isArray(list)) {
+        return {
+          items: list.map((item) => ({
+            id: item.videoId || item.authorId,
+            url: item.videoId ? `/watch?v=${item.videoId}` : item.authorUrl,
+            type: item.type,
+            title: item.title || item.author,
+            thumbnail: item.videoId ? `https://i.ytimg.com/vi/${item.videoId}/hqdefault.jpg` : (item.authorThumbnails?.[0]?.url || ""),
+            uploaderName: item.author,
+            uploaderUrl: item.authorUrl,
+            uploaderAvatar: item.authorThumbnails?.[item.authorThumbnails.length - 1]?.url || item.authorThumbnails?.[0]?.url,
+            duration: item.lengthSeconds,
+            views: item.viewCount !== undefined ? item.viewCount : item.viewCountText,
+            uploadedDate: item.published ? new Date(item.published * 1000).toISOString() : (item.publishedText || "")
+          })),
+          nextpage: null
+        };
+      }
+    } catch (err) {}
+  }
+
+  return { items: [], nextpage: null };
 };
 
 // 3. Search Suggestions (Gợi ý tìm kiếm)
@@ -123,9 +210,71 @@ export const fetchSuggestions = async (query) => {
   }
 };
 
-// 4. Video Streams Details (Chi tiết video & luồng phát)
+// 4. Video Streams Details (Chi tiết video & luồng phát có Invidious fallback cho metadata)
 export const fetchStreams = async (videoId) => {
-  return pipedFetch(`/streams/${encodeURIComponent(videoId)}`);
+  try {
+    const pipedData = await pipedFetch(`/streams/${encodeURIComponent(videoId)}`);
+    if (pipedData && (pipedData.title || pipedData.videoStreams)) {
+      return pipedData;
+    }
+  } catch (pipedErr) {
+    console.warn("[PipedAPI] pipedFetch stream failed, fetching Invidious metadata fallback...", pipedErr.message);
+  }
+
+  // Fallback Invidious lấy metadata (lượt xem, lượt thích, ngày đăng, mô tả, avatar)
+  const invidiousHosts = [
+    "https://yt.chocolatemoo53.com/api/v1",
+    "https://invidious.nerdvpn.de/api/v1",
+    "https://inv.nadeko.net/api/v1"
+  ];
+
+  for (const host of invidiousHosts) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      const res = await fetch(`${host}/videos/${encodeURIComponent(videoId)}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+
+      const d = await res.json();
+      if (d && (d.title || d.author)) {
+        const authorThumb = d.authorThumbnails?.[d.authorThumbnails.length - 1]?.url || d.authorThumbnails?.[0]?.url || "";
+        const uploadDate = d.published ? new Date(d.published * 1000).toISOString() : "";
+
+        return {
+          id: videoId,
+          title: d.title,
+          description: d.description || d.descriptionHtml?.replace(/<[^>]*>/g, "") || "",
+          uploadDate: uploadDate || d.publishedText || "",
+          uploader: d.author || "YouTube Creator",
+          uploaderUrl: d.authorUrl || (d.authorId ? `/channel/${d.authorId}` : ""),
+          uploaderId: d.authorId || d.author,
+          uploaderAvatar: authorThumb,
+          thumbnailUrl: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+          duration: d.lengthSeconds || 0,
+          views: d.viewCount || 0,
+          likes: d.likeCount || 0,
+          relatedStreams: Array.isArray(d.recommendedVideos) ? d.recommendedVideos.map((r) => ({
+            id: r.videoId,
+            url: `/watch?v=${r.videoId}`,
+            title: r.title,
+            thumbnail: `https://i.ytimg.com/vi/${r.videoId}/hqdefault.jpg`,
+            uploaderName: r.author,
+            uploaderUrl: r.authorUrl,
+            uploaderAvatar: r.authorThumbnails?.[0]?.url || "",
+            duration: r.lengthSeconds,
+            views: r.viewCount !== undefined ? r.viewCount : (r.viewCountText || r.views),
+            viewCountText: r.viewCountText,
+            uploadedDate: r.published ? (typeof r.published === "number" ? new Date(r.published * 1000).toISOString() : r.published) : (r.publishedText || "")
+          })) : []
+        };
+      }
+    } catch (e) {}
+  }
+
+  throw new Error("Không thể tải thông tin video.");
 };
 
 // 5. Comments (Bình luận)
@@ -384,16 +533,45 @@ export const cleanImageUrl = (url, fallbackVideoId = null) => {
 };
 
 export const formatViews = (views) => {
+  if (views === null || views === undefined) return "";
+
+  // Nếu là chuỗi đã có định dạng hoặc chứa text
+  if (typeof views === "string") {
+    const trimmed = views.trim();
+    if (!trimmed) return "";
+
+    // Xử lý các hậu tố viết tắt: B (Tỷ), M (Triệu), K (Nghìn) từ YouTube/Invidious
+    const matchSuffix = trimmed.match(/^([\d.,]+)\s*([bBmMkK]|tr|tỷ|n)?/i);
+    if (matchSuffix && matchSuffix[2]) {
+      const val = parseFloat(matchSuffix[1].replace(/,/g, "."));
+      const suffix = matchSuffix[2].toUpperCase();
+      if (!isNaN(val)) {
+        if (suffix === "B" || suffix === "TỶ") return `${val} Tỷ lượt xem`;
+        if (suffix === "M" || suffix === "TR") return `${val} Tr lượt xem`;
+        if (suffix === "K" || suffix === "N") return `${val} N lượt xem`;
+      }
+    }
+
+    // Nếu chuỗi chứa số phân cách bằng dấu phẩy vd: "1,234,567 views"
+    const cleanNum = Number(trimmed.replace(/[^\d.-]/g, ""));
+    if (!isNaN(cleanNum) && cleanNum > 0) {
+      views = cleanNum;
+    } else if (trimmed.includes("lượt xem") || trimmed.includes("views")) {
+      return trimmed.replace(/views?/gi, "lượt xem");
+    }
+  }
+
   const num = Number(views);
-  if (isNaN(num) || num === 0) return "0 lượt xem";
+  if (isNaN(num) || num < 0) return "";
+  if (num === 0) return "0 lượt xem";
   if (num >= 1_000_000_000) {
-    return (num / 1_000_000_000).toFixed(1).replace(".0", "") + " Tỷ lượt xem";
+    return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "").replace(".", ",") + " Tỷ lượt xem";
   }
   if (num >= 1_000_000) {
-    return (num / 1_000_000).toFixed(1).replace(".0", "") + " Tr lượt xem";
+    return (num / 1_000_000).toFixed(1).replace(/\.0$/, "").replace(".", ",") + " Tr lượt xem";
   }
   if (num >= 1_000) {
-    return (num / 1_000).toFixed(1).replace(".0", "") + " N lượt xem";
+    return (num / 1_000).toFixed(1).replace(/\.0$/, "").replace(".", ",") + " N lượt xem";
   }
   return num.toLocaleString("vi-VN") + " lượt xem";
 };
@@ -411,28 +589,70 @@ export const formatDuration = (seconds) => {
   return `${m}:${pad(s)}`;
 };
 
-export const formatTimeAgo = (dateStr) => {
-  if (!dateStr) return "";
-  if (dateStr.includes("ago") || dateStr.includes("trước")) return dateStr;
-  try {
-    const date = new Date(dateStr);
-    const now = new Date();
-    const diffSec = Math.floor((now - date) / 1000);
-    if (isNaN(diffSec) || diffSec < 0) return dateStr;
-    if (diffSec < 60) return "Vừa xong";
-    const diffMin = Math.floor(diffSec / 60);
-    if (diffMin < 60) return `${diffMin} phút trước`;
-    const diffHour = Math.floor(diffMin / 60);
-    if (diffHour < 24) return `${diffHour} giờ trước`;
-    const diffDay = Math.floor(diffHour / 24);
-    if (diffDay < 30) return `${diffDay} ngày trước`;
-    const diffMonth = Math.floor(diffDay / 30);
-    if (diffMonth < 12) return `${diffMonth} tháng trước`;
-    const diffYear = Math.floor(diffDay / 365);
-    return `${diffYear} năm trước`;
-  } catch (e) {
-    return dateStr;
+export const formatTimeAgo = (dateInput) => {
+  if (!dateInput) return "";
+
+  // Nếu là số hoặc chuỗi số thuần (timestamp)
+  if (typeof dateInput === "number" || (!isNaN(Number(dateInput)) && !String(dateInput).includes("-") && !String(dateInput).includes("/") && !String(dateInput).includes(" "))) {
+    let num = Number(dateInput);
+    if (num > 0) {
+      // Unix timestamp tính bằng giây (thường < 10_000_000_000) -> đổi sang ms
+      if (num < 10_000_000_000) {
+        num = num * 1000;
+      }
+      dateInput = new Date(num);
+    }
   }
+
+  // Nếu là đối tượng Date hoặc chuỗi Date hợp lệ (ISO format như 2011-10-25T10:51:16Z hoặc 2024-01-01)
+  try {
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (!isNaN(date.getTime())) {
+      const now = new Date();
+      const diffSec = Math.floor((now - date) / 1000);
+      if (diffSec >= 0) {
+        if (diffSec < 60) return "Vừa xong";
+        const diffMin = Math.floor(diffSec / 60);
+        if (diffMin < 60) return `${diffMin} phút trước`;
+        const diffHour = Math.floor(diffMin / 60);
+        if (diffHour < 24) return `${diffHour} giờ trước`;
+        const diffDay = Math.floor(diffHour / 24);
+        if (diffDay < 30) return `${diffDay} ngày trước`;
+        const diffMonth = Math.floor(diffDay / 30);
+        if (diffMonth < 12) return `${diffMonth} tháng trước`;
+        const diffYear = Math.floor(diffDay / 365);
+        return `${diffYear} năm trước`;
+      }
+    }
+  } catch (e) {}
+
+  // Nếu là chuỗi text sẵn (vd: "2 days ago", "1 year ago", "3 tháng trước")
+  if (typeof dateInput === "string") {
+    let text = dateInput.trim();
+    if (text.includes("trước") || text.includes("Vừa xong")) return text;
+
+    // Dịch các cụm từ tiếng Anh sang tiếng Việt chuẩn
+    const enMatch = text.match(/(\d+)\s*(second|sec|minute|min|hour|hr|day|week|month|year)s?\s*ago/i);
+    if (enMatch) {
+      const count = Number(enMatch[1]);
+      const unit = enMatch[2].toLowerCase();
+      if (unit.startsWith("sec")) return "Vừa xong";
+      if (unit.startsWith("min")) return `${count} phút trước`;
+      if (unit.startsWith("hour") || unit.startsWith("hr")) return `${count} giờ trước`;
+      if (unit.startsWith("day")) return `${count} ngày trước`;
+      if (unit.startsWith("week")) return `${count * 7} ngày trước`;
+      if (unit.startsWith("month")) return `${count} tháng trước`;
+      if (unit.startsWith("year")) return `${count} năm trước`;
+    }
+
+    if (/streamed|live/i.test(text)) {
+      return text.replace(/streamed/i, "Đã phát trực tiếp").replace(/ago/i, "trước");
+    }
+
+    return text;
+  }
+
+  return "";
 };
 
 // 9. YouTube oEmbed (Dùng khi Piped instance bị chặn bot check để lấy title, author)

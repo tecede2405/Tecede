@@ -151,9 +151,6 @@ export default function RegisterPage() {
               Mở khóa đặc quyền <br />
               <span className="highlight-gradient">Giải Trí Không Giới Hạn</span>
             </h2>
-            <p className="showcase-desc">
-              Tạo tài khoản đồng bộ và cá nhân hóa trải nghiệm.
-            </p>
 
             <div className="showcase-features">
               <div className="feature-item">
@@ -162,7 +159,6 @@ export default function RegisterPage() {
                 </div>
                 <div className="feature-text">
                   <h4>Lưu & Đồng Bộ Yêu Thích</h4>
-                  <p>Lưu phim và tiếp tục theo dõi trên mọi thiết bị</p>
                 </div>
               </div>
 
@@ -172,7 +168,6 @@ export default function RegisterPage() {
                 </div>
                 <div className="feature-text">
                   <h4>Nghe nhạc đa dạng thể loại</h4>
-                  <p>Trải nghiệm âm thanh xoay 360° đa chiều sống động</p>
                 </div>
               </div>
 
@@ -182,7 +177,6 @@ export default function RegisterPage() {
                 </div>
                 <div className="feature-text">
                   <h4>Cộng Đồng Xem Phim</h4>
-                  <p>Bình luận, đánh giá và chia sẻ cảm xúc cùng mọt phim</p>
                 </div>
               </div>
             </div>
@@ -217,13 +211,11 @@ export default function RegisterPage() {
             </div>
             <div className="mobile-brand-info">
               <h3>Tecede</h3>
-              <p>Khởi Đầu Trải Nghiệm Mới</p>
             </div>
           </div>
 
           <div className="auth-header">
             <h2>Tạo tài khoản mới</h2>
-            <p>Lưu lại lịch sử xem và yêu thích.</p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>

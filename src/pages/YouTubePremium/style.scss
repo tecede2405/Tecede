@@ -781,6 +781,9 @@
       border: 1px solid rgba(239, 68, 68, 0.4);
       background: rgba(239, 68, 68, 0.12);
       color: #fca5a5;
+      display: inline-flex;
+      align-items: center;
+      padding-right: 6px;
 
       &:hover {
         background: rgba(239, 68, 68, 0.25);
@@ -791,6 +794,32 @@
         background: #ef4444;
         color: #fff;
         border-color: #ef4444;
+
+        .yt-chip-remove-btn {
+          color: rgba(255, 255, 255, 0.8);
+          &:hover {
+            color: #fff;
+            background: rgba(0, 0, 0, 0.25);
+          }
+        }
+      }
+
+      .yt-chip-remove-btn {
+        margin-left: 6px;
+        padding: 3px 5px;
+        border-radius: 50%;
+        color: rgba(252, 165, 165, 0.7);
+        font-size: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s ease;
+
+        &:hover {
+          color: #fff;
+          background: rgba(239, 68, 68, 0.5);
+          transform: scale(1.15);
+        }
       }
     }
 
@@ -1094,6 +1123,10 @@
     .sparkle {
       font-size: 12px;
     }
+
+    @media (max-width: 768px) {
+      display: none !important;
+    }
   }
 
   .yt-noads-pill {
@@ -1105,6 +1138,10 @@
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.3px;
+
+    @media (max-width: 768px) {
+      display: none !important;
+    }
   }
 }
 
@@ -1439,6 +1476,37 @@
 /* ==========================================================================
    5. WATCH PAGE
    ========================================================================== */
+.yt-watch-swipeable {
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.yt-mobile-swipe-indicator {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 0 10px 0;
+  cursor: pointer;
+  width: 100%;
+
+  @media (max-width: 991px) {
+    display: flex;
+  }
+
+  .swipe-bar {
+    width: 44px;
+    height: 4.5px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    transition: all 0.2s ease;
+  }
+
+  &:active .swipe-bar {
+    background: #ef4444;
+    transform: scaleX(1.15);
+  }
+}
+
 .yt-watch-container {
   max-width: 1750px;
   margin: 0 auto;
@@ -1568,24 +1636,411 @@
   background: #000;
 }
 
-/* WATCH META */
-.yt-watch-title {
-  font-size: 18.5px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.4;
-  margin: 0 0 12px 0;
+/* WATCH META (CHUẨN THEO GIAO DIỆN APP YOUTUBE) */
+.yt-watch-title-card {
+  margin: 0 0 14px 0;
 
-  @media (max-width: 768px) {
-    font-size: 16px;
+  .yt-watch-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
     line-height: 1.35;
-    margin-bottom: 10px;
+    margin: 0 0 6px 0;
+    word-break: break-word;
+
+    @media (max-width: 768px) {
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
   }
 
-  @media (max-width: 480px) {
-    font-size: 15px;
-    line-height: 1.35;
-    margin-bottom: 8px;
+  .yt-watch-meta-inline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.4;
+
+    .author-handle {
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        color: #ef4444;
+      }
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ccc;
+    }
+
+    .stat-text {
+      color: #aaa;
+    }
+
+    .btn-toggle-title-more {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 2px;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  /* KHỐI MÔ TẢ MỞ RỘNG KHI CLICK ...THÊM */
+  .yt-watch-expanded-desc {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: #272727;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #e5e5e5;
+    line-height: 1.5;
+
+    .desc-full-stats {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .desc-text-full {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+}
+
+/* KHỐI KÊNH & ACTION BUTTONS NẰM NGANG BO TRÒN THEO STYLE APP */
+.yt-watch-channel-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .yt-channel-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+
+    .channel-avatar-link {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #272727;
+
+      .channel-avatar-round {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .channel-name-link {
+      text-decoration: none;
+      color: inherit;
+      max-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .channel-name-text {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #fff;
+        transition: color 0.15s ease;
+
+        &:hover {
+          color: #ef4444;
+        }
+      }
+    }
+
+    .btn-channel-sub {
+      background: #f1f1f1;
+      color: #0f0f0f;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+
+      &:hover {
+        background: #e5e5e5;
+      }
+
+      &.subscribed {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+    }
+  }
+
+  .yt-actions-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+
+    .action-like-dislike {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+
+      .btn-act {
+        background: transparent;
+        border: none;
+        color: #fff;
+        padding: 7px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.15);
+        }
+
+        &.active {
+          color: #ef4444;
+          background: rgba(239, 68, 68, 0.2);
+        }
+      }
+
+      .div-bar {
+        width: 1px;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    .btn-circle-act {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+/* KHỐI BÌNH LUẬN DẠNG CARD BO TRÒN ĐEN CHUẨN APP */
+.yt-comments-box-app {
+  background: #212121;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #272727;
+  }
+
+  .comments-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .count {
+        font-size: 13px;
+        font-weight: 500;
+        color: #aaa;
+      }
+    }
+
+    .header-right-dots {
+      .dot-pill {
+        display: block;
+        width: 28px;
+        height: 12px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  .comments-loading-box,
+  .comments-empty-box {
+    font-size: 12.5px;
+    color: #888;
+    padding: 6px 0;
+  }
+
+  .comment-row-app {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 4px 0;
+
+    .author-avatar-img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .author-badge-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #e11d48;
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .comment-text-app {
+      flex: 1;
+      min-width: 0;
+
+      .comment-author-line {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 2px;
+
+        .author-name {
+          font-size: 12px;
+          font-weight: 600;
+          color: #aaa;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .comment-time {
+          font-size: 11px;
+          color: #777;
+        }
+      }
+
+      .text-content {
+        margin: 0;
+        font-size: 13px;
+        color: #e5e5e5;
+        line-height: 1.45;
+        word-break: break-word;
+
+        &.line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  .comments-footer-toggle {
+    margin-top: 10px;
+    text-align: right;
+
+    .btn-toggle-comments-state {
+      background: none;
+      border: none;
+      color: #3ea6ff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  .comments-load-more-btn-wrap {
+    margin-top: 12px;
+    text-align: center;
+
+    .btn-load-more-api {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      border-radius: 16px;
+      padding: 6px 16px;
+      font-size: 12px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
   }
 }
 
@@ -1874,6 +2329,14 @@
     margin: 0 0 8px 0;
     white-space: pre-wrap;
     word-break: break-word;
+
+    &.comment-text--clamp {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .comment-footer {
@@ -2436,6 +2899,11 @@
     &__badge {
       display: none;
     }
+  }
+
+  .yt-personalized-badge,
+  .yt-noads-pill {
+    display: none !important;
   }
 
   .yt-main-content,

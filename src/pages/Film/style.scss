@@ -31,13 +31,12 @@
 }
 
 
-.film-card {
+.film-grid .film-card {
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  
 }
 
 
@@ -50,7 +49,7 @@
   margin: 0 auto;
   height: auto;
   display: block;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .film-overlay {

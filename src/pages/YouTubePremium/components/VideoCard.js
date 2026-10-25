@@ -18,22 +18,42 @@ export default function VideoCard({ video, layout = "grid" }) {
     return <ChannelCard channel={video} />;
   }
 
-  const videoId = video.id || extractVideoId(video.url);
+  const videoId = video.id || video.videoId || extractVideoId(video.url);
   const title = video.title || "Video";
   const rawThumb = video.thumbnail || video.thumbnailUrl;
   const thumbnail = cleanImageUrl(rawThumb, videoId);
-  const duration = video.duration;
-  const uploaderName = video.uploaderName || video.uploader || "YouTube Creator";
-  const rawAvatar = video.uploaderAvatar;
+  const duration = video.duration || video.lengthSeconds;
+  const uploaderName = video.uploaderName || video.uploader || video.author || "YouTube Creator";
+  const rawAvatar = video.uploaderAvatar || video.authorThumbnails?.[0]?.url;
   const uploaderAvatar = rawAvatar 
     ? cleanImageUrl(rawAvatar) 
     : `https://ui-avatars.com/api/?name=${encodeURIComponent(uploaderName)}&background=27272a&color=f4f4f5&size=80`;
-  const isVerified = video.uploaderVerified;
-  const views = video.views;
-  const uploadedDate = video.uploadedDate || video.uploadDate;
+  const isVerified = video.uploaderVerified || video.authorVerified;
+  
+  // Trích xuất views linh hoạt từ mọi API format (Piped / Invidious / YouTube)
+  const views = 
+    video.views !== undefined ? video.views :
+    video.viewCount !== undefined ? video.viewCount :
+    video.viewCountText !== undefined ? video.viewCountText :
+    video.shortViewCount !== undefined ? video.shortViewCount :
+    video.shortViewCountText;
 
-  const rawChannel = video.uploaderId || (video.uploaderUrl && video.uploaderUrl.replace("https://www.youtube.com/", "").replace("/channel/", "").replace("/c/", "").replace("/user/", "").trim()) || uploaderName;
+  // Trích xuất ngày đăng linh hoạt
+  const uploadedDate = 
+    video.uploadedDate || 
+    video.uploadDate || 
+    video.published || 
+    video.uploaded || 
+    video.publishedText || 
+    video.uploadedText || 
+    video.timeAgo || 
+    video.publishedAt;
+
+  const rawChannel = video.uploaderId || video.authorId || (video.uploaderUrl && video.uploaderUrl.replace("https://www.youtube.com/", "").replace("/channel/", "").replace("/c/", "").replace("/user/", "").trim()) || uploaderName;
   const channelUrl = rawChannel ? `/tecede-yt/channel/${encodeURIComponent(rawChannel)}` : null;
+
+  const formattedViews = formatViews(views);
+  const formattedDate = formatTimeAgo(uploadedDate);
 
   return (
     <div className={`yt-video-card yt-video-card--${layout}`}>
@@ -89,11 +109,18 @@ export default function VideoCard({ video, layout = "grid" }) {
           </Link>
 
           <div className="yt-card__stats">
-            <span>{formatViews(views)}</span>
-            {uploadedDate && (
+            {(video.liveNow || video.isLive) ? (
+              <span className="live-badge" style={{ color: "#ef4444", fontWeight: 600 }}>• Trực tiếp</span>
+            ) : (
               <>
-                <span className="dot">•</span>
-                <span>{formatTimeAgo(uploadedDate)}</span>
+                {formattedViews && <span>{formattedViews}</span>}
+                {formattedDate && (
+                  <>
+                    {formattedViews && <span className="dot">•</span>}
+                    <span>{formattedDate}</span>
+                  </>
+                )}
+                {!formattedViews && !formattedDate && <span>YouTube Video</span>}
               </>
             )}
           </div>

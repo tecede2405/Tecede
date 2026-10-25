@@ -85,3 +85,33 @@
   z-index: 9999;
 }
 
+
+
+/* ==========================================================================
+   TIÊU ĐỀ FILM-CATEGORY (GRADIENT HỒNG TRẮNG)
+   ========================================================================== */
+.film-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(
+    90deg,
+    #ff4b8b 0%,
+    #ff85b3 45%,
+    #ffffff 90%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+}
+
+.film-category__icon {
+  color: #ff4b8b;
+  font-size: 18px;
+  flex-shrink: 0;
+  text-shadow: 0 0 8px rgba(255, 75, 139, 0.5);
+  -webkit-text-fill-color: initial;
+}
