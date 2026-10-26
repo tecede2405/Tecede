@@ -67,14 +67,43 @@ export const normalizeCensoredWords = (text) => {
 };
 
 /**
+ * Loại bỏ các watermark nguồn/quảng cáo của TruyenFull (truyenfull, truyenfull.vn, v.v.)
+ */
+export const removeWatermarks = (text) => {
+  if (!text) return "";
+  let cleaned = text;
+
+  // 1. Cụm câu dẫn kèm truyenfull (vd: Bạn đang đọc truyện tại truyenfull.vn, Nguồn: truyenfull.vn...)
+  cleaned = cleaned.replace(
+    /(?:\(|\[)?\s*(?:nguồn|nguon|theo|tại|tai|xem tại|đọc tại|doc tai|bạn đang đọc(?:\s+truyện)?(?:\s+(?:tại|trên|ở|được copy tại))?|đọc truyện(?: online)?(?:\s+(?:tại|trên|ở))?|được lấy từ|copy tại)?\s*:?\s*t[\s._-]*r[\s._-]*u[\s._-]*y[\s._-]*[eêệ][\s._-]*n[\s._-]*f[\s._-]*u[\s._-]*l[\s._-]*l(?:\s*[._\s-]*\s*(?:v[\s._-]*n|c[\s._-]*o[\s._-]*m|n[\s._-]*e[\s._-]*t))?\s*(?:\)|\])?/giu,
+    ""
+  );
+
+  // 2. Từ truyenfull / truyenfull.vn / truyenfull vn
+  cleaned = cleaned.replace(
+    /(?:https?:\/\/)?(?:www\.)?t[\s._-]*r[\s._-]*u[\s._-]*y[\s._-]*[eêệ][\s._-]*n[\s._-]*f[\s._-]*u[\s._-]*l[\s._-]*l(?:\s*[._\s-]*\s*(?:v[\s._-]*n|c[\s._-]*o[\s._-]*m|n[\s._-]*e[\s._-]*t))?/giu,
+    ""
+  );
+
+  return cleaned
+    .replace(/\(\s*\)/g, "")
+    .replace(/\[\s*\]/g, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([.,!?:;])/g, "$1")
+    .trim();
+};
+
+/**
  * Chuẩn hóa và làm sạch văn bản trước khi gửi đến TTS API:
+ * - Khử watermark truyenfull, truyenfull vn
  * - Ghép lại các từ bị chấm tách như c. h. ế. t
  * - Loại bỏ các loại dấu ngoặc kép (", “,”, «, »), nháy đơn (', ‘, ’) tránh làm ngưng hoặc lỗi API
  * - Tránh lỗi thẻ SSML/XML của Microsoft Edge TTS
  */
 export const sanitizeTtsText = (rawText) => {
   if (!rawText) return "";
-  const normalized = normalizeCensoredWords(rawText);
+  const cleaned = removeWatermarks(rawText);
+  const normalized = normalizeCensoredWords(cleaned);
   return normalized
     .replace(/["“”„‟«»'‘’]/g, " ")
     .replace(/[<>]/g, " ")

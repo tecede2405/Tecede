@@ -11,7 +11,7 @@ import {
   FaInfoCircle
 } from "react-icons/fa";
 import { fetchChapter, fetchStoryDetail, getCoverUrl } from "../../utils/truyenApi";
-import StoryVoicePlayer, { normalizeCensoredWords } from "./StoryVoicePlayer";
+import StoryVoicePlayer, { normalizeCensoredWords, removeWatermarks } from "./StoryVoicePlayer";
 import "./style.scss";
 
 export default function ComicReader() {
@@ -26,6 +26,7 @@ export default function ComicReader() {
   useEffect(() => {
     return () => {
       shouldAutoPlayNextRef.current = false;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       const player = ttsPlayerRef.current;
       if (player?.stop) {
         player.stop();
@@ -437,8 +438,14 @@ export default function ComicReader() {
     const allSentences = [];
     const paragraphs = rawParagraphs
       .map((rawPText) => {
-        // Khử các từ bị chấm tách lách kiểm duyệt (ví dụ: c. h. ế. t -> chết) để tránh cắt vụn câu
-        const pText = normalizeCensoredWords(rawPText);
+        // 1. Loại bỏ các watermark nguồn như truyenfull, truyenfull vn
+        const cleanedWatermarks = removeWatermarks(rawPText);
+        if (!cleanedWatermarks) return null;
+
+        // 2. Khử các từ bị chấm tách lách kiểm duyệt (ví dụ: c. h. ế. t -> chết) để tránh cắt vụn câu
+        const pText = normalizeCensoredWords(cleanedWatermarks);
+        if (!pText) return null;
+
         const matches = pText.match(/[^.!?\n]+[.!?\n]?/g) || [pText];
         const sentenceObjs = [];
         matches.forEach((sentenceText) => {
@@ -468,7 +475,7 @@ export default function ComicReader() {
         });
         return sentenceObjs;
       })
-      .filter((p) => p.length > 0);
+      .filter((p) => p && p.length > 0);
 
     return { paragraphs, allSentences };
   }, [isNovel, chapter?.bodyHtml, chapter?.bodyText]);
