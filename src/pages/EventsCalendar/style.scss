@@ -223,6 +223,38 @@
           }
         }
       }
+
+      &.goto-theme-page-btn {
+        background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(99, 102, 241, 0.18) 100%) !important;
+        border: 1px solid rgba(168, 85, 247, 0.45) !important;
+        color: #f3e8ff !important;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+
+        .pill-icon {
+          color: #c084fc !important;
+        }
+
+        .arrow-icon {
+          font-size: 10px;
+          color: #c084fc;
+          margin-left: 2px;
+          transition: transform 0.2s ease;
+        }
+
+        &:hover {
+          background: linear-gradient(135deg, rgba(168, 85, 247, 0.35) 0%, rgba(99, 102, 241, 0.35) 100%) !important;
+          border-color: #c084fc !important;
+          color: #ffffff !important;
+          transform: translateY(-1.5px);
+          box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+
+          .arrow-icon {
+            transform: translateX(3px);
+            color: #ffffff;
+          }
+        }
+      }
     }
 
     .effect-toggle-btn,

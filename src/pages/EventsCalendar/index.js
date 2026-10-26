@@ -19,7 +19,9 @@ import {
   FaStar,
   FaVolumeUp,
   FaVolumeMute,
-  FaPowerOff
+  FaPowerOff,
+  FaPalette,
+  FaArrowRight
 } from "react-icons/fa";
 import { FaWandMagicSparkles, FaCalendarDays } from "react-icons/fa6";
 import { 
@@ -160,17 +162,17 @@ export default function EventsCalendar() {
 
               <button
                 type="button"
-                className="theme-pill-btn"
+                className="theme-pill-btn goto-theme-page-btn"
                 onClick={() => {
                   playClickSound();
                   navigate("/chu-de");
                 }}
                 onMouseEnter={playHoverSound}
-                style={{ "--pill-color": "#a855f7" }}
-                title="Mở kho 13 chủ đề website"
+                title="Đến trang Chủ đề & Giao diện (/chu-de)"
               >
-                <FaWandMagicSparkles className="pill-icon" />
-                <span>Kho 13 Chủ Đề</span>
+                <FaPalette className="pill-icon" />
+                <span>Chủ đề & Giao diện</span>
+                <FaArrowRight className="arrow-icon" />
               </button>
 
               {/* TOGGLE EFFECT BUTTON */}

@@ -95,13 +95,13 @@
 /* ========================= FILTER PANEL ========================= */
 .filter-panel {
   overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.4s ease,
-              margin 0.4s ease;
-  margin-bottom: 20px;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease,
+              margin 0.3s ease;
+  margin-bottom: 24px;
 
   &.open {
-    max-height: 600px;
+    max-height: 1600px;
     opacity: 1;
   }
 
@@ -113,17 +113,19 @@
 }
 
 .filter-panel-inner {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 14px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 20px 22px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
 }
 
 /* ========================= FILTER ROWS ========================= */
 .filter-row {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  box-sizing: border-box;
 
   &:last-child {
     margin-bottom: 0;
@@ -135,50 +137,53 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .filter-search-icon {
   position: absolute;
-  left: 14px;
+  left: 16px;
   font-size: 20px;
-  color: #888;
+  color: #94a3b8;
   pointer-events: none;
 }
 
 .filter-search-input {
   width: 100%;
   height: 48px;
-  padding: 0 44px 0 44px;
-  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0 46px 0 46px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.45);
   color: #fff;
-  font-size: 15px;
+  font-size: 14.5px;
   outline: none;
+  box-sizing: border-box;
   transition: all 0.3s ease;
 
   &::placeholder {
-    color: #666;
+    color: #64748b;
     font-style: italic;
   }
 
   &:focus {
-    border-color: rgba(0,198,255,0.5);
-    box-shadow: 0 0 0 3px rgba(0,198,255,0.1);
-    background: rgba(0,0,0,0.4);
+    border-color: rgba(0, 198, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.15);
+    background: rgba(0, 0, 0, 0.6);
   }
 }
 
 .filter-search-clear {
   position: absolute;
-  right: 14px;
+  right: 16px;
   font-size: 20px;
-  color: #888;
+  color: #94a3b8;
   cursor: pointer;
   transition: color 0.2s;
 
   &:hover {
-    color: #e50914;
+    color: #ef4444;
   }
 }
 
@@ -187,52 +192,61 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 14px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
 
   label {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
-    color: #999;
+    color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin: 0;
   }
 
   select {
     height: 42px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 0 12px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
-    background: rgba(0,0,0,0.35);
-    color: #e0e0e0;
-    font-size: 13px;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: #f1f5f9;
+    font-size: 13.5px;
     outline: none;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23888'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-position: right 10px center;
+    background-position: right 12px center;
     background-size: 18px;
-    padding-right: 32px;
-    transition: all 0.3s ease;
+    padding-right: 34px;
+    transition: all 0.25s ease;
 
     &:focus {
-      border-color: rgba(0,198,255,0.5);
-      box-shadow: 0 0 0 2px rgba(0,198,255,0.1);
+      border-color: rgba(0, 198, 255, 0.6);
+      box-shadow: 0 0 0 3px rgba(0, 198, 255, 0.15);
+      background-color: rgba(0, 0, 0, 0.6);
     }
 
     &:hover {
-      border-color: rgba(255,255,255,0.2);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
     option {
-      background: #1a1a2e;
-      color: #e0e0e0;
+      background: #0f172a;
+      color: #f1f5f9;
+      padding: 6px;
     }
   }
 }
@@ -242,10 +256,12 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
+  padding-top: 4px;
 }
 
 .filter-apply-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 24px;
@@ -256,37 +272,42 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,114,255,0.3);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 114, 255, 0.35);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,114,255,0.5);
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.55);
   }
 
   &:active {
-    transform: scale(0.97);
+    transform: translateY(0);
   }
 }
 
 .filter-clear-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 24px;
-  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px 22px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 10px;
-  background: rgba(255,255,255,0.05);
-  color: #ccc;
-  font-size: 14px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-size: 13.5px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 
   &:hover {
-    background: rgba(229,9,20,0.15);
-    border-color: rgba(229,9,20,0.4);
-    color: #e50914;
-    transform: translateY(-2px);
+    background: rgba(239, 68, 68, 0.25);
+    color: #fff;
+    border-color: rgba(239, 68, 68, 0.5);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
@@ -818,7 +839,7 @@
   }
 
   .filter-panel-inner {
-    padding: 14px;
+    padding: 16px 14px;
   }
 
   .filter-film-page .preview-info {
@@ -839,8 +860,14 @@
     padding: 12px 10px 40px;
   }
 
+  .filter-panel-inner {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+
   .filter-dropdowns {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .filter-header {

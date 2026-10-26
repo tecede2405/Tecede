@@ -21,6 +21,14 @@ export default function SearchResult() {
     setCurrentPage(1);
   }, [slug]);
 
+  // Lưu URL tìm kiếm để khi xem chi tiết quay lại đúng kết quả
+  useEffect(() => {
+    try {
+      const currentUrl = window.location.pathname + window.location.search;
+      sessionStorage.setItem("lastMangaListUrl", currentUrl);
+    } catch (e) {}
+  }, [slug, currentPage]);
+
   useEffect(() => {
     if (!rawKeyword.trim()) return;
 

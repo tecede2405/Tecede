@@ -11,11 +11,38 @@ import {
   FaInfoCircle
 } from "react-icons/fa";
 import { fetchChapter, fetchStoryDetail, getCoverUrl } from "../../utils/truyenApi";
+import StoryVoicePlayer, { normalizeCensoredWords } from "./StoryVoicePlayer";
 import "./style.scss";
 
 export default function ComicReader() {
   const { storySlug, chapterSlug, id } = useParams();
   const navigate = useNavigate();
+
+  const chapterCacheRef = useRef(new Map());
+  const shouldAutoPlayNextRef = useRef(false);
+  const ttsPlayerRef = useRef(null);
+
+  // Dừng phát mọi âm thanh TTS ngay khi rời hẳn khỏi trang đọc truyện (/truyen/doc)
+  useEffect(() => {
+    return () => {
+      shouldAutoPlayNextRef.current = false;
+      const player = ttsPlayerRef.current;
+      if (player?.stop) {
+        player.stop();
+      }
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  // Nếu chuyển sang bộ truyện khác, dừng phát truyện cũ
+  useEffect(() => {
+    shouldAutoPlayNextRef.current = false;
+    if (ttsPlayerRef.current?.stop) {
+      ttsPlayerRef.current.stop();
+    }
+  }, [storySlug, id]);
 
   // Giải mã slug truyện và slug chương từ URL params một cách an toàn và chính xác
   const { resolvedStorySlug, resolvedChapterSlug } = useMemo(() => {
@@ -46,10 +73,77 @@ export default function ComicReader() {
   const [errorMsg, setErrorMsg] = useState("");
 
   // Tùy chỉnh chế độ đọc truyện chữ (Novel)
-  const [fontSize, setFontSize] = useState(18); // 16px - 26px
-  const [themeMode, setThemeMode] = useState("dark"); // "dark" | "sepia" | "light"
-  const [fontFamily, setFontFamily] = useState("sans"); // "sans" | "serif"
+  const [fontSize, setFontSize] = useState(() => {
+    try {
+      return Number(localStorage.getItem("novel_fontSize")) || 18;
+    } catch {
+      return 18;
+    }
+  });
+  const [themeMode, setThemeMode] = useState(() => {
+    try {
+      return localStorage.getItem("novel_themeMode") || "dark";
+    } catch {
+      return "dark";
+    }
+  });
+  const [fontFamily, setFontFamily] = useState(() => {
+    try {
+      return localStorage.getItem("novel_fontFamily") || "sans";
+    } catch {
+      return "sans";
+    }
+  });
   const [showSettings, setShowSettings] = useState(false);
+
+  // Tùy chọn tự động đọc tiếp chương sau (Đọc liên tục)
+  const [autoPlayNext, setAutoPlayNext] = useState(() => {
+    try {
+      return localStorage.getItem("tecede_tts_autoplay_next") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  const handleToggleAutoPlayNext = (val) => {
+    setAutoPlayNext(val);
+    try {
+      localStorage.setItem("tecede_tts_autoplay_next", String(val));
+    } catch {}
+  };
+
+  const handleSelectTheme = (mode) => {
+    setThemeMode(mode);
+    try {
+      localStorage.setItem("novel_themeMode", mode);
+    } catch (e) {}
+  };
+
+  const handleSelectFontSize = (setter) => {
+    setFontSize((prev) => {
+      const next = typeof setter === "function" ? setter(prev) : setter;
+      try {
+        localStorage.setItem("novel_fontSize", next);
+      } catch (e) {}
+      return next;
+    });
+  };
+
+  const handleSelectFontFamily = (fam) => {
+    setFontFamily(fam);
+    try {
+      localStorage.setItem("novel_fontFamily", fam);
+    } catch (e) {}
+  };
+
+  const storyCoverUrl = useMemo(() => {
+    const raw =
+      story?.cover ||
+      story?.thumb_url ||
+      chapter?.story?.cover ||
+      chapter?.story?.thumb_url;
+    return raw ? getCoverUrl(raw) : "";
+  }, [story, chapter]);
 
   const topRef = useRef(null);
 
@@ -125,6 +219,16 @@ export default function ComicReader() {
 
     if (!targetChapterSlug) return;
 
+    const cacheKey = `${resolvedStorySlug}/${targetChapterSlug}`;
+    if (chapterCacheRef.current.has(cacheKey)) {
+      const cached = chapterCacheRef.current.get(cacheKey);
+      setChapter(cached.chapter);
+      if (cached.story) setStory((prev) => prev || cached.story);
+      setLoading(false);
+      setErrorMsg("");
+      return;
+    }
+
     setLoading(true);
     setErrorMsg("");
 
@@ -137,6 +241,7 @@ export default function ComicReader() {
           setErrorMsg("Không tìm thấy nội dung chương hoặc chương đang được cập nhật.");
           return;
         }
+        chapterCacheRef.current.set(cacheKey, res);
         setChapter(res.chapter);
 
         // Đồng bộ dữ liệu truyện nếu story chưa có
@@ -265,8 +370,132 @@ export default function ComicReader() {
   const chapterName = chapter?.numberText || chapter?.title || (chapter?.num !== undefined ? `Chương ${chapter.num}` : "Đang đọc");
   const storyName = story?.title || story?.name || "Kho Truyện";
 
+  // Quản lý trạng thái đọc Audio TTS
+  const [ttsState, setTtsState] = useState({
+    activeSentenceIndex: -1,
+    isPlaying: false
+  });
+
+  // Tải ngầm nội dung chương tiếp theo khi bật tính năng đọc liên tục
+  useEffect(() => {
+    if (!autoPlayNext || !nextChapter || !resolvedStorySlug) return;
+    const nextKey = `${resolvedStorySlug}/${nextChapter.slug}`;
+    if (chapterCacheRef.current.has(nextKey)) return;
+
+    fetchChapter(resolvedStorySlug, nextChapter.slug)
+      .then((res) => {
+        if (res && res.chapter) {
+          chapterCacheRef.current.set(nextKey, res);
+        }
+      })
+      .catch((err) => {
+        console.warn("Lỗi tải ngầm chương kế tiếp:", err);
+      });
+  }, [autoPlayNext, nextChapter, resolvedStorySlug, ttsState.isPlaying]);
+
+  // Hàm chuyển chương tự động khi đọc hết câu cuối
+  const handleAutoPlayNextChapter = useCallback(() => {
+    if (!nextChapter) {
+      alert("Đã đọc xong toàn bộ các chương của bộ truyện!");
+      return;
+    }
+    shouldAutoPlayNextRef.current = true;
+    goToChapter(nextChapter);
+  }, [nextChapter, goToChapter]);
+
+  // Phân tách nội dung truyện chữ thành đoạn văn và từng câu có index duy nhất để highlight & auto-scroll
+  const parsedNovel = useMemo(() => {
+    if (!isNovel) return { paragraphs: [], allSentences: [] };
+    const raw = chapter?.bodyHtml || chapter?.bodyText || "";
+    if (!raw) return { paragraphs: [], allSentences: [] };
+
+    const isHtml = typeof raw === "string" && /<[a-z][\s\S]*>/i.test(raw);
+    let rawParagraphs = [];
+
+    if (isHtml) {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(raw, "text/html");
+        const blockEls = doc.querySelectorAll("p, div, li, h1, h2, h3, h4, h5, h6");
+        if (blockEls.length > 0) {
+          blockEls.forEach((el) => {
+            const t = (el.textContent || el.innerText || "").trim();
+            if (t) rawParagraphs.push(t);
+          });
+        } else {
+          const text = doc.body.textContent || doc.body.innerText || "";
+          rawParagraphs = text.split("\n").map((s) => s.trim()).filter(Boolean);
+        }
+      } catch {
+        rawParagraphs = raw.replace(/<[^>]+>/g, "\n").split("\n").map((s) => s.trim()).filter(Boolean);
+      }
+    } else {
+      rawParagraphs = raw.split("\n").map((s) => s.trim()).filter(Boolean);
+    }
+
+    let globalIndex = 0;
+    const allSentences = [];
+    const paragraphs = rawParagraphs
+      .map((rawPText) => {
+        // Khử các từ bị chấm tách lách kiểm duyệt (ví dụ: c. h. ế. t -> chết) để tránh cắt vụn câu
+        const pText = normalizeCensoredWords(rawPText);
+        const matches = pText.match(/[^.!?\n]+[.!?\n]?/g) || [pText];
+        const sentenceObjs = [];
+        matches.forEach((sentenceText) => {
+          const trimmed = sentenceText.trim();
+          if (!trimmed) return;
+
+          // Kiểm tra xem đoạn này có chứa từ ngữ đọc được không (chữ cái hoặc số)
+          const hasWords = /[a-zA-Z0-9\p{L}]/u.test(trimmed);
+
+          if (!hasWords) {
+            // Nếu đoạn này chỉ toàn là dấu ngoặc kép, nháy đơn, gạch nối, dấu chấm (vd: '"', '“', '”', '...')
+            // thì gộp luôn vào câu trước đó để không tạo câu rỗng làm khựng / ngưng TTS
+            if (sentenceObjs.length > 0) {
+              const lastObj = sentenceObjs[sentenceObjs.length - 1];
+              lastObj.text += sentenceText;
+              allSentences[allSentences.length - 1] += " " + trimmed;
+            }
+            return;
+          }
+
+          const idx = globalIndex++;
+          allSentences.push(trimmed);
+          sentenceObjs.push({
+            index: idx,
+            text: sentenceText
+          });
+        });
+        return sentenceObjs;
+      })
+      .filter((p) => p.length > 0);
+
+    return { paragraphs, allSentences };
+  }, [isNovel, chapter?.bodyHtml, chapter?.bodyText]);
+
+  // Tự động phát âm thanh khi chương mới nạp xong nếu đang ở chế độ đọc liên tục
+  useEffect(() => {
+    if (shouldAutoPlayNextRef.current && isNovel && parsedNovel.allSentences.length > 0) {
+      shouldAutoPlayNextRef.current = false;
+      const timer = setTimeout(() => {
+        if (ttsPlayerRef.current?.start) {
+          ttsPlayerRef.current.start(0);
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [chapter?.slug, isNovel, parsedNovel.allSentences.length]);
+
   return (
-    <div className={`tecReader theme-${themeMode} ${isNovel ? "novel-reader-mode" : "manga-reader-mode"}`} ref={topRef}>
+    <div
+      className={`tecReader theme-${themeMode} ${isNovel ? "novel-reader-mode" : "manga-reader-mode"}`}
+      style={
+        themeMode === "image" && storyCoverUrl
+          ? { "--novel-bg-cover": `url("${storyCoverUrl}")` }
+          : {}
+      }
+      ref={topRef}
+    >
       {/* 🧭 HEADER ĐIỀU KHIỂN */}
       <div className="tecReaderHeader">
         <div className="readerLeft d-flex align-items-center gap-2">
@@ -279,8 +508,21 @@ export default function ComicReader() {
           </button>
           <button
             className="reader-btn-icon d-none d-md-flex"
-            onClick={() => navigate("/truyen")}
-            title="Về kho truyện"
+            onClick={() => {
+              try {
+                const lastListUrl = sessionStorage.getItem("lastMangaListUrl");
+                if (
+                  lastListUrl &&
+                  !lastListUrl.includes("/chi-tiet/") &&
+                  !lastListUrl.includes("/doc/")
+                ) {
+                  navigate(lastListUrl);
+                  return;
+                }
+              } catch (e) {}
+              navigate("/truyen");
+            }}
+            title="Về danh sách truyện"
           >
             <FaHome />
           </button>
@@ -344,14 +586,14 @@ export default function ComicReader() {
             <div className="d-flex gap-2 align-items-center">
               <button
                 className="btn-size"
-                onClick={() => setFontSize((s) => Math.max(14, s - 2))}
+                onClick={() => handleSelectFontSize((s) => Math.max(14, s - 2))}
                 disabled={fontSize <= 14}
               >
                 A-
               </button>
               <button
                 className="btn-size"
-                onClick={() => setFontSize((s) => Math.min(28, s + 2))}
+                onClick={() => handleSelectFontSize((s) => Math.min(28, s + 2))}
                 disabled={fontSize >= 28}
               >
                 A+
@@ -362,21 +604,37 @@ export default function ComicReader() {
           {/* Màu nền */}
           <div className="setting-row d-flex align-items-center justify-content-between mb-3">
             <span className="small text-secondary">Màu nền:</span>
-            <div className="d-flex gap-2">
+            <div className="d-flex gap-2 align-items-center">
               <button
                 className={`theme-dot dark ${themeMode === "dark" ? "active" : ""}`}
-                onClick={() => setThemeMode("dark")}
+                onClick={() => handleSelectTheme("dark")}
                 title="Nền tối"
               ></button>
               <button
                 className={`theme-dot sepia ${themeMode === "sepia" ? "active" : ""}`}
-                onClick={() => setThemeMode("sepia")}
+                onClick={() => handleSelectTheme("sepia")}
                 title="Nền vàng ấm (Sepia)"
               ></button>
               <button
                 className={`theme-dot light ${themeMode === "light" ? "active" : ""}`}
-                onClick={() => setThemeMode("light")}
+                onClick={() => handleSelectTheme("light")}
                 title="Nền sáng"
+              ></button>
+              <button
+                className={`theme-dot image ${themeMode === "image" ? "active" : ""}`}
+                onClick={() => handleSelectTheme("image")}
+                title="Nền ảnh truyện (Làm mờ & dịu mắt)"
+                style={
+                  storyCoverUrl
+                    ? {
+                        backgroundImage: `url("${storyCoverUrl}")`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                      }
+                    : {
+                        background: "linear-gradient(135deg, #6366f1, #06b6d4)",
+                      }
+                }
               ></button>
             </div>
           </div>
@@ -387,13 +645,13 @@ export default function ComicReader() {
             <div className="d-flex gap-2">
               <button
                 className={`font-btn ${fontFamily === "sans" ? "active" : ""}`}
-                onClick={() => setFontFamily("sans")}
+                onClick={() => handleSelectFontFamily("sans")}
               >
                 Sans
               </button>
               <button
                 className={`font-btn ${fontFamily === "serif" ? "active" : ""}`}
-                onClick={() => setFontFamily("serif")}
+                onClick={() => handleSelectFontFamily("serif")}
               >
                 Serif
               </button>
@@ -451,27 +709,57 @@ export default function ComicReader() {
                 className={`novel-content-wrapper font-${fontFamily}`}
                 style={{ fontSize: `${fontSize}px` }}
               >
-                <div className="novel-header-chapter text-center mb-4">
-                  <h2 className="novel-chap-title">{chapterName}</h2>
-                  {chapter.wordCount > 0 && (
-                    <span className="novel-word-count small text-secondary">
-                      ~{chapter.wordCount.toLocaleString()} chữ
-                    </span>
-                  )}
+                {/* Tiêu đề chương + Trình phát audio gọn gàng góc phải cùng dòng */}
+                <div className="novel-header-chapter mb-4">
+                  <div className="novel-header-main">
+                    <div className="novel-header-title-wrap">
+                      <h2 className="novel-chap-title">{chapterName}</h2>
+                      {chapter.wordCount > 0 && (
+                        <span className="novel-word-count small text-secondary">
+                          ~{chapter.wordCount.toLocaleString()} chữ
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 🎧 Trình phát Audio gọn gàng góc phải */}
+                    <StoryVoicePlayer
+                      ref={ttsPlayerRef}
+                      sentences={parsedNovel.allSentences}
+                      chapterTitle={chapterName}
+                      onTtsStateChange={setTtsState}
+                      hasNextChapter={Boolean(nextChapter)}
+                      autoPlayNext={autoPlayNext}
+                      onToggleAutoPlayNext={handleToggleAutoPlayNext}
+                      onNextChapter={handleAutoPlayNextChapter}
+                    />
+                  </div>
                 </div>
 
-                {chapter.bodyHtml ? (
-                  <div
-                    className="novel-body-text"
-                    dangerouslySetInnerHTML={{ __html: chapter.bodyHtml }}
-                  />
-                ) : chapter.bodyText ? (
+                {parsedNovel.paragraphs.length > 0 ? (
                   <div className="novel-body-text">
-                    {chapter.bodyText.split("\n").map((para, i) => {
-                      const pClean = para.trim();
-                      if (!pClean) return null;
-                      return <p key={i}>{pClean}</p>;
-                    })}
+                    {parsedNovel.paragraphs.map((para, pIdx) => (
+                      <p key={pIdx}>
+                        {para.map((s) => (
+                          <span
+                            key={s.index}
+                            id={`tts-sentence-${s.index}`}
+                            className={`tts-sentence ${
+                              ttsState.activeSentenceIndex === s.index && ttsState.isPlaying
+                                ? "tts-active"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              if (ttsPlayerRef.current?.jumpToSentence) {
+                                ttsPlayerRef.current.jumpToSentence(s.index);
+                              }
+                            }}
+                            title="Bấm để nghe từ câu này"
+                          >
+                            {s.text}{" "}
+                          </span>
+                        ))}
+                      </p>
+                    ))}
                   </div>
                 ) : (
                   <div className="text-center text-secondary py-5">

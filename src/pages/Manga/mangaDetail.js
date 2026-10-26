@@ -22,6 +22,23 @@ export default function ComicDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
+  const handleGoBack = () => {
+    try {
+      const lastListUrl = sessionStorage.getItem("lastMangaListUrl");
+      if (
+        lastListUrl &&
+        !lastListUrl.includes("/chi-tiet/") &&
+        !lastListUrl.includes("/doc/")
+      ) {
+        navigate(lastListUrl);
+        return;
+      }
+    } catch (e) {}
+
+    // Dự phòng nếu không có trong sessionStorage
+    navigate("/truyen");
+  };
+
   const [comic, setComic] = useState(null);
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState([]);
@@ -103,8 +120,8 @@ export default function ComicDetail() {
           <p className="text-secondary small">
             Nội dung này không tồn tại hoặc đã bị ẩn theo tiêu chuẩn an toàn cộng đồng.
           </p>
-          <button className="btnPrimary mt-2" onClick={() => navigate("/truyen")}>
-            <FaArrowLeft className="me-2" /> Quay lại kho truyện
+          <button className="btnPrimary mt-2" onClick={handleGoBack}>
+            <FaArrowLeft className="me-2" /> Quay lại
           </button>
         </div>
       </div>
@@ -144,8 +161,8 @@ export default function ComicDetail() {
         {/* KHỐI TRÁI: THÔNG TIN TRUYỆN & DANH SÁCH CHƯƠNG */}
         <div className="comicDetailMain">
           {/* Nút quay lại */}
-          <button className="btn-back-truyen mb-3" onClick={() => navigate("/truyen")}>
-            <FaArrowLeft className="me-2" /> Kho Truyện
+          <button className="btn-back-truyen mb-3" onClick={handleGoBack} title="Quay lại trang trước">
+            <FaArrowLeft className="me-2" /> Quay lại
           </button>
 
           {/* HERO BANNER */}

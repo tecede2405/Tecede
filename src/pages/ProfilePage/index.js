@@ -229,6 +229,14 @@ export default function ProfilePage() {
   const isAdmin = currentRole === "admin";
   const displayUsername = original?.username || user?.username || "tecede_user";
   const displayName = name || original?.display_name || user?.display_name || displayUsername;
+  const displayId =
+    original?.id ??
+    original?._id ??
+    original?.user_id ??
+    user?.id ??
+    user?._id ??
+    user?.user_id ??
+    "";
 
   if (loading) {
     return (
@@ -310,6 +318,13 @@ export default function ProfilePage() {
                   <span className="meta-at">@</span>
                   <span className="meta-text">{displayUsername}</span>
                 </div>
+
+                {displayId && (
+                  <div className="fb-meta-item fb-id-item" title={`ID tài khoản: #${displayId}`}>
+                    <span className="meta-hash">#</span>
+                    <span className="meta-text">{displayId}</span>
+                  </div>
+                )}
 
                 <span className="fb-meta-dot">•</span>
 
@@ -599,7 +614,10 @@ export default function ProfilePage() {
                   </div>
                   <div className="summary-card__info">
                     <span className="summary-label">Tên đăng nhập</span>
-                    <span className="summary-value">@{displayUsername}</span>
+                    <span className="summary-value">
+                      @{displayUsername}
+                      {displayId && <span className="summary-id-badge">#{displayId}</span>}
+                    </span>
                   </div>
                 </div>
 

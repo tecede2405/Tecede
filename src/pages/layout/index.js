@@ -229,17 +229,6 @@ function Layout() {
                       <button className="menu-action-btn" onClick={() => navigate("/profile")}>
                         <MdOutlineAccountCircle className="icon-purple" /> <span>Trang cá nhân</span>
                       </button>
-                      <button 
-                        className="menu-action-btn" 
-                        onClick={() => { 
-                          playClickSound(); 
-                          navigate("/chu-de"); 
-                          setShowUserMenu(false); 
-                        }}
-                        onMouseEnter={playHoverSound}
-                      >
-                        <FaPalette className="icon-purple" /> <span>Chủ đề & Giao diện</span>
-                      </button>
                       <button
                         className="logout-btn"
                         onClick={() => {
