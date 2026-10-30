@@ -1,0 +1,328 @@
+/* GIAO DIỆN CHỈ ĐỌC (ONLY-READ) XEM PROFILE NGƯỜI KHÁC */
+.view-only-profile {
+  min-height: 80vh;
+  padding-bottom: 60px;
+
+  .fb-avatar-ring {
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .view-profile-notice-box {
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 36px 24px;
+    text-align: center;
+    background: rgba(24, 24, 27, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    .notice-icon {
+      font-size: 44px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .notice-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .view-btn {
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+
+      &--primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: #fff;
+        &:hover {
+          background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+          transform: translateY(-1px);
+        }
+      }
+
+      &--secondary {
+        background: rgba(255, 255, 255, 0.08);
+        color: #cbd5e1;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        &:hover {
+          background: rgba(255, 255, 255, 0.15);
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  /* CARD THÔNG TIN TÀI KHOẢN ONLY-READ */
+  .view-profile-card {
+    background: rgba(24, 24, 27, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    backdrop-filter: blur(14px);
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    margin-top: 24px;
+
+    .view-profile-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 22px;
+
+      .header-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .header-icon {
+          color: #60a5fa;
+          font-size: 20px;
+        }
+
+        h2 {
+          font-size: 20px;
+          font-weight: 700;
+          color: #fff;
+          margin: 0;
+        }
+      }
+
+      .read-only-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.28);
+        color: #4ade80;
+        font-size: 11.5px;
+        font-weight: 600;
+
+        .check-icon {
+          font-size: 11px;
+        }
+      }
+    }
+
+    .view-profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+
+      .info-item {
+        padding: 16px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+
+        .info-label {
+          font-size: 12.5px;
+          color: #94a3b8;
+          font-weight: 500;
+          margin-bottom: 6px;
+        }
+
+        .info-value {
+          font-size: 15px;
+          font-weight: 700;
+          color: #f8fafc;
+          word-break: break-all;
+
+          &.text-blue {
+            color: #93c5fd;
+          }
+
+          .role-text {
+            display: inline-block;
+            font-size: 13.5px;
+            font-weight: 700;
+
+            &.role-admin {
+              color: #f87171;
+            }
+            &.role-premium {
+              color: #facc15;
+            }
+            &.role-user {
+              color: #4ade80;
+            }
+          }
+
+          .created-text {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            font-weight: 500;
+          }
+
+          .status-online-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #4ade80;
+            font-weight: 600;
+
+            .online-dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: #22c55e;
+              box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .view-only-profile {
+    .view-profile-card {
+      padding: 16px 12px;
+
+      .view-profile-card__header {
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+        gap: 8px;
+
+        .header-title-wrap {
+          gap: 6px;
+
+          .header-icon {
+            font-size: 16px;
+          }
+
+          h2 {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.25;
+          }
+        }
+
+        .read-only-badge {
+          font-size: 10px;
+          padding: 2.5px 8px;
+          gap: 4px;
+          white-space: nowrap;
+          flex-shrink: 0;
+
+          .check-icon {
+            font-size: 9px;
+          }
+        }
+      }
+
+      .view-profile-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+
+        .info-item {
+          padding: 12px 14px;
+        }
+      }
+    }
+  }
+}
+
+/* PHONG CÁCH PREMIUM HOÀNG GIA & KÍNH CHO TRANG XEM PROFILE NGƯỜI KHÁC */
+.view-only-profile.fb-profile-page--premium {
+  .fb-avatar-ring {
+    border: 4px solid #eab308 !important;
+    box-shadow: 0 0 28px rgba(234, 179, 8, 0.55), 0 8px 30px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .view-profile-card {
+    background: rgba(22, 18, 11, 0.78) !important;
+    border: 1px solid rgba(234, 179, 8, 0.3) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(234, 179, 8, 0.1) !important;
+
+    .view-profile-card__header {
+      border-bottom: 1px solid rgba(234, 179, 8, 0.22) !important;
+
+      .header-title-wrap {
+        .header-icon {
+          color: #facc15 !important;
+          filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.5));
+        }
+
+        h2 {
+          color: #fef08a !important;
+        }
+      }
+
+      .read-only-badge {
+        background: rgba(234, 179, 8, 0.14) !important;
+        border: 1px solid rgba(234, 179, 8, 0.38) !important;
+        color: #fef08a !important;
+      }
+    }
+
+    .view-profile-grid {
+      .info-item {
+        background: rgba(234, 179, 8, 0.04) !important;
+        border: 1px solid rgba(234, 179, 8, 0.16) !important;
+        transition: all 0.25s ease;
+
+        &:hover {
+          background: rgba(234, 179, 8, 0.08) !important;
+          border-color: rgba(234, 179, 8, 0.38) !important;
+          box-shadow: 0 0 16px rgba(234, 179, 8, 0.12);
+        }
+
+        .info-label {
+          color: #eab308;
+        }
+
+        .info-value {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  .fb-action-btn--secondary {
+    background: rgba(234, 179, 8, 0.1) !important;
+    border: 1px solid rgba(234, 179, 8, 0.3) !important;
+    color: #fef08a !important;
+
+    &:hover {
+      background: rgba(234, 179, 8, 0.2) !important;
+      border-color: #facc15 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+    }
+  }
+}
+

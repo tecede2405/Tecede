@@ -15,6 +15,54 @@
     justify-content: space-between;
     padding: 0 20px;
     z-index: 1000;
+    transition: all 0.3s ease;
+
+    /* PHONG CÁCH GOLD NHẸ + HIỆU ỨNG KÍNH SHINE CHO ADMIN/PREMIUM */
+    &.header--vip-gold {
+        border-bottom: 1px solid rgba(234, 179, 8, 0.22);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 1px 6px rgba(234, 179, 8, 0.06);
+
+        .header-vip-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -120%;
+                width: 35%;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    transparent 0%,
+                    rgba(250, 204, 21, 0.02) 20%,
+                    rgba(255, 255, 255, 0.08) 50%,
+                    rgba(250, 204, 21, 0.02) 80%,
+                    transparent 100%
+                );
+                transform: skewX(-25deg);
+                animation: vip-header-shine 7.5s ease-in-out infinite;
+            }
+        }
+
+        .header__left,
+        .header__right {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hamburger-btn {
+            color: #fff;
+        }
+
+    }
 
     &__left {
         display: flex;
@@ -444,4 +492,89 @@
     .animated-text { font-size: 18px; }
     .admin { flex-direction: column; }
     .user-trigger { padding: 4px; }
+}
+.menu-action-btn.menu-action-btn--premium {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.14) 0%, rgba(202, 138, 4, 0.06) 50%, rgba(234, 179, 8, 0.18) 100%);
+    border: 1px solid rgba(250, 204, 21, 0.42);
+    color: #fef08a;
+    box-shadow: 0 0 12px rgba(234, 179, 8, 0.12), inset 0 0 8px rgba(234, 179, 8, 0.06);
+    transition: all 0.3s ease;
+
+    .menu-premium-crown {
+        font-size: 15px;
+        color: #facc15;
+        filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.8));
+        transition: transform 0.25s ease;
+    }
+
+    .menu-premium-text {
+        background: linear-gradient(90deg, #fef08a 0%, #facc15 50%, #ffffff 80%, #fef08a 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: text-shimmer 3s linear infinite;
+        letter-spacing: 0.3px;
+    }
+
+    /* HIỆU ỨNG BÓNG KÍNH SHINE CHẠY LIÊN TỤC */
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.06) 20%,
+            rgba(255, 255, 255, 0.6) 50%,
+            rgba(255, 255, 255, 0.06) 80%,
+            transparent 100%
+        );
+        transform: skewX(-25deg);
+        animation: menu-premium-shine 2.8s infinite ease-in-out;
+        pointer-events: none;
+    }
+
+    &:hover {
+        background: linear-gradient(135deg, rgba(234, 179, 8, 0.24) 0%, rgba(202, 138, 4, 0.12) 50%, rgba(234, 179, 8, 0.28) 100%);
+        border-color: rgba(250, 204, 21, 0.75);
+        color: #ffffff;
+        box-shadow: 0 0 18px rgba(234, 179, 8, 0.4), inset 0 0 10px rgba(234, 179, 8, 0.15);
+        transform: translateX(4px);
+
+        .menu-premium-crown {
+            transform: scale(1.15) rotate(6deg);
+        }
+    }
+}
+
+@keyframes menu-premium-shine {
+    0% {
+        left: -120%;
+    }
+    38%, 100% {
+        left: 180%;
+    }
+}
+
+@keyframes text-shimmer {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes vip-header-shine {
+    0% {
+        left: -120%;
+    }
+    30%, 100% {
+        left: 200%;
+    }
 }

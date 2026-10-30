@@ -7,7 +7,9 @@ import React, {
   useImperativeHandle,
   forwardRef
 } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useAuth } from "../../context/AuthContext";
 import {
   FaPlay,
   FaPause,
@@ -19,7 +21,8 @@ import {
   FaHeadphones,
   FaSlidersH,
   FaSpinner,
-  FaStepForward
+  FaStepForward,
+  FaCrown
 } from "react-icons/fa";
 
 /**
@@ -138,6 +141,59 @@ const StoryVoicePlayer = forwardRef(
     },
     ref
   ) => {
+    const navigate = useNavigate();
+    const { user } = useAuth();
+
+    const DarkSwal = useMemo(
+      () =>
+        Swal.mixin({
+          background: "#1f1f1f",
+          color: "#fff",
+          confirmButtonColor: "#f59e0b",
+          cancelButtonColor: "#334155",
+          customClass: {
+            popup: "swal-dark",
+            title: "swal-title",
+            htmlContainer: "swal-text",
+            confirmButton: "swal-confirm",
+          },
+        }),
+      []
+    );
+
+    const checkPremiumAccess = useCallback(() => {
+      if (!user) {
+        DarkSwal.fire({
+          icon: "warning",
+          title: "Yêu cầu đăng nhập",
+          text: "Vui lòng đăng nhập tài khoản để sử dụng tính năng Nghe đọc truyện!",
+          showCancelButton: true,
+          confirmButtonText: "Đăng nhập ngay",
+          cancelButtonText: "Để sau",
+          confirmButtonColor: "#f59e0b",
+          cancelButtonColor: "#334155",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/login");
+          }
+        });
+        return false;
+      }
+
+      if (user.role !== "premium" && user.role !== "admin") {
+        DarkSwal.fire({
+          icon: "info",
+          title: "Đặc quyền Premium",
+          text: "Tính năng này chỉ dành cho thành viên Premium!",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#f59e0b",
+        });
+        return false;
+      }
+
+      return true;
+    }, [user, navigate, DarkSwal]);
+
     // Mặc định chọn Giọng Nam AI Nam Minh
     const [selectedVoiceId, setSelectedVoiceId] = useState(() => {
       try {
@@ -740,6 +796,8 @@ const StoryVoicePlayer = forwardRef(
 
     // Bắt đầu nghe
     const handleStart = () => {
+      if (!checkPremiumAccess()) return;
+
       if (audioRef.current) {
         audioRef.current.pause();
       }
@@ -873,6 +931,7 @@ const StoryVoicePlayer = forwardRef(
 
     // Nhảy tới câu cụ thể
     const jumpToSentence = (index) => {
+      if (!checkPremiumAccess()) return;
       if (index < 0 || index >= sentences.length) return;
       if (audioRef.current) {
         audioRef.current.pause();
@@ -937,6 +996,11 @@ const StoryVoicePlayer = forwardRef(
             >
               <FaPlay className="btn-icon" />
               <span className="btn-label">Nghe</span>
+              <span className="badge-premium-shine">
+                <span className="badge-shine-effect" />
+                <FaCrown className="badge-crown-icon" />
+                <span className="badge-premium-text">Premium</span>
+              </span>
             </button>
           ) : isWaitingBuffer ? (
             <button

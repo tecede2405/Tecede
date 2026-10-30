@@ -1,12 +1,12 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom"; 
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom"; 
 import LatestMovies from "../../component/LatestMovies.js/index";
 import { GoChevronLeft } from "react-icons/go";
 import { MdOutlineStorage, MdOutlineTune } from "react-icons/md";
 import { FaBackwardStep, FaForwardStep } from "react-icons/fa6";
-import { FaCommentDots, FaReply, FaPaperPlane } from "react-icons/fa";
+import { FaCommentDots, FaReply, FaPaperPlane, FaCrown } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
-import { VerifiedBadge } from "../../component/VerifiedBadge/index";
+import { VerifiedBadge, PremiumBadge } from "../../component/VerifiedBadge/index";
 import Swal from "sweetalert2";
 import HlsPlayer from "../../component/HlsPlayer";
 import useScreenWakeLock from "../../hooks/useScreenWakeLock";
@@ -431,7 +431,16 @@ export default function FilmDetail() {
       };
 
       setComments((prev) => {
-        const newCommentsList = !parentId ? [newComment, ...prev] : addReply(prev, parentId, newComment);
+        const commentWithUserRole = {
+          ...newComment,
+          role: newComment.role || user.role,
+          user_role: newComment.user_role || user.role,
+          user_id: newComment.user_id ?? user.id ?? user.user_id,
+          avatar: newComment.avatar || user.avatar,
+          display_name: newComment.display_name || user.display_name,
+          replies: newComment.replies || [],
+        };
+        const newCommentsList = !parentId ? [commentWithUserRole, ...prev] : addReply(prev, parentId, commentWithUserRole);
         commentCache[slug] = newCommentsList;
         return newCommentsList;
       });
@@ -609,7 +618,7 @@ export default function FilmDetail() {
         "--bg-url": `url(${thumbUrl})`,
       }}
     >
-      <div className="container-fluid px-md-5">
+      <div className="container-fluid px-0 px-md-5">
         
         <div className="movie-layout">
           
@@ -833,43 +842,86 @@ export default function FilmDetail() {
                     <p>Chưa có bình luận nào. Hãy là người đầu tiên chia sẻ cảm nghĩ!</p>
                   </div>
                 ) : (
-                  comments.map((c) => (
-                    <div key={c.id} className="comment-card">
-                      <div className="comment-card__header">
-                        <div className="comment-card__avatar-wrap">
-                          {isValidAvatar(c.avatar) ? (
-                            <img
-                              src={c.avatar}
-                              alt={c.display_name || "avatar"}
-                              width={36}
-                              height={36}
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = getDefaultAvatar(c.display_name);
-                              }}
-                              loading="lazy"
-                              className="comment-card__avatar"
-                            />
+                  comments.map((c) => {
+                    const isCPremium = c.role === "premium" || c.user_role === "premium";
+                    const isCAdmin = c.role === "admin" || c.user_role === "admin" || c.display_name === "Tecede";
+                    const cUserId = c.user_id ?? c.userId ?? c.user?.id ?? c.username ?? c.user_name;
+
+                    const renderAvatarContent = (avatar, displayName, size) => {
+                      if (isValidAvatar(avatar)) {
+                        return (
+                          <img
+                            src={avatar}
+                            alt={displayName || "avatar"}
+                            width={size}
+                            height={size}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = getDefaultAvatar(displayName);
+                            }}
+                            loading="lazy"
+                            className={size === 36 ? "comment-card__avatar" : "reply-card__avatar"}
+                          />
+                        );
+                      }
+                      return (
+                        <div className={`${size === 36 ? "comment-card__avatar" : "reply-card__avatar"} ${size === 36 ? "comment-card__avatar--fallback" : "reply-card__avatar--fallback"}`}>
+                          {getAvatarLetter(displayName)}
+                        </div>
+                      );
+                    };
+
+                    return (
+                      <div key={c.id} className="comment-card">
+                        <div className="comment-card__header">
+                          {cUserId ? (
+                            <Link
+                              to={`/profile/${cUserId}`}
+                              className={`comment-card__avatar-wrap ${isCPremium ? "comment-card__avatar-wrap--premium" : ""}`}
+                              title={`Xem trang cá nhân của ${c.display_name || "User"}`}
+                            >
+                              {isCPremium && (
+                                <div className="comment-avatar-crown" title="Thành viên VIP Premium">
+                                  <FaCrown className="comment-avatar-crown-icon" />
+                                </div>
+                              )}
+                              {renderAvatarContent(c.avatar, c.display_name, 36)}
+                            </Link>
                           ) : (
-                            <div className="comment-card__avatar comment-card__avatar--fallback">
-                              {getAvatarLetter(c.display_name)}
+                            <div className={`comment-card__avatar-wrap ${isCPremium ? "comment-card__avatar-wrap--premium" : ""}`}>
+                              {isCPremium && (
+                                <div className="comment-avatar-crown" title="Thành viên VIP Premium">
+                                  <FaCrown className="comment-avatar-crown-icon" />
+                                </div>
+                              )}
+                              {renderAvatarContent(c.avatar, c.display_name, 36)}
                             </div>
                           )}
-                        </div>
 
-                        <div className="comment-card__meta">
-                          <div className="comment-card__author-row">
-                            <span className="comment-card__author-name">
-                              {c.display_name || "User"}
-                            </span>
-                            {c.display_name === "Tecede" && <VerifiedBadge />}
-                            <span className="comment-card__dot">•</span>
-                            <span className="comment-card__time">
-                              {formatVietnamTime(c.created_at)}
-                            </span>
+                          <div className="comment-card__meta">
+                            <div className="comment-card__author-row">
+                              {cUserId ? (
+                                <Link
+                                  to={`/profile/${cUserId}`}
+                                  className={`comment-card__author-name ${isCPremium ? "comment-card__author-name--premium" : ""}`}
+                                  title={`Xem trang cá nhân của ${c.display_name || "User"}`}
+                                >
+                                  {c.display_name || "User"}
+                                </Link>
+                              ) : (
+                                <span className={`comment-card__author-name ${isCPremium ? "comment-card__author-name--premium" : ""}`}>
+                                  {c.display_name || "User"}
+                                </span>
+                              )}
+                              {isCAdmin && <VerifiedBadge />}
+                              {isCPremium && <PremiumBadge showText={false} size={15} />}
+                              <span className="comment-card__dot">•</span>
+                              <span className="comment-card__time">
+                                {formatVietnamTime(c.created_at)}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
                       <div className="comment-card__body">
                         <p className="comment-card__content">{renderCommentContent(c.content)}</p>
@@ -929,43 +981,62 @@ export default function FilmDetail() {
                       {/* Danh sách các bình luận con (Replies) */}
                       {c.replies?.length > 0 && (
                         <div className="comment-replies">
-                          {c.replies.map((r) => (
-                            <div key={r.id} className="reply-card">
-                              <div className="reply-card__header">
-                                <div className="reply-card__avatar-wrap">
-                                  {isValidAvatar(r.avatar) ? (
-                                    <img
-                                      src={r.avatar}
-                                      alt={r.display_name || "avatar"}
-                                      width={28}
-                                      height={28}
-                                      loading="lazy"
-                                      onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = getDefaultAvatar(r.display_name);
-                                      }}
-                                      className="reply-card__avatar"
-                                    />
+                          {c.replies.map((r) => {
+                            const isRPremium = r.role === "premium" || r.user_role === "premium";
+                            const isRAdmin = r.role === "admin" || r.user_role === "admin" || r.display_name === "Tecede";
+                            const rUserId = r.user_id ?? r.userId ?? r.user?.id ?? r.username ?? r.user_name;
+
+                            return (
+                              <div key={r.id} className="reply-card">
+                                <div className="reply-card__header">
+                                  {rUserId ? (
+                                    <Link
+                                      to={`/profile/${rUserId}`}
+                                      className={`reply-card__avatar-wrap ${isRPremium ? "reply-card__avatar-wrap--premium" : ""}`}
+                                      title={`Xem trang cá nhân của ${r.display_name || "User"}`}
+                                    >
+                                      {isRPremium && (
+                                        <div className="comment-avatar-crown reply-crown" title="Thành viên VIP Premium">
+                                          <FaCrown className="comment-avatar-crown-icon" />
+                                        </div>
+                                      )}
+                                      {renderAvatarContent(r.avatar, r.display_name, 28)}
+                                    </Link>
                                   ) : (
-                                    <div className="reply-card__avatar reply-card__avatar--fallback">
-                                      {getAvatarLetter(r.display_name)}
+                                    <div className={`reply-card__avatar-wrap ${isRPremium ? "reply-card__avatar-wrap--premium" : ""}`}>
+                                      {isRPremium && (
+                                        <div className="comment-avatar-crown reply-crown" title="Thành viên VIP Premium">
+                                          <FaCrown className="comment-avatar-crown-icon" />
+                                        </div>
+                                      )}
+                                      {renderAvatarContent(r.avatar, r.display_name, 28)}
                                     </div>
                                   )}
-                                </div>
 
-                                <div className="reply-card__meta">
-                                  <div className="reply-card__author-row">
-                                    <span className="reply-card__author-name">
-                                      {r.display_name || "User"}
-                                    </span>
-                                    {r.display_name === "Tecede" && <VerifiedBadge />}
-                                    <span className="reply-card__dot">•</span>
-                                    <span className="reply-card__time">
-                                      {formatVietnamTime(r.created_at)}
-                                    </span>
+                                  <div className="reply-card__meta">
+                                    <div className="reply-card__author-row">
+                                      {rUserId ? (
+                                        <Link
+                                          to={`/profile/${rUserId}`}
+                                          className={`reply-card__author-name ${isRPremium ? "reply-card__author-name--premium" : ""}`}
+                                          title={`Xem trang cá nhân của ${r.display_name || "User"}`}
+                                        >
+                                          {r.display_name || "User"}
+                                        </Link>
+                                      ) : (
+                                        <span className={`reply-card__author-name ${isRPremium ? "reply-card__author-name--premium" : ""}`}>
+                                          {r.display_name || "User"}
+                                        </span>
+                                      )}
+                                      {isRAdmin && <VerifiedBadge />}
+                                      {isRPremium && <PremiumBadge showText={false} size={14} />}
+                                      <span className="reply-card__dot">•</span>
+                                      <span className="reply-card__time">
+                                        {formatVietnamTime(r.created_at)}
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
 
                               {/* Logic Highlight Tag @User */}
                               <div className="reply-card__body">
@@ -1025,11 +1096,13 @@ export default function FilmDetail() {
                                 </div>
                               )}
                             </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })
                 )}
               </div>
             </div>

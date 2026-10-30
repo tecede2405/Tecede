@@ -1,6 +1,6 @@
 import "./index.scss";
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 // IMPORT THÊM ChevronLeft, ChevronRight
 import { Film, Music4, Headphones, BarChart3, UsersRound, DollarSign, ChevronLeft, ChevronRight } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
@@ -20,6 +20,11 @@ const CATEGORY_NAMES = {
   nhaclofi: "Lofi"
 };
 
+// Cache dữ liệu bài hát trên RAM để tránh fetch lại liên tục khi chuyển tab
+let songsCache = null;
+let songsCacheTime = 0;
+const SONGS_CACHE_TTL = 3 * 60 * 1000; // 3 phút
+
 const OverView = () => {
   const { donates } = useDonates();
 
@@ -35,7 +40,14 @@ const OverView = () => {
   const [currentMonthTotal, setCurrentMonthTotal] = useState(0);
   const donateGoal = 500000; 
 
-  const location = useLocation();
+  const outletCtx = useOutletContext();
+  const totalFromParent = outletCtx?.totalUsersCount;
+
+  useEffect(() => {
+    if (totalFromParent !== null && totalFromParent !== undefined) {
+      setUser(totalFromParent);
+    }
+  }, [totalFromParent]);
 
   /* ========================================================= */
   /* LOGIC XỬ LÝ DỮ LIỆU DONATE THEO THÁNG ĐƯỢC CHỌN (viewDate) */
@@ -93,49 +105,46 @@ const OverView = () => {
   const today = new Date();
   const isCurrentMonth = viewDate.getMonth() === today.getMonth() && viewDate.getFullYear() === today.getFullYear();
 
-  /* ===== FETCH SONGS & USERS ===== */
+  /* ===== FETCH SONGS (CÓ CACHE 3 PHÚT) ===== */
   useEffect(() => {
-    // ... (Giữ nguyên đoạn code fetch users và songs của bạn)
-    setUser(null);
+    const applySongsData = (songs) => {
+      if (Array.isArray(songs)) {
+        setTotalSongs(songs.length);
+        setTotalListens(songs.reduce((sum, song) => sum + (song.listens || 0), 0));
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/songs`)
-      .then((res) => res.json())
-      .then((songs) => {
-        if (Array.isArray(songs)) {
-          setTotalSongs(songs.length);
-          setTotalListens(songs.reduce((sum, song) => sum + (song.listens || 0), 0));
+        const groupByCategory = songs.reduce((acc, song) => {
+          const cat = song.category || "unknown";
+          acc[cat] = (acc[cat] || 0) + (song.listens || 0);
+          return acc;
+        }, {});
 
-          const groupByCategory = songs.reduce((acc, song) => {
-            const cat = song.category || "unknown";
-            acc[cat] = (acc[cat] || 0) + (song.listens || 0);
-            return acc;
-          }, {});
+        const targetCategories = [
+          "nhactre", "nhacusuk", "nhactrungquoc", "nhacedm", "nhacphonk", "nhacdouyin", "nhackhongloi", "nhactreremix", "nhac-lofi"
+        ];
 
-          const targetCategories = [
-            "nhactre", "nhacusuk", "nhactrungquoc", "nhacedm", "nhacphonk", "nhacdouyin", "nhackhongloi", "nhactreremix", "nhac-lofi"
-          ];
+        const formattedPieData = targetCategories.map((cat) => ({
+          name: CATEGORY_NAMES[cat] || cat,
+          value: groupByCategory[cat] || 0
+        })).filter(item => item.value > 0);
 
-          const formattedPieData = targetCategories.map((cat) => ({
-            name: CATEGORY_NAMES[cat] || cat,
-            value: groupByCategory[cat] || 0
-          })).filter(item => item.value > 0);
+        setCategoryData(formattedPieData);
+      }
+    };
 
-          setCategoryData(formattedPieData);
-        }
-      })
-      .catch((err) => console.error("Lỗi fetch songs:", err));
-
-    fetch(`${process.env.REACT_APP_SERVER_API_URL}/auth/users`)
-      .then((res) => res.json())
-      .then((data) => {
-        let users = Array.isArray(data) ? data : Array.isArray(data.users) ? data.users : [];
-        setUser(users.length > 0 ? users[0].id : 0);
-      })
-      .catch((err) => {
-        console.error("Fetch users error:", err);
-        setUser(0);
-      });
-  }, [location.pathname]);
+    const now = Date.now();
+    if (songsCache && now - songsCacheTime < SONGS_CACHE_TTL) {
+      applySongsData(songsCache);
+    } else {
+      fetch(`${process.env.REACT_APP_API_URL}/api/songs`)
+        .then((res) => res.json())
+        .then((songs) => {
+          songsCache = songs;
+          songsCacheTime = Date.now();
+          applySongsData(songs);
+        })
+        .catch((err) => console.error("Lỗi fetch songs:", err));
+    }
+  }, []);
 
   const avgListen = totalSongs > 0 ? Math.round(totalListens / totalSongs) : 0;
   const totalCategoryListens = categoryData.reduce((sum, item) => sum + item.value, 0);

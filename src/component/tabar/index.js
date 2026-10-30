@@ -11,6 +11,8 @@ import {
   FaTv,
   FaLaptopCode,
   FaCalendarAlt,
+  FaCrown,
+  FaCheck,
 } from "react-icons/fa";
 import { SiGooglegemini } from "react-icons/si";
 import { GoChevronDown, GoChevronRight } from "react-icons/go";
@@ -18,7 +20,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { MdOutlineAccountCircle, MdLogout } from "react-icons/md";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
-import { VerifiedBadge } from "../VerifiedBadge/index";
+import { VerifiedBadge, PremiumBadge } from "../VerifiedBadge/index";
 import "./style.scss";
 
 function Tabbar({ isOpen, onClose }) {
@@ -131,9 +133,14 @@ function Tabbar({ isOpen, onClose }) {
     return words[words.length - 1].charAt(0).toUpperCase();
   };
 
+  const isVip = Boolean(
+    user && (user.role === "admin" || user.role === "premium")
+  );
+
   return (
     <>
-      <div className={`tabbar ${isOpen ? "show" : ""}`}>
+      <div className={`tabbar ${isOpen ? "show" : ""} ${isVip ? "tabbar--vip-gold" : ""}`}>
+        {isVip && <div className="tabbar-vip-shine" />}
         <div className="tabbar-scroll-area">
           {/* MUSIC */}
           <div className={`tab-parent ${openTab === "music" ? "open" : ""}`}>
@@ -323,14 +330,6 @@ function Tabbar({ isOpen, onClose }) {
                 <FaCalendarAlt style={{ fontSize: "16px" }} />
                 <span className="tab-label">Lịch &amp; Sự kiện</span>
               </span>
-              <span
-                className="badge-hot"
-                style={{
-                  background: "linear-gradient(135deg, #f43f5e, #ec4899)",
-                }}
-              >
-                Mới
-              </span>
             </NavLink>
           </div>
 
@@ -343,15 +342,14 @@ function Tabbar({ isOpen, onClose }) {
             >
               <span className="title">
                 <FaYoutube style={{ fontSize: "16px" }} />
-                <span className="tab-label">TecedeYT</span>
+                <span className="tab-label">
+                  Tecede<span className="text-yt-red">YT</span>
+                </span>
               </span>
-              <span
-                className="badge-hot"
-                style={{
-                  background: "linear-gradient(135deg, #ef4444, #dc2626)",
-                }}
-              >
-                Free thử 7 ngày
+              <span className="badge-premium-shine">
+                <span className="badge-shine-effect" />
+                <FaCrown className="badge-crown-icon" />
+                <span className="badge-premium-text">Premium</span>
               </span>
             </NavLink>
           </div>
@@ -367,7 +365,6 @@ function Tabbar({ isOpen, onClose }) {
                 <FaTv style={{ fontSize: "16px" }} />
                 <span className="tab-label">Tải app Android TV</span>
               </span>
-              <span className="badge-hot">Update 19/9/2026</span>
             </NavLink>
           </div>
 
@@ -467,45 +464,67 @@ function Tabbar({ isOpen, onClose }) {
         <div className="tabbar-user-section">
           <div className="tabbar-divider"></div>
           {user ? (
-            <div className="tabbar-user-profile">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  flex: 1,
-                  overflow: "hidden",
-                }}
-              >
-                {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt="avatar"
-                    className="tabbar-user-avatar"
-                  />
-                ) : (
-                  <div className="tabbar-user-fallback">
-                    {getAvatarLetter(user.display_name)}
-                  </div>
-                )}
-                <div className="tabbar-user-info">
-                  <div className="tabbar-user-name">
-                    {user.display_name}
-                    {user.role === "admin" && <VerifiedBadge />}
-                  </div>
-                  <div className="tabbar-user-role">
-                    {user.role === "admin" ? "Admin" : "Thành viên"}
+            <>
+              <div className="tabbar-user-profile">
+                <div className="tabbar-user-main">
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt="avatar"
+                      className="tabbar-user-avatar"
+                    />
+                  ) : (
+                    <div className="tabbar-user-fallback">
+                      {getAvatarLetter(user.display_name)}
+                    </div>
+                  )}
+                  <div className="tabbar-user-info">
+                    <div className="tabbar-user-name">
+                      {user.display_name}
+                      {user.role === "admin" && <VerifiedBadge />}
+                      {user.role === "premium" && <PremiumBadge showText={false} />}
+                    </div>
+                    <div className="tabbar-user-role">
+                      {user.role === "admin"
+                        ? "Admin"
+                        : user.role === "premium"
+                        ? "Premium"
+                        : "Thành viên"}
+                    </div>
                   </div>
                 </div>
+                <button
+                  className="tabbar-logout-btn"
+                  onClick={handleLogout}
+                  title="Đăng xuất"
+                >
+                  <MdLogout size={15} />
+                </button>
               </div>
+
+              {/* Nút Premium đặt bên dưới tabbar-user-profile */}
               <button
-                className="tabbar-logout-btn"
-                onClick={handleLogout}
-                title="Đăng xuất"
+                className={`tabbar-premium-upgrade-btn ${
+                  user.role === "premium" || user.role === "admin" ? "is-verified" : ""
+                }`}
+                onClick={() => {
+                  navigate("/premium");
+                  onClose?.();
+                }}
+                title={
+                  user.role === "premium" || user.role === "admin"
+                    ? "Tài khoản đã kích hoạt đặc quyền Premium"
+                    : "Nâng cấp Tecede Premium"
+                }
               >
-                <MdLogout size={20} />
+                <span className="premium-btn-shimmer" />
+                <FaCrown className="premium-btn-icon" />
+                <span className="premium-btn-text">Premium</span>
+                {(user.role === "premium" || user.role === "admin") && (
+                  <FaCheck className="premium-green-check" title="Đã xác thực Premium" />
+                )}
               </button>
-            </div>
+            </>
           ) : (
             <NavLink
               to="/login"

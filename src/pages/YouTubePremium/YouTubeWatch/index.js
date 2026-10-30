@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import YouTubeHeader from "../components/YouTubeHeader";
 import VideoCard from "../components/VideoCard";
+import { useAuth } from "../../../context/AuthContext";
+import { DarkSwal } from "../utils/watchAuth";
 import { 
   fetchStreams, 
   fetchComments, 
@@ -30,6 +32,42 @@ import "../style.scss";
 
 export default function YouTubeWatch() {
   const { videoId } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAllowed = Boolean(user && (user.role === "premium" || user.role === "admin"));
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/tecede-yt", { replace: true });
+      DarkSwal.fire({
+        icon: "warning",
+        title: "Yêu cầu đăng nhập",
+        text: "Vui lòng đăng nhập tài khoản để sử dụng tính năng xem YouTube không quảng cáo!",
+        showCancelButton: true,
+        confirmButtonText: "Đăng nhập ngay",
+        cancelButtonText: "Để sau",
+        confirmButtonColor: "#f59e0b",
+        cancelButtonColor: "#334155",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
+      return;
+    }
+
+    if (user.role !== "premium" && user.role !== "admin") {
+      navigate("/tecede-yt", { replace: true });
+      DarkSwal.fire({
+        icon: "info",
+        title: "Đặc quyền Premium",
+        text: "Tính năng này chỉ dành cho thành viên Premium!",
+        confirmButtonText: "Đóng",
+        confirmButtonColor: "#f59e0b",
+      });
+      return;
+    }
+  }, [user, navigate]);
 
   // Video stream state
   const [streamData, setStreamData] = useState(null);
@@ -79,7 +117,7 @@ export default function YouTubeWatch() {
 
   // Load video stream data & SponsorBlock
   useEffect(() => {
-    if (!videoId) return;
+    if (!videoId || !isAllowed) return;
 
     let isMounted = true;
     setStreamData(null);
@@ -196,7 +234,7 @@ export default function YouTubeWatch() {
     return () => {
       isMounted = false;
     };
-  }, [videoId]);
+  }, [videoId, isAllowed]);
 
   // Load more comments
   const handleLoadMoreComments = async () => {
@@ -311,7 +349,7 @@ export default function YouTubeWatch() {
 
   // Đồng bộ activeVideo khi vào trang watch
   useEffect(() => {
-    if (videoId) {
+    if (videoId && isAllowed) {
       setActiveVideo((prev) => ({
         ...(prev || {}),
         videoId,
@@ -322,7 +360,11 @@ export default function YouTubeWatch() {
         currentTime: prev?.videoId === videoId ? (prev.currentTime || 0) : 0
       }));
     }
-  }, [videoId, streamData, playerMode, setActiveVideo]);
+  }, [videoId, isAllowed, streamData, playerMode, setActiveVideo]);
+
+  if (!isAllowed) {
+    return null;
+  }
 
   return (
     <div 

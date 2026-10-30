@@ -1,0 +1,1001 @@
+/* TRANG PREMIUM - TECEDE */
+.premium-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 24px 80px;
+  max-width: 1240px;
+  margin: 0 auto;
+  color: #f8fafc;
+  background: transparent !important;
+}
+
+/* HERO SECTION */
+.premium-hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 42px;
+
+  .premium-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(234, 179, 8, 0.12);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    color: #fde047;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    box-shadow: 0 0 16px rgba(234, 179, 8, 0.2);
+
+    .hero-crown-icon {
+      color: #facc15;
+      font-size: 14px;
+      animation: crown-float 2.5s infinite ease-in-out;
+    }
+  }
+
+  .premium-hero-title {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+  }
+
+  .premium-hero-desc {
+    font-size: 13.5px;
+    color: #94a3b8;
+    line-height: 1.6;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+}
+
+/* BOX LÝ DO MỞ PREMIUM (FULL WIDTH TRÊN PC/LAPTOP) */
+.premium-reason-box {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 36px;
+  padding: 24px 28px;
+  border-radius: 16px;
+  background: rgba(24, 24, 27, 0.75);
+  border: 1px solid rgba(234, 179, 8, 0.28);
+  backdrop-filter: blur(12px);
+  text-align: left;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #eab308 0%, #f59e0b 50%, #d97706 100%);
+  }
+
+  .reason-box-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+
+    .reason-icon {
+      color: #facc15;
+      font-size: 20px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.5));
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fef08a;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+  }
+
+  .reason-box-content {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #cbd5e1;
+
+    p {
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+  }
+
+  .reason-box-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    .reason-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #60a5fa;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #93c5fd;
+        transform: translateX(3px);
+        text-decoration: underline;
+      }
+
+      .link-arrow {
+        font-size: 10.5px;
+      }
+    }
+  }
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fef08a 0%, #facc15 45%, #eab308 85%, #ca8a04 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(234, 179, 8, 0.4));
+}
+
+/* 2-COLUMN GRID */
+.premium-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 26px;
+  align-items: start;
+}
+
+/* SHARED CARD STYLING */
+.premium-card {
+  background: rgba(24, 24, 27, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: rgba(234, 179, 8, 0.3);
+  }
+}
+
+/* ===== LEFT COLUMN: PERKS CARD ===== */
+.perks-card {
+  padding: 30px;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(24, 24, 27, 0.85) 0%,
+    rgba(15, 23, 42, 0.75) 100%
+  );
+
+  .perks-card__header {
+    margin-bottom: 24px;
+
+    .perks-card__badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+
+      .premium-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+        color: #0f172a;
+        font-size: 11.5px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 10px rgba(234, 179, 8, 0.35);
+
+        .gem-icon {
+          font-size: 11px;
+        }
+      }
+
+      .premium-verified-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(234, 179, 8, 0.12);
+        border: 1px solid rgba(234, 179, 8, 0.3);
+      }
+    }
+
+    .perks-card__title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .perks-card__subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+  }
+
+  /* PERKS LIST (TINH GỌN) */
+  .perks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .perk-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(34, 197, 94, 0.3);
+      transform: translateX(3px);
+    }
+
+    .perk-item-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+
+      .perk-check-icon {
+        color: #22c55e;
+        font-size: 15px;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.6));
+      }
+
+      .perk-heading {
+        font-size: 14.5px;
+        font-weight: 600;
+        color: #f1f5f9;
+        line-height: 1.4;
+
+        .brand-yt {
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: 0.2px;
+
+          .text-yt-red {
+            color: #ef4444;
+            font-weight: 900;
+            margin-left: 1px;
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.45);
+          }
+        }
+      }
+    }
+
+    .perk-inline-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #60a5fa;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+
+      .brand-yt {
+        font-weight: 700;
+        color: inherit;
+
+        .text-yt-red {
+          color: #ef4444;
+          font-weight: 800;
+        }
+      }
+
+      &:hover {
+        background: rgba(59, 130, 246, 0.25);
+        color: #93c5fd;
+        border-color: rgba(59, 130, 246, 0.45);
+        transform: translateY(-1px);
+      }
+
+      .link-icon {
+        font-size: 9.5px;
+      }
+    }
+  }
+
+  /* FOOTER & UPGRADE BUTTON */
+  .perks-card__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .btn-upgrade-action {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #eab308 0%, #f59e0b 50%, #d97706 100%);
+      color: #0f172a;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(234, 179, 8, 0.35);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(234, 179, 8, 0.55);
+        background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+      }
+
+      &.btn-active-premium {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #ffffff;
+        box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+
+        &:hover {
+          box-shadow: 0 6px 22px rgba(16, 185, 129, 0.5);
+        }
+      }
+
+      .action-icon {
+        font-size: 17px;
+
+        &.crown-spin {
+          animation: icon-float 2.2s infinite ease-in-out;
+        }
+      }
+
+      .btn-shimmer {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.35),
+          transparent
+        );
+        transform: skewX(-20deg);
+        animation: shimmer-sweep 3s infinite ease-in-out;
+      }
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      margin: 0;
+    }
+  }
+}
+
+/* ===== RIGHT COLUMN: USERS LIST CARD ===== */
+.users-card {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .users-card__header {
+    margin-bottom: 14px;
+
+    .users-card__title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+
+      .title-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .section-users-icon {
+          color: #facc15;
+          font-size: 19px;
+          flex-shrink: 0;
+        }
+
+        h2,
+        .title-users-heading {
+          font-size: 18px;
+          font-weight: 800;
+          color: #ffffff;
+          margin: 0;
+          line-height: 1.2;
+        }
+      }
+
+      .users-card__header-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .btn-admin-reset {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 4px 12px;
+          border-radius: 999px;
+          background: rgba(59, 130, 246, 0.15);
+          border: 1px solid rgba(59, 130, 246, 0.45);
+          color: #93c5fd;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s ease;
+
+          &:hover:not(:disabled) {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #60a5fa;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.45);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+
+          .reset-icon {
+            font-size: 11px;
+            color: #60a5fa;
+          }
+
+          .spin-icon {
+            animation: spin 0.8s linear infinite;
+          }
+        }
+      }
+
+      .users-count-badge {
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(234, 179, 8, 0.15);
+        border: 1px solid rgba(234, 179, 8, 0.35);
+        color: #fde047;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+    }
+
+    .users-card__desc {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    /* SEARCH BOX */
+    .users-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .search-icon {
+        position: absolute;
+        left: 14px;
+        color: #64748b;
+        font-size: 13px;
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 13px;
+        padding: 9px 34px 9px 36px;
+        border-radius: 12px;
+        outline: none;
+        transition: all 0.2s ease;
+
+        &:focus {
+          border-color: #eab308;
+          box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.18);
+          background: rgba(15, 23, 42, 0.95);
+        }
+
+        &::placeholder {
+          color: #64748b;
+        }
+      }
+
+      .btn-clear-search {
+        position: absolute;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 4px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+
+  /* LIST WRAPPER */
+  .users-list-wrapper {
+    flex: 1;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 4px;
+
+    /* Custom scrollbar */
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(234, 179, 8, 0.25);
+      border-radius: 10px;
+      &:hover {
+        background: rgba(234, 179, 8, 0.45);
+      }
+    }
+  }
+
+  /* LOADING & EMPTY STATES */
+  .users-loading-state,
+  .users-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    text-align: center;
+    color: #94a3b8;
+    gap: 12px;
+    font-size: 13.5px;
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid rgba(234, 179, 8, 0.2);
+      border-top-color: #eab308;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .empty-icon {
+      font-size: 36px;
+      color: #475569;
+    }
+  }
+
+  /* USERS LIST (TINH GỌN VỪA KHỚP CHIỀU CAO CỘT PERKS) */
+  .users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .premium-user-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6.5px 12px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(234, 179, 8, 0.35);
+      transform: translateX(2px);
+    }
+
+    .user-avatar-wrap {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+
+      .user-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1.5px solid rgba(234, 179, 8, 0.5);
+        box-shadow: 0 0 8px rgba(234, 179, 8, 0.25);
+      }
+
+      .avatar-crown-icon {
+        position: absolute;
+        top: -5px;
+        right: -3px;
+        color: #facc15;
+        font-size: 11.5px;
+        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.8));
+        transform: rotate(15deg);
+      }
+    }
+
+    .user-meta {
+      flex: 1;
+      overflow: hidden;
+
+      .user-name-line {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 1px;
+        overflow: hidden;
+
+        .display-name {
+          font-size: 13.5px;
+          font-weight: 700;
+          color: #f8fafc;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .user-sub-line {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        color: #94a3b8;
+
+        .user-id-tag {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.5px 5.5px;
+          border-radius: 4px;
+          background: rgba(234, 179, 8, 0.1);
+          border: 1px solid rgba(234, 179, 8, 0.28);
+          color: #fde047;
+          font-weight: 700;
+          font-size: 10px;
+          letter-spacing: 0.2px;
+          line-height: 1.4;
+        }
+
+        .created-date {
+          display: inline-flex;
+          align-items: center;
+          gap: 3.5px;
+          color: #64748b;
+          font-size: 11px;
+
+          .clock-icon {
+            font-size: 9.5px;
+          }
+        }
+      }
+    }
+
+    .clickable-profile {
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &.user-avatar-wrap:hover {
+        transform: scale(1.05);
+        .user-avatar {
+          border-color: #facc15;
+          box-shadow: 0 0 14px rgba(250, 204, 21, 0.45);
+        }
+      }
+
+      &.display-name:hover {
+        color: #facc15;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  /* PHÂN TRANG DANH SÁCH 6 USER/TRANG */
+  .users-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    .pagination-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .page-arrow-icon {
+        font-size: 9px;
+      }
+
+      &:hover:not(:disabled) {
+        background: rgba(234, 179, 8, 0.2);
+        border-color: rgba(234, 179, 8, 0.45);
+        color: #fde047;
+      }
+
+      &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        background: rgba(255, 255, 255, 0.02);
+        border-color: rgba(255, 255, 255, 0.05);
+        color: #64748b;
+      }
+    }
+
+    .pagination-pages {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .page-number-btn {
+      min-width: 28px;
+      height: 28px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled):not(.active) {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #f1f5f9;
+      }
+
+      &.active {
+        background: rgba(234, 179, 8, 0.22);
+        border-color: rgba(250, 204, 21, 0.55);
+        color: #facc15;
+        font-weight: 700;
+        box-shadow: 0 0 10px rgba(234, 179, 8, 0.25);
+      }
+
+      &:disabled {
+        cursor: default;
+      }
+    }
+  }
+}
+
+/* ANIMATIONS */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes crown-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px) rotate(6deg); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .premium-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .premium-hero-title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-hero-desc {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .premium-page {
+    padding: 24px 12px 60px;
+  }
+
+  .premium-hero {
+    margin-bottom: 20px;
+
+    .premium-hero-title {
+      font-size: 24px;
+    }
+
+    .premium-hero-desc {
+      display: none !important;
+    }
+  }
+
+  .premium-reason-box {
+    padding: 16px 14px;
+    margin: 0 0 24px 0;
+
+    .reason-box-header {
+      h3 {
+        font-size: 15px;
+      }
+      .reason-icon {
+        font-size: 17px;
+      }
+    }
+
+    .reason-box-content {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .reason-box-footer {
+      .reason-link {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .perks-card {
+    padding: 18px 14px;
+
+    .perks-card__header {
+      .perks-card__title {
+        font-size: 21px;
+      }
+    }
+
+    .perk-item {
+      padding: 10px 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .perk-item-main {
+        gap: 10px;
+
+        .perk-check-icon {
+          font-size: 13.5px;
+        }
+
+        .perk-heading {
+          font-size: 13px;
+        }
+      }
+
+      .perk-inline-link {
+        font-size: 11px;
+        padding: 3px 8px;
+        margin-left: 24px;
+      }
+    }
+
+    .perks-card__footer {
+      .btn-upgrade-action {
+        padding: 12px 18px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .users-card {
+    padding: 16px 12px;
+
+    .users-card__header {
+      .users-card__title-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+
+        .title-with-icon {
+          gap: 6px;
+
+          .section-users-icon {
+            font-size: 16px;
+          }
+
+          h2,
+          .title-users-heading {
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            margin: 0 !important;
+            line-height: 1.2 !important;
+          }
+        }
+
+        .users-card__header-right {
+          gap: 6px;
+
+          .btn-admin-reset {
+            padding: 3px 8px;
+            font-size: 11px;
+          }
+
+          .users-count-badge {
+            padding: 3px 8px;
+            font-size: 11px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .users-card .users-card__header .users-card__title-row .title-with-icon {
+    h2,
+    .title-users-heading {
+      font-size: 13.5px !important;
+    }
+  }
+}

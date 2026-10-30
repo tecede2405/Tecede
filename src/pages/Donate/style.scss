@@ -1,193 +1,585 @@
+/* ==========================================================================
+   DONATE / BẢNG VÀNG VINH DANH (COMPACT & SLEEK GLASSMORPHISM THEME)
+   ========================================================================== */
+
 .donate-page {
-  padding: 16px;
-  background : #121212;
-  color: white;
-  min-height: 80vh;
-  padding-top: 70px;
+  min-height: calc(100vh - 70px);
+  padding: 24px 14px 50px;
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 30%, rgba(229, 9, 20, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 70%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+    #0c0d14;
+  color: #f1f5f9;
+  font-family: inherit;
+  box-sizing: border-box;
+
+  .donate-page-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    width: 100%;
+  }
 }
 
+/* ================= 1. HEADER SECTION (NHỎ GỌN) ================= */
 .donate-page-header {
-  margin-bottom: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  h1 {
-    font-size: 22px;
+  .donate-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+    font-size: 11.5px;
     font-weight: 700;
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
 
-    margin-bottom: 6px;
-    text-align: center;
+    .badge-icon {
+      font-size: 12px;
+      color: #f59e0b;
+      animation: heartbeat 2s ease-in-out infinite;
+    }
   }
 
-  p {
-    font-size: 13px;
-    text-align: center;
+  .donate-hero-title {
+    font-size: clamp(19px, 2.5vw, 25px);
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -0.3px;
+    background: linear-gradient(135deg, #ffffff 0%, #fef08a 45%, #f59e0b 80%, #ef4444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.2));
+  }
+
+  .donate-hero-desc {
+    font-size: 12.5px;
     color: #94a3b8;
+    max-width: 540px;
+    line-height: 1.5;
+    margin: 0 0 16px;
   }
 }
 
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ================= 2. THỐNG KÊ NHANH (COMPACT) ================= */
+.donate-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 720px;
+  margin-bottom: 16px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .donate-stat-card {
+    background: rgba(22, 24, 38, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    &.highlight {
+      background: linear-gradient(135deg, rgba(30, 26, 16, 0.75) 0%, rgba(20, 22, 34, 0.65) 100%);
+      border-color: rgba(245, 158, 11, 0.35);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 0 12px rgba(245, 158, 11, 0.1);
+    }
+
+    .stat-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .stat-value {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      small {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-left: 2px;
+      }
+
+      &.text-gold {
+        color: #facc15;
+        text-shadow: 0 0 10px rgba(250, 204, 21, 0.35);
+
+        .stat-progress {
+          font-size: 11.5px;
+          font-weight: 700;
+          color: #fef08a;
+          margin-left: 5px;
+          opacity: 0.95;
+          text-shadow: none;
+        }
+      }
+
+      &.text-amber {
+        color: #fbbf24;
+      }
+    }
+  }
+}
+
+/* Nút CTA nhỏ gọn */
+.donate-cta-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .donate-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
+    transition: all 0.2s ease;
+
+    .heart-icon {
+      font-size: 13px;
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+
+    .arrow-icon {
+      font-size: 11px;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, #ff1f2a 0%, #c40a14 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(229, 9, 20, 0.45);
+      color: #ffffff;
+
+      .arrow-icon {
+        transform: translateX(3px);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ================= 3. GRID DANH SÁCH DONATE (GỌN GÀNG) ================= */
 .donate-page-list {
   display: grid;
-  /* 2 cột trên Desktop */
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 
-  /* Mobile: 1 cột */
-  @media (max-width: 950px) {
-    grid-template-columns: repeat(2, 1fr); 
+  @media (max-width: 980px) {
+    grid-template-columns: repeat(2, 1fr);
   }
-  @media (max-width: 600px) {
+
+  @media (max-width: 620px) {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
+/* THẺ DONATE CARD GỌN NHẸ */
 .donate-pg-card {
   display: flex;
-  gap: 14px;
-  background: rgba(18, 18, 18, 0.8);
-  padding: 14px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+  align-items: center;
+  gap: 10px;
+  background: rgba(20, 22, 33, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
   width: 100%;
   min-width: 0;
 
   &:hover {
-    background: rgba(30, 30, 30, 0.9);
+    background: rgba(28, 30, 46, 0.85);
+    border-color: rgba(255, 255, 255, 0.16);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  }
+
+  /* TOP 1: HOÀNG KIM VIP */
+  &.rank-1 {
+    background: linear-gradient(135deg, rgba(32, 27, 12, 0.85) 0%, rgba(22, 24, 36, 0.75) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.38);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 0 12px rgba(245, 158, 11, 0.12);
+
+    &:hover {
+      border-color: rgba(250, 204, 21, 0.65);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45), 0 0 18px rgba(245, 158, 11, 0.2);
+    }
+  }
+
+  /* TOP 2: BẠC CHROME */
+  &.rank-2 {
+    background: linear-gradient(135deg, rgba(28, 31, 42, 0.85) 0%, rgba(20, 22, 33, 0.75) 100%);
+    border: 1px solid rgba(203, 213, 225, 0.28);
+
+    &:hover {
+      border-color: rgba(226, 232, 240, 0.55);
+    }
+  }
+
+  /* TOP 3: ĐỒNG HỔ PHÁCH */
+  &.rank-3 {
+    background: linear-gradient(135deg, rgba(31, 23, 16, 0.85) 0%, rgba(20, 22, 33, 0.75) 100%);
+    border: 1px solid rgba(217, 119, 6, 0.28);
+
+    &:hover {
+      border-color: rgba(245, 158, 11, 0.55);
+    }
   }
 }
 
+/* AVATAR RANKING NHỎ GỌN */
 .donate-pg-avatar {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 15px;
+  font-size: 11.5px;
   font-weight: 800;
   color: #fff;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  &.rank-1 {
+    background: linear-gradient(135deg, #f59e0b 0%, #eab308 50%, #dc2626 100%);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+    border-color: #fef08a;
+
+    .avatar-crown {
+      font-size: 14px;
+      color: #ffffff;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
+      animation: crown-pulse 2s ease-in-out infinite alternate;
+    }
+  }
+
+  &.rank-2 {
+    background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 50%, #64748b 100%);
+    box-shadow: 0 0 10px rgba(148, 163, 184, 0.4);
+    border-color: #f8fafc;
+    color: #0f172a;
+    font-weight: 900;
+  }
+
+  &.rank-3 {
+    background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #78350f 100%);
+    box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+    border-color: #fed7aa;
+    color: #ffffff;
+    font-weight: 800;
+  }
+
+  &.rank-default {
+    background: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+    font-weight: 700;
+  }
 }
 
-.donate-pg-avatar.rank-1 {
-  background: linear-gradient(135deg, #f59e0b, #ef4444);
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-}
-.donate-pg-avatar.rank-2 {
-  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
-  box-shadow: 0 0 12px rgba(148, 163, 184, 0.4);
-  color: #1e293b;
-}
-.donate-pg-avatar.rank-3 {
-  background: linear-gradient(135deg, #b45309, #d97706);
-  box-shadow: 0 0 12px rgba(217, 119, 6, 0.4);
+@keyframes crown-pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15) rotate(4deg); }
 }
 
+/* THÔNG TIN NỘI DUNG */
 .donate-pg-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
-  gap: 6px;
+  gap: 5px;
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
+/* DÒNG 1: TÊN, NGÀY, SỐ TIỀN */
 .donate-pg-line1 {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.donate-pg-name {
-  font-weight: 700;
-  color: #f3f4f6;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.donate-pg-date {
-  font-size: 11px;
-  color: #64748b;
-  margin-left: -2px;
-}
-
-.donate-pg-amount {
-  font-weight: 700;
-  color: #10b981;
-  margin-left: auto; /* Đẩy số tiền sang góc phải */
-}
-
-.donate-pg-line2 {
-  display: flex;
-  align-items: center;
   gap: 6px;
-  font-size: 12px;
-  color: #9ca3af;
+  font-size: 13px;
+  white-space: nowrap;
   width: 100%;
 }
 
-.donate-pg-arrow {
-  color: #fcd34d;
+/* TÊN NGƯỜI DONATE */
+.donate-pg-name-container {
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  mask-image: linear-gradient(90deg, #000 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent 100%);
+
+  .donate-pg-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f8fafc;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* CHỮ CHẠY KHI TÊN DÀI */
+  .donate-pg-scroll-name {
+    display: flex;
+    width: max-content;
+    animation: pgScrollName 12s linear infinite;
+
+    span {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      white-space: nowrap;
+    }
+  }
+}
+
+@keyframes pgScrollName {
+  0%, 15% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* NGÀY DONATE */
+.donate-pg-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   font-size: 10px;
+  color: #64748b;
   flex-shrink: 0;
+
+  .date-icon {
+    font-size: 9px;
+  }
+}
+
+/* BADGE SỐ TIỀN */
+.donate-pg-amount-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 1.5px 6.5px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  white-space: nowrap;
+  width: fit-content;
+
+  .amount-text {
+    font-size: 12px;
+    font-weight: 800;
+    color: #34d399;
+    letter-spacing: 0.1px;
+    line-height: 1.2;
+  }
+}
+
+/* DÒNG 2: LỜI NHẮN */
+.donate-pg-line2 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #cbd5e1;
+  width: 100%;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+
+  .quote-icon {
+    color: #f59e0b;
+    font-size: 8px;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
 }
 
 .donate-pg-msg-container {
   overflow: hidden;
   white-space: nowrap;
-  flex-grow: 1;
-  max-width: 100%; /* Cho phép chiếm hết không gian còn lại */
+  flex: 1;
+  max-width: 100%;
+  position: relative;
+  mask-image: linear-gradient(90deg, #000 86%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, #000 86%, transparent 100%);
+
+  .donate-pg-msg {
+    display: inline-block;
+    color: #cbd5e1;
+    font-size: 11.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* CHỮ CHẠY KHI LỜI NHẮN DÀI */
+  .donate-pg-scroll-msg {
+    display: flex;
+    width: max-content;
+    animation: pgScrollMsg 20s linear infinite;
+
+    span {
+      color: #e2e8f0;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+  }
 }
 
-.donate-pg-msg {
-  display: inline-block;
-}
-
-.donate-pg-scroll {
-  display: flex;
-  width: max-content;
-  animation: pgScrollText 25s linear infinite;
-}
-
-@keyframes pgScrollText {
-  0%, 6% { transform: translateX(0); } /* Đứng yên 1.5s ở vị trí bắt đầu */
+@keyframes pgScrollMsg {
+  0%, 8% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-/* SKELETON */
-.skeleton {
-  position: relative;
+/* ================= 4. EMPTY STATE ================= */
+.empty-donate-card {
+  grid-column: 1 / -1;
+  padding: 40px 16px;
+  text-align: center;
+  background: rgba(20, 22, 33, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  overflow: hidden;
+  .empty-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
 
-  background: rgba(255,255,255,0.06);
+    .empty-icon {
+      font-size: 22px;
+      color: #f59e0b;
+    }
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 6px;
+  }
+
+  p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0 0 16px;
+    max-width: 380px;
+  }
+
+  .empty-donate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.35);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #ff1f2a 0%, #c40a14 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(229, 9, 20, 0.45);
+      color: #ffffff;
+    }
+  }
 }
 
-.skeleton::after {
-  content: "";
+/* ================= 5. SKELETON LOADING ================= */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
 
-  position: absolute;
-
-  top: 0;
-  left: -150px;
-
-  width: 150px;
-  height: 100%;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.08),
-    transparent
-  );
-
-  animation: shimmer 1.3s infinite;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150px;
+    width: 150px;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+    animation: shimmer 1.3s infinite;
+  }
 }
 
 @keyframes shimmer {
@@ -196,84 +588,109 @@
   }
 }
 
+.skeleton-badge {
+  width: 130px;
+  height: 22px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
 .skeleton-title {
-  width: 240px;
-  height: 26px;
-
-  border-radius: 10px;
-
-  margin-bottom: 10px;
+  width: 260px;
+  height: 28px;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 
 .skeleton-subtitle {
-  width: 180px;
+  width: 200px;
   height: 14px;
-
   border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.skeleton-card {
+  pointer-events: none;
 }
 
 .skeleton-text {
   height: 12px;
-
   border-radius: 999px;
+  margin-bottom: 4px;
+
+  &.short {
+    width: 50%;
+  }
 }
 
-.nickname.skeleton {
-  width: 100px;
-
-  margin-bottom: 6px;
-}
-
-.message.skeleton {
-  width: 180px;
-}
-
-.message.short {
-  width: 130px;
-}
-
-.amount-skeleton {
-  width: 70px;
-}
-
-.skeleton-row {
-  pointer-events: none;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
+/* ================= 6. MOBILE RESPONSIVE ================= */
+@media (max-width: 600px) {
   .donate-page {
-    padding: 12px;
+    padding: 16px 10px 40px;
   }
 
-  .donate-page-header h1 {
-    font-size: 18px;
+  .donate-page-header {
+    margin-bottom: 16px;
+
+    .donate-hero-title {
+      font-size: 19px;
+    }
+
+    .donate-hero-desc {
+      font-size: 12px;
+    }
   }
 
-  .donate-page-header p {
-    font-size: 12px;
+  .donate-pg-card {
+    padding: 9px 10px;
+    gap: 8px;
   }
 
-  .donate-row, .donate-pg-card {
-    padding: 10px;
-  }
-
-  .rank, .donate-pg-avatar {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
+  .donate-pg-avatar {
+    width: 32px;
+    height: 32px;
     font-size: 11px;
+
+    &.rank-1 .avatar-crown {
+      font-size: 13px;
+    }
   }
 
-  .nickname, .donate-pg-name {
-    font-size: 13px;
+  .donate-pg-line1 {
+    gap: 4px;
   }
 
-  .message, .donate-pg-msg, .donate-pg-date {
-    font-size: 11px;
+  .donate-pg-name-container {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+
+    .donate-pg-name {
+      font-size: 12.5px;
+    }
+
+    .donate-pg-scroll-name span {
+      font-size: 12.5px;
+    }
   }
 
-  .amount, .donate-pg-amount {
-    font-size: 13px;
+  .donate-pg-date {
+    font-size: 9px;
+    gap: 2px;
+    color: #64748b;
+
+    .date-icon {
+      font-size: 8px;
+    }
+  }
+
+  .donate-pg-amount-badge {
+    padding: 1px 5px;
+    flex-shrink: 0;
+
+    .amount-text {
+      font-size: 11px;
+      font-weight: 700;
+    }
   }
 }

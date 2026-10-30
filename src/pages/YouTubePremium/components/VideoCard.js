@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import ChannelCard from "./ChannelCard";
+import { useAuth } from "../../../context/AuthContext";
+import { checkYtWatchAccess } from "../utils/watchAuth";
 import { 
   extractVideoId, 
   formatViews, 
@@ -11,6 +13,9 @@ import {
 } from "../../../services/pipedApi";
 
 export default function VideoCard({ video, layout = "grid" }) {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   if (!video) return null;
 
   // Nếu là kênh YouTube -> Hiển thị thẻ kênh chuyên biệt
@@ -55,10 +60,20 @@ export default function VideoCard({ video, layout = "grid" }) {
   const formattedViews = formatViews(views);
   const formattedDate = formatTimeAgo(uploadedDate);
 
+  const handleWatchClick = (e) => {
+    if (!checkYtWatchAccess(user, navigate)) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className={`yt-video-card yt-video-card--${layout}`}>
       {/* THUMBNAIL WRAPPER */}
-      <Link to={`/tecede-yt/watch/${videoId}`} className="yt-card__thumb-link">
+      <Link 
+        to={`/tecede-yt/watch/${videoId}`} 
+        onClick={handleWatchClick} 
+        className="yt-card__thumb-link"
+      >
         <div className="yt-card__thumb-wrap">
           <img
             src={thumbnail}
@@ -97,7 +112,11 @@ export default function VideoCard({ video, layout = "grid" }) {
         )}
 
         <div className="yt-card__meta">
-          <Link to={`/tecede-yt/watch/${videoId}`} className="yt-card__title-link">
+          <Link 
+            to={`/tecede-yt/watch/${videoId}`} 
+            onClick={handleWatchClick} 
+            className="yt-card__title-link"
+          >
             <h3 className="yt-card__title" title={title}>
               {title}
             </h3>

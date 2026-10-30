@@ -113,6 +113,10 @@ function SellGeminiPro() {
               key={plan.id}
               className={`sgp-card ${plan.highlight ? "sgp-card--highlight" : ""}`}
             >
+              <div className="sgp-card__soldout-badge">
+                Hết hàng
+              </div>
+
               {plan.badge && (
                 <div className={`sgp-card__badge sgp-card__badge--${plan.id}`}>
                   {plan.badge}

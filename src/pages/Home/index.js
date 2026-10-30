@@ -17,6 +17,7 @@ import MovieRow from "../../component/MovieRow/index";
 
 import TopList from "../../component/TopList/index";
 import LatestComments from "../../component/LatestComments/index";
+import AnnouncementBar from "../../component/Marquee/AnnouncementBar";
 import { Helmet } from "react-helmet-async";
 import LazySection from "../../component/LazySection/index";
 import "./style.scss";
@@ -75,6 +76,7 @@ function Home() {
             </div>
             {/* main */}
             <div className="Home__main">
+              <AnnouncementBar />
                <div className="Home__music"> 
                 <MovieRow />
               </div>

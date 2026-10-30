@@ -38,3 +38,141 @@
   cursor: pointer;
 }
 
+/* ==========================================================================
+   PAGINATION STYLES (ĐỒNG BỘ VỚI HỆ THỐNG PHIM)
+   ========================================================================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 40px 0 60px;
+  flex-wrap: wrap;
+
+  button,
+  span {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  button:hover:not(:disabled) {
+    background-color: #333;
+    border-color: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  button.active {
+    background-color: #e50914;
+    border-color: #e50914;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
+  }
+
+  button:disabled {
+    background-color: #2a2a2a;
+    border-color: #222;
+    color: #555;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+  }
+
+  span {
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: default;
+    font-weight: bold;
+  }
+
+  @media (max-width: 576px) {
+    gap: 6px;
+
+    button,
+    span {
+      min-width: 36px;
+      height: 36px;
+      font-size: 13px;
+      padding: 0 8px;
+    }
+  }
+}
+
+.page-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+
+  input {
+    width: 55px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #1e1e1e;
+    color: #fff;
+    text-align: center;
+    outline: none;
+    font-size: 14px;
+    transition: all 0.25s ease;
+
+    &:focus {
+      border-color: #e50914;
+      box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.25);
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  span {
+    color: #aaa;
+    font-size: 13px;
+  }
+
+  button {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &:hover {
+      background-color: #333;
+      border-color: #555;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+

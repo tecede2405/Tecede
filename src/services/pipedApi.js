@@ -604,25 +604,37 @@ export const formatTimeAgo = (dateInput) => {
     }
   }
 
-  // Nếu là đối tượng Date hoặc chuỗi Date hợp lệ (ISO format như 2011-10-25T10:51:16Z hoặc 2024-01-01)
+  // Nếu là đối tượng Date hoặc chuỗi Date hợp lệ
   try {
-    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    let parseTarget = dateInput;
+    if (typeof dateInput === "string") {
+      let str = dateInput.trim();
+      // Nếu có đuôi Z từ API phim Việt Nam (như phimapi.com lưu giờ VN nhưng gắn Z)
+      if (str.endsWith("Z")) {
+        str = str.replace(/\.\d+Z$/, "").replace(/Z$/, "") + "+07:00";
+      } else if (!str.includes("+") && !str.includes("-", 10)) {
+        str = str.replace(" ", "T") + "+07:00";
+      }
+      parseTarget = str;
+    }
+
+    const date = parseTarget instanceof Date ? parseTarget : new Date(parseTarget);
     if (!isNaN(date.getTime())) {
       const now = new Date();
       const diffSec = Math.floor((now - date) / 1000);
-      if (diffSec >= 0) {
-        if (diffSec < 60) return "Vừa xong";
-        const diffMin = Math.floor(diffSec / 60);
-        if (diffMin < 60) return `${diffMin} phút trước`;
-        const diffHour = Math.floor(diffMin / 60);
-        if (diffHour < 24) return `${diffHour} giờ trước`;
-        const diffDay = Math.floor(diffHour / 24);
-        if (diffDay < 30) return `${diffDay} ngày trước`;
-        const diffMonth = Math.floor(diffDay / 30);
-        if (diffMonth < 12) return `${diffMonth} tháng trước`;
-        const diffYear = Math.floor(diffDay / 365);
-        return `${diffYear} năm trước`;
-      }
+      if (diffSec < 60) return "Vừa xong";
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return `${diffMin} phút trước`;
+      const diffHour = Math.floor(diffMin / 60);
+      if (diffHour < 24) return `${diffHour} giờ trước`;
+      const diffDay = Math.floor(diffHour / 24);
+      if (diffDay < 7) return `${diffDay} ngày trước`;
+      const diffWeek = Math.floor(diffDay / 7);
+      if (diffWeek < 4) return `${diffWeek} tuần trước`;
+      const diffMonth = Math.floor(diffDay / 30);
+      if (diffMonth < 12) return `${diffMonth} tháng trước`;
+      const diffYear = Math.floor(diffDay / 365);
+      return `${diffYear} năm trước`;
     }
   } catch (e) {}
 

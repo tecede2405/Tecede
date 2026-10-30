@@ -98,6 +98,38 @@
     pointer-events: none;
   }
 
+  /* Lớp bóng kính chạy qua lại (Glass Sheen Sweep Effect) */
+  .fb-cover-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      bottom: -60px;
+      left: -240px;
+      width: 140px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.02) 20%,
+        rgba(255, 255, 255, 0.16) 48%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0.16) 52%,
+        rgba(255, 255, 255, 0.02) 80%,
+        transparent 100%
+      );
+      transform: skewX(-25deg);
+      filter: blur(1px);
+      backdrop-filter: brightness(1.22) contrast(1.1);
+      animation: glass-sheen-sweep 7s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+    }
+  }
+
   .fb-cover-badge {
     position: absolute;
     top: 20px;
@@ -411,6 +443,12 @@
           background: rgba(229, 9, 20, 0.15) !important;
           color: #f87171 !important;
           border: 1px solid rgba(229, 9, 20, 0.35) !important;
+        }
+
+        &--premium {
+          background: rgba(234, 179, 8, 0.15) !important;
+          color: #facc15 !important;
+          border: 1px solid rgba(234, 179, 8, 0.4) !important;
         }
       }
     }
@@ -1074,6 +1112,12 @@
           color: #f87171;
         }
 
+        &.fb-role-premium {
+          color: #fef08a;
+          font-weight: 700;
+          text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+        }
+
         &.fb-role-member {
           color: #38bdf8;
         }
@@ -1087,6 +1131,343 @@
           font-weight: 600;
           vertical-align: middle;
         }
+      }
+    }
+  }
+}
+
+/* ==========================================================================
+   PREMIUM THEME (GOLD & GLASSMORPHISM) - KHI USER ROLE LÀ PREMIUM
+   ========================================================================== */
+
+/* 1. KHUNG BANNER ẢNH BÌA PHONG CÁCH PREMIUM HOÀNG GIA */
+.fb-cover-banner.fb-cover-banner--premium {
+  background: 
+    radial-gradient(ellipse at 85% 20%, rgba(234, 179, 8, 0.45) 0%, transparent 55%),
+    radial-gradient(ellipse at 15% 85%, rgba(245, 158, 11, 0.32) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 10%, rgba(254, 240, 138, 0.22) 0%, transparent 45%),
+    linear-gradient(135deg, #090803 0%, #1a1506 45%, #0e0c05 100%);
+
+  /* Lưới vàng chìm tinh tế */
+  &::before {
+    background-image: 
+      linear-gradient(rgba(234, 179, 8, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(234, 179, 8, 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.85;
+  }
+
+  /* Viền trên vàng gold phát sáng lộng lẫy */
+  &::after {
+    background: linear-gradient(90deg, transparent, #eab308 20%, #fef08a 50%, #f59e0b 80%, transparent);
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.75);
+    height: 3.5px;
+  }
+
+  .fb-cover-overlay {
+    background: linear-gradient(180deg, transparent 25%, rgba(12, 10, 6, 0.95) 100%);
+  }
+
+  /* Hạt sáng lung linh hoàng kim */
+  .fb-cover-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      radial-gradient(circle at 25% 35%, rgba(254, 240, 138, 0.4) 0, transparent 4px),
+      radial-gradient(circle at 65% 25%, rgba(234, 179, 8, 0.45) 0, transparent 5px),
+      radial-gradient(circle at 45% 70%, rgba(245, 158, 11, 0.35) 0, transparent 4px),
+      radial-gradient(circle at 80% 60%, rgba(254, 240, 138, 0.4) 0, transparent 4px),
+      radial-gradient(circle at 12% 78%, rgba(234, 179, 8, 0.35) 0, transparent 3px);
+    background-repeat: no-repeat;
+    animation: gold-particles-float 6s ease-in-out infinite alternate;
+  }
+
+  /* Huy hiệu VIP trên ảnh bìa */
+  .fb-cover-badge {
+    background: rgba(28, 22, 9, 0.82);
+    border: 1px solid rgba(234, 179, 8, 0.5);
+    color: #fef08a;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(234, 179, 8, 0.3);
+
+    .cover-crown-icon {
+      color: #facc15;
+      font-size: 13px;
+      filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.9));
+      animation: crown-pulse 2s ease-in-out infinite alternate;
+    }
+  }
+
+  /* Bóng kính vàng kim hoàng gia quét qua lại */
+  .fb-cover-shine {
+    &::before {
+      width: 170px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(254, 240, 138, 0.04) 15%,
+        rgba(234, 179, 8, 0.16) 35%,
+        rgba(254, 240, 138, 0.45) 48%,
+        rgba(255, 255, 255, 0.75) 50%,
+        rgba(254, 240, 138, 0.45) 52%,
+        rgba(234, 179, 8, 0.16) 65%,
+        rgba(254, 240, 138, 0.04) 85%,
+        transparent 100%
+      );
+      filter: drop-shadow(0 0 18px rgba(254, 240, 138, 0.5));
+      backdrop-filter: brightness(1.35) contrast(1.15);
+      animation: glass-sheen-sweep 6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+    }
+  }
+}
+
+@keyframes glass-sheen-sweep {
+  0% {
+    left: -240px;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% + 160px);
+    opacity: 0;
+  }
+}
+
+@keyframes gold-particles-float {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-8px) scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes crown-pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px rgba(250, 204, 21, 0.6));
+  }
+  100% {
+    transform: scale(1.18) rotate(5deg);
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 1));
+  }
+}
+
+/* 2. TOÀN BỘ TRANG PROFILE KHI CÓ ROLE PREMIUM */
+.fb-profile-page.fb-profile-page--premium {
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(234, 179, 8, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 45%, rgba(217, 119, 6, 0.05) 0%, transparent 45%),
+    radial-gradient(ellipse at 15% 75%, rgba(234, 179, 8, 0.04) 0%, transparent 45%),
+    #0c0b08;
+
+  /* Thanh Header Bar mang hiệu ứng kính đen viền vàng */
+  .fb-profile-header-bar {
+    background: rgba(18, 15, 9, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(234, 179, 8, 0.22);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Khung Avatar tròn viền Neon Gold tỏa sáng */
+  .fb-avatar-container {
+    .fb-avatar-ring {
+      border: 4px solid #eab308;
+      background: #191409;
+      box-shadow: 
+        0 12px 35px rgba(0, 0, 0, 0.75),
+        0 0 28px rgba(234, 179, 8, 0.55),
+        inset 0 0 16px rgba(234, 179, 8, 0.25);
+    }
+
+    .fb-camera-btn {
+      background: #231b0b;
+      border-color: #eab308;
+      color: #fef08a;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(234, 179, 8, 0.4);
+
+      &:hover {
+        background: #33260d;
+        border-color: #fef08a;
+        color: #ffffff;
+        box-shadow: 0 6px 20px rgba(234, 179, 8, 0.65);
+      }
+    }
+  }
+
+  /* Tên người dùng chữ dải màu vàng Gold lấp lánh */
+  .fb-user-details {
+    .fb-user-name {
+      background: linear-gradient(135deg, #ffffff 0%, #fef08a 30%, #facc15 65%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 14px rgba(234, 179, 8, 0.45));
+    }
+
+    .fb-user-meta {
+      .fb-username-item .meta-at {
+        color: #eab308;
+      }
+      .fb-id-item .meta-hash {
+        color: #eab308;
+      }
+    }
+  }
+
+  /* Thanh Tab Navigation */
+  .fb-nav-tabs-bar {
+    background: rgba(14, 12, 7, 0.9);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(234, 179, 8, 0.18);
+
+    .fb-tab-btn {
+      &:hover {
+        color: #fef08a;
+      }
+
+      &.active {
+        color: #fef08a;
+
+        &::after {
+          background: linear-gradient(90deg, #eab308, #fef08a, #f59e0b);
+          box-shadow: 0 0 12px rgba(234, 179, 8, 0.8);
+        }
+
+        .tab-icon {
+          color: #facc15;
+          filter: drop-shadow(0 0 5px rgba(234, 179, 8, 0.6));
+        }
+      }
+    }
+  }
+
+  /* Hộp lưu ý văn minh */
+  .fb-notice-box {
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.1);
+    color: #fef08a;
+
+    .notice-icon {
+      color: #facc15;
+    }
+  }
+
+  /* Form & Input phong cách kính và vàng gold */
+  .fb-field-group {
+    label .field-icon {
+      color: #eab308;
+    }
+
+    .fb-input-wrap {
+      input {
+        background: rgba(18, 15, 9, 0.72);
+        border: 1px solid rgba(234, 179, 8, 0.22);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+
+        &:focus {
+          border-color: #eab308;
+          box-shadow: 0 0 16px rgba(234, 179, 8, 0.3);
+        }
+      }
+    }
+  }
+
+  /* Nút bấm lưu thay đổi màu hoàng kim */
+  .fb-action-btn--save.active {
+    background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+    color: #0b0a04;
+    font-weight: 800;
+    box-shadow: 0 4px 18px rgba(234, 179, 8, 0.5);
+
+    &:hover {
+      background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #d97706 100%);
+      box-shadow: 0 6px 24px rgba(234, 179, 8, 0.65);
+    }
+  }
+
+  /* Thẻ thông tin tóm tắt tài khoản (Tab 3) - Hiệu ứng kính */
+  .fb-account-summary {
+    .summary-card {
+      background: rgba(22, 18, 11, 0.78);
+      border: 1px solid rgba(234, 179, 8, 0.28);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 18px rgba(234, 179, 8, 0.08);
+      transition: all 0.25s ease;
+
+      &:hover {
+        border-color: rgba(234, 179, 8, 0.5);
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(234, 179, 8, 0.18);
+        transform: translateY(-2px);
+      }
+
+      &__icon {
+        background: rgba(234, 179, 8, 0.14);
+        border: 1px solid rgba(234, 179, 8, 0.3);
+        color: #facc15;
+      }
+
+      .summary-value.fb-role-premium {
+        color: #fef08a;
+        font-weight: 700;
+        text-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+      }
+    }
+  }
+
+  /* Tab chọn avatar */
+  .fb-avatars-intro {
+    h3 {
+      color: #fef08a;
+    }
+  }
+
+  .fb-avatar-tile {
+    border: 2px solid rgba(234, 179, 8, 0.18);
+
+    &:hover {
+      border-color: rgba(234, 179, 8, 0.55);
+      box-shadow: 0 0 16px rgba(234, 179, 8, 0.35);
+    }
+
+    &.active {
+      border-color: #eab308;
+      box-shadow: 0 0 22px rgba(234, 179, 8, 0.6);
+
+      .tile-check-overlay {
+        background: rgba(234, 179, 8, 0.92);
+        color: #0b0a04;
+      }
+    }
+  }
+
+  .fb-floating-save-bar {
+    background: rgba(22, 18, 11, 0.9);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(234, 179, 8, 0.2);
+
+    .bar-save-btn {
+      background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+      color: #0b0a04;
+      font-weight: 800;
+
+      &:hover {
+        background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);
       }
     }
   }

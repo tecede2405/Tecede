@@ -20,9 +20,11 @@ import {
   FaSpinner,
   FaTimes
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel, Navigation } from "swiper/modules";
+import { useAuth } from "../../context/AuthContext";
+import { checkYtWatchAccess } from "./utils/watchAuth";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -51,6 +53,8 @@ const MORE_EXPLORE_QUERIES = [
 ];
 
 export default function YouTubePremium() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [region, setRegion] = useState(() => {
     return localStorage.getItem("tecede_yt_region") || "VN";
   });
@@ -137,6 +141,12 @@ export default function YouTubePremium() {
       clearWatchHistory();
       refreshHistoryAndChips();
       setShowFullHistory(false);
+    }
+  };
+
+  const handleWatchClick = (e) => {
+    if (!checkYtWatchAccess(user, navigate)) {
+      e.preventDefault();
     }
   };
 
@@ -367,6 +377,7 @@ export default function YouTubePremium() {
                   <Link 
                     key={item.id} 
                     to={`/tecede-yt/watch/${item.id}`} 
+                    onClick={handleWatchClick}
                     className="yt-history-grid-card"
                   >
                     <div className="yt-history-card__thumb-wrap">
@@ -416,6 +427,7 @@ export default function YouTubePremium() {
                   >
                     <Link 
                       to={`/tecede-yt/watch/${item.id}`} 
+                      onClick={handleWatchClick}
                       className="yt-history-card"
                     >
                       <div className="yt-history-card__thumb-wrap">

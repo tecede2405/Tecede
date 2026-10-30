@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -13,6 +13,7 @@ import {
 import { FaUpload} from "react-icons/fa";
 import { CiFileOn } from "react-icons/ci";
 import Tabbar from "../../component/tabar";
+import { fetchCachedUserCount } from "../../services/adminUsersCache";
 import "./admin.scss";
 
 function Admin() {
@@ -20,6 +21,27 @@ function Admin() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [totalUsersCount, setTotalUsersCount] = useState(null);
+
+  // Lấy tổng số lượng user có cache & deduplication để dùng chung cho Overview và ManageUsers
+  const fetchUserCount = useCallback(async (force = false) => {
+    try {
+      const total = await fetchCachedUserCount(force);
+      setTotalUsersCount(total);
+    } catch (err) {
+      console.warn("Lỗi fetch tổng số user ở Admin:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUserCount();
+  }, [fetchUserCount]);
+
+  const outletContextValue = useMemo(() => ({
+    totalUsersCount,
+    setTotalUsersCount,
+    refreshUserCount: () => fetchUserCount(true)
+  }), [totalUsersCount, fetchUserCount]);
 
   const navItems = [
     { path: "/admin", label: "Tổng quan", icon: LayoutDashboard },
@@ -122,7 +144,7 @@ function Admin() {
 
         {/* Nội dung các trang con (Overview, Users...) */}
         <div className="admin-content">
-          <Outlet />
+          <Outlet context={outletContextValue} />
         </div>
       </div>
     </div>

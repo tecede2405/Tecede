@@ -6,6 +6,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useTecedeYtPlayer } from "../../../context/TecedeYtPlayerContext";
+import { useAuth } from "../../../context/AuthContext";
+import { checkYtWatchAccess } from "../utils/watchAuth";
 import {
   FaYoutube,
   FaSearch,
@@ -55,6 +57,7 @@ export default function YouTubeHeader({
   const searchWrapRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const { activeVideo, minimizePlayer } = useTecedeYtPlayer();
 
   const handleNavWithMinimize = (e, targetPath) => {
@@ -141,6 +144,7 @@ export default function YouTubeHeader({
     // 2. Nhận diện nếu dán trực tiếp link YouTube hoặc mã video ID
     const parsed = parseYouTubeInput(term);
     if (parsed && parsed.type === "video") {
+      if (!checkYtWatchAccess(user, navigate)) return;
       navigate(`/tecede-yt/watch/${parsed.id}`);
       return;
     }

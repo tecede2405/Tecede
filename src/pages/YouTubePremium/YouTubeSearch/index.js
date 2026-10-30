@@ -3,6 +3,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import YouTubeHeader from "../components/YouTubeHeader";
 import VideoCard from "../components/VideoCard";
 import { fetchSearch, parseYouTubeInput } from "../../../services/pipedApi";
+import { useAuth } from "../../../context/AuthContext";
+import { checkYtWatchAccess } from "../utils/watchAuth";
 import { FaSearch, FaUndo, FaExclamationTriangle, FaInfoCircle } from "react-icons/fa";
 import "../style.scss";
 
@@ -11,6 +13,7 @@ export default function YouTubeSearch() {
   const query = searchParams.get("q") || "";
   const filter = searchParams.get("filter") || "all";
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [region, setRegion] = useState(() => {
     return localStorage.getItem("tecede_yt_region") || "VN";
@@ -35,6 +38,10 @@ export default function YouTubeSearch() {
     // Tự động nhận diện nếu query là link YouTube hoặc video ID -> Chuyển thẳng tới trang xem
     const parsed = parseYouTubeInput(searchTerm.trim());
     if (parsed && parsed.type === "video") {
+      if (!checkYtWatchAccess(user, navigate)) {
+        setLoading(false);
+        return;
+      }
       navigate(`/tecede-yt/watch/${parsed.id}`, { replace: true });
       return;
     }

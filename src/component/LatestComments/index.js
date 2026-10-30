@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper/modules";
-import { FaCommentDots, FaFilm } from "react-icons/fa";
+import { FaCommentDots, FaFilm, FaCrown } from "react-icons/fa";
 import { useComments } from "../../context/CommentContext";
+import { VerifiedBadge, PremiumBadge } from "../VerifiedBadge/index";
 
 import "swiper/css";
 import "swiper/css/free-mode";
 import "./style.scss";
+
+const getAvatarLetter = (name) => {
+  if (!name) return "U";
+  const words = name.trim().split(" ");
+  return words[words.length - 1].charAt(0).toUpperCase();
+};
 
 function formatCommentTime(dateInput) {
   if (!dateInput) return "";
@@ -58,8 +65,12 @@ function formatCommentTime(dateInput) {
 }
 
 export default function LatestComments() {
-  const { comments, loading } = useComments();
+  const { comments, loading, fetchLatestComments } = useComments();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchLatestComments();
+  }, [fetchLatestComments]);
 
   if (loading && (!comments || comments.length === 0)) {
     return null;
@@ -111,6 +122,9 @@ export default function LatestComments() {
             const bgImage = item.thumb_url || item.poster_url || "";
             const displayName = item.display_name || "Người dùng";
             const timeAgo = formatCommentTime(item.created_at);
+            const userRole = item.role || item.user_role || "user";
+            const isPremium = userRole === "premium";
+            const isAdmin = userRole === "admin" || displayName === "Tecede";
 
             return (
               <SwiperSlide key={item.id}>
@@ -134,32 +148,43 @@ export default function LatestComments() {
                   <div className="latest-comment-card__body">
                     {/* Top: User info */}
                     <div className="latest-comment-card__user">
-                      <div className="avatar-wrapper">
-                        {item.avatar ? (
-                          <img
-                            src={item.avatar}
-                            alt={displayName}
-                            className="user-avatar"
-                            onError={(e) => {
-                              e.target.style.display = "none";
-                              if (e.target.nextSibling) {
-                                e.target.nextSibling.style.display = "flex";
-                              }
-                            }}
-                          />
-                        ) : null}
-                        <div
-                          className="fallback-avatar"
-                          style={{ display: item.avatar ? "none" : "flex" }}
-                        >
-                          US
+                      <div className={`avatar-wrapper ${isPremium ? "avatar-wrapper--premium" : ""}`}>
+                        {isPremium && (
+                          <div className="avatar-crown" title="Thành viên VIP Premium">
+                            <FaCrown className="avatar-crown-icon" />
+                          </div>
+                        )}
+                        <div className="avatar-image-ring">
+                          {item.avatar ? (
+                            <img
+                              src={item.avatar}
+                              alt={displayName}
+                              className="user-avatar"
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                                if (e.target.nextSibling) {
+                                  e.target.nextSibling.style.display = "flex";
+                                }
+                              }}
+                            />
+                          ) : null}
+                          <div
+                            className="fallback-avatar"
+                            style={{ display: item.avatar ? "none" : "flex" }}
+                          >
+                            {getAvatarLetter(displayName)}
+                          </div>
                         </div>
                       </div>
                       <div className="user-details">
                         <div className="user-name-row">
-                          <span className="user-name" title={displayName}>
-                            {displayName}
-                          </span>
+                          <div className={`user-name-wrap ${isPremium ? "is-premium" : ""}`}>
+                            <span className="user-name" title={displayName}>
+                              {displayName}
+                            </span>
+                            {isAdmin && <VerifiedBadge />}
+                            {isPremium && <PremiumBadge showText={false} size={14} />}
+                          </div>
                           {timeAgo && (
                             <span className="comment-time">{timeAgo}</span>
                           )}

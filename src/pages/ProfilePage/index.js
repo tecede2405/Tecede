@@ -14,10 +14,11 @@ import {
   FaLock, 
   FaExclamationTriangle,
   FaCalendarAlt,
-  FaUndoAlt
+  FaUndoAlt,
+  FaCrown
 } from "react-icons/fa";
 import { FaCloudArrowUp, FaPenToSquare } from "react-icons/fa6";
-import { VerifiedBadge } from "../../component/VerifiedBadge/index";
+import { VerifiedBadge, PremiumBadge } from "../../component/VerifiedBadge/index";
 import "./style.scss";
 
 export default function ProfilePage() {
@@ -227,6 +228,7 @@ export default function ProfilePage() {
 
   const currentRole = original?.role || user?.role || "member";
   const isAdmin = currentRole === "admin";
+  const isPremium = currentRole === "premium";
   const displayUsername = original?.username || user?.username || "tecede_user";
   const displayName = name || original?.display_name || user?.display_name || displayUsername;
   const displayId =
@@ -248,15 +250,25 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="fb-profile-page">
+    <div className={`fb-profile-page ${isPremium ? "fb-profile-page--premium" : ""}`}>
       
       {/* ================= KHUNG BACKGROUND ẢNH NỀN (FULL PAGE, DEFAULT MÀU TỐI) ================= */}
-      <div className="fb-cover-banner">
+      <div className={`fb-cover-banner ${isPremium ? "fb-cover-banner--premium" : ""}`}>
         <div className="fb-cover-overlay" />
         <div className="fb-cover-particles" />
+        <div className="fb-cover-shine" />
         <div className="fb-cover-badge">
-          <span className="cover-glow-dot" />
-          <span>Trang cá nhân</span>
+          {isPremium ? (
+            <>
+              <FaCrown className="cover-crown-icon" />
+              <span>Thành viên VIP Premium</span>
+            </>
+          ) : (
+            <>
+              <span className="cover-glow-dot" />
+              <span>Trang cá nhân</span>
+            </>
+          )}
         </div>
       </div>
 
@@ -310,6 +322,11 @@ export default function ProfilePage() {
                     <VerifiedBadge />
                   </span>
                 )}
+                {isPremium && (
+                  <span className="fb-verified-wrap" title="Thành viên Premium đã xác minh">
+                    <PremiumBadge showText={true} />
+                  </span>
+                )}
               </div>
 
               <div className="fb-user-meta">
@@ -328,12 +345,17 @@ export default function ProfilePage() {
 
                 <span className="fb-meta-dot">•</span>
 
-                {/* THÀNH VIÊN / QUẢN TRỊ VIÊN (SỬ DỤNG CLASS RIÊNG GỌN GÀNG, KHÔNG DÙNG NAKED ADMIN) */}
-                <span className={`fb-role-badge ${isAdmin ? "fb-role-badge--admin" : "fb-role-badge--member"}`}>
+                {/* THÀNH VIÊN / QUẢN TRỊ VIÊN / PREMIUM */}
+                <span className={`fb-role-badge ${isAdmin ? "fb-role-badge--admin" : isPremium ? "fb-role-badge--premium" : "fb-role-badge--member"}`}>
                   {isAdmin ? (
                     <>
                       <FaShieldAlt className="role-icon" />
                       <span>Quản trị viên</span>
+                    </>
+                  ) : isPremium ? (
+                    <>
+                      <FaCrown className="role-icon" />
+                      <span>Thành viên Premium</span>
                     </>
                   ) : (
                     <>
@@ -623,12 +645,18 @@ export default function ProfilePage() {
 
                 <div className="summary-card">
                   <div className="summary-card__icon">
-                    <FaShieldAlt className="icon" />
+                    {isAdmin ? (
+                      <FaShieldAlt className="icon" />
+                    ) : isPremium ? (
+                      <FaCrown className="icon" />
+                    ) : (
+                      <FaShieldAlt className="icon" />
+                    )}
                   </div>
                   <div className="summary-card__info">
                     <span className="summary-label">Cấp bậc</span>
-                    <span className={`summary-value fb-role-${isAdmin ? "admin" : "member"}`}>
-                      {isAdmin ? "Quản trị viên hệ thống" : "Thành viên chính thức"}
+                    <span className={`summary-value fb-role-${isAdmin ? "admin" : isPremium ? "premium" : "member"}`}>
+                      {isAdmin ? "Quản trị viên hệ thống" : isPremium ? "Thành viên VIP Premium" : "Thành viên chính thức"}
                     </span>
                   </div>
                 </div>

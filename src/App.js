@@ -48,6 +48,7 @@ import MangaReader from "./pages/Manga/mangaReader";
 import LoginPage from "./pages/Login/index";
 import RegisterPage from "./pages/Register/index";
 import ProfilePage from "./pages/ProfilePage/index";
+import UserProfileView from "./pages/UserProfileView/index";
 import Donates from "./pages/Donate/index";
 import Support from "./pages/Support/index";
 import TemporaryClosed404 from "./pages/Error/index";
@@ -58,6 +59,7 @@ import DownloadAppTV from "./pages/DownloadAppTV/index";
 import DesignWeb from "./pages/DesignWeb/index";
 import EventsCalendar from "./pages/EventsCalendar/index";
 import ThemesPage from "./pages/ThemesPage/index";
+import PremiumPage from "./pages/Premium/index";
 import YouTubePremium from "./pages/YouTubePremium/index";
 import YouTubeWatch from "./pages/YouTubePremium/YouTubeWatch/index";
 import YouTubeSearch from "./pages/YouTubePremium/YouTubeSearch/index";
@@ -159,8 +161,10 @@ function App() {
                   <Route path="/lich-va-su-kien" element={<EventsCalendar />} />
                   <Route path="/chu-de" element={<ThemesPage />} />
                   <Route path="/themes" element={<ThemesPage />} />
+                  <Route path="/premium" element={<PremiumPage />} />
                   <Route path="/design-web" element={<DesignWeb />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/profile/:id" element={<UserProfileView />} />
                   <Route path="/404closed" element={<TemporaryClosed404 />} />
 
                   {/* Anime */}
