@@ -156,22 +156,27 @@ export default function UserProfileView() {
     );
   }
 
-  const displayName = userData.display_name || userData.username || "Thành viên";
-  const displayUsername = userData.username || "user";
-  const displayId = userData.id ?? id;
   const userRole = userData.role || "user";
   const isAdmin = userRole === "admin";
   const isPremium = userRole === "premium";
+  const displayName = userData.display_name || (isAdmin ? "Quản trị viên" : userData.username) || "Thành viên";
+  const displayUsername = userData.username || "user";
+  const displayId = userData.id ?? id;
 
   return (
-    <div className={`fb-profile-page view-only-profile ${isPremium ? "fb-profile-page--premium" : ""}`}>
+    <div className={`fb-profile-page view-only-profile ${isAdmin ? "fb-profile-page--admin" : isPremium ? "fb-profile-page--premium" : ""}`}>
       {/* ẢNH BÌA COVER BANNER */}
-      <div className={`fb-cover-banner ${isPremium ? "fb-cover-banner--premium" : ""}`}>
+      <div className={`fb-cover-banner ${isAdmin ? "fb-cover-banner--admin" : isPremium ? "fb-cover-banner--premium" : ""}`}>
         <div className="fb-cover-overlay" />
         <div className="fb-cover-particles" />
         <div className="fb-cover-shine" />
         <div className="fb-cover-badge">
-          {isPremium ? (
+          {isAdmin ? (
+            <>
+              <FaShieldAlt className="cover-admin-icon" />
+              <span>Quản Trị Viên Hệ Thống</span>
+            </>
+          ) : isPremium ? (
             <>
               <FaCrown className="cover-crown-icon" />
               <span>Thành viên VIP Premium</span>
@@ -229,10 +234,12 @@ export default function UserProfileView() {
               </div>
 
               <div className="fb-user-meta">
-                <div className="fb-meta-item fb-username-item" title="Tên đăng nhập">
-                  <span className="meta-at">@</span>
-                  <span className="meta-text">{displayUsername}</span>
-                </div>
+                {!isAdmin && (
+                  <div className="fb-meta-item fb-username-item" title="Tên đăng nhập">
+                    <span className="meta-at">@</span>
+                    <span className="meta-text">{displayUsername}</span>
+                  </div>
+                )}
 
                 {displayId && (
                   <div className="fb-meta-item fb-id-item" title={`ID tài khoản: #${displayId}`}>
@@ -241,7 +248,7 @@ export default function UserProfileView() {
                   </div>
                 )}
 
-                <span className="fb-meta-dot">•</span>
+                {!isAdmin && <span className="fb-meta-dot">•</span>}
 
                 <span
                   className={`fb-role-badge ${
@@ -306,10 +313,12 @@ export default function UserProfileView() {
               <div className="info-value">{displayName}</div>
             </div>
 
-            <div className="info-item">
-              <div className="info-label">Tên tài khoản</div>
-              <div className="info-value">@{displayUsername}</div>
-            </div>
+            {!isAdmin && (
+              <div className="info-item">
+                <div className="info-label">Tên tài khoản</div>
+                <div className="info-value">@{displayUsername}</div>
+              </div>
+            )}
 
             <div className="info-item">
               <div className="info-label">Mã ID hệ thống</div>

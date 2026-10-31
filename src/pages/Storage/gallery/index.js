@@ -33,7 +33,8 @@ function StorageGallery() {
     try {
       setLoading(true);
       const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/storage`);
-      setItems(res.data);
+      const data = Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.files || []);
+      setItems(data);
     } catch (error) {
       console.error("Lỗi lấy danh sách kho lưu trữ:", error);
     } finally {
@@ -46,22 +47,11 @@ function StorageGallery() {
   }, []);
 
   const handleCopyLink = async (item) => {
-    let directLink = item.url || item.directUrl || item.imgbb_url || item.display_url || item.link;
+    const fileId = item.id || item._id;
+    const finalLink = item.url || `${process.env.REACT_APP_API_URL}/api/storage/stream/${fileId}`;
 
-    if (item.type === "image" && (!directLink || !directLink.startsWith("http") || directLink.includes("/api/storage/file/"))) {
-      try {
-        const fileCheck = await fetch(`${process.env.REACT_APP_API_URL}/api/storage/file/${item._id}`);
-        if (fileCheck.ok && fileCheck.url) {
-          directLink = fileCheck.url;
-        }
-      } catch (err) {
-        console.warn("Could not get direct ImgBB link:", err);
-      }
-    }
-
-    const finalLink = directLink || `${process.env.REACT_APP_API_URL}/api/storage/file/${item._id}`;
     navigator.clipboard.writeText(finalLink);
-    setCopiedId(item._id);
+    setCopiedId(fileId);
 
     setTimeout(() => {
       setCopiedId(null);
@@ -87,7 +77,7 @@ function StorageGallery() {
     );
 
     // Xóa luôn trên giao diện, không cần gọi API lại
-    setItems((prev) => prev.filter((item) => item._id !== id));
+    setItems((prev) => prev.filter((item) => (item.id || item._id) !== id));
 
     DarkSwal.fire({
       icon: "success",
@@ -137,10 +127,11 @@ function StorageGallery() {
       ) : (
         <div className="gallery-grid">
           {items.map((item) => {
-            const fileUrl = `${process.env.REACT_APP_API_URL}/api/storage/file/${item._id}`;
+            const fileId = item.id || item._id;
+            const fileUrl = item.url || `${process.env.REACT_APP_API_URL}/api/storage/stream/${fileId}`;
             
             return (
-              <div key={item._id} className="gallery-card">
+              <div key={item.id || item._id} className="gallery-card">
                 <div className="media-preview-box">
                   {item.type === "image" ? (
                     <img src={fileUrl} alt={item.name} loading="lazy" />
@@ -185,9 +176,9 @@ function StorageGallery() {
                 <div className="card-actions">
                   <button
                     onClick={() => handleCopyLink(item)}
-                    className={`copy-btn ${copiedId === item._id ? "copied" : ""}`}
+                    className={`copy-btn ${Boolean(copiedId && copiedId === (item.id || item._id)) ? "copied" : ""}`}
                   >
-                    {copiedId === item._id ? (
+                    {Boolean(copiedId && copiedId === (item.id || item._id)) ? (
                       <>
                         <FaCheck style={{ marginRight: "6px" }} /> Đã copy link
                       </>
@@ -198,7 +189,7 @@ function StorageGallery() {
                     )}
                   </button>
                   
-                  <button onClick={() => handleDelete(item._id)} className="delete-btn">
+                  <button onClick={() => handleDelete(item.id || item._id)} className="delete-btn">
                     <FaTrashCan style={{ marginRight: "6px" }} /> Xóa file
                   </button>
                 </div>

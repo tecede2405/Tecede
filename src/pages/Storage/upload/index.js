@@ -93,72 +93,57 @@ function UploadStorage() {
     e.preventDefault();
     if (files.length === 0 || isSizeError) return;
 
-    const formData = new FormData();
-    files.forEach((item) => {
-      const finalName = `${item.customName.trim()}${item.extension}`;
-      const safeHeaderName = encodeURIComponent(finalName);
-      formData.append("files", item.file, safeHeaderName);
-    });
-
     try {
       setLoading(true);
       setMessage("");
-      setProgress(0);
+      setProgress(10);
       setUploadedResults([]);
 
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/storage/upload`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          onUploadProgress: (event) => {
-            const percent = Math.round((event.loaded * 100) / event.total);
-            setProgress(percent >= 100 ? 99 : percent);
-          },
-        }
-      );
+      let completedCount = 0;
+      const totalFiles = files.length;
 
-      if (res.status === 200 || res.status === 201) {
-        setProgress(100);
+      const uploadPromises = files.map(async (item) => {
+        const formData = new FormData();
+        const finalName = `${item.customName.trim()}${item.extension}`;
+        formData.append("file", item.file, finalName);
 
-        let results = [];
-        if (Array.isArray(res.data) && res.data.length > 0) {
-          results = await Promise.all(
-            res.data.map(async (savedFile) => {
-              let directUrl = savedFile.url || savedFile.directUrl || savedFile.imgbb_url || savedFile.display_url || savedFile.link;
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/storage/upload`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
-              const isImage = savedFile.type === "image" || savedFile.mimeType?.startsWith("image/") || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(savedFile.name);
+        completedCount += 1;
+        setProgress(Math.min(95, Math.round((completedCount / totalFiles) * 90)));
 
-              if (isImage && (!directUrl || !directUrl.startsWith("http") || directUrl.includes("/api/storage/file/"))) {
-                try {
-                  const check = await fetch(`${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`);
-                  if (check.ok && check.url) {
-                    directUrl = check.url;
-                  }
-                } catch (e) {
-                  console.warn("Không lấy được link thật của ảnh:", e);
-                }
-              }
+        const rawData = res.data;
+        const savedFile = Array.isArray(rawData) ? rawData[0] : rawData;
+        const fileId = savedFile?.id || savedFile?._id;
+        const directUrl = savedFile?.url || `${process.env.REACT_APP_API_URL}/api/storage/stream/${fileId}`;
+        const isImage = savedFile?.type === "image" || savedFile?.mimeType?.startsWith("image/") || /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(savedFile?.name || item.file.name);
 
-              return {
-                ...savedFile,
-                directLink: directUrl || `${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`,
-                isImage,
-              };
-            })
-          );
-        }
+        return {
+          ...savedFile,
+          id: fileId,
+          directLink: directUrl,
+          isImage,
+          name: savedFile?.name || finalName,
+        };
+      });
 
-        setUploadedResults(results);
-        setMessage(`✅ Tải lên kho dữ liệu thành công ${files.length} file!`);
-        setFiles([]);
-        setTotalSizeMB(0);
+      const results = await Promise.all(uploadPromises);
+      setProgress(100);
+      setUploadedResults(results);
+      setMessage(`✅ Tải lên kho dữ liệu thành công ${results.length} file!`);
+      setFiles([]);
+      setTotalSizeMB(0);
 
-        setTimeout(() => {
-          setMessage("");
-          setProgress(0);
-        }, 5000);
-      }
+      setTimeout(() => {
+        setMessage("");
+        setProgress(0);
+      }, 5000);
     } catch (err) {
       console.error(err);
       setMessage("❌ Upload dữ liệu thất bại");
@@ -310,7 +295,7 @@ function UploadStorage() {
             </div>
             <div className="uploaded-results-list">
               {uploadedResults.map((item, idx) => (
-                <div key={item._id || idx} className="uploaded-result-card">
+                <div key={item.id || item._id || idx} className="uploaded-result-card">
                   <div className="result-icon">
                     {item.isImage ? (
                       <img src={item.directLink} alt={item.name} className="result-thumb" />
@@ -327,11 +312,11 @@ function UploadStorage() {
                   <button
                     type="button"
                     className="copy-link-btn"
-                    onClick={() => copyToClipboard(item.directLink, item._id || idx)}
+                    onClick={() => copyToClipboard(item.directLink, item.id || item._id || idx)}
                     title="Sao chép link"
                   >
-                    {copiedLink === (item._id || idx) ? <FaCheck style={{ color: "#4ade80" }} /> : <FaCopy />}
-                    <span>{copiedLink === (item._id || idx) ? "Đã chép" : "Copy link"}</span>
+                    {copiedLink === (item.id || item._id || idx) ? <FaCheck style={{ color: "#4ade80" }} /> : <FaCopy />}
+                    <span>{copiedLink === (item.id || item._id || idx) ? "Đã chép" : "Copy link"}</span>
                   </button>
                 </div>
               ))}

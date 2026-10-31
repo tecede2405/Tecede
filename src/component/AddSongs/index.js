@@ -35,7 +35,7 @@ function AddSongs() {
       setProgress(0);
 
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL2}/api/songs/upload`,
+        `${process.env.REACT_APP_API_URL || process.env.REACT_APP_API_URL2}/api/songs/upload`,
         formData,
         {
           headers: {
@@ -52,7 +52,7 @@ function AddSongs() {
         }
       );
 
-      if (res.status === 201) {
+      if (res.status === 200 || res.status === 201) {
         setMessage("✅ Thêm bài hát thành công");
 
         setTitle("");
@@ -62,16 +62,18 @@ function AddSongs() {
         setCategory("nhactre");
         setProgress(0);
 
-        document.getElementById("file-upload").value = "";
+        if (document.getElementById("file-upload")) {
+          document.getElementById("file-upload").value = "";
+        }
 
         setTimeout(() => {
           setMessage("");
         }, 3000);
       }
     } catch (err) {
-      console.log(err);
-
-      setMessage("❌ Upload thất bại");
+      console.error(err);
+      const errMsg = err.response?.data?.error || err.response?.data?.message || "Upload thất bại";
+      setMessage(`❌ ${errMsg}`);
     } finally {
       setLoading(false);
     }
@@ -153,7 +155,7 @@ function AddSongs() {
             <div className="upload-text">
               {file
                 ? file.name
-                : "Chọn file MP3"}
+                : "Chọn file âm thanh (MP3, M4A, WAV,...)"}
             </div>
 
             <span>
@@ -164,7 +166,7 @@ function AddSongs() {
           <input
             id="file-upload"
             type="file"
-            accept=".mp3"
+            accept="audio/*,.mp3,.m4a,.wav,.flac,.aac"
             onChange={(e) =>
               setFile(e.target.files[0])
             }

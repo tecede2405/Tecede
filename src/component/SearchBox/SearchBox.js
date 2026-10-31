@@ -33,8 +33,9 @@ export default function SearchBar({ songs, onSelectSong }) {
   };
 
   const handleSelect = (song) => {
-    const index = songs.findIndex((s) => s._id === song._id);
-    onSelectSong(index);
+    const targetId = song?.id || song?._id;
+    const index = targetId ? songs.findIndex((s) => String(s?.id || s?._id) === String(targetId)) : -1;
+    onSelectSong(index >= 0 ? index : 0);
     setSearch("");
     setSuggestions([]);
   };
@@ -54,7 +55,7 @@ export default function SearchBar({ songs, onSelectSong }) {
         {suggestions.length > 0 && (
           <ul className="suggestions-list">
             {suggestions.map((song) => (
-              <li key={song._id} className="suggestion-item" onClick={() => handleSelect(song)}>
+              <li key={song.id || song._id} className="suggestion-item" onClick={() => handleSelect(song)}>
                 <img src={song.image} alt={song.title} className="suggestion-img" />
                 <div className="suggestion-info">
                   <strong className="suggestion-title">{song.title}</strong>

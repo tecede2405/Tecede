@@ -32,7 +32,7 @@ import {
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
 
-const CATEGORY_CONFIG = {
+const BASE_CATEGORIES = {
   mood: {
     dbType: "nhackhongloi",
     title: "Nhạc Tâm Trạng 🎵",
@@ -87,6 +87,20 @@ const CATEGORY_CONFIG = {
     desc: "Chill and Study",
     img: "https://i.ibb.co/rjFJn7H/z7604161484626-99ee66797819706db71be74a68b02785.webp",
   },
+};
+
+const CATEGORY_CONFIG = {
+  ...BASE_CATEGORIES,
+  nhactre: BASE_CATEGORIES["nhac-tre"],
+  nhacusuk: BASE_CATEGORIES["usuk"],
+  nhactrungquoc: BASE_CATEGORIES["trung-quoc"],
+  nhactreremix: BASE_CATEGORIES["nhactre-remix"],
+  nhacedm: BASE_CATEGORIES["edm"],
+  nhacphonk: BASE_CATEGORIES["phonk"],
+  nhackhongloi: BASE_CATEGORIES["mood"],
+  nhacdouyin: BASE_CATEGORIES["nhac-douyin"],
+  nhaclofi: BASE_CATEGORIES["nhac-lofi"],
+  category: BASE_CATEGORIES["nhac-tre"],
 };
 
 function MusicCategory() {
@@ -899,17 +913,21 @@ function MusicCategory() {
                           </tr>
                         ) : (
                           filteredPlaylist.map((song, idx) => {
-                            const isCurrent =
-                              playlist[currentIndex]?._id === song._id;
+                            const currentSong = playlist[currentIndex];
+                            const currentSongId = currentSong?.id || currentSong?._id;
+                            const songId = song?.id || song?._id;
+                            const isCurrent = Boolean(
+                              currentSongId && songId && String(currentSongId) === String(songId)
+                            );
                             return (
                               <tr
-                                key={song._id}
+                                key={songId || idx}
                                 className={`song-row ${isCurrent ? "playing" : ""}`}
                                 onClick={() => {
                                   const realIndex = playlist.findIndex(
-                                    (p) => p._id === song._id,
+                                    (p) => String(p?.id || p?._id) === String(songId),
                                   );
-                                  handlePlay(realIndex);
+                                  handlePlay(realIndex >= 0 ? realIndex : idx);
                                 }}
                               >
                                 <td className="td-number">
@@ -1053,12 +1071,14 @@ function MusicCategory() {
                     <div className="up-next-list">
                       {playlist
                         .slice(currentIndex + 1, currentIndex + 11)
-                        .map((song, i) => (
-                          <div
-                            key={song._id}
-                            className="up-next-item d-flex align-items-center gap-3 mb-2"
-                            onClick={() => handlePlay(currentIndex + 1 + i)}
-                          >
+                        .map((song, i) => {
+                          const sId = song.id || song._id || i;
+                          return (
+                            <div
+                              key={sId}
+                              className="up-next-item d-flex align-items-center gap-3 mb-2"
+                              onClick={() => handlePlay(currentIndex + 1 + i)}
+                            >
                             <span className="un-number">
                               {currentIndex + 2 + i}
                             </span>
@@ -1082,7 +1102,8 @@ function MusicCategory() {
                                 : "0"}
                             </span>
                           </div>
-                        ))}
+                          );
+                        })}
                       {currentIndex + 1 >= playlist.length && (
                         <p className="end-of-queue text-center mt-4">
                           Hết bài hát để phát.

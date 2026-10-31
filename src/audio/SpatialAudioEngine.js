@@ -21,23 +21,23 @@ export const PRESETS = {
     name: "Dolby Atmos",
     icon: "🌌",
     desc: "Âm trường 3D vòm đa chiều, âm trầm ấm sâu, chi tiết chuẩn điện ảnh",
-    bass: 3.8,     // dB sub-bass (75Hz LowShelf)
-    warmth: 1.2,   // dB analog warmth (200Hz Peaking)
-    mid: 1.8,      // dB vocal presence (2.8kHz Peaking)
-    treble: 3.0,   // dB spatial air (11kHz HighShelf)
-    spatial: 68,   // % stereo width (0..100)
-    reverb: 22,    // % acoustic room reflection (0..100)
+    bass: 4.8,     // dB sub-bass sâu (65Hz LowShelf)
+    warmth: 1.8,   // dB analog warmth (180Hz Peaking)
+    mid: 2.0,      // dB vocal presence (3.0kHz Peaking)
+    treble: 4.2,   // dB spatial air (12kHz HighShelf)
+    spatial: 75,   // % stereo width (0..100)
+    reverb: 18,    // % acoustic room reflection (0..100)
   },
   lossless: {
     id: "lossless",
     name: "Lossless Hi-Res",
     icon: "💎",
     desc: "Chất âm chuẩn phòng thu 24-bit/96kHz, độ chi tiết siêu cao, dải động nguyên bản không nén",
-    bass: 1.5,
-    warmth: 0.8,
-    mid: 1.2,
-    treble: 3.0,
-    spatial: 50,
+    bass: 2.5,
+    warmth: 1.2,
+    mid: 1.8,
+    treble: 3.5,
+    spatial: 55,
     reverb: 0,     // 0% vang (sạch mộc nguyên bản, không vang ảo)
   },
   eightD: {
@@ -45,12 +45,12 @@ export const PRESETS = {
     name: "Âm Vòm 8D",
     icon: "🌀",
     desc: "Âm thanh 360° xoay vòng quanh đầu sống động, đảo tai rõ ràng và biến thiên chiều sâu 3D",
-    bass: 3.2,
-    warmth: 1.0,
-    mid: 1.5,
-    treble: 2.8,
-    spatial: 88,
-    reverb: 20,
+    bass: 4.0,
+    warmth: 1.5,
+    mid: 1.8,
+    treble: 3.8,
+    spatial: 92,
+    reverb: 18,
     is8D: true,
   },
   cinema: {
@@ -58,93 +58,93 @@ export const PRESETS = {
     name: "Rạp Phim",
     icon: "🎬",
     desc: "Không gian phòng chiếu hoành tráng, âm trầm bùng nổ, lời thoại rõ nét",
-    bass: 5.2,
-    warmth: 1.6,
-    mid: 2.0,
-    treble: 3.2,
-    spatial: 85,
-    reverb: 35,
+    bass: 6.2,
+    warmth: 2.2,
+    mid: 2.2,
+    treble: 4.5,
+    spatial: 88,
+    reverb: 28,
   },
   music: {
     id: "music",
     name: "Âm Nhạc Hi-Fi",
     icon: "🎵",
     desc: "Chất âm analog ấm áp tự nhiên, dải âm dày dặn và cân bằng tinh tế",
-    bass: 2.5,
-    warmth: 1.0,
-    mid: 1.2,
-    treble: 2.0,
-    spatial: 50,
-    reverb: 14,
+    bass: 3.2,
+    warmth: 1.6,
+    mid: 1.5,
+    treble: 2.8,
+    spatial: 60,
+    reverb: 12,
   },
   headphone: {
     id: "headphone",
     name: "Tai Nghe 3D",
     icon: "🎧",
     desc: "Mở rộng âm trường thoát khỏi đầu, bass gọn gàng và âm sắc trong trẻo",
-    bass: 3.2,
-    warmth: 1.0,
-    mid: 1.8,
-    treble: 3.5,
-    spatial: 80,
-    reverb: 24,
+    bass: 4.0,
+    warmth: 1.4,
+    mid: 2.2,
+    treble: 4.2,
+    spatial: 85,
+    reverb: 20,
   },
   bass: {
     id: "bass",
     name: "Siêu Bass",
     icon: "🔊",
     desc: "Âm trầm sâu thẳm và căng nảy cho EDM, Vinahouse, Dance, Remix",
-    bass: 6.5,
-    warmth: 1.8,
-    mid: 0.5,
-    treble: 2.0,
-    spatial: 40,
-    reverb: 12,
+    bass: 7.5,
+    warmth: 2.5,
+    mid: 0.8,
+    treble: 2.5,
+    spatial: 50,
+    reverb: 10,
   },
   vocal: {
     id: "vocal",
     name: "Giọng Hát",
     icon: "🎤",
     desc: "Tôn vinh giọng ca sĩ ngọt ngào, dày ấm, lời hát truyền cảm và trong trẻo",
-    bass: 1.2,
-    warmth: 1.2,
-    mid: 4.2,
-    treble: 2.5,
-    spatial: 35,
-    reverb: 22,
+    bass: 1.5,
+    warmth: 1.5,
+    mid: 4.8,
+    treble: 3.2,
+    spatial: 45,
+    reverb: 18,
   },
   studio: {
     id: "studio",
     name: "Phòng Thu",
     icon: "✨",
     desc: "Âm thanh mộc trung thực chuẩn kiểm âm, độ méo tiếng gần như bằng 0",
-    bass: 1.0,
-    warmth: 0.5,
-    mid: 0.5,
-    treble: 1.2,
-    spatial: 20,
-    reverb: 6,
+    bass: 1.5,
+    warmth: 0.8,
+    mid: 0.8,
+    treble: 1.8,
+    spatial: 35,
+    reverb: 5,
   },
   custom: {
     id: "custom",
     name: "Tùy Chỉnh",
     icon: "⚙️",
     desc: "Tự do điều chỉnh dải Bass, Mid, Treble, Độ rộng không gian và Vang phòng",
-    bass: 3.5,
-    warmth: 1.2,
-    mid: 1.5,
-    treble: 2.5,
-    spatial: 60,
-    reverb: 20,
+    bass: 4.0,
+    warmth: 1.5,
+    mid: 2.0,
+    treble: 3.0,
+    spatial: 70,
+    reverb: 18,
   }
 };
 
 export const DEFAULT_CUSTOM_SETTINGS = {
-  bass: 3.5,    // -8 to +10 dB
-  mid: 1.5,     // -6 to +8 dB
-  treble: 2.5,  // -6 to +8 dB
-  spatial: 60,  // 0% to 100%
-  reverb: 20    // 0% to 100%
+  bass: 4.0,    // -8 to +10 dB
+  mid: 2.0,     // -6 to +8 dB
+  treble: 3.0,  // -6 to +8 dB
+  spatial: 70,  // 0% to 100%
+  reverb: 18    // 0% to 100%
 };
 
 class SpatialAudioEngine {
@@ -212,14 +212,22 @@ class SpatialAudioEngine {
         } catch (e) {}
       }
 
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      this.audioCtx = new AudioContext();
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      // Khởi tạo AudioContext với latencyHint: "playback" để triệt tiêu hoàn toàn buffer underrun gây nổ tạch tạch trên mobile/tablet
+      this.audioCtx = new AudioContextClass();
+
       this.source = this.audioCtx.createMediaElementSource(audioElement);
+
+      // Điểm hội tụ Master Output duy nhất ra destination, tránh hiện tượng multiple nodes kết nối song song gây rè/nổ
+      this.masterOutput = this.audioCtx.createGain();
+      this.masterOutput.gain.value = 1.0;
+      this.masterOutput.connect(this.audioCtx.destination);
 
       // 1. Bypass, Pre-Gain Headroom & DSP Master Gains
       this.preGain = this.audioCtx.createGain();
-      this.preGain.gain.value = initialEnabled ? 0.65 : 0.0; // Tắt hoàn toàn đầu vào DSP nếu không kích hoạt
+      this.preGain.gain.value = initialEnabled ? 0.85 : 0.0; // Tắt hoàn toàn đầu vào DSP nếu không kích hoạt
 
       this.bypassGain = this.audioCtx.createGain();
       this.dspGain = this.audioCtx.createGain();
@@ -230,21 +238,21 @@ class SpatialAudioEngine {
       // 2. High-Precision 4-Band Audiophile EQ (Harman & Dolby Target)
       this.bassFilter = this.audioCtx.createBiquadFilter();
       this.bassFilter.type = "lowshelf";
-      this.bassFilter.frequency.value = 75;
+      this.bassFilter.frequency.value = 65;
 
       this.warmFilter = this.audioCtx.createBiquadFilter();
       this.warmFilter.type = "peaking";
-      this.warmFilter.frequency.value = 200;
+      this.warmFilter.frequency.value = 180;
       this.warmFilter.Q.value = 0.75;
 
       this.midFilter = this.audioCtx.createBiquadFilter();
       this.midFilter.type = "peaking";
-      this.midFilter.frequency.value = 2800;
+      this.midFilter.frequency.value = 3000;
       this.midFilter.Q.value = 0.85;
 
       this.trebleFilter = this.audioCtx.createBiquadFilter();
       this.trebleFilter.type = "highshelf";
-      this.trebleFilter.frequency.value = 11000;
+      this.trebleFilter.frequency.value = 11500;
 
       // 3. True Safe-Phase Mid/Side (M/S) 3D Spatial Widener (100% cân bằng đối xứng)
       this.msSplitter = this.audioCtx.createChannelSplitter(2);
@@ -269,19 +277,23 @@ class SpatialAudioEngine {
       this.rightSideInvert.gain.value = -1.0;
 
       // 4. Audiophile Zero-Latency Spatial Room Ambience (Algorithmic Early Reflections)
-      // Thiết kế Feedforward thuần túy: Triệt tiêu 100% vòng lặp delay gây nổ tạch tạch trên chip ARM mobile/tablet
-      this.reverbFilter = this.audioCtx.createBiquadFilter();
-      this.reverbFilter.type = "lowpass";
-      this.reverbFilter.frequency.value = 2800;
+      // Bọc Highpass 350Hz để triệt tiêu 100% lệch pha/triệt tiêu âm trầm Sub-bass
+      this.reverbHpFilter = this.audioCtx.createBiquadFilter();
+      this.reverbHpFilter.type = "highpass";
+      this.reverbHpFilter.frequency.value = 350;
+
+      this.reverbLpFilter = this.audioCtx.createBiquadFilter();
+      this.reverbLpFilter.type = "lowpass";
+      this.reverbLpFilter.frequency.value = 5500;
 
       this.reverbDelayL = this.audioCtx.createDelay(0.1);
-      this.reverbDelayL.delayTime.value = 0.021; // 21ms phản xạ phòng bên trái
+      this.reverbDelayL.delayTime.value = 0.015; // 15ms phản xạ phòng bên trái
 
       this.reverbDelayR = this.audioCtx.createDelay(0.1);
-      this.reverbDelayR.delayTime.value = 0.031; // 31ms phản xạ phòng bên phải (decorrelated)
+      this.reverbDelayR.delayTime.value = 0.024; // 24ms phản xạ phòng bên phải (decorrelated)
 
       this.reverbWetGain = this.audioCtx.createGain();
-      this.reverbWetGain.gain.value = 0.10;
+      this.reverbWetGain.gain.value = 0.06;
 
       // 5. 🌀 True 3D 8D Rotational Orbit Engine
       // A. Pinna & Head-Shadow Filter (Cắt tần số cao khi âm thanh ra sau gáy)
@@ -302,17 +314,17 @@ class SpatialAudioEngine {
 
       // 6. Master Transparent Dynamics Limiter (Bảo vệ tín hiệu, bắt trọn đỉnh xung, triệt tiêu méo/rè)
       this.compressor = this.audioCtx.createDynamicsCompressor();
-      this.compressor.threshold.value = -3.0; // Ngưỡng an toàn âm nhạc
-      this.compressor.knee.value = 10.0;     // Soft-knee cong mượt mà, không bao giờ bẻ vuông dạng sóng
-      this.compressor.ratio.value = 4.0;      // Nén bảo vệ đỉnh
-      this.compressor.attack.value = 0.003;   // 3ms bắt tức thì đỉnh xung âm thanh, triệt tiêu 100% tiếng rè
-      this.compressor.release.value = 0.080;  // 80ms nhả mượt mà, không bị hiện tượng pumping/dập dình
+      this.compressor.threshold.value = -0.5; // Ngưỡng an toàn bảo vệ đỉnh xung
+      this.compressor.knee.value = 12.0;     // Soft-knee cong mượt mà, không bao giờ bẻ vuông dạng sóng
+      this.compressor.ratio.value = 3.0;      // Nén nhẹ bảo vệ
+      this.compressor.attack.value = 0.015;   // 15ms giữ nguyên độ punchy của nhịp trống
+      this.compressor.release.value = 0.120;  // 120ms nhả mượt mà, không bị hiện tượng pumping
 
       // 🔌 KẾT NỐI SƠ ĐỒ ÂM THANH (GRAPH ROUTING)
 
-      // Nhánh Bypass (Âm mộc nguyên bản khi tắt hiệu ứng)
+      // Nhánh Bypass (Âm mộc nguyên bản 100% khi tắt hiệu ứng)
       this.source.connect(this.bypassGain);
-      this.bypassGain.connect(this.audioCtx.destination);
+      this.bypassGain.connect(this.masterOutput);
 
       // Nhánh DSP (Xử lý âm thanh vòm Atmos)
       this.source.connect(this.preGain);
@@ -348,16 +360,17 @@ class SpatialAudioEngine {
 
       this.msMerger.connect(this.dspGain);
 
-      // Đi dây Early Reflection Room Ambience (Feedforward sạch, decorrelated stereo)
-      this.trebleFilter.connect(this.reverbFilter);
-      this.reverbFilter.connect(this.reverbDelayL);
-      this.reverbFilter.connect(this.reverbDelayR);
+      // Đi dây Early Reflection Room Ambience (Feedforward sạch)
+      this.trebleFilter.connect(this.reverbHpFilter);
+      this.reverbHpFilter.connect(this.reverbLpFilter);
+      this.reverbLpFilter.connect(this.reverbDelayL);
+      this.reverbLpFilter.connect(this.reverbDelayR);
 
       this.reverbDelayL.connect(this.reverbWetGain);
       this.reverbDelayR.connect(this.reverbWetGain);
       this.reverbWetGain.connect(this.dspGain);
 
-      // 🌀 Đi dây 8D Module -> Master Limiter -> Destination
+      // 🌀 Đi dây 8D Module -> Master Limiter -> masterOutput
       if (this.eightDPanner) {
         this.dspGain.connect(this.eightDFilter);
         this.eightDFilter.connect(this.eightDVolumeGain);
@@ -366,7 +379,7 @@ class SpatialAudioEngine {
       } else {
         this.dspGain.connect(this.compressor);
       }
-      this.compressor.connect(this.audioCtx.destination);
+      this.compressor.connect(this.masterOutput);
 
       this.isInitialized = true;
       this.isEnabled = !!initialEnabled;
@@ -395,18 +408,8 @@ class SpatialAudioEngine {
         navigator.audioSession.type = "playback";
       } catch (e) {}
     }
-    if (this.audioCtx) {
-      if (this.audioCtx.state === "suspended" || this.audioCtx.state === "interrupted") {
-        this.audioCtx.resume().catch(() => {});
-        // Khởi tạo 1-sample silent buffer đánh thức phần cứng DAC trên iOS Safari
-        try {
-          const dummy = this.audioCtx.createBuffer(1, 1, 22050);
-          const src = this.audioCtx.createBufferSource();
-          src.buffer = dummy;
-          src.connect(this.audioCtx.destination);
-          src.start(0);
-        } catch (e) {}
-      }
+    if (this.audioCtx && (this.audioCtx.state === "suspended" || this.audioCtx.state === "interrupted")) {
+      this.audioCtx.resume().catch(() => {});
     }
   }
 
@@ -514,7 +517,14 @@ class SpatialAudioEngine {
 
     this.resumeContext();
     const now = this.audioCtx.currentTime;
-    const timeConstant = 0.04; // 40ms smooth transition tránh tiếng nổ khi gạt slider
+    const timeConstant = 0.04;
+
+    if (!this.isEnabled) {
+      if (this.preGain) {
+        this.preGain.gain.setTargetAtTime(0.0, now, timeConstant);
+      }
+      return;
+    } // 40ms smooth transition tránh tiếng nổ khi gạt slider
 
     // 🌀 Quản lý 8D Rotation Loop
     if (this.currentPreset === "eightD" && this.isEnabled) {
@@ -526,11 +536,11 @@ class SpatialAudioEngine {
     // 💎 Quản lý Dynamic Range Limiter
     if (this.compressor) {
       if (this.currentPreset === "lossless") {
-        this.compressor.threshold.setTargetAtTime(-1.0, now, timeConstant);
-        this.compressor.ratio.setTargetAtTime(2.0, now, timeConstant);
+        this.compressor.threshold.setTargetAtTime(-0.2, now, timeConstant);
+        this.compressor.ratio.setTargetAtTime(1.5, now, timeConstant);
       } else {
-        this.compressor.threshold.setTargetAtTime(-3.0, now, timeConstant);
-        this.compressor.ratio.setTargetAtTime(4.0, now, timeConstant);
+        this.compressor.threshold.setTargetAtTime(-0.5, now, timeConstant);
+        this.compressor.ratio.setTargetAtTime(3.0, now, timeConstant);
       }
     }
 
@@ -541,25 +551,24 @@ class SpatialAudioEngine {
       warmVal = Math.max(-2, Math.min(3.5, (Number(this.customSettings.bass) || 0) * 0.35));
       midVal = Number(this.customSettings.mid) || 0;
       trebleVal = Number(this.customSettings.treble) || 0;
-      spatialVal = Number(this.customSettings.spatial) ?? 60;
-      reverbVal = Number(this.customSettings.reverb) ?? 20;
+      spatialVal = Number(this.customSettings.spatial) ?? 70;
+      reverbVal = Number(this.customSettings.reverb) ?? 18;
     } else {
       const presetCfg = PRESETS[this.currentPreset] || PRESETS.atmos;
       const factor = (this.currentIntensity / 100);
       bassVal = presetCfg.bass * factor;
-      warmVal = (presetCfg.warmth || 1.2) * factor;
+      warmVal = (presetCfg.warmth || 1.8) * factor;
       midVal = presetCfg.mid * factor;
       trebleVal = presetCfg.treble * factor;
       spatialVal = presetCfg.spatial * factor;
       reverbVal = presetCfg.reverb * factor;
     }
 
-    // Dynamic Headroom: Tự động hạ preGain tỉ lệ với mức boost EQ để triệt tiêu 100% digital clipping (rè rè)
+    // Dynamic Headroom: Giữ âm lượng to rõ, đầy đặn ngang ngửa hoặc hơn Origin một chút mà không bị clipping
     const maxBoost = Math.max(0, bassVal, warmVal, midVal, trebleVal);
-    let headroomDb = Math.min(6.5, maxBoost * 0.75 + 1.2);
-    // Bù âm lượng an toàn cho 8D (+0.8dB) giúp giữ âm thanh to rõ mà tuyệt đối không đẩy quá ngưỡng gây rè
+    let headroomDb = Math.min(3.2, maxBoost * 0.35 + 0.5);
     if (this.currentPreset === "eightD") {
-      headroomDb = Math.max(0.6, headroomDb - 0.8);
+      headroomDb = Math.max(0.4, headroomDb - 0.5);
     }
     const headroomFactor = Math.pow(10, -headroomDb / 20);
     if (this.preGain) {
@@ -571,12 +580,12 @@ class SpatialAudioEngine {
     if (this.midFilter) this.midFilter.gain.setTargetAtTime(midVal, now, timeConstant);
     if (this.trebleFilter) this.trebleFilter.gain.setTargetAtTime(trebleVal, now, timeConstant);
 
-    // Stereo Width: Chuyển đổi 0..100% sang hệ số khuếch đại Mid/Side an toàn (0.85 -> 1.30)
-    const widthMult = 0.85 + (spatialVal / 100) * 0.45;
+    // Stereo Width: Mở rộng âm trường 3D rõ rệt từ 1.0 (chuẩn stereo) lên đến 1.85 (vòm 3D thực thụ)
+    const widthMult = 1.0 + (spatialVal / 100) * 0.85;
     if (this.widthGain) this.widthGain.gain.setTargetAtTime(widthMult, now, timeConstant);
 
-    // Reverb / Ambience: Chuyển đổi 0..100% sang mức độ vang phòng tự nhiên (0 -> 0.22)
-    const wetReverb = (reverbVal / 100) * 0.22;
+    // Reverb / Ambience: Không gian phòng tự nhiên (0 -> 0.28)
+    const wetReverb = (reverbVal / 100) * 0.28;
     if (this.reverbWetGain) this.reverbWetGain.gain.setTargetAtTime(wetReverb, now, timeConstant);
   }
 }

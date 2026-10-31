@@ -13,7 +13,7 @@ export default function SongList({ songs, currentIndex, onPlay }) {
     <div className="song-list-grid">
       {songs.map((song, index) => (
         <div
-          key={song._id || index}
+          key={song.id || song._id || index}
           className={`music-card d-flex align-items-center p-2 px-3 ${
             currentIndex === index ? "active" : ""
           }`}

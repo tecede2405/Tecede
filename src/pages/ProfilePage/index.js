@@ -142,11 +142,11 @@ export default function ProfilePage() {
 
       let finalAvatarUrl = selectedAvatar;
 
-      // Nếu có file mới từ máy -> Upload qua router storage và lấy link ảnh thật (ImgBB)
+      // Nếu có file mới từ máy -> Upload qua Telegram Bot Cloudflare Worker và lấy link stream/ảnh
       if (avatarFile) {
         const formData = new FormData();
-        const safeName = encodeURIComponent(`avatar_${Date.now()}_${avatarFile.name}`);
-        formData.append("files", avatarFile, safeName);
+        const safeName = `avatar_${Date.now()}_${avatarFile.name}`;
+        formData.append("file", avatarFile, safeName);
 
         const uploadRes = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/storage/upload`,
@@ -154,23 +154,13 @@ export default function ProfilePage() {
           { headers: { "Content-Type": "multipart/form-data" } }
         );
 
-        if ((uploadRes.status === 200 || uploadRes.status === 201) && Array.isArray(uploadRes.data) && uploadRes.data.length > 0) {
-          const savedFile = uploadRes.data[0];
-          
-          let realImageUrl = savedFile.url || savedFile.directUrl || savedFile.imgbb_url || savedFile.display_url || savedFile.link;
-
-          if (!realImageUrl || !realImageUrl.startsWith("http") || realImageUrl.includes("/api/storage/file/")) {
-            try {
-              const fileCheck = await fetch(`${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`);
-              if (fileCheck.ok && fileCheck.url) {
-                realImageUrl = fileCheck.url;
-              }
-            } catch (fetchErr) {
-              console.warn("Không lấy được redirect link từ storage:", fetchErr);
-            }
+        if ((uploadRes.status === 200 || uploadRes.status === 201) && uploadRes.data) {
+          const rawData = Array.isArray(uploadRes.data) ? uploadRes.data[0] : uploadRes.data;
+          const fileId = rawData?.id || rawData?._id;
+          if (!fileId && !rawData?.url) {
+            throw new Error("Không lấy được thông tin file sau khi upload");
           }
-
-          finalAvatarUrl = realImageUrl || `${process.env.REACT_APP_API_URL}/api/storage/file/${savedFile._id}`;
+          finalAvatarUrl = rawData.url || `${process.env.REACT_APP_API_URL}/api/storage/stream/${fileId}`;
         } else {
           throw new Error("Không lấy được thông tin file sau khi upload");
         }
@@ -230,7 +220,7 @@ export default function ProfilePage() {
   const isAdmin = currentRole === "admin";
   const isPremium = currentRole === "premium";
   const displayUsername = original?.username || user?.username || "tecede_user";
-  const displayName = name || original?.display_name || user?.display_name || displayUsername;
+  const displayName = name || original?.display_name || user?.display_name || (isAdmin ? "Quản trị viên" : displayUsername);
   const displayId =
     original?.id ??
     original?._id ??
@@ -250,15 +240,20 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className={`fb-profile-page ${isPremium ? "fb-profile-page--premium" : ""}`}>
+    <div className={`fb-profile-page ${isAdmin ? "fb-profile-page--admin" : isPremium ? "fb-profile-page--premium" : ""}`}>
       
       {/* ================= KHUNG BACKGROUND ẢNH NỀN (FULL PAGE, DEFAULT MÀU TỐI) ================= */}
-      <div className={`fb-cover-banner ${isPremium ? "fb-cover-banner--premium" : ""}`}>
+      <div className={`fb-cover-banner ${isAdmin ? "fb-cover-banner--admin" : isPremium ? "fb-cover-banner--premium" : ""}`}>
         <div className="fb-cover-overlay" />
         <div className="fb-cover-particles" />
         <div className="fb-cover-shine" />
         <div className="fb-cover-badge">
-          {isPremium ? (
+          {isAdmin ? (
+            <>
+              <FaShieldAlt className="cover-admin-icon" />
+              <span>Quản Trị Viên Hệ Thống</span>
+            </>
+          ) : isPremium ? (
             <>
               <FaCrown className="cover-crown-icon" />
               <span>Thành viên VIP Premium</span>
@@ -331,10 +326,12 @@ export default function ProfilePage() {
 
               <div className="fb-user-meta">
                 {/* TÊN ĐĂNG NHẬP */}
-                <div className="fb-meta-item fb-username-item" title="Tên đăng nhập tài khoản">
-                  <span className="meta-at">@</span>
-                  <span className="meta-text">{displayUsername}</span>
-                </div>
+                {!isAdmin && (
+                  <div className="fb-meta-item fb-username-item" title="Tên đăng nhập tài khoản">
+                    <span className="meta-at">@</span>
+                    <span className="meta-text">{displayUsername}</span>
+                  </div>
+                )}
 
                 {displayId && (
                   <div className="fb-meta-item fb-id-item" title={`ID tài khoản: #${displayId}`}>
@@ -343,7 +340,7 @@ export default function ProfilePage() {
                   </div>
                 )}
 
-                <span className="fb-meta-dot">•</span>
+                {!isAdmin && <span className="fb-meta-dot">•</span>}
 
                 {/* THÀNH VIÊN / QUẢN TRỊ VIÊN / PREMIUM */}
                 <span className={`fb-role-badge ${isAdmin ? "fb-role-badge--admin" : isPremium ? "fb-role-badge--premium" : "fb-role-badge--member"}`}>
@@ -473,22 +470,24 @@ export default function ProfilePage() {
                     <span className="field-desc">Tên này sẽ hiển thị công khai khi bạn bình luận và tương tác trên website.</span>
                   </div>
 
-                  <div className="fb-field-group">
-                    <label>
-                      <FaLock className="field-icon" />
-                      <span>Tên đăng nhập (Cố định)</span>
-                    </label>
-                    <div className="fb-input-wrap fb-input-wrap--disabled">
-                      <input 
-                        type="text" 
-                        value={`@${displayUsername}`} 
-                        disabled 
-                        readOnly 
-                      />
-                      <span className="locked-badge"><FaLock /> Cố định</span>
+                  {!isAdmin && (
+                    <div className="fb-field-group">
+                      <label>
+                        <FaLock className="field-icon" />
+                        <span>Tên đăng nhập (Cố định)</span>
+                      </label>
+                      <div className="fb-input-wrap fb-input-wrap--disabled">
+                        <input 
+                          type="text" 
+                          value={`@${displayUsername}`} 
+                          disabled 
+                          readOnly 
+                        />
+                        <span className="locked-badge"><FaLock /> Cố định</span>
+                      </div>
+                      <span className="field-desc">Tên đăng nhập dùng để xác thực hệ thống và không thể thay đổi.</span>
                     </div>
-                    <span className="field-desc">Tên đăng nhập dùng để xác thực hệ thống và không thể thay đổi.</span>
-                  </div>
+                  )}
                 </div>
 
                 {/* CỘT PHẢI: UPLOAD ẢNH TỪ MÁY */}
@@ -630,18 +629,34 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="summary-card">
-                  <div className="summary-card__icon">
-                    <FaIdCard className="icon" />
+                {!isAdmin ? (
+                  <div className="summary-card">
+                    <div className="summary-card__icon">
+                      <FaIdCard className="icon" />
+                    </div>
+                    <div className="summary-card__info">
+                      <span className="summary-label">Tên đăng nhập</span>
+                      <span className="summary-value">
+                        @{displayUsername}
+                        {displayId && <span className="summary-id-badge">#{displayId}</span>}
+                      </span>
+                    </div>
                   </div>
-                  <div className="summary-card__info">
-                    <span className="summary-label">Tên đăng nhập</span>
-                    <span className="summary-value">
-                      @{displayUsername}
-                      {displayId && <span className="summary-id-badge">#{displayId}</span>}
-                    </span>
-                  </div>
-                </div>
+                ) : (
+                  displayId && (
+                    <div className="summary-card">
+                      <div className="summary-card__icon">
+                        <FaIdCard className="icon" />
+                      </div>
+                      <div className="summary-card__info">
+                        <span className="summary-label">Mã ID hệ thống</span>
+                        <span className="summary-value">
+                          <span className="summary-id-badge">#{displayId}</span>
+                        </span>
+                      </div>
+                    </div>
+                  )
+                )}
 
                 <div className="summary-card">
                   <div className="summary-card__icon">

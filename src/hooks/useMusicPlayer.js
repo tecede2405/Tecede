@@ -45,8 +45,9 @@ export default function useMusicPlayer(initialSongs) {
           if (typeof parsed.enabled === "boolean") return parsed.enabled;
         }
       } catch (e) {}
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      return !isMobile; 
+      const isMobileOrTablet = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      return !isMobileOrTablet; 
     }
     return false;
   });
@@ -309,7 +310,8 @@ export default function useMusicPlayer(initialSongs) {
     const listToUse = optionalPlaylist || stateRef.current.playlist;
     if (listToUse.length === 0 || index === null) return;
     const song = listToUse[index];
-    if (!song?._id) return;
+    const songId = song?.id || song?._id;
+    if (!songId) return;
 
     // Cấp quyền AudioSession playback cho iOS Safari (vượt qua công tắc gạt rung/im lặng của iPhone)
     if (typeof navigator !== "undefined" && "audioSession" in navigator) {
@@ -332,7 +334,7 @@ export default function useMusicPlayer(initialSongs) {
     }
 
     const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-    const newSrc = `${baseUrl}/api/songs/stream/${song._id}`;
+    const newSrc = `${baseUrl}/api/songs/stream/${songId}`;
     
     setIsPlaying(true); 
     setIsLoading(true); 
@@ -343,7 +345,7 @@ export default function useMusicPlayer(initialSongs) {
     globalAudio.onerror = null;
 
     // Tránh set lại src nếu bài hát đang phát trùng với bài yêu cầu, ngăn lỗi trình duyệt
-    if (globalAudio.src === newSrc || globalAudio.src.endsWith(`/api/songs/stream/${song._id}`)) {
+    if (globalAudio.src === newSrc || globalAudio.src.endsWith(`/api/songs/stream/${songId}`)) {
       globalAudio.currentTime = 0;
     } else {
       globalAudio.src = newSrc;
@@ -369,8 +371,10 @@ export default function useMusicPlayer(initialSongs) {
       setIsPlaying(true);
       consecutiveErrors = 0; // Reset lỗi khi phát thành công
       
-      // Đánh thức Web Audio Context mỗi khi nhạc bắt đầu phát
-      spatialEngine.resumeContext();
+      // Đánh thức Web Audio Context mỗi khi nhạc bắt đầu phát (chỉ khi effect đã bật)
+      if (spatialEngine.isInitialized) {
+        spatialEngine.resumeContext();
+      }
     };
 
     globalAudio.onpause = () => setIsPlaying(false);
@@ -410,7 +414,7 @@ export default function useMusicPlayer(initialSongs) {
       }
     });
 
-    fetch(`${baseUrl}/api/songs/${song._id}/listen`, { method: "PUT" }).catch(()=>{});
+    fetch(`${baseUrl}/api/songs/${songId}/listen`, { method: "PUT" }).catch(()=>{});
     
     setCurrentPlaylist((prev) => {
       const baseList = optionalPlaylist || prev;

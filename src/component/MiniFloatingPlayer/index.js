@@ -175,7 +175,7 @@ export default function MiniFloatingPlayer() {
               const isCurrent = currentIndex === index;
               return (
                 <div
-                  key={song._id || index}
+                  key={song.id || song._id || index}
                   className={`mini-drawer-item d-flex align-items-center gap-3 ${isCurrent ? "active" : ""}`}
                   onClick={() => handlePlay(index)}
                 >

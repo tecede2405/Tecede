@@ -17,13 +17,9 @@ const CATEGORY_NAMES = {
   nhacdouyin: "Nhạc Douyin",
   nhackhongloi: "Không Lời",
   nhactreremix: "Remix",
+  "nhac-lofi": "Lofi",
   nhaclofi: "Lofi"
 };
-
-// Cache dữ liệu bài hát trên RAM để tránh fetch lại liên tục khi chuyển tab
-let songsCache = null;
-let songsCacheTime = 0;
-const SONGS_CACHE_TTL = 3 * 60 * 1000; // 3 phút
 
 const OverView = () => {
   const { donates } = useDonates();
@@ -105,45 +101,39 @@ const OverView = () => {
   const today = new Date();
   const isCurrentMonth = viewDate.getMonth() === today.getMonth() && viewDate.getFullYear() === today.getFullYear();
 
-  /* ===== FETCH SONGS (CÓ CACHE 3 PHÚT) ===== */
+  /* ===== FETCH SONGS & STATS TỪ SYSTEM_STATS (SIÊU NHẸ) ===== */
   useEffect(() => {
-    const applySongsData = (songs) => {
-      if (Array.isArray(songs)) {
-        setTotalSongs(songs.length);
-        setTotalListens(songs.reduce((sum, song) => sum + (song.listens || 0), 0));
-
-        const groupByCategory = songs.reduce((acc, song) => {
-          const cat = song.category || "unknown";
-          acc[cat] = (acc[cat] || 0) + (song.listens || 0);
-          return acc;
-        }, {});
-
-        const targetCategories = [
-          "nhactre", "nhacusuk", "nhactrungquoc", "nhacedm", "nhacphonk", "nhacdouyin", "nhackhongloi", "nhactreremix", "nhac-lofi"
-        ];
-
-        const formattedPieData = targetCategories.map((cat) => ({
-          name: CATEGORY_NAMES[cat] || cat,
-          value: groupByCategory[cat] || 0
-        })).filter(item => item.value > 0);
+    // Gọi đồng thời 3 endpoint thống kê siêu nhẹ từ bảng system_stats
+    Promise.all([
+      fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/total-songs`)
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null),
+      fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/total-listens`)
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null),
+      fetch(`${process.env.REACT_APP_API_URL}/api/songs/stats/category-listens`)
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null),
+    ]).then(([songsStat, listensStat, categoryListensStat]) => {
+      if (songsStat?.totalSongs !== undefined) {
+        setTotalSongs(songsStat.totalSongs);
+      }
+      if (listensStat?.totalListens !== undefined) {
+        setTotalListens(listensStat.totalListens);
+      }
+      if (categoryListensStat && typeof categoryListensStat === "object") {
+        const formattedPieData = Object.entries(categoryListensStat)
+          .map(([catKey, val]) => ({
+            key: catKey,
+            name: CATEGORY_NAMES[catKey] || catKey,
+            value: typeof val === "number" ? val : Number(val) || 0,
+          }))
+          .filter((item) => item.value > 0)
+          .sort((a, b) => b.value - a.value);
 
         setCategoryData(formattedPieData);
       }
-    };
-
-    const now = Date.now();
-    if (songsCache && now - songsCacheTime < SONGS_CACHE_TTL) {
-      applySongsData(songsCache);
-    } else {
-      fetch(`${process.env.REACT_APP_API_URL}/api/songs`)
-        .then((res) => res.json())
-        .then((songs) => {
-          songsCache = songs;
-          songsCacheTime = Date.now();
-          applySongsData(songs);
-        })
-        .catch((err) => console.error("Lỗi fetch songs:", err));
-    }
+    });
   }, []);
 
   const avgListen = totalSongs > 0 ? Math.round(totalListens / totalSongs) : 0;

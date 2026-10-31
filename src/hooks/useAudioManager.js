@@ -42,10 +42,11 @@ export default function useAudioManager({
       const nextIndex = (currentIndex + 1) % playlist.length;
       const nextSong = playlist[nextIndex];
       
-      if (nextSong?._id) {
+      const nextSongId = nextSong?.id || nextSong?._id;
+      if (nextSongId) {
         // Dùng thẳng biến môi trường (nếu chưa deploy thì để localhost:5000)
         const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-        const nextStreamUrl = `${baseUrl}/api/songs/stream/${nextSong._id}`;
+        const nextStreamUrl = `${baseUrl}/api/songs/stream/${nextSongId}`;
         
         const nextAudio = new Audio(nextStreamUrl);
         nextAudio.preload = "auto";

@@ -26,14 +26,14 @@ export default function ManageSongs() {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/api/songs/category/${activeTab}`)
       .then((res) => res.json())
-      .then((data) => setSongs(data))
+      .then((data) => setSongs(Array.isArray(data) ? data : []))
       .catch((err) => console.error("❌ Lỗi fetch:", err));
   }, [activeTab]);
 
   const handleEdit = (song) => {
   console.log("Sửa bài hát:", song);
   // 👉 ví dụ:
-  navigate(`/admin/songs/edit/${song._id}`);
+  navigate(`/admin/songs/edit/${song.id || song._id}`);
 };
 
 const handleDelete = async (song) => {
@@ -51,7 +51,7 @@ const handleDelete = async (song) => {
   if (!result.isConfirmed) return;
 
   try {
-    await fetch(`${process.env.REACT_APP_API_URL}/api/songs/${song._id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/api/songs/${song.id || song._id}`, {
       method: "DELETE",
     });
 
@@ -63,7 +63,7 @@ const handleDelete = async (song) => {
       showConfirmButton: false,
     });
 
-    setSongs((prev) => prev.filter((s) => s._id !== song._id));
+    setSongs((prev) => prev.filter((s) => (s.id || s._id) !== (song.id || song._id)));
   } catch (err) {
     Swal.fire("Lỗi!", "Xóa thất bại.", "error");
   }
@@ -77,7 +77,7 @@ const handleDelete = async (song) => {
       <div className="song-grid">
         <div className="row">
           {songs.map((song) => (
-            <div className="col-xxl-3 col-xl-3 col-lg-5 col-md-5 col-sm-5 col-12 mb-3" key={song._id}>
+            <div className="col-xxl-3 col-xl-3 col-lg-5 col-md-5 col-sm-5 col-12 mb-3" key={song.id || song._id}>
               <div className="music-card1 d-flex align-items-center justify-content-between p-3 song-item">
               <div className="d-flex align-items-center">
                 <img

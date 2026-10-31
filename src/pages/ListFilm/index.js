@@ -227,7 +227,19 @@ export default function FilmListByType() {
       </div>
       {/* GRID */}
       {loading ? (
-        <div className="text-light p-4">Loading...</div>
+        <div className="film-grid">
+          {Array.from({ length: 18 }).map((_, idx) => (
+            <div key={idx} className="film-card film-card--skeleton">
+              <div className="film-poster-wrapper">
+                <div className="skeleton-badge" />
+                <div className="film-overlay">
+                  <div className="skeleton-title-line" />
+                  <div className="skeleton-title-line skeleton-title-line--short" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <>
           <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
@@ -241,11 +253,17 @@ export default function FilmListByType() {
               >
                 <div className="film-poster-wrapper">
                   <img
-                    // Đã loại bỏ proxy image.php, sử dụng trực tiếp link gốc từ context
                     src={film.image || film.thumb || ""}
                     alt={film.title}
                     loading="lazy"
                     className="film-poster"
+                    onLoad={(e) => {
+                      e.currentTarget.parentElement?.classList.add("is-loaded");
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.parentElement?.classList.add("is-loaded");
+                      e.currentTarget.src = "https://placehold.co/300x450/141824/ffffff?text=Tecede";
+                    }}
                   />
 
                   <span className="film-episodes">

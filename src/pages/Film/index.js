@@ -299,8 +299,6 @@ export default function FilmListBySlug() {
   const handleMouseEnter = (film) => { if (enablePreview) hoverTimerRef.current = setTimeout(() => setHoverFilm(film), 5000); };
   const handleMouseLeave = () => { if (enablePreview && hoverTimerRef.current) { clearTimeout(hoverTimerRef.current); hoverTimerRef.current = null; } };
 
-  if (loading) return <div className="container py-4"><h4 className="result-title fst-italic">Đang tải kết quả: {keyword}...</h4></div>;
-
   return (
     <div className="film-container">
       <div className="input-search-film">
@@ -320,52 +318,70 @@ export default function FilmListBySlug() {
         <i className="ms-2">Kết quả cho: {keyword}</i>
       </h3>
 
-      {results.length === 0 && (
+      {loading ? (
+        <div className="film-grid">
+          {Array.from({ length: 18 }).map((_, idx) => (
+            <div key={idx} className="film-card film-card--skeleton">
+              <div className="film-poster-wrapper">
+                <div className="skeleton-badge" />
+                <div className="film-overlay">
+                  <div className="skeleton-title-line" />
+                  <div className="skeleton-title-line skeleton-title-line--short" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : results.length === 0 ? (
         <p className="no-result">
           Không tìm thấy phim, hãy nhập lại đúng tên phim nhé, bạn có thể nhập một vài từ trong tên phim nếu bạn không nhớ rõ tên,
           lưu ý chỉ nhập tên phim và không viết tắt, không nhập các từ như phim, tập, mùa, phần, season, ss,... vào phần tìm kiếm vì thuật toán sẽ không hiểu được.
         </p>
+      ) : (
+        <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
+          {results.map((film) => (
+            <Link 
+              to={`/chi-tiet/${film.slug}`} 
+              state={{ sourceName: film.sourceName }}
+              key={`${film.slug}-${film.sourceName}`} 
+              className="film-card" 
+              onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} 
+              onMouseLeave={enablePreview ? handleMouseLeave : undefined}
+            >
+              <div className="film-poster-wrapper">
+                {/* LABEL HIỂN THỊ NGUỒN PHIM */}
+                <div style={{
+                  position: "absolute", top: "5px", left: "5px", 
+                  backgroundColor: film.sourceName === "KK" ? "#e50914" : film.sourceName === "VM" ? "#8e24aa" : "#2196f3", 
+                  color: "white", padding: "3px 8px", fontSize: "11px", fontWeight: "bold", 
+                  borderRadius: "4px", zIndex: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.5)"
+                }}>
+                  {film.sourceName}
+                </div>
+
+                <img 
+                  src={getPoster(film.poster_url, film.sourceName)} 
+                  alt={film.name} 
+                  className="film-poster" 
+                  loading="lazy" 
+                  onLoad={(e) => {
+                    e.currentTarget.parentElement?.classList.add("is-loaded");
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.parentElement?.classList.add("is-loaded");
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "https://placehold.co/300x450/141824/ffffff?text=Tecede";
+                  }}
+                />
+                <div className="film-overlay">
+                  <h6 className="film-name">{film.name}</h6>
+                  <span className="film-year">{film.year}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       )}
-
-      <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
-        {results.map((film) => (
-          <Link 
-            to={`/chi-tiet/${film.slug}`} 
-            state={{ sourceName: film.sourceName }}
-            key={`${film.slug}-${film.sourceName}`} 
-            className="film-card" 
-            onMouseEnter={enablePreview ? () => handleMouseEnter(film) : undefined} 
-            onMouseLeave={enablePreview ? handleMouseLeave : undefined}
-          >
-            <div className="film-poster-wrapper">
-              {/* LABEL HIỂN THỊ NGUỒN PHIM */}
-              <div style={{
-                position: "absolute", top: "5px", left: "5px", 
-                backgroundColor: film.sourceName === "KK" ? "#e50914" : film.sourceName === "VM" ? "#8e24aa" : "#2196f3", 
-                color: "white", padding: "3px 8px", fontSize: "11px", fontWeight: "bold", 
-                borderRadius: "4px", zIndex: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.5)"
-              }}>
-                {film.sourceName}
-              </div>
-
-              <img 
-                src={getPoster(film.poster_url, film.sourceName)} 
-                alt={film.name} 
-                className="film-poster" 
-                loading="lazy" 
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "https://placehold.co/300x450?text=No+Image";
-                }}
-              />
-              <div className="film-overlay">
-                <h6 className="film-name">{film.name}</h6>
-                <span className="film-year">{film.year}</span>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
 
       {enablePreview && hoverFilm && (
         <div className="hover-preview-backdrop">
