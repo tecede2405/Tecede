@@ -17,6 +17,7 @@ import {
   FaArrowLeft,
   FaHistory,
   FaTrash,
+  FaBars,
 } from "react-icons/fa";
 import {
   fetchSuggestions,
@@ -58,7 +59,7 @@ export default function YouTubeHeader({
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
-  const { activeVideo, minimizePlayer } = useTecedeYtPlayer();
+  const { activeVideo, minimizePlayer, toggleSidebar } = useTecedeYtPlayer();
 
   const handleNavWithMinimize = (e, targetPath) => {
     const isWatch = location.pathname.startsWith("/tecede-yt/watch/");
@@ -309,12 +310,21 @@ export default function YouTubeHeader({
             <Link
               to="/"
               className="yt-back-to-tecede"
-              title="Quay lại Tecede (Phim & Truyện)"
+              title="Quay lại trang chủ (Phim & Truyện)"
               onClick={(e) => handleNavWithMinimize(e, "/")}
+              aria-label="Quay lại trang chủ"
             >
-              <FaArrowLeft className="me-1" />
-              <span className="d-none d-sm-inline">Tecede</span>
+              <FaArrowLeft />
             </Link>
+            <button
+              type="button"
+              className="yt-hamburger-btn"
+              onClick={toggleSidebar}
+              title="Danh mục điều hướng"
+              aria-label="Mở menu"
+            >
+              <FaBars />
+            </button>
             <div className="yt-brand-divider" />
             <Link
               to="/tecede-yt"

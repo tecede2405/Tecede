@@ -70,7 +70,16 @@ export default function VideoCard({ video, layout = "grid" }) {
     <div className={`yt-video-card yt-video-card--${layout}`}>
       {/* THUMBNAIL WRAPPER */}
       <Link 
-        to={`/tecede-yt/watch/${videoId}`} 
+        to={`/tecede-yt/watch/${videoId}`}
+        state={{
+          video: {
+            videoId,
+            title,
+            uploader: uploaderName,
+            thumbnail,
+            duration
+          }
+        }} 
         onClick={handleWatchClick} 
         className="yt-card__thumb-link"
       >
@@ -113,7 +122,16 @@ export default function VideoCard({ video, layout = "grid" }) {
 
         <div className="yt-card__meta">
           <Link 
-            to={`/tecede-yt/watch/${videoId}`} 
+            to={`/tecede-yt/watch/${videoId}`}
+        state={{
+          video: {
+            videoId,
+            title,
+            uploader: uploaderName,
+            thumbnail,
+            duration
+          }
+        }} 
             onClick={handleWatchClick} 
             className="yt-card__title-link"
           >

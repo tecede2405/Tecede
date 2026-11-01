@@ -669,12 +669,57 @@ export const formatTimeAgo = (dateInput) => {
 
 // 9. YouTube oEmbed (Dùng khi Piped instance bị chặn bot check để lấy title, author)
 export const fetchOEmbed = async (videoId) => {
+  if (!videoId) return null;
+
+  // 1. Thử dịch vụ NoEmbed có header Access-Control-Allow-Origin: * chuẩn browser
   try {
-    const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+    const res = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.title) {
+        return {
+          title: data.title,
+          author_name: data.author_name || "YouTube Creator",
+          author_url: data.author_url || "",
+          thumbnail_url: data.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+        };
+      }
+    }
+  } catch (e) {}
+
+  // 2. Fallback sang Invidious lấy metadata nhanh
+  const invidiousHosts = [
+    "https://yt.chocolatemoo53.com/api/v1",
+    "https://invidious.nerdvpn.de/api/v1",
+    "https://inv.nadeko.net/api/v1"
+  ];
+  for (const host of invidiousHosts) {
+    try {
+      const res = await fetch(`${host}/videos/${encodeURIComponent(videoId)}`, {
+        signal: AbortSignal.timeout(3000)
+      });
+      if (res.ok) {
+        const d = await res.json();
+        if (d && (d.title || d.author)) {
+          return {
+            title: d.title || "Video",
+            author_name: d.author || "YouTube Creator",
+            author_url: d.authorUrl || "",
+            thumbnail_url: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+          };
+        }
+      }
+    } catch (e) {}
+  }
+
+  // 3. Fallback sang endpoint chính thức của YouTube
+  try {
+    const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}&format=json`);
     if (res.ok) {
       return await res.json();
     }
   } catch (e) {}
+
   return null;
 };
 
@@ -730,32 +775,57 @@ export const clearWatchHistory = () => {
 /**
  * Trích xuất các từ khóa và kênh từ lịch sử xem để xây dựng đề xuất cá nhân hóa
  */
-export const getRecommendationKeywords = () => {
-  const history = getWatchHistory();
+export const getRecommendationKeywords = (customHistory = null) => {
+  const history = Array.isArray(customHistory) && customHistory.length > 0 
+    ? customHistory 
+    : getWatchHistory();
   if (!history || history.length === 0) return [];
 
   const keywords = [];
   const seen = new Set();
 
+  const isInvalidKeyword = (str) => {
+    if (!str || typeof str !== "string") return true;
+    const s = str.trim().toLowerCase();
+    if (s.length < 2) return true;
+    // Bỏ qua các chuỗi chỉ toàn số hoặc ký tự đặc biệt
+    if (/^[\s\-_–—.,;:!?'"()[\]{}#@&*+=/\\|0-9]+$/.test(s)) return true;
+    const banned = [
+      "video", 
+      "youtube", 
+      "creator", 
+      "youtube creator", 
+      "undefined", 
+      "null", 
+      "chủ đề", 
+      "music video", 
+      "official",
+      "official video",
+      "official audio"
+    ];
+    return banned.includes(s);
+  };
+
   // 1. Thêm các kênh người dùng đã xem gần đây
   history.slice(0, 5).forEach((h) => {
-    if (h.uploader && !seen.has(h.uploader.toLowerCase())) {
-      seen.add(h.uploader.toLowerCase());
-      keywords.push(h.uploader);
+    const rawChannel = (h.uploader || h.channel_title || h.uploaderName || "").trim();
+    if (!isInvalidKeyword(rawChannel) && !seen.has(rawChannel.toLowerCase())) {
+      seen.add(rawChannel.toLowerCase());
+      keywords.push(rawChannel);
     }
   });
 
   // 2. Trích xuất các cụm từ ý nghĩa từ tiêu đề
-  history.slice(0, 4).forEach((h) => {
-    if (h.title) {
+  history.slice(0, 5).forEach((h) => {
+    if (h.title && typeof h.title === "string") {
       const cleanTitle = h.title
         .replace(/[[\]()|#\-_–—]/g, " ")
         .replace(/\s+/g, " ")
         .trim();
-      const words = cleanTitle.split(" ").filter(w => w.length > 2);
+      const words = cleanTitle.split(/\s+/).filter((w) => w.length > 2 && !isInvalidKeyword(w));
       if (words.length >= 2) {
-        const phrase = words.slice(0, 3).join(" ");
-        if (!seen.has(phrase.toLowerCase())) {
+        const phrase = words.slice(0, 3).join(" ").trim();
+        if (!isInvalidKeyword(phrase) && !seen.has(phrase.toLowerCase())) {
           seen.add(phrase.toLowerCase());
           keywords.push(phrase);
         }
@@ -763,5 +833,5 @@ export const getRecommendationKeywords = () => {
     }
   });
 
-  return keywords.slice(0, 6);
+  return keywords.filter((k) => typeof k === "string" && k.trim().length >= 2).slice(0, 6);
 };

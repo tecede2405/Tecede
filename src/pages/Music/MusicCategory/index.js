@@ -397,12 +397,42 @@ function MusicCategory() {
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
   const volPercent = (isMuted ? 0 : volume) * 100;
 
-  const isNewSong = (createdAt) => {
-    if (!createdAt) return false;
-    const createdDate = new Date(createdAt);
-    const now = new Date();
-    const diffDays = (now - createdDate) / (1000 * 60 * 60 * 24);
-    return diffDays <= 7;
+  const isNewSong = (rawDate) => {
+    if (!rawDate) return false;
+    let songDate;
+
+    if (typeof rawDate === "number") {
+      songDate = new Date(rawDate);
+    } else if (typeof rawDate === "string") {
+      const raw = rawDate.trim();
+      if (!raw) return false;
+
+      // Kiểm tra xem chuỗi có định dạng timezone (+07:00, Z, v.v.) hay không
+      const hasTimezone = raw.endsWith("Z") || /[+-]\d{2}(:?\d{2})?$/.test(raw);
+
+      if (!hasTimezone) {
+        // Quy chuẩn theo múi giờ Việt Nam (UTC+7)
+        const formatted = raw.replace(" ", "T") + "+07:00";
+        songDate = new Date(formatted);
+        if (isNaN(songDate.getTime())) {
+          songDate = new Date(raw.replace(" ", "T"));
+        }
+      } else {
+        songDate = new Date(raw);
+      }
+    } else if (rawDate instanceof Date) {
+      songDate = rawDate;
+    }
+
+    if (!songDate || isNaN(songDate.getTime())) return false;
+
+    // So sánh thời gian hiện tại với thời gian bài hát được tạo (nhỏ hơn 7 ngày theo giờ VN)
+    const now = Date.now();
+    const songTime = songDate.getTime();
+    const diffMs = now - songTime;
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+    return diffMs >= -3600000 && diffMs < SEVEN_DAYS_MS;
   };
 
   useEffect(() => {
@@ -957,7 +987,7 @@ function MusicCategory() {
                                           {song.title}
                                         </span>
                                         <div>
-                                          {isNewSong(song.createdAt) && (
+                                          {isNewSong(song.create_at || song.created_at || song.createdAt) && (
                                             <span className="new-badge ms-2">
                                               Mới
                                             </span>

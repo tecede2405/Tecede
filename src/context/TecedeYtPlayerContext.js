@@ -7,10 +7,43 @@ export const TecedeYtPlayerProvider = ({ children }) => {
   const [activeVideo, setActiveVideo] = useState(null);
   const [isMini, setIsMini] = useState(false);
   const [dragProgress, setDragProgress] = useState(0); // 0 -> 1 khi kéo vuốt trên mobile
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("tecede_yt_sidebar_collapsed") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const currentTimeRef = useRef(0);
   const prevRouteRef = useRef("/tecede-yt");
+
+  // Đóng mobile sidebar khi chuyển trang
+  useEffect(() => {
+    setIsMobileSidebarOpen(false);
+  }, [location.pathname, location.search]);
+
+  // Hàm bật/tắt sidebar theo màn hình Desktop hoặc Mobile
+  const toggleSidebar = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 1200) {
+      setIsMobileSidebarOpen((prev) => !prev);
+    } else {
+      setIsSidebarCollapsed((prev) => {
+        const next = !prev;
+        try {
+          localStorage.setItem("tecede_yt_sidebar_collapsed", String(next));
+        } catch {}
+        return next;
+      });
+    }
+  };
+
+  const closeMobileSidebar = () => {
+    setIsMobileSidebarOpen(false);
+  };
 
   // Lưu lịch sử đường dẫn trang trước đó (để khi vuốt xuống hoặc minimize quay lại trang trước đó)
   useEffect(() => {
@@ -122,7 +155,13 @@ export const TecedeYtPlayerProvider = ({ children }) => {
         closeMiniPlayer,
         updateCurrentTime,
         currentTimeRef,
-        prevRoute: prevRouteRef.current
+        prevRoute: prevRouteRef.current,
+        isSidebarCollapsed,
+        setIsSidebarCollapsed,
+        isMobileSidebarOpen,
+        setIsMobileSidebarOpen,
+        toggleSidebar,
+        closeMobileSidebar
       }}
     >
       {children}

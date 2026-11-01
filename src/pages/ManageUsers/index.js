@@ -478,7 +478,6 @@ export default function ManageUsers() {
                   </td>
 
                   <td className="user-username col-username">
-                    <span className="at-sign">@</span>
                     <strong>{item.username || "Chưa có"}</strong>
                   </td>
 

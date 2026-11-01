@@ -1,46 +1,87 @@
 import React, { useState, useEffect, useCallback } from "react";
 import YouTubeHeader from "./components/YouTubeHeader";
+import YouTubeSidebar from "./components/YouTubeSidebar";
+import YouTubeHistoryView from "./components/YouTubeHistoryView";
 import VideoCard from "./components/VideoCard";
 import { 
   fetchTrending, 
   fetchSearch, 
   extractVideoId,
-  getWatchHistory, 
-  clearWatchHistory, 
+  getWatchHistory as getLocalWatchHistory, 
   getRecommendationKeywords 
 } from "../../services/pipedApi";
+import {
+  getYoutubeHiddenChips,
+  hideYoutubeChip,
+  getYoutubeActiveChips
+} from "../../services/youtubeHistoryApi";
 import { 
   FaFire, 
   FaUndo, 
   FaExclamationTriangle, 
-  FaHistory, 
-  FaTrashAlt, 
-  FaPlay, 
   FaChevronRight, 
   FaSpinner,
-  FaTimes
+  FaTimes,
+  FaSyncAlt
 } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Mousewheel, Navigation } from "swiper/modules";
+import { FreeMode, Mousewheel } from "swiper/modules";
 import { useAuth } from "../../context/AuthContext";
-import { checkYtWatchAccess } from "./utils/watchAuth";
+import { useTecedeYtPlayer } from "../../context/TecedeYtPlayerContext";
 import "swiper/css";
 import "swiper/css/free-mode";
-import "swiper/css/navigation";
 import "./style.scss";
 
 const DEFAULT_CHIPS = [
-  { label: "Tất cả", query: null },
-  { label: "Thịnh hành", query: null },
-  { label: "Âm nhạc", query: "nhạc trẻ thịnh hành việt nam" },
-  { label: "Gaming", query: "gaming highlight tiếng việt" },
-  { label: "Tin tức", query: "tin tức thời sự 24h" },
-  { label: "Phim ảnh", query: "review phim tóm tắt phim" },
-  { label: "Podcast", query: "vietnam podcast talkshow" },
-  { label: "Công nghệ", query: "công nghệ smartphone review" },
-  { label: "Hài hước", query: "hài hước tiểu phẩm việt nam" },
-  { label: "Thể thao", query: "bóng đá việt nam highlight" }
+  { 
+    label: "Tất cả", 
+    query: null 
+  },
+  { 
+    label: "Thịnh hành", 
+    query: null 
+  },
+  { 
+    label: "Âm nhạc", 
+    query: "nhạc trẻ thịnh hành việt nam",
+    variants: ["nhạc trẻ thịnh hành việt nam", "nhạc remix tiktok mới nhất", "bxh nhạc việt triệu view", "acoustic cover việt nam"]
+  },
+  { 
+    label: "Gaming", 
+    query: "gaming highlight tiếng việt",
+    variants: ["gaming highlight tiếng việt", "liên quân highlight đỉnh cao", "gameplay việt nam hay nhất", "streamer highlight hài hước"]
+  },
+  { 
+    label: "Tin tức", 
+    query: "tin tức thời sự 24h",
+    variants: ["tin tức thời sự 24h mới nhất", "chuyển động 24h hôm nay", "bản tin thời sự việt nam"]
+  },
+  { 
+    label: "Phim ảnh", 
+    query: "review phim tóm tắt phim",
+    variants: ["review phim tóm tắt phim", "tóm tắt phim chiếu rạp", "review phim kinh dị hay"]
+  },
+  { 
+    label: "Podcast", 
+    query: "vietnam podcast talkshow",
+    variants: ["vietnam podcast talkshow", "podcast cuộc sống hay", "talkshow người nổi tiếng việt nam"]
+  },
+  { 
+    label: "Công nghệ", 
+    query: "công nghệ smartphone review",
+    variants: ["công nghệ smartphone review", "đánh giá điện thoại mới", "mẹo công nghệ máy tính smartphone"]
+  },
+  { 
+    label: "Hài hước", 
+    query: "hài hước tiểu phẩm việt nam",
+    variants: ["hài hước tiểu phẩm việt nam", "hài hước tiktok triệu view", "tiểu phẩm hài chọn lọc"]
+  },
+  { 
+    label: "Thể thao", 
+    query: "bóng đá việt nam highlight",
+    variants: ["bóng đá việt nam highlight", "highlight bóng đá ngoại hạng anh", "thể thao tổng hợp 24h"]
+  }
 ];
 
 const MORE_EXPLORE_QUERIES = [
@@ -49,16 +90,45 @@ const MORE_EXPLORE_QUERIES = [
   "khoa học vũ trụ khám phá",
   "nhạc lofi chill học bài",
   "xe và công nghệ review",
-  "vlog cuộc sống đời thường"
+  "vlog cuộc sống đời thường",
+  "mẹo vặt cuộc sống hữu ích",
+  "nấu ăn gia đình ngon mỗi ngày"
 ];
 
-export default function YouTubePremium() {
-  const navigate = useNavigate();
+const shuffleArray = (arr) => {
+  if (!Array.isArray(arr) || arr.length <= 1) return arr;
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
+
+export default function YouTubePremium({ initialView = "feed" }) {
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
+  const { isSidebarCollapsed } = useTecedeYtPlayer();
+
+  // Xác định view hiển thị: "feed" (trang chủ video) hoặc "history" (lịch sử xem)
+  const isHistoryRoute = location.pathname === "/tecede-yt/history" || searchParams.get("view") === "history" || initialView === "history";
+  const [currentView, setCurrentView] = useState(isHistoryRoute ? "history" : "feed");
+
+  useEffect(() => {
+    if (location.pathname === "/tecede-yt/history" || searchParams.get("view") === "history") {
+      setCurrentView("history");
+    } else {
+      setCurrentView("feed");
+    }
+  }, [location.pathname, searchParams]);
+
   const [region, setRegion] = useState(() => {
     return localStorage.getItem("tecede_yt_region") || "VN";
   });
-  const [activeChip, setActiveChip] = useState("Tất cả");
+
+  const chipParam = searchParams.get("chip");
+  const [activeChip, setActiveChip] = useState(chipParam || "Tất cả");
   const [chips, setChips] = useState(DEFAULT_CHIPS);
   
   // Videos & pagination state
@@ -69,62 +139,120 @@ export default function YouTubePremium() {
   const [pageBatch, setPageBatch] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // Watch history state
-  const [watchHistory, setWatchHistory] = useState([]);
   const [isPersonalized, setIsPersonalized] = useState(false);
-  const [showFullHistory, setShowFullHistory] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Sync and update watch history & personalized chips
-  const refreshHistoryAndChips = useCallback(() => {
-    const history = getWatchHistory();
-    setWatchHistory(history);
-
-    const recKeywords = getRecommendationKeywords();
+  // Lấy tối đa 5 chip gợi ý FIFO từ Cloudflare D1 và đồng bộ chip đã ẩn
+  const refreshHistoryAndChips = useCallback(async () => {
+    // 1. Đồng bộ danh sách chip đã ẩn từ Cloudflare D1
     let hiddenKeywords = [];
-    try {
-      hiddenKeywords = JSON.parse(localStorage.getItem("tecede_yt_hidden_chips") || "[]");
-    } catch {}
+    if (user?.token) {
+      try {
+        const chipsRes = await getYoutubeHiddenChips(user.token);
+        if (chipsRes?.success && Array.isArray(chipsRes.data)) {
+          hiddenKeywords = chipsRes.data
+            .filter((k) => typeof k === "string" && k.trim().length > 0)
+            .map((k) => k.trim());
+          try {
+            localStorage.setItem("tecede_yt_hidden_chips", JSON.stringify(hiddenKeywords));
+          } catch {}
+        }
+      } catch (err) {
+        console.warn("Lỗi tải hidden chips D1:", err);
+      }
+    }
 
-    const filteredKeywords = (recKeywords || []).filter(
-      (kw) => !hiddenKeywords.includes(kw.toLowerCase())
+    if (hiddenKeywords.length === 0) {
+      try {
+        const rawLocal = JSON.parse(localStorage.getItem("tecede_yt_hidden_chips") || "[]");
+        if (Array.isArray(rawLocal)) {
+          hiddenKeywords = rawLocal
+            .filter((k) => typeof k === "string" && k.trim().length > 0)
+            .map((k) => k.trim());
+        }
+      } catch {}
+    }
+
+    const hiddenSet = new Set(
+      hiddenKeywords.map((k) => k.toLowerCase())
     );
 
-    if (filteredKeywords.length > 0) {
+    // 2. Lấy tối đa 5 chip gợi ý FIFO từ Cloudflare D1 (GET /youtube/chips/active)
+    let activeChipsList = [];
+    if (user?.token) {
+      try {
+        const activeRes = await getYoutubeActiveChips(user.token);
+        if (activeRes?.success && Array.isArray(activeRes.data) && activeRes.data.length > 0) {
+          activeChipsList = activeRes.data;
+        }
+      } catch (err) {
+        console.warn("Lỗi tải active chips D1:", err);
+      }
+    }
+
+    // Nếu chưa có trên D1 hoặc chưa đăng nhập -> Dùng từ khóa trích xuất từ lịch sử cục bộ
+    if (activeChipsList.length === 0) {
+      activeChipsList = getRecommendationKeywords(getLocalWatchHistory());
+    }
+
+    const validKeywords = (activeChipsList || []).filter((kw) => {
+      if (typeof kw !== "string") return false;
+      const clean = kw.trim();
+      if (clean.length < 2) return false;
+      return !hiddenSet.has(clean.toLowerCase());
+    }).slice(0, 5); // Tối đa 5 chip gợi ý FIFO
+
+    let dynamicChips = [];
+    if (validKeywords.length > 0) {
       setIsPersonalized(true);
-      const dynamicChips = filteredKeywords.map((kw) => ({
-        label: kw,
-        query: kw,
+      dynamicChips = validKeywords.map((kw) => ({
+        label: kw.trim(),
+        query: kw.trim(),
         isCustom: true
       }));
-      // Merge unique chips
-      setChips([
-        DEFAULT_CHIPS[0], // "Tất cả"
-        DEFAULT_CHIPS[1], // "Thịnh hành"
-        ...dynamicChips,
-        ...DEFAULT_CHIPS.slice(2)
-      ]);
     } else {
       setIsPersonalized(false);
-      setChips(DEFAULT_CHIPS);
     }
-  }, []);
 
-  // Xóa / ẩn một chip tùy chỉnh khỏi thanh chips
+    const nextChips = [
+      DEFAULT_CHIPS[0], // "Tất cả"
+      DEFAULT_CHIPS[1], // "Thịnh hành"
+      ...dynamicChips,
+      ...DEFAULT_CHIPS.slice(2)
+    ];
+    setChips(nextChips);
+    return nextChips;
+  }, [user]);
+
+  // Xóa / ẩn một chip tùy chỉnh khỏi thanh chips (đồng bộ D1 Database)
   const handleRemoveCustomChip = (e, chipLabel) => {
     e.stopPropagation();
+    const cleanLabel = typeof chipLabel === "string" ? chipLabel.trim() : "";
+    if (!cleanLabel) return;
+
+    // 1. Lưu tạm vào localStorage
     try {
       const hidden = JSON.parse(localStorage.getItem("tecede_yt_hidden_chips") || "[]");
-      if (!hidden.includes(chipLabel.toLowerCase())) {
-        hidden.push(chipLabel.toLowerCase());
-        localStorage.setItem("tecede_yt_hidden_chips", JSON.stringify(hidden));
+      const cleanHidden = Array.isArray(hidden)
+        ? hidden.filter((k) => typeof k === "string" && k.trim().length > 0)
+        : [];
+      if (!cleanHidden.some((k) => k.toLowerCase() === cleanLabel.toLowerCase())) {
+        cleanHidden.push(cleanLabel);
+        localStorage.setItem("tecede_yt_hidden_chips", JSON.stringify(cleanHidden));
       }
     } catch {}
 
-    // Loại bỏ chip khỏi state hiện tại
-    setChips((prev) => prev.filter((c) => c.label !== chipLabel));
+    // 2. Đồng bộ trực tiếp lên Cloudflare D1 Backend nếu đã đăng nhập
+    if (user?.token) {
+      hideYoutubeChip(user.token, cleanLabel).catch((err) => {
+        console.warn("Lỗi đồng bộ ẩn chip lên D1:", err);
+      });
+    }
 
-    // Nếu chip đang được chọn bị xóa, quay về "Tất cả"
-    if (activeChip === chipLabel) {
+    // 3. Cập nhật UI ngay lập tức
+    setChips((prev) => prev.filter((c) => (c.label || "").trim().toLowerCase() !== cleanLabel.toLowerCase()));
+
+    if ((activeChip || "").trim().toLowerCase() === cleanLabel.toLowerCase()) {
       setActiveChip("Tất cả");
       loadVideos("Tất cả", region);
     }
@@ -134,73 +262,88 @@ export default function YouTubePremium() {
     refreshHistoryAndChips();
   }, [refreshHistoryAndChips]);
 
-  // Handle clearing watch history
-  const handleClearHistory = (e) => {
-    e.stopPropagation();
-    if (window.confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử xem gần đây?")) {
-      clearWatchHistory();
-      refreshHistoryAndChips();
-      setShowFullHistory(false);
-    }
-  };
-
-  const handleWatchClick = (e) => {
-    if (!checkYtWatchAccess(user, navigate)) {
-      e.preventDefault();
-    }
-  };
-
   /**
-   * Tải danh sách video ban đầu (kết hợp Trending + Personalized Recommendations)
+   * Tải danh sách video ban đầu (Trending + Personalized Recommendations)
    */
-  const loadVideos = async (chipLabel = activeChip, reg = region) => {
+  const loadVideos = async (chipLabel = activeChip, reg = region, currentChips = null, isRefresh = false) => {
     setLoading(true);
     setError(null);
     setPageBatch(1);
     setHasMore(true);
 
     try {
-      const selectedChip = chips.find((c) => c.label === chipLabel) || 
+      const activeChipsList = currentChips || chips;
+      const selectedChip = activeChipsList.find((c) => c.label === chipLabel) || 
                            DEFAULT_CHIPS.find((c) => c.label === chipLabel);
 
       if (selectedChip && selectedChip.query) {
-        // Tải theo từ khóa chip
-        const data = await fetchSearch(selectedChip.query, "videos");
-        const list = data?.items || (Array.isArray(data) ? data : []);
+        let searchQuery = selectedChip.query;
+        if (isRefresh && Array.isArray(selectedChip.variants) && selectedChip.variants.length > 1) {
+          const otherVariants = selectedChip.variants.filter((v) => v !== selectedChip.query);
+          searchQuery = otherVariants[Math.floor(Math.random() * otherVariants.length)] || selectedChip.query;
+        }
+
+        const data = await fetchSearch(searchQuery, "videos");
+        let list = data?.items || (Array.isArray(data) ? data : []);
+        if (isRefresh && list.length > 3) {
+          list = shuffleArray(list);
+        }
         setVideos(list);
       } else if (chipLabel === "Thịnh hành") {
-        // Chỉ tải trending thuần túy
         const data = await fetchTrending(reg);
-        setVideos(Array.isArray(data) ? data : []);
+        let list = Array.isArray(data) ? data : [];
+        if (isRefresh && list.length > 3) {
+          list = shuffleArray(list);
+        }
+        setVideos(list);
       } else {
-        // "Tất cả": Kết hợp Đề xuất cá nhân từ lịch sử xem + Trending để trang chủ dài & phong phú
-        const recKeywords = getRecommendationKeywords();
+        const activeTopicKeywords = activeChipsList
+          .filter((c) => c.isCustom && c.query)
+          .map((c) => c.query);
+        let recKeywords = activeTopicKeywords.length > 0
+          ? activeTopicKeywords
+          : getRecommendationKeywords(getLocalWatchHistory());
+
+        // Nếu người dùng bấm làm mới -> Xáo trộn thứ tự chủ đề để thay đổi ưu tiên
+        if (isRefresh && recKeywords.length > 1) {
+          recKeywords = shuffleArray([...recKeywords]);
+        }
+
         const promises = [fetchTrending(reg)];
 
-        // Nếu có lịch sử xem, lấy top 2-3 từ khóa/kênh để tìm kiếm đề xuất
         if (recKeywords.length > 0) {
           recKeywords.slice(0, 3).forEach((kw) => {
             promises.push(fetchSearch(kw, "videos"));
           });
+          // Thêm 1 chủ đề khám phá ngẫu nhiên khi làm mới để luôn có video mới
+          if (isRefresh) {
+            const randomExplore = MORE_EXPLORE_QUERIES[Math.floor(Math.random() * MORE_EXPLORE_QUERIES.length)];
+            promises.push(fetchSearch(randomExplore, "videos"));
+          }
         } else {
-          // Nếu chưa có lịch sử, fetch thêm một vài chủ đề phổ biến để trang chủ dài ngay từ đầu
-          promises.push(fetchSearch("nhạc trẻ hot tiktok", "videos"));
-          promises.push(fetchSearch("gaming highlight hay nhất", "videos"));
+          const explorePick1 = isRefresh 
+            ? MORE_EXPLORE_QUERIES[Math.floor(Math.random() * MORE_EXPLORE_QUERIES.length)]
+            : "nhạc trẻ hot tiktok";
+          const explorePick2 = isRefresh 
+            ? MORE_EXPLORE_QUERIES[(Math.floor(Math.random() * MORE_EXPLORE_QUERIES.length) + 1) % MORE_EXPLORE_QUERIES.length]
+            : "gaming highlight hay nhất";
+          promises.push(fetchSearch(explorePick1, "videos"));
+          promises.push(fetchSearch(explorePick2, "videos"));
         }
 
         const results = await Promise.allSettled(promises);
         const trendingList = results[0]?.status === "fulfilled" && Array.isArray(results[0].value) 
-          ? results[0].value 
+          ? (isRefresh ? shuffleArray([...results[0].value]) : results[0].value)
           : [];
 
         const recLists = results.slice(1).map((r) => {
           if (r.status === "fulfilled") {
-            return r.value?.items || (Array.isArray(r.value) ? r.value : []);
+            const raw = r.value?.items || (Array.isArray(r.value) ? r.value : []);
+            return isRefresh ? shuffleArray([...raw]) : raw;
           }
           return [];
         });
 
-        // Hợp nhất và loại bỏ trùng lặp
         const seenIds = new Set();
         const blended = [];
 
@@ -213,7 +356,6 @@ export default function YouTubePremium() {
           }
         };
 
-        // Xen kẽ: 2 video gợi ý cá nhân, 2 video trending
         const maxLen = Math.max(trendingList.length, ...recLists.map((l) => l.length));
         for (let i = 0; i < maxLen; i++) {
           recLists.forEach((list) => {
@@ -235,7 +377,7 @@ export default function YouTubePremium() {
   };
 
   /**
-   * Tải thêm video (Load more) - Giúp trang chủ dài vô tận theo yêu cầu người dùng
+   * Tải thêm video (Load more vô tận)
    */
   const handleLoadMore = async () => {
     if (loadingMore || !hasMore) return;
@@ -272,12 +414,16 @@ export default function YouTubePremium() {
   };
 
   useEffect(() => {
-    loadVideos(activeChip, region);
+    if (currentView === "feed") {
+      loadVideos(activeChip, region);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [region, activeChip]);
+  }, [region, activeChip, currentView]);
 
   const handleChipClick = (chip) => {
+    setCurrentView("feed");
     setActiveChip(chip.label);
+    setSearchParams(chip.label === "Tất cả" ? {} : { chip: chip.label });
   };
 
   const handleRegionChange = (newReg) => {
@@ -285,276 +431,221 @@ export default function YouTubePremium() {
     localStorage.setItem("tecede_yt_region", newReg);
   };
 
+  const handleSelectView = (view) => {
+    setCurrentView(view);
+    if (view === "history") {
+      setSearchParams({ view: "history" });
+    } else {
+      setSearchParams({});
+    }
+  };
+
+  // Hàm làm mới toàn bộ trang chủ & đồng bộ lại gợi ý từ lịch sử xem
+  const handleRefreshAll = async () => {
+    if (isRefreshing) return;
+    setIsRefreshing(true);
+    setLoading(true);
+    setVideos([]);
+    try {
+      const nextChips = await refreshHistoryAndChips();
+      await loadVideos(activeChip, region, nextChips, true);
+    } catch (err) {
+      console.warn("Lỗi khi làm mới:", err);
+    } finally {
+      setIsRefreshing(false);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="yt-page yt-theme-dark">
       <YouTubeHeader currentRegion={region} onRegionChange={handleRegionChange} />
 
-      {/* TOPIC CHIPS BAR - SWIPER SLIDE KÉO THẢ */}
-      <div className="yt-chips-container">
-        <Swiper
-          modules={[FreeMode, Mousewheel]}
-          slidesPerView="auto"
-          spaceBetween={10}
-          freeMode={{
-            enabled: true,
-            sticky: false,
-            momentum: true,
-            momentumRatio: 0.8,
-            momentumVelocityRatio: 0.8,
+      <div className={`yt-page-layout ${isSidebarCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}`}>
+        {/* SIDEBAR BÊN TRÁI ĐỒNG BỘ YOUTUBE */}
+        <YouTubeSidebar
+          activeChip={activeChip}
+          onSelectChip={(chip) => {
+            setCurrentView("feed");
+            setActiveChip(chip);
+            setSearchParams(chip === "Tất cả" ? {} : { chip });
           }}
-          mousewheel={{ forceToAxis: true }}
-          grabCursor={true}
-          className="yt-chips-swiper"
-        >
-          {chips.map((chip, index) => {
-            const isActive = activeChip === chip.label;
-            return (
-              <SwiperSlide 
-                key={`${chip.label}-${index}`} 
-                className="yt-chip-slide" 
-                style={{ width: "auto" }}
-              >
+          currentView={currentView}
+          onSelectView={handleSelectView}
+        />
+
+        {/* KHU VỰC NỘI DUNG CHÍNH (MAIN WRAPPER) */}
+        <div className="yt-page-main-wrap">
+          {currentView === "history" ? (
+            <YouTubeHistoryView onBackToFeed={() => handleSelectView("feed")} />
+          ) : (
+            <>
+              {/* TOPIC CHIPS BAR - SWIPER SLIDE KÉO THẢ */}
+              <div className="yt-chips-container">
                 <button
                   type="button"
-                  className={`yt-chip ${isActive ? "active" : ""} ${chip.isCustom ? "yt-chip--custom" : ""}`}
-                  onClick={() => handleChipClick(chip)}
+                  className={`yt-chip-refresh-btn ${isRefreshing ? "is-refreshing" : ""}`}
+                  onClick={handleRefreshAll}
+                  disabled={isRefreshing}
+                  title="Làm mới chủ đề & gợi ý video"
                 >
-                  {chip.isCustom && <span className="yt-chip-star">✨</span>}
-                  <span className="yt-chip-label">{chip.label}</span>
-                  {chip.isCustom && (
-                    <span
-                      className="yt-chip-remove-btn"
-                      onClick={(e) => handleRemoveCustomChip(e, chip.label)}
-                      title={`Xóa chủ đề "${chip.label}"`}
+                  <FaSyncAlt className={`refresh-icon ${isRefreshing ? "spin" : ""}`} />
+                  <span className="refresh-label">Làm mới</span>
+                </button>
+
+                <Swiper
+                  modules={[FreeMode, Mousewheel]}
+                  slidesPerView="auto"
+                  spaceBetween={10}
+                  freeMode={{
+                    enabled: true,
+                    sticky: false,
+                    momentum: true,
+                    momentumRatio: 0.8,
+                    momentumVelocityRatio: 0.8,
+                  }}
+                  mousewheel={{ forceToAxis: true }}
+                  grabCursor={true}
+                  className="yt-chips-swiper"
+                >
+                  {chips.map((chip, index) => {
+                    const isActive = activeChip === chip.label;
+                    return (
+                      <SwiperSlide 
+                        key={`${chip.label}-${index}`} 
+                        className="yt-chip-slide" 
+                        style={{ width: "auto" }}
+                      >
+                        <button
+                          type="button"
+                          className={`yt-chip ${isActive ? "active" : ""} ${chip.isCustom ? "yt-chip--custom" : ""}`}
+                          onClick={() => handleChipClick(chip)}
+                        >
+                          {chip.isCustom && <span className="yt-chip-star">✨</span>}
+                          <span className="yt-chip-label">{chip.label}</span>
+                          {chip.isCustom && (
+                            <span
+                              className="yt-chip-remove-btn"
+                              onClick={(e) => handleRemoveCustomChip(e, chip.label)}
+                              title={`Xóa chủ đề "${chip.label}"`}
+                            >
+                              <FaTimes />
+                            </span>
+                          )}
+                        </button>
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+              </div>
+
+              {/* MAIN CONTENT AREA */}
+              <main className="yt-main-content">
+                {/* FEED SECTION HEADER */}
+                <div className="yt-section-header">
+                  <div className="yt-section-title-wrap">
+                    <FaFire className="yt-section-icon" />
+                    <h1 className="yt-section-title">
+                      {activeChip === "Tất cả"
+                        ? (isPersonalized ? "Dành cho bạn & Thịnh hành" : `Video Thịnh Hành (${region === "VN" ? "Việt Nam" : region})`)
+                        : activeChip === "Thịnh hành"
+                        ? `Thịnh Hành (${region === "VN" ? "Việt Nam" : region})`
+                        : `Chủ đề: ${activeChip}`}
+                    </h1>
+                    {activeChip === "Tất cả" && isPersonalized && (
+                      <span className="yt-personalized-badge" title="Đề xuất dựa theo các video bạn đã xem gần đây">
+                        <span className="sparkle">✨</span> Gợi ý theo sở thích của bạn
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="yt-section-actions">
+                    <button
+                      type="button"
+                      className="yt-btn-refresh-feed"
+                      onClick={handleRefreshAll}
+                      disabled={isRefreshing}
+                      title="Làm mới để cập nhật gợi ý từ lịch sử xem"
                     >
-                      <FaTimes />
-                    </span>
-                  )}
-                </button>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
-      </div>
-
-      {/* MAIN CONTENT AREA */}
-      <main className="yt-main-content">
-        {/* SHELF: ĐÃ XEM GẦN ĐÂY - SWIPER SLIDE KÉO THẢ HOẶC XEM TẤT CẢ FULL LƯỚI */}
-        {watchHistory.length > 0 && activeChip === "Tất cả" && (
-          <section className="yt-history-shelf">
-            <div className="yt-history-shelf__header">
-              <div className="yt-history-shelf__title-wrap">
-                <FaHistory className="yt-history-icon" />
-                <h2 className="yt-history-title">Đã xem gần đây</h2>
-                <span className="yt-history-count">({watchHistory.length})</span>
-              </div>
-
-              <div className="yt-history-shelf__actions">
-                <button
-                  type="button"
-                  className={`yt-history-view-all-btn ${showFullHistory ? "active" : ""}`}
-                  onClick={() => setShowFullHistory(!showFullHistory)}
-                  title={showFullHistory ? "Thu gọn về dạng cuộn trượt" : "Xem tất cả lịch sử đã xem"}
-                >
-                  {showFullHistory ? "Thu gọn" : "Xem tất cả"}
-                </button>
-
-                <button 
-                  type="button"
-                  className="yt-history-clear-btn" 
-                  onClick={handleClearHistory}
-                  title="Xóa lịch sử xem"
-                >
-                  <FaTrashAlt className="me-1" /> Xóa lịch sử
-                </button>
-              </div>
-            </div>
-
-            {/* HIỂN THỊ FULL LỊCH SỬ DẠNG LƯỚI KHI CLICK XEM TẤT CẢ */}
-            {showFullHistory ? (
-              <div className="yt-history-grid">
-                {watchHistory.map((item) => (
-                  <Link 
-                    key={item.id} 
-                    to={`/tecede-yt/watch/${item.id}`} 
-                    onClick={handleWatchClick}
-                    className="yt-history-grid-card"
-                  >
-                    <div className="yt-history-card__thumb-wrap">
-                      <img 
-                        src={item.thumbnail} 
-                        alt={item.title} 
-                        className="yt-history-card__thumb"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = `https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`;
-                        }} 
-                      />
-                      <div className="yt-history-card__play-overlay">
-                        <FaPlay />
-                      </div>
-                    </div>
-                    <div className="yt-history-card__info">
-                      <h4 className="yt-history-card__title" title={item.title}>
-                        {item.title}
-                      </h4>
-                      <span className="yt-history-card__uploader">{item.uploader}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              /* DẠNG SLIDER SWIPER KÉO THẢ MẶC ĐỊNH */
-              <Swiper
-                modules={[FreeMode, Mousewheel, Navigation]}
-                slidesPerView="auto"
-                spaceBetween={14}
-                freeMode={{
-                  enabled: true,
-                  sticky: false,
-                  momentum: true,
-                }}
-                mousewheel={{ forceToAxis: true }}
-                grabCursor={true}
-                navigation={true}
-                className="yt-history-swiper"
-              >
-                {watchHistory.map((item) => (
-                  <SwiperSlide 
-                    key={item.id} 
-                    className="yt-history-slide" 
-                    style={{ width: "auto" }}
-                  >
-                    <Link 
-                      to={`/tecede-yt/watch/${item.id}`} 
-                      onClick={handleWatchClick}
-                      className="yt-history-card"
-                    >
-                      <div className="yt-history-card__thumb-wrap">
-                        <img 
-                          src={item.thumbnail} 
-                          alt={item.title} 
-                          className="yt-history-card__thumb"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = `https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`;
-                          }} 
-                        />
-                        <div className="yt-history-card__play-overlay">
-                          <FaPlay />
-                        </div>
-                      </div>
-                      <div className="yt-history-card__info">
-                        <h4 className="yt-history-card__title" title={item.title}>
-                          {item.title}
-                        </h4>
-                        <span className="yt-history-card__uploader">{item.uploader}</span>
-                      </div>
-                    </Link>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
-          </section>
-        )}
-
-        {/* FEED SECTION HEADER */}
-        <div className="yt-section-header">
-          <div className="yt-section-title-wrap">
-            <FaFire className="yt-section-icon" />
-            <h1 className="yt-section-title">
-              {activeChip === "Tất cả"
-                ? (isPersonalized ? "Dành cho bạn & Thịnh hành" : `Video Thịnh Hành (${region === "VN" ? "Việt Nam" : region})`)
-                : activeChip === "Thịnh hành"
-                ? `Thịnh Hành (${region === "VN" ? "Việt Nam" : region})`
-                : `Chủ đề: ${activeChip}`}
-            </h1>
-            {activeChip === "Tất cả" && isPersonalized && (
-              <span className="yt-personalized-badge" title="Đề xuất dựa theo các video bạn đã xem gần đây">
-                <span className="sparkle">✨</span> Gợi ý theo sở thích của bạn
-              </span>
-            )}
-          </div>
-          <span className="yt-noads-pill">⚡ Không Quảng Cáo</span>
-        </div>
-
-        {/* LOADING SKELETON */}
-        {loading && (
-          <div className="yt-video-grid">
-            {Array.from({ length: 16 }).map((_, idx) => (
-              <div key={idx} className="yt-card-skeleton">
-                <div className="skeleton-thumb" />
-                <div className="skeleton-body">
-                  <div className="skeleton-avatar" />
-                  <div className="skeleton-lines">
-                    <div className="skeleton-line line-1" />
-                    <div className="skeleton-line line-2" />
+                      <FaSyncAlt className={`me-1 ${isRefreshing ? "spin" : ""}`} />
+                      <span className="btn-label-desktop">{isRefreshing ? "Đang cập nhật..." : "Làm mới gợi ý"}</span>
+                      <span className="btn-label-mobile">{isRefreshing ? "Đang tải..." : "Làm mới"}</span>
+                    </button>
+                    <span className="yt-noads-pill">⚡ Không Quảng Cáo</span>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
 
-        {/* ERROR STATE */}
-        {!loading && error && (
-          <div className="yt-error-card">
-            <FaExclamationTriangle className="yt-error-icon" />
-            <h3>Máy chủ video phản hồi chậm</h3>
-            <p>{error}</p>
-            <button className="yt-btn-retry" onClick={() => loadVideos()}>
-              <FaUndo className="me-2" /> Thử tải lại
-            </button>
-          </div>
-        )}
+                {/* LOADING SKELETON */}
+                {(loading || isRefreshing || (videos.length === 0 && !error)) && (
+                  <div className="yt-video-grid">
+                    {Array.from({ length: 16 }).map((_, idx) => (
+                      <div key={idx} className="yt-card-skeleton">
+                        <div className="skeleton-thumb" />
+                        <div className="skeleton-body">
+                          <div className="skeleton-avatar" />
+                          <div className="skeleton-lines">
+                            <div className="skeleton-line line-1" />
+                            <div className="skeleton-line line-2" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-        {/* EMPTY STATE */}
-        {!loading && !error && videos.length === 0 && (
-          <div className="yt-empty-card">
-            <p>Không có video nào để hiển thị trong khu vực này.</p>
-            <button className="yt-btn-retry" onClick={() => loadVideos()}>
-              <FaUndo className="me-2" /> Làm mới
-            </button>
-          </div>
-        )}
+                {/* ERROR STATE */}
+                {!loading && !isRefreshing && error && (
+                  <div className="yt-error-card">
+                    <FaExclamationTriangle className="yt-error-icon" />
+                    <h3>Máy chủ video phản hồi chậm</h3>
+                    <p>{error}</p>
+                    <button className="yt-btn-retry" onClick={() => loadVideos()}>
+                      <FaUndo className="me-2" /> Thử tải lại
+                    </button>
+                  </div>
+                )}
 
-        {/* VIDEO GRID */}
-        {!loading && !error && videos.length > 0 && (
-          <>
-            <div className="yt-video-grid">
-              {videos.map((vid, idx) => (
-                <VideoCard key={vid.id || vid.url || idx} video={vid} layout="grid" />
-              ))}
-            </div>
+                {/* VIDEO GRID */}
+                {!loading && !isRefreshing && !error && videos.length > 0 && (
+                  <>
+                    <div className="yt-video-grid">
+                      {videos.map((vid, idx) => (
+                        <VideoCard key={vid.id || vid.url || idx} video={vid} layout="grid" />
+                      ))}
+                    </div>
 
-            {/* LOAD MORE BUTTON SECTION - CHO PHÉP TRANG CHỦ DÀI VÔ TẬN */}
-            <div className="yt-loadmore-wrap">
-              {hasMore ? (
-                <button 
-                  className="yt-btn-load-more" 
-                  onClick={handleLoadMore} 
-                  disabled={loadingMore}
-                >
-                  {loadingMore ? (
-                    <>
-                      <FaSpinner className="yt-spin me-2" /> Đang tải thêm video...
-                    </>
-                  ) : (
-                    <>
-                      <span>Khám phá thêm video</span>
-                      <FaChevronRight className="ms-2" />
-                    </>
-                  )}
-                </button>
-              ) : (
-                <div className="yt-nomore-hint">
-                  Đã tải hết các nội dung đề xuất cho danh mục này.
-                </div>
-              )}
-            </div>
-          </>
-        )}
-      </main>
+                    {/* LOAD MORE BUTTON SECTION */}
+                    <div className="yt-loadmore-wrap">
+                      {hasMore ? (
+                        <button 
+                          className="yt-btn-load-more" 
+                          onClick={handleLoadMore} 
+                          disabled={loadingMore}
+                        >
+                          {loadingMore ? (
+                            <>
+                              <FaSpinner className="yt-spin me-2" /> Đang tải thêm video...
+                            </>
+                          ) : (
+                            <>
+                              <span>Khám phá thêm video</span>
+                              <FaChevronRight className="ms-2" />
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        <div className="yt-nomore-hint">
+                          Đã tải hết các nội dung đề xuất cho danh mục này.
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </main>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

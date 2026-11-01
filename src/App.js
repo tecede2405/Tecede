@@ -117,6 +117,7 @@ function App() {
               <Routes>
                 {/* ── Standalone TecedeYT (Giao diện độc lập không Header / Footer web) ── */}
                 <Route path="/tecede-yt" element={<YouTubePremium />} />
+                <Route path="/tecede-yt/history" element={<YouTubePremium initialView="history" />} />
                 <Route path="/tecede-yt/watch/:videoId" element={<YouTubeWatch />} />
                 <Route path="/tecede-yt/search" element={<YouTubeSearch />} />
                 <Route path="/tecede-yt/channel/:channelId" element={<YouTubeChannel />} />

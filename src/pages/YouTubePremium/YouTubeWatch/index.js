@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import YouTubeHeader from "../components/YouTubeHeader";
+import YouTubeSidebar from "../components/YouTubeSidebar";
 import VideoCard from "../components/VideoCard";
 import { useAuth } from "../../../context/AuthContext";
 import { DarkSwal } from "../utils/watchAuth";
+import { 
+  saveYoutubeHistory, 
+  getYoutubeVideoProgress,
+  recordYoutubeActiveChip
+} from "../../../services/youtubeHistoryApi";
 import { 
   fetchStreams, 
   fetchComments, 
@@ -33,8 +39,20 @@ import "../style.scss";
 export default function YouTubeWatch() {
   const { videoId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const isAllowed = Boolean(user && (user.role === "premium" || user.role === "admin"));
+  const { isMini, setActiveVideo, maximizePlayer, minimizePlayer, setDragProgress, activeVideo, isSidebarCollapsed } = useTecedeYtPlayer();
+
+  const initialVideo = location.state?.video || (activeVideo?.videoId === videoId ? activeVideo : null);
+
+  const videoInfoRef = useRef({
+    videoId,
+    title: initialVideo?.title || "Video",
+    uploader: initialVideo?.uploader || initialVideo?.uploaderName || initialVideo?.channelTitle || "YouTube Creator",
+    thumbnail: initialVideo?.thumbnail || initialVideo?.thumbnailUrl || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+    duration: Number(initialVideo?.duration) || 0
+  });
 
   useEffect(() => {
     if (!user) {
@@ -114,6 +132,90 @@ export default function YouTubeWatch() {
     }
   };
 
+  const watchSecondsRef = useRef(0);
+
+  // Cập nhật thông tin mới nhất vào videoInfoRef khi streamData thay đổi
+  useEffect(() => {
+    if (streamData) {
+      videoInfoRef.current = {
+        videoId,
+        title: streamData.title || videoInfoRef.current.title,
+        uploader: streamData.uploader || videoInfoRef.current.uploader,
+        thumbnail: streamData.thumbnailUrl || videoInfoRef.current.thumbnail,
+        duration: Number(streamData.duration) || videoInfoRef.current.duration
+      };
+    }
+  }, [streamData, videoId]);
+
+  // Kiểm tra xem video này đã từng xem dở ở D1 Database chưa để tiếp tục phát
+  useEffect(() => {
+    if (!user?.token || !videoId) return;
+    let isSubscribed = true;
+    getYoutubeVideoProgress(user.token, videoId)
+      .then((res) => {
+        if (!isSubscribed) return;
+        const savedTime = Number(res?.data?.current_time);
+        if (savedTime && savedTime > 5) {
+          watchSecondsRef.current = savedTime;
+          Swal.fire({
+            toast: true,
+            position: "bottom-end",
+            icon: "info",
+            title: `Tiếp tục xem từ ${Math.floor(savedTime / 60)}:${(savedTime % 60).toString().padStart(2, "0")}`,
+            showConfirmButton: false,
+            timer: 3500,
+            background: "#18181b",
+            color: "#fff",
+          });
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [videoId, user?.token]);
+
+  // Cập nhật tiến trình xem: lưu ngay khi mở video, định kỳ mỗi 20s và khi thoát trang
+  useEffect(() => {
+    if (!videoId || !user?.token) return;
+
+    const saveCurrentProgress = (sec) => {
+      const cur = videoInfoRef.current;
+      saveYoutubeHistory(user.token, {
+        videoId,
+        title: cur.title || "Video",
+        uploader: cur.uploader || "YouTube Creator",
+        thumbnail: cur.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        duration: cur.duration || 0,
+        currentTime: sec
+      });
+    };
+
+    // 1. Lưu ngay lập tức khi mở video để luôn xuất hiện trong lịch sử
+    saveCurrentProgress(watchSecondsRef.current || 0);
+
+    const initialUploader = videoInfoRef.current.uploader;
+    if (initialUploader && initialUploader !== "YouTube Creator") {
+      recordYoutubeActiveChip(user.token, initialUploader).catch(() => {});
+    }
+
+    // 2. Cập nhật định kỳ mỗi 20s
+    const interval = setInterval(() => {
+      watchSecondsRef.current += 1;
+      if (watchSecondsRef.current % 20 === 0) {
+        saveCurrentProgress(watchSecondsRef.current);
+      }
+    }, 1000);
+
+    // 3. Lưu khi thoát trang nếu người dùng đã xem > 3s
+    return () => {
+      clearInterval(interval);
+      if (watchSecondsRef.current > 3) {
+        saveCurrentProgress(watchSecondsRef.current);
+      }
+    };
+  }, [videoId, user?.token]);
 
   // Load video stream data & SponsorBlock
   useEffect(() => {
@@ -142,6 +244,13 @@ export default function YouTubeWatch() {
 
         setStreamData(data);
         setLikeCount(data.likes || 0);
+        videoInfoRef.current = {
+          videoId,
+          title: data.title || "Video",
+          uploader: data.uploader || "YouTube Creator",
+          thumbnail: data.thumbnailUrl || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+          duration: Number(data.duration) || 0
+        };
 
         // Lưu vào lịch sử xem để đề xuất cá nhân hóa ở trang chủ
         saveWatchHistory({
@@ -153,6 +262,21 @@ export default function YouTubeWatch() {
           duration: data.duration,
           views: data.views || data.likes || 0
         });
+
+        // Đồng bộ lưu tiến trình vào D1 Database nếu có tài khoản
+        if (user?.token) {
+          saveYoutubeHistory(user.token, {
+            videoId,
+            title: data.title,
+            uploader: data.uploader,
+            thumbnail: data.thumbnailUrl,
+            duration: data.duration,
+            currentTime: watchSecondsRef.current || 0
+          });
+          if (data.uploader && data.uploader !== "YouTube Creator") {
+            recordYoutubeActiveChip(user.token, data.uploader).catch(() => {});
+          }
+        }
 
         // Cập nhật video liên quan nếu có
         if (data.relatedStreams && data.relatedStreams.length > 0) {
@@ -191,6 +315,14 @@ export default function YouTubeWatch() {
               likes: 0
             });
 
+            videoInfoRef.current = {
+              videoId,
+              title: oembed.title || "Video",
+              uploader: oembed.author_name || "YouTube Creator",
+              thumbnail: oembed.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+              duration: 0
+            };
+
             // Tìm kiếm avatar thực của kênh ngầm
             fetchSearch(rawAuthor || oembed.author_name, "channels")
               .then((chRes) => {
@@ -209,6 +341,20 @@ export default function YouTubeWatch() {
               duration: 0,
               views: 0
             });
+
+            if (user?.token) {
+              saveYoutubeHistory(user.token, {
+                videoId,
+                title: oembed.title,
+                uploader: oembed.author_name,
+                thumbnail: oembed.thumbnail_url,
+                duration: 0,
+                currentTime: watchSecondsRef.current || 0
+              });
+              if (oembed.author_name && oembed.author_name !== "YouTube Creator") {
+                recordYoutubeActiveChip(user.token, oembed.author_name).catch(() => {});
+              }
+            }
             loadFallbackRelated(videoId, oembed.title, oembed.author_name);
           } else {
             loadFallbackRelated(videoId);
@@ -234,7 +380,7 @@ export default function YouTubeWatch() {
     return () => {
       isMounted = false;
     };
-  }, [videoId, isAllowed]);
+  }, [videoId, isAllowed, user?.token]);
 
   // Load more comments
   const handleLoadMoreComments = async () => {
@@ -287,8 +433,6 @@ export default function YouTubeWatch() {
 
   const rawChannel = streamData?.uploaderId || (streamData?.uploaderUrl && streamData.uploaderUrl.replace("https://www.youtube.com/", "").replace("/channel/", "").replace("/c/", "").replace("/user/", "").trim()) || uploader;
   const channelUrl = rawChannel ? `/tecede-yt/channel/${encodeURIComponent(rawChannel)}` : `/tecede-yt/search?q=${encodeURIComponent(uploader)}&filter=videos`;
-
-  const { isMini, setActiveVideo, maximizePlayer, minimizePlayer, setDragProgress } = useTecedeYtPlayer();
 
   const handleMinimize = () => {
     minimizePlayer({
@@ -375,7 +519,11 @@ export default function YouTubeWatch() {
     >
       <YouTubeHeader />
 
-      <main className="yt-watch-container">
+      <div className={`yt-page-layout ${isSidebarCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}`}>
+        <YouTubeSidebar />
+
+        <div className="yt-page-main-wrap">
+          <main className="yt-watch-container">
         {/* Nút vuốt / thu nhỏ nhanh trên Mobile giống YouTube App */}
         {!isMini && (
           <div 
@@ -700,6 +848,8 @@ export default function YouTubeWatch() {
           </aside>
         </div>
       </main>
+        </div>
+      </div>
     </div>
   );
 }
