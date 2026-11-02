@@ -30,7 +30,11 @@ import {
   FaSpinner,
   FaClone,
   FaExpand,
-  FaEllipsisH
+  FaEllipsisH,
+  FaListUl,
+  FaTrashAlt,
+  FaPlay,
+  FaTimes
 } from "react-icons/fa";
 import { useTecedeYtPlayer } from "../../../context/TecedeYtPlayerContext";
 import Swal from "sweetalert2";
@@ -42,7 +46,22 @@ export default function YouTubeWatch() {
   const location = useLocation();
   const { user } = useAuth();
   const isAllowed = Boolean(user && (user.role === "premium" || user.role === "admin"));
-  const { isMini, setActiveVideo, maximizePlayer, minimizePlayer, setDragProgress, activeVideo, isSidebarCollapsed } = useTecedeYtPlayer();
+  const { 
+    isMini, 
+    setActiveVideo, 
+    maximizePlayer, 
+    minimizePlayer, 
+    setDragProgress, 
+    activeVideo, 
+    isSidebarCollapsed,
+    sessionPlaylist,
+    removeFromSessionPlaylist,
+    clearSessionPlaylist,
+    isAutoPlay,
+    toggleAutoPlay,
+    registerVideoEndedHandler,
+    unregisterVideoEndedHandler
+  } = useTecedeYtPlayer();
 
   const initialVideo = location.state?.video || (activeVideo?.videoId === videoId ? activeVideo : null);
 
@@ -133,6 +152,121 @@ export default function YouTubeWatch() {
   };
 
   const watchSecondsRef = useRef(0);
+
+  const sessionPlaylistRef = useRef(sessionPlaylist);
+  useEffect(() => { sessionPlaylistRef.current = sessionPlaylist; }, [sessionPlaylist]);
+
+  const relatedVideosRef = useRef(relatedVideos);
+  useEffect(() => { relatedVideosRef.current = relatedVideos; }, [relatedVideos]);
+
+  const isAutoPlayRef = useRef(isAutoPlay);
+  useEffect(() => { isAutoPlayRef.current = isAutoPlay; }, [isAutoPlay]);
+
+  const currentVideoIdRef = useRef(videoId);
+  useEffect(() => { currentVideoIdRef.current = videoId; }, [videoId]);
+
+  const playVideoItem = (targetVideo) => {
+    if (!targetVideo) return;
+    const nextId = targetVideo.id || targetVideo.videoId || extractVideoId(targetVideo.url);
+    if (!nextId) return;
+
+    setActiveVideo({
+      videoId: nextId,
+      title: targetVideo.title || "Video",
+      uploader: targetVideo.uploader || targetVideo.uploaderName || targetVideo.channelTitle || "YouTube Creator",
+      thumbnailUrl: targetVideo.thumbnail || targetVideo.thumbnailUrl || `https://i.ytimg.com/vi/${nextId}/hqdefault.jpg`,
+      playerMode: "direct",
+      currentTime: 0
+    });
+
+    navigate(`/tecede-yt/watch/${nextId}`, {
+      state: { video: targetVideo }
+    });
+  };
+
+  const playVideoItemRef = useRef(playVideoItem);
+  useEffect(() => {
+    playVideoItemRef.current = playVideoItem;
+  });
+
+  // Lắng nghe sự kiện kết thúc video từ TecedeYtPlayerContext để tự động phát video kế tiếp
+  useEffect(() => {
+    const handleVideoEnded = () => {
+      if (!isAutoPlayRef.current) return;
+
+      const currentVid = currentVideoIdRef.current;
+      const playlist = sessionPlaylistRef.current || [];
+      const related = relatedVideosRef.current || [];
+
+      let nextVideo = null;
+
+      // 1. Ưu tiên trong danh sách phát (session playlist)
+      if (playlist.length > 0) {
+        const curIdx = playlist.findIndex((item) => (item.id || item.videoId) === currentVid);
+        if (curIdx !== -1 && curIdx + 1 < playlist.length) {
+          nextVideo = playlist[curIdx + 1];
+        } else if (curIdx === -1) {
+          nextVideo = playlist[0];
+        } else {
+          // Khi hết danh sách phát, quay lại video đầu
+          nextVideo = playlist[0];
+        }
+      }
+
+      // 2. Nếu không có danh sách phát, phát video kế tiếp trong video liên quan
+      if (!nextVideo && related.length > 0) {
+        nextVideo = related.find((item) => {
+          const itemVid = item.id || item.videoId || extractVideoId(item.url);
+          return itemVid && itemVid !== currentVid;
+        });
+      }
+
+      if (!nextVideo) return;
+
+      const nextTitle = nextVideo.title || "Video tiếp theo";
+
+      // Hiển thị modal đếm ngược 4s tự động chuyển video giống YouTube
+      let timerInterval;
+      Swal.fire({
+        title: "Tự động phát tiếp theo",
+        html: `<div style="text-align:left;margin-top:8px">
+          <p style="font-weight:600;color:#f4f4f5;margin-bottom:6px;font-size:0.95rem;line-height:1.4">${nextTitle}</p>
+          <p style="color:#a1a1aa;font-size:0.85rem;margin:0">Sẽ phát sau <b style="color:#f59e0b;font-size:1.1rem">4</b> giây...</p>
+        </div>`,
+        timer: 4000,
+        timerProgressBar: true,
+        showCancelButton: true,
+        confirmButtonText: "Phát ngay",
+        cancelButtonText: "Hủy",
+        confirmButtonColor: "#f59e0b",
+        cancelButtonColor: "#3f3f46",
+        background: "#18181b",
+        color: "#ffffff",
+        didOpen: () => {
+          const b = Swal.getHtmlContainer()?.querySelector("b");
+          timerInterval = setInterval(() => {
+            if (b) {
+              const leftSec = Math.ceil(Swal.getTimerLeft() / 1000);
+              b.textContent = leftSec > 0 ? leftSec : 0;
+            }
+          }, 250);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+          playVideoItemRef.current?.(nextVideo);
+        }
+      });
+    };
+
+    registerVideoEndedHandler("watch-autoplay", handleVideoEnded);
+
+    return () => {
+      unregisterVideoEndedHandler("watch-autoplay");
+    };
+  }, [registerVideoEndedHandler, unregisterVideoEndedHandler]);
 
   // Cập nhật thông tin mới nhất vào videoInfoRef khi streamData thay đổi
   useEffect(() => {
@@ -814,7 +948,88 @@ export default function YouTubeWatch() {
 
           {/* CỘT PHẢI: RELATED VIDEOS */}
           <aside className="yt-watch-right">
-            <h4 className="related-title">Video liên quan</h4>
+            {/* DANH SÁCH PHÁT TẠM THỜI (SESSION PLAYLIST) NẾU CÓ */}
+            {sessionPlaylist && sessionPlaylist.length > 0 && (
+              <div className="yt-session-playlist-panel">
+                <div className="playlist-panel-header">
+                  <div className="playlist-header-left">
+                    <FaListUl className="playlist-icon" />
+                    <div className="playlist-meta-text">
+                      <h5 className="playlist-name">Danh sách phát ({sessionPlaylist.length})</h5>
+                      <span className="playlist-sub">Lưu trong phiên làm việc</span>
+                    </div>
+                  </div>
+                  <button 
+                    type="button" 
+                    className="btn-clear-playlist"
+                    onClick={clearSessionPlaylist}
+                    title="Xóa danh sách phát"
+                  >
+                    <FaTrashAlt /> <span>Xóa</span>
+                  </button>
+                </div>
+                <div className="playlist-items-scroll">
+                  {sessionPlaylist.map((item, idx) => {
+                    const itemVid = item.id || item.videoId || extractVideoId(item.url);
+                    const isCurrent = itemVid === videoId;
+                    return (
+                      <div 
+                        key={itemVid || idx}
+                        className={`playlist-item-row ${isCurrent ? "is-active" : ""}`}
+                        onClick={() => playVideoItem(item)}
+                      >
+                        <div className="playlist-item-num">
+                          {isCurrent ? <FaPlay className="playing-pulse-icon" /> : idx + 1}
+                        </div>
+                        <img 
+                          src={item.thumbnail || item.thumbnailUrl || `https://i.ytimg.com/vi/${itemVid}/hqdefault.jpg`} 
+                          alt={item.title} 
+                          className="playlist-item-thumb" 
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = `https://i.ytimg.com/vi/${itemVid}/hqdefault.jpg`;
+                          }}
+                        />
+                        <div className="playlist-item-body">
+                          <p className="playlist-item-title" title={item.title}>{item.title}</p>
+                          <span className="playlist-item-author">{item.uploader || item.uploaderName || item.channelTitle || "YouTube"}</span>
+                        </div>
+                        <button
+                          type="button"
+                          className="playlist-item-delete-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeFromSessionPlaylist(itemVid);
+                          }}
+                          title="Xóa khỏi danh sách phát"
+                        >
+                          <FaTimes />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="related-header-wrap">
+              <h4 className="related-title">Video liên quan</h4>
+              <div className="autoplay-ctrl-box">
+                <span className="autoplay-label">Tự động phát</span>
+                <button
+                  type="button"
+                  className={`yt-toggle-switch ${isAutoPlay ? "active" : ""}`}
+                  onClick={toggleAutoPlay}
+                  title={isAutoPlay ? "Tắt tự động phát" : "Bật tự động phát"}
+                  aria-label="Tự động phát video"
+                >
+                  <span className="switch-slider" />
+                </button>
+                <span className={`switch-status-tag ${isAutoPlay ? "on" : "off"}`}>
+                  {isAutoPlay ? "BẬT" : "TẮT"}
+                </span>
+              </div>
+            </div>
 
             {loadingRelated && relatedVideos.length === 0 && (
               <div className="related-skeletons">

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaEllipsisV, FaListUl, FaCheck } from "react-icons/fa";
+import { useTecedeYtPlayer } from "../../../context/TecedeYtPlayerContext";
+import { DarkSwal } from "../utils/watchAuth";
 import ChannelCard from "./ChannelCard";
 import { useAuth } from "../../../context/AuthContext";
 import { checkYtWatchAccess } from "../utils/watchAuth";
@@ -15,6 +17,20 @@ import {
 export default function VideoCard({ video, layout = "grid" }) {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef(null);
+  const { addToSessionPlaylist, sessionPlaylist } = useTecedeYtPlayer();
+
+  useEffect(() => {
+    if (!showMenu) return;
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showMenu]);
 
   if (!video) return null;
 
@@ -24,6 +40,7 @@ export default function VideoCard({ video, layout = "grid" }) {
   }
 
   const videoId = video.id || video.videoId || extractVideoId(video.url);
+  const isInPlaylist = sessionPlaylist?.some((item) => (item.id || item.videoId) === videoId);
   const title = video.title || "Video";
   const rawThumb = video.thumbnail || video.thumbnailUrl;
   const thumbnail = cleanImageUrl(rawThumb, videoId);
@@ -59,6 +76,52 @@ export default function VideoCard({ video, layout = "grid" }) {
 
   const formattedViews = formatViews(views);
   const formattedDate = formatTimeAgo(uploadedDate);
+
+  const handleToggleMenu = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowMenu((prev) => !prev);
+  };
+
+  const handleAddToPlaylistClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowMenu(false);
+
+    if (!videoId) return;
+
+    if (!isInPlaylist) {
+      addToSessionPlaylist({
+        id: videoId,
+        videoId,
+        title,
+        thumbnail,
+        uploader: uploaderName,
+        duration
+      });
+      DarkSwal.fire({
+        toast: true,
+        position: "bottom-end",
+        icon: "success",
+        title: "Đã thêm vào danh sách phát",
+        showConfirmButton: false,
+        timer: 2000,
+        background: "#27272a",
+        color: "#fff"
+      });
+    } else {
+      DarkSwal.fire({
+        toast: true,
+        position: "bottom-end",
+        icon: "info",
+        title: "Video đã có trong danh sách phát",
+        showConfirmButton: false,
+        timer: 1800,
+        background: "#27272a",
+        color: "#fff"
+      });
+    }
+  };
 
   const handleWatchClick = (e) => {
     if (!checkYtWatchAccess(user, navigate)) {
@@ -121,24 +184,60 @@ export default function VideoCard({ video, layout = "grid" }) {
         )}
 
         <div className="yt-card__meta">
-          <Link 
-            to={`/tecede-yt/watch/${videoId}`}
-        state={{
-          video: {
-            videoId,
-            title,
-            uploader: uploaderName,
-            thumbnail,
-            duration
-          }
-        }} 
-            onClick={handleWatchClick} 
-            className="yt-card__title-link"
-          >
-            <h3 className="yt-card__title" title={title}>
-              {title}
-            </h3>
-          </Link>
+          <div className="yt-card__title-row">
+            <Link 
+              to={`/tecede-yt/watch/${videoId}`}
+              state={{
+                video: {
+                  videoId,
+                  title,
+                  uploader: uploaderName,
+                  thumbnail,
+                  duration
+                }
+              }} 
+              onClick={handleWatchClick} 
+              className="yt-card__title-link"
+            >
+              <h3 className="yt-card__title" title={title}>
+                {title}
+              </h3>
+            </Link>
+
+            <div className="yt-card__more-wrap" ref={menuRef}>
+              <button
+                type="button"
+                className="yt-card__more-btn"
+                onClick={handleToggleMenu}
+                title="Tùy chọn khác"
+                aria-label="Tùy chọn"
+              >
+                <FaEllipsisV />
+              </button>
+
+              {showMenu && (
+                <div className="yt-card__dropdown-menu">
+                  <button
+                    type="button"
+                    className="yt-card__dropdown-item"
+                    onClick={handleAddToPlaylistClick}
+                  >
+                    {isInPlaylist ? (
+                      <>
+                        <FaCheck className="item-icon success" />
+                        <span>Đã có trong danh sách phát</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaListUl className="item-icon" />
+                        <span>Thêm vào danh sách phát</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
 
           <Link to={channelUrl} className="yt-card__channel-info" title={`Kênh ${uploaderName}`}>
             <span className="yt-card__channel-name">{uploaderName}</span>

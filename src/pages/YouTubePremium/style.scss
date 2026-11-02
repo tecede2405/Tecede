@@ -605,6 +605,15 @@
 }
 
 /* RIGHT CONTROLS */
+.yt-region-select-wrap {
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
 .yt-region-select {
   background: #222;
   color: #fff;
@@ -1292,6 +1301,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px 16px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 /* LOAD MORE SECTION */
@@ -1355,6 +1368,17 @@
   flex-direction: column;
   cursor: pointer;
   text-decoration: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  &--grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
 
   /* THUMBNAIL */
   .yt-card__thumb-link {
@@ -1440,6 +1464,100 @@
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
+  }
+
+  .yt-card__title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    position: relative;
+
+    .yt-card__title-link {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .yt-card__more-wrap {
+    position: relative;
+    flex-shrink: 0;
+    margin-top: -2px;
+
+    .yt-card__more-btn {
+      background: transparent;
+      border: none;
+      color: #a1a1aa;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 13px;
+      opacity: 0.6;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        opacity: 1;
+      }
+    }
+
+    .yt-card__dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 100;
+      background: #242426;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 6px 0;
+      min-width: 215px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      animation: ytDropdownFadeIn 0.15s ease-out;
+
+      .yt-card__dropdown-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 14px;
+        background: transparent;
+        border: none;
+        color: #e4e4e7;
+        font-size: 13px;
+        font-weight: 500;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease;
+
+        .item-icon {
+          font-size: 14px;
+          color: #a1a1aa;
+          flex-shrink: 0;
+
+          &.success {
+            color: #10b981;
+          }
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+
+          .item-icon {
+            color: #fff;
+            &.success {
+              color: #10b981;
+            }
+          }
+        }
+      }
+    }
   }
 
   .yt-card__title-link {
@@ -1670,6 +1788,273 @@
 .yt-watch-right {
   width: 400px;
   flex-shrink: 0;
+
+  .related-header-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .related-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+
+    .autoplay-ctrl-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+
+      .autoplay-label {
+        font-size: 12.5px;
+        color: #a1a1aa;
+        font-weight: 500;
+      }
+
+      .yt-toggle-switch {
+        width: 36px;
+        height: 20px;
+        background: #3f3f46;
+        border-radius: 20px;
+        position: relative;
+        cursor: pointer;
+        border: none;
+        padding: 2px;
+        transition: background 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+
+        .switch-slider {
+          width: 16px;
+          height: 16px;
+          background: #ffffff;
+          border-radius: 50%;
+          transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          display: block;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        &.active {
+          background: #3b82f6;
+
+          .switch-slider {
+            transform: translateX(16px);
+          }
+        }
+
+        &:focus-visible {
+          outline: 2px solid #60a5fa;
+          outline-offset: 2px;
+        }
+      }
+
+      .switch-status-tag {
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+
+        &.on {
+          background: rgba(59, 130, 246, 0.15);
+          color: #60a5fa;
+          border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        &.off {
+          background: rgba(113, 113, 122, 0.15);
+          color: #a1a1aa;
+          border: 1px solid rgba(113, 113, 122, 0.3);
+        }
+      }
+    }
+  }
+
+  .yt-session-playlist-panel {
+    background: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+    .playlist-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      .playlist-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .playlist-icon {
+          color: #f59e0b;
+          font-size: 15px;
+        }
+
+        .playlist-meta-text {
+          .playlist-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            line-height: 1.3;
+          }
+
+          .playlist-sub {
+            font-size: 11px;
+            color: #a1a1aa;
+            display: block;
+          }
+        }
+      }
+
+      .btn-clear-playlist {
+        background: transparent;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #f87171;
+        font-size: 11.5px;
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.15);
+          border-color: #ef4444;
+          color: #fff;
+        }
+      }
+    }
+
+    .playlist-items-scroll {
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 6px;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+      }
+
+      .playlist-item-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        position: relative;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.06);
+
+          .playlist-item-delete-btn {
+            opacity: 1;
+          }
+        }
+
+        &.is-active {
+          background: rgba(245, 158, 11, 0.12);
+          border-left: 3px solid #f59e0b;
+
+          .playlist-item-title {
+            color: #f59e0b;
+            font-weight: 600;
+          }
+        }
+
+        .playlist-item-num {
+          width: 20px;
+          text-align: center;
+          font-size: 11.5px;
+          color: #71717a;
+          font-weight: 600;
+          flex-shrink: 0;
+
+          .playing-pulse-icon {
+            color: #f59e0b;
+            font-size: 11px;
+            animation: pulsePlay 1.2s infinite ease-in-out;
+          }
+        }
+
+        .playlist-item-thumb {
+          width: 68px;
+          height: 38px;
+          object-fit: cover;
+          border-radius: 5px;
+          flex-shrink: 0;
+          background: #27272a;
+        }
+
+        .playlist-item-body {
+          flex: 1;
+          min-width: 0;
+
+          .playlist-item-title {
+            font-size: 12px;
+            color: #f4f4f5;
+            margin: 0 0 2px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+          }
+
+          .playlist-item-author {
+            font-size: 11px;
+            color: #a1a1aa;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .playlist-item-delete-btn {
+          background: transparent;
+          border: none;
+          color: #71717a;
+          width: 22px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 11px;
+          opacity: 0.5;
+          flex-shrink: 0;
+          transition: all 0.2s ease;
+
+          &:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
 
   .related-title {
     font-size: 16px;
@@ -3045,7 +3430,8 @@
   }
 
   .yt-personalized-badge,
-  .yt-noads-pill {
+  .yt-noads-pill,
+  .yt-region-select-wrap {
     display: none !important;
   }
 
@@ -3056,8 +3442,11 @@
   }
 
   .yt-video-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .yt-video-card--list {
@@ -3109,6 +3498,74 @@
   }
 }
 
+@media (max-width: 535px) {
+  .yt-main-content {
+    padding: 12px 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .yt-video-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .yt-video-card,
+  .yt-video-card--grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+
+    .yt-card__thumb-link {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    .yt-card__details {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .yt-card__meta {
+      flex: 1;
+      min-width: 0 !important;
+      max-width: calc(100% - 46px) !important;
+      overflow: hidden;
+    }
+
+    .yt-card__title-row {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    .yt-card__title {
+      font-size: 13.5px;
+      line-height: 1.35;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .yt-card__dropdown-menu {
+      max-width: calc(100vw - 32px);
+      right: 0;
+    }
+  }
+}
+
 @keyframes fadeInHistoryGrid {
   from {
     opacity: 0;
@@ -3153,7 +3610,7 @@
   }
 }
 
-/* OVERLAY KHI THU NHỎ: NÚT DẤU X SÁT GÓC TRÁI (BỎ BORDER), NÚT PHÓNG TO SÁT BÊN PHẢI */
+/* OVERLAY KHI THU NHỎ: NÚT DẤU X SÁT GÓC TRÁI (BỎ BORDER), THANH KÉO DI CHUYỂN, NÚT PHÓNG TO SÁT BÊN PHẢI */
 .tecede-mini-actions-overlay {
   position: absolute;
   top: 8px;
@@ -3162,10 +3619,52 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  pointer-events: none;
   z-index: 1000 !important;
   opacity: 1 !important;
   transition: opacity 0.2s ease;
+  user-select: none;
+  touch-action: none;
+
+  .tecede-mini-drag-handle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    cursor: grab;
+    padding: 0 10px;
+    touch-action: none;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    .drag-pill {
+      width: 42px;
+      height: 4.5px;
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 999px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+      transition: all 0.2s ease;
+      display: block;
+    }
+
+    &:hover .drag-pill {
+      background: rgba(255, 255, 255, 0.95);
+      width: 52px;
+    }
+  }
+
+  &.is-active-dragging {
+    .tecede-mini-drag-handle {
+      cursor: grabbing;
+      .drag-pill {
+        background: #f59e0b;
+        width: 54px;
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
+      }
+    }
+  }
 
   .tecede-mini-icon-btn {
     pointer-events: auto !important;
@@ -3250,8 +3749,6 @@
   .tecede-yt-master-player.is-mini {
     width: 240px !important;
     height: 135px !important;
-    right: 12px !important;
-    bottom: 16px !important;
   }
   .tecede-mini-actions-overlay {
     top: 6px;
@@ -3262,6 +3759,14 @@
       width: 28px;
       height: 28px;
       font-size: 11px;
+    }
+
+    .tecede-mini-drag-handle {
+      height: 28px;
+      .drag-pill {
+        width: 32px;
+        height: 3.5px;
+      }
     }
   }
 }
@@ -4519,16 +5024,9 @@
 .yt-page-main-wrap {
   flex: 1;
   min-width: 0;
-  transition: margin-left 0.25s cubic-bezier(0.2, 0, 0, 1);
 
   @media (min-width: 1200px) {
-    .sidebar-expanded & {
-      margin-left: 240px;
-    }
-
-    .sidebar-collapsed & {
-      margin-left: 72px;
-    }
+    margin-left: 72px;
   }
 
   @media (max-width: 1199px) {
@@ -4536,17 +5034,34 @@
   }
 }
 
-/* 3. Backdrop cho Mobile Drawer */
+/* 3. Backdrop cho Drawer (Mobile và Desktop Overlay) */
 .yt-sidebar-backdrop {
   position: fixed;
-  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 1050;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  z-index: 1040;
   animation: fadeInBackdrop 0.2s ease;
+
+  &.is-for-desktop {
+    @media (max-width: 1199px) {
+      display: none !important;
+    }
+    @media (min-width: 1200px) {
+      top: 56px;
+    }
+  }
+
+  &.is-for-mobile {
+    @media (min-width: 1200px) {
+      display: none !important;
+    }
+    @media (max-width: 1199px) {
+      top: 0;
+    }
+  }
 }
 
 @keyframes fadeInBackdrop {
@@ -4563,68 +5078,125 @@
   background: #0f0f0f;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 1000;
-  transition: width 0.25s cubic-bezier(0.2, 0, 0, 1), transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+  transition: width 0.22s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.22s ease;
   overflow: hidden;
 
-  /* Chế độ Desktop Mở Rộng (240px) */
-  &.is-expanded {
-    width: 240px;
+  /* Chế độ Desktop: chỉ desktop (>= 1200px) mới có thu gọn mini rail 72px và mở rộng 240px */
+  @media (min-width: 1200px) {
+    &.is-expanded {
+      width: 240px;
+      z-index: 1050;
+      box-shadow: 6px 0 32px rgba(0, 0, 0, 0.85);
+      background: #0f0f0f;
+    }
+
+    &.is-collapsed {
+      width: 72px;
+
+      .yt-sidebar__heading,
+      .yt-sidebar__divider,
+      .yt-sidebar__user-box,
+      .yt-sidebar__cloud-badge {
+        display: none !important;
+      }
+
+      .yt-sidebar__section {
+        padding: 8px 4px;
+      }
+
+      .yt-sidebar__item {
+        flex-direction: column;
+        gap: 6px;
+        padding: 12px 2px;
+        border-radius: 10px;
+        justify-content: center;
+        align-items: center;
+        height: 70px;
+        margin-bottom: 4px;
+
+        .yt-sidebar__icon {
+          font-size: 20px;
+          margin: 0;
+        }
+
+        .yt-sidebar__label {
+          font-size: 10px;
+          text-align: center;
+          max-width: 66px;
+          line-height: 1.2;
+          white-space: normal;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+    }
   }
 
-  /* Chế độ Desktop Thu Gọn mini rail (72px) */
-  &.is-collapsed {
-    width: 72px;
+  /* Chế độ Mobile / Tablet (< 1200px): Luôn là Drawer đầy đủ, không có bản thu gọn */
+  @media (max-width: 1199px) {
+    top: 0;
+    width: 270px !important;
+    z-index: 1100;
+    transform: translateX(-100%);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+    background: #0f0f0f;
 
+    &.is-mobile-open {
+      transform: translateX(0);
+    }
+
+    // Đảm bảo toàn bộ nội dung drawer trên mobile luôn là dạng đầy đủ:
     .yt-sidebar__heading,
     .yt-sidebar__divider,
     .yt-sidebar__user-box,
     .yt-sidebar__cloud-badge {
-      display: none !important;
+      display: block !important;
+    }
+
+    .yt-sidebar__divider {
+      display: block !important;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 8px 16px;
+    }
+
+    .yt-sidebar__user-box {
+      display: flex !important;
     }
 
     .yt-sidebar__section {
-      padding: 8px 4px;
+      padding: 8px 12px !important;
     }
 
     .yt-sidebar__item {
-      flex-direction: column;
-      gap: 6px;
-      padding: 12px 2px;
-      border-radius: 10px;
-      justify-content: center;
-      align-items: center;
-      height: 70px;
-      margin-bottom: 4px;
+      flex-direction: row !important;
+      gap: 16px !important;
+      padding: 10px 14px !important;
+      border-radius: 10px !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      height: 44px !important;
+      margin-bottom: 2px !important;
 
       .yt-sidebar__icon {
-        font-size: 20px;
-        margin: 0;
+        font-size: 18px !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
       }
 
       .yt-sidebar__label {
-        font-size: 10px;
-        text-align: center;
-        max-width: 66px;
-        line-height: 1.2;
-        white-space: normal;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        font-size: 13.5px !important;
+        text-align: left !important;
+        max-width: none !important;
+        line-height: normal !important;
+        white-space: nowrap !important;
+        display: block !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
-    }
-  }
-
-  /* Chế độ Mobile / Tablet (< 1200px): biến thành Drawer trượt từ trái sang */
-  @media (max-width: 1199px) {
-    top: 0;
-    width: 260px !important;
-    z-index: 1100;
-    transform: translateX(-100%);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
-
-    &.is-mobile-open {
-      transform: translateX(0);
     }
   }
 

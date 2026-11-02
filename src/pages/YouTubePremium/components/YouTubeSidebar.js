@@ -21,13 +21,23 @@ import {
 } from "react-icons/fa";
 
 export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, onSelectView }) {
-  const { isSidebarCollapsed, isMobileSidebarOpen, closeMobileSidebar } = useTecedeYtPlayer();
+  const { 
+    isSidebarCollapsed, 
+    setIsSidebarCollapsed, 
+    isMobileSidebarOpen, 
+    closeMobileSidebar 
+  } = useTecedeYtPlayer();
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNav = (targetPath, chipQuery = null, view = "feed") => {
+  const closeAll = () => {
     closeMobileSidebar();
+    setIsSidebarCollapsed(true);
+  };
+
+  const handleNav = (targetPath, chipQuery = null, view = "feed") => {
+    closeAll();
 
     if (view === "history") {
       if (onSelectView) {
@@ -69,18 +79,20 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
 
   return (
     <>
-      {/* BACKDROP OVERLAY TRÊN MOBILE KHI MỞ DRAWER */}
-      {isMobileSidebarOpen && (
+      {/* BACKDROP OVERLAY (CẢ MOBILE DRAWER LẪN DESKTOP OVERLAY) */}
+      {(isMobileSidebarOpen || !isSidebarCollapsed) && (
         <div 
-          className="yt-sidebar-backdrop" 
-          onClick={closeMobileSidebar}
+          className={`yt-sidebar-backdrop ${
+            isMobileSidebarOpen ? "is-for-mobile" : "is-for-desktop"
+          }`} 
+          onClick={closeAll}
           aria-hidden="true" 
         />
       )}
 
       <aside
         className={`yt-sidebar ${isSidebarCollapsed ? "is-collapsed" : "is-expanded"} ${
-          isMobileSidebarOpen ? "is-mobile-open" : ""
+          isMobileSidebarOpen ? "is-mobile-open is-expanded" : ""
         }`}
       >
         {/* HEADER BÊN TRONG DRAWER MOBILE */}
@@ -94,7 +106,7 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
           <button
             type="button"
             className="yt-sidebar__close-btn"
-            onClick={closeMobileSidebar}
+            onClick={closeAll}
             title="Đóng menu"
           >
             <FaTimes />
@@ -214,7 +226,7 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
             <Link
               to="/"
               className="yt-sidebar__item"
-              onClick={closeMobileSidebar}
+              onClick={closeAll}
               title="Xem Phim Miễn Phí"
             >
               <FaTv className="yt-sidebar__icon" />
@@ -224,7 +236,7 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
             <Link
               to="/truyen"
               className="yt-sidebar__item"
-              onClick={closeMobileSidebar}
+              onClick={closeAll}
               title="Đọc truyện tranh Online"
             >
               <FaBookOpen className="yt-sidebar__icon" />
@@ -234,7 +246,7 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
             <Link
               to="/premium"
               className="yt-sidebar__item yt-sidebar__item--gold"
-              onClick={closeMobileSidebar}
+              onClick={closeAll}
               title="Nâng cấp gói Tecede Premium"
             >
               <FaCrown className="yt-sidebar__icon yt-icon--gold" />
@@ -244,7 +256,7 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
             <Link
               to="/ung-ho"
               className="yt-sidebar__item"
-              onClick={closeMobileSidebar}
+              onClick={closeAll}
               title="Ủng hộ duy trì máy chủ"
             >
               <FaDonate className="yt-sidebar__icon yt-icon--heart" />
@@ -300,7 +312,7 @@ export default function YouTubeSidebar({ onSelectChip, activeChip, currentView, 
                 <Link 
                   to="/login" 
                   className="yt-btn-login-sidebar"
-                  onClick={closeMobileSidebar}
+                  onClick={closeAll}
                 >
                   <FaSignInAlt className="me-2" /> Đăng nhập
                 </Link>
