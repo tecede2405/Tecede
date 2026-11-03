@@ -97,6 +97,9 @@ export default function useMusicPlayer(initialSongs) {
   const soundRef = useRef({
     seek: (time) => {
       if (time !== undefined) {
+        if (spatialEngine.isInitialized) {
+          spatialEngine.prepareTrackChange();
+        }
         globalAudio.currentTime = time;
         setCurrentTime(time);
       }
@@ -104,7 +107,12 @@ export default function useMusicPlayer(initialSongs) {
     },
     duration: () => globalAudio.duration || 0,
     pause: () => globalAudio.pause(),
-    play: () => globalAudio.play(),
+    play: () => {
+      if (spatialEngine.isInitialized) {
+        spatialEngine.resumeContext();
+      }
+      return globalAudio.play();
+    },
     rate: (speed) => { globalAudio.playbackRate = speed; }
   });
 
@@ -158,24 +166,23 @@ export default function useMusicPlayer(initialSongs) {
   // 🎛️ KHỞI TẠO VÀ CẤP ĐIỆN CHO SPATIAL ENGINE
   const initAudioContext = useCallback(() => {
     try {
-      // Chỉ khởi tạo Web Audio khi người dùng thực sự BẬT hiệu ứng âm thanh
-      if (!audioEffectRef.current.enabled) return;
-
       if (!spatialEngine.isInitialized) {
-        spatialEngine.init(globalAudio, true);
+        spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
       }
       spatialEngine.resumeContext();
-      spatialEngine.applySettings({
-        preset: audioEffectRef.current.preset,
-        intensity: audioEffectRef.current.intensity,
-        custom: audioEffectRef.current.custom
-      });
+      if (audioEffectRef.current.enabled) {
+        spatialEngine.applySettings({
+          preset: audioEffectRef.current.preset,
+          intensity: audioEffectRef.current.intensity,
+          custom: audioEffectRef.current.custom
+        });
+      }
     } catch (err) {
       console.warn("Lỗi Spatial Audio API:", err);
     }
   }, []);
 
-  // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN (chỉ khi effect đã bật)
+  // 🎛️ KHỞI TẠO TỰ ĐỘNG KHI CÓ TƯƠNG TÁC ĐẦU TIÊN
   useEffect(() => {
     const handleFirstInteraction = () => {
       if (typeof navigator !== "undefined" && "audioSession" in navigator) {
@@ -183,7 +190,7 @@ export default function useMusicPlayer(initialSongs) {
           navigator.audioSession.type = "playback";
         } catch (e) {}
       }
-      if (audioEffectRef.current.enabled && !spatialEngine.isInitialized) {
+      if (!spatialEngine.isInitialized) {
         initAudioContext();
       }
     };
@@ -320,13 +327,13 @@ export default function useMusicPlayer(initialSongs) {
       } catch (e) {}
     }
 
-    // Nếu đang bật hiệu ứng âm thanh -> kết nối AudioContext
-    if (audioEffectRef.current.enabled) {
-      if (!spatialEngine.isInitialized) {
-        spatialEngine.init(globalAudio, true);
-      }
-      spatialEngine.resumeContext();
+    if (!spatialEngine.isInitialized) {
+      spatialEngine.init(globalAudio, audioEffectRef.current.enabled);
     }
+    spatialEngine.resumeContext();
+
+    // Fade micro để không bị tiếng nổ tạch khi trình duyệt ngắt/nạp audio pipeline
+    spatialEngine.prepareTrackChange();
 
     if (!optionalPlaylist && index === stateRef.current.index) {
         if (globalAudio.paused) globalAudio.play();
