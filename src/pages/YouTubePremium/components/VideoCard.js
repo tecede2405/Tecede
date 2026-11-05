@@ -8,6 +8,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { checkYtWatchAccess } from "../utils/watchAuth";
 import { 
   extractVideoId, 
+  extractPlaylistId,
   formatViews, 
   formatDuration, 
   formatTimeAgo,
@@ -37,6 +38,75 @@ export default function VideoCard({ video, layout = "grid" }) {
   // Nếu là kênh YouTube -> Hiển thị thẻ kênh chuyên biệt
   if (video.type === "channel") {
     return <ChannelCard channel={video} />;
+  }
+
+  // Nếu là danh sách phát (Playlist) -> Hiển thị thẻ Playlist và điều hướng tới /tecede-yt/playlist/:id
+  const isPlaylist = video.type === "playlist" || Boolean(video.playlistType) || (typeof video.url === "string" && video.url.includes("/playlist"));
+  if (isPlaylist) {
+    const playlistId = extractPlaylistId(video.url || video.id || video.playlistId);
+    const title = video.name || video.title || "Danh sách phát YouTube";
+    const rawThumb = video.thumbnail || video.thumbnailUrl;
+    const thumbnail = cleanImageUrl(rawThumb) || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80";
+    const videoCount = video.videos || video.videoCount;
+    const uploaderName = video.uploaderName || video.uploader || video.author || "YouTube Creator";
+    const rawChannel = video.uploaderId || video.authorId || (video.uploaderUrl && video.uploaderUrl.replace("https://www.youtube.com/", "").replace("/channel/", "").replace("/c/", "").replace("/user/", "").trim()) || uploaderName;
+    const channelUrl = rawChannel ? `/tecede-yt/channel/${encodeURIComponent(rawChannel)}` : null;
+    const playlistUrl = `/tecede-yt/playlist/${playlistId}`;
+
+    return (
+      <div className={`yt-video-card yt-video-card--${layout} yt-playlist-card-item`}>
+        <Link to={playlistUrl} className="yt-card__thumb-link">
+          <div className="yt-card__thumb-wrap yt-playlist-thumb-wrap">
+            <img
+              src={thumbnail}
+              alt={title}
+              className="yt-card__thumb"
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80";
+              }}
+            />
+            <div className="yt-playlist-badge-overlay">
+              <FaListUl className="me-1" />
+              <span>{videoCount ? `${videoCount} video` : "Danh sách phát"}</span>
+            </div>
+            <div className="yt-playlist-hover-play">
+              <FaListUl size={20} />
+            </div>
+          </div>
+        </Link>
+
+        <div className="yt-card__details">
+          <div className="yt-card__meta">
+            <div className="yt-card__title-row">
+              <Link to={playlistUrl} className="yt-card__title-link">
+                <h3 className="yt-card__title" title={title}>
+                  {title}
+                </h3>
+              </Link>
+            </div>
+
+            {channelUrl ? (
+              <Link to={channelUrl} className="yt-card__channel-info" title={`Kênh ${uploaderName}`}>
+                <span className="yt-card__channel-name">{uploaderName}</span>
+                {video.uploaderVerified && <FaCheckCircle className="yt-card__verified ms-1" title="Đã xác minh" />}
+              </Link>
+            ) : (
+              <div className="yt-card__channel-info">
+                <span className="yt-card__channel-name">{uploaderName}</span>
+              </div>
+            )}
+
+            <div className="yt-card__stats">
+              <span className="yt-playlist-meta-badge">
+                <FaListUl className="me-1" /> Danh sách phát đầy đủ
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const videoId = video.id || video.videoId || extractVideoId(video.url);

@@ -149,6 +149,10 @@ export default function YouTubeHeader({
       navigate(`/tecede-yt/watch/${parsed.id}`);
       return;
     }
+    if (parsed && parsed.type === "playlist") {
+      navigate(`/tecede-yt/playlist/${parsed.id}`);
+      return;
+    }
 
     // 3. Nếu đang ở trang xem video, thu nhỏ video xuống góc
     const isWatch = location.pathname.startsWith("/tecede-yt/watch/");

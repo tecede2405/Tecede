@@ -337,6 +337,61 @@ export const fetchChannel = async (channelIdOrHandle) => {
   return pipedFetch(`/channel/${encodeURIComponent(clean)}`);
 };
 
+// 7.5 Channel Videos with Invidious Multi-Source & Continuation (Tải 60+ video/lần)
+export const fetchChannelVideos = async (channelId, continuation = null) => {
+  if (!channelId) return { videos: [], continuation: null };
+  const cleanId = decodeURIComponent(channelId).trim().replace(/^\/+/, "").replace(/^channel\//, "");
+
+  const invidiousHosts = [
+    "https://yt.chocolatemoo53.com/api/v1",
+    "https://inv.nadeko.net/api/v1",
+    "https://invidious.nerdvpn.de/api/v1"
+  ];
+
+  for (const host of invidiousHosts) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 7000);
+      const url = continuation
+        ? `${host}/channels/${encodeURIComponent(cleanId)}/videos?continuation=${encodeURIComponent(continuation)}`
+        : `${host}/channels/${encodeURIComponent(cleanId)}/videos`;
+
+      const res = await fetch(url, {
+        signal: controller.signal,
+        headers: { 
+          Accept: "application/json",
+          "Accept-Language": "vi-VN,vi;q=0.9,en;q=0.8"
+        }
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+
+      const data = await res.json();
+      const rawVideos = data?.videos || (Array.isArray(data) ? data : []);
+      if (rawVideos.length > 0) {
+        return {
+          videos: rawVideos.map((v) => ({
+            id: v.videoId,
+            videoId: v.videoId,
+            title: v.title,
+            thumbnail: (v.videoThumbnails && v.videoThumbnails[0]?.url?.startsWith("http"))
+              ? v.videoThumbnails[0].url
+              : `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`,
+            uploaderName: v.author,
+            uploaderId: v.authorId,
+            views: v.viewCount,
+            duration: v.lengthSeconds,
+            uploadedDate: v.published ? (v.published * 1000) : (v.publishedText || "")
+          })),
+          continuation: data?.continuation || null
+        };
+      }
+    } catch (e) {}
+  }
+
+  return { videos: [], continuation: null };
+};
+
 // 8. Channel Tab (Shorts, Playlists, Livestreams)
 export const fetchChannelTab = async (tabData) => {
   if (!tabData) return { content: [] };
@@ -347,14 +402,15 @@ export const fetchChannelTab = async (tabData) => {
 // 9. Playlist Details with Invidious Multi-Source Fallback
 export const fetchPlaylist = async (playlistId) => {
   if (!playlistId) throw new Error("Mã danh sách phát không hợp lệ.");
-  const cleanId = String(playlistId).trim();
+  const cleanId = extractPlaylistId(String(playlistId).trim());
 
   // Helper fetch từ Invidious dự phòng
   const fetchFromInvidious = async (pId) => {
     const invidiousHosts = [
       "https://yt.chocolatemoo53.com/api/v1",
+      "https://inv.nadeko.net/api/v1",
       "https://invidious.nerdvpn.de/api/v1",
-      "https://inv.nadeko.net/api/v1"
+      "https://invidious.protokolla.fi/api/v1"
     ];
 
     for (const host of invidiousHosts) {
@@ -447,37 +503,60 @@ export const fetchSponsors = async (videoId) => {
    FORMAT HELPER UTILITIES
    ========================================================================== */
 
+export const extractPlaylistId = (input) => {
+  if (!input || typeof input !== "string") return "";
+  const str = input.trim();
+  const listMatch = str.match(/[?&]list=([a-zA-Z0-9_-]+)/i);
+  if (listMatch) return listMatch[1];
+  if (str.includes("/playlist/")) {
+    return str.replace(/^.*\/playlist\//, "").split(/[?&]/)[0];
+  }
+  return str.replace(/^\/+/, "");
+};
+
 export const parseYouTubeInput = (input) => {
   if (!input || typeof input !== "string") return null;
   const str = input.trim();
 
-  // 1. Trực tiếp mã video ID 11 ký tự (VD: OlJJ0Uh1XOk)
+  // 1. Link playlist youtube.com/playlist?list=<id>
+  const playlistMatch = str.match(/[?&]list=([a-zA-Z0-9_-]+)/i);
+  if (playlistMatch && (str.includes("playlist") || !str.includes("v="))) {
+    return { type: "playlist", id: playlistMatch[1] };
+  }
+
+  // 2. Trực tiếp mã video ID 11 ký tự (VD: OlJJ0Uh1XOk)
   if (/^[a-zA-Z0-9_-]{11}$/.test(str)) {
     return { type: "video", id: str };
   }
 
-  // 2. Link youtu.be/<id>
+  // 3. Link youtu.be/<id>
   const youtuBeMatch = str.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/i);
   if (youtuBeMatch) {
     return { type: "video", id: youtuBeMatch[1] };
   }
 
-  // 3. Link youtube.com/watch?v=<id>
+  // 4. Link youtube.com/watch?v=<id>
   const watchMatch = str.match(/[?&]v=([a-zA-Z0-9_-]{11})/i);
   if (watchMatch) {
-    return { type: "video", id: watchMatch[1] };
+    const listId = playlistMatch ? playlistMatch[1] : null;
+    return { type: "video", id: watchMatch[1], playlistId: listId };
   }
 
-  // 4. Link youtube.com/shorts/<id>
+  // 5. Link youtube.com/shorts/<id>
   const shortsMatch = str.match(/shorts\/([a-zA-Z0-9_-]{11})/i);
   if (shortsMatch) {
     return { type: "video", id: shortsMatch[1] };
   }
 
-  // 5. Link youtube.com/embed/<id>
+  // 6. Link youtube.com/embed/<id>
   const embedMatch = str.match(/embed\/([a-zA-Z0-9_-]{11})/i);
   if (embedMatch) {
     return { type: "video", id: embedMatch[1] };
+  }
+
+  // 7. Mã playlist ID trực tiếp (bắt đầu bằng PL, OLAK5uy_, UU, FL, RD...)
+  if (/^(PL|OLAK5uy_|UU|FL|RD)[a-zA-Z0-9_-]{10,}$/i.test(str)) {
+    return { type: "playlist", id: str };
   }
 
   return null;
@@ -655,6 +734,19 @@ export const formatTimeAgo = (dateInput) => {
       if (unit.startsWith("week")) return `${count * 7} ngày trước`;
       if (unit.startsWith("month")) return `${count} tháng trước`;
       if (unit.startsWith("year")) return `${count} năm trước`;
+    }
+
+    // Dịch các cụm từ tiếng Ả Rập (vd: "1 شهر منذ" -> "1 tháng trước")
+    if (text.includes("منذ") || text.includes("شهر") || text.includes("يوم") || text.includes("ساعة")) {
+      const numMatch = text.match(/\d+/);
+      const count = numMatch ? Number(numMatch[0]) : 1;
+      if (text.includes("ثانية") || text.includes("لحظة")) return "Vừa xong";
+      if (text.includes("دقيقة") || text.includes("دقائق")) return `${count} phút trước`;
+      if (text.includes("ساعة") || text.includes("ساعات")) return `${count} giờ trước`;
+      if (text.includes("يوم") || text.includes("أيام")) return `${count} ngày trước`;
+      if (text.includes("أسبوع") || text.includes("أسابيع")) return `${count} tuần trước`;
+      if (text.includes("شهر") || text.includes("أشهر")) return `${count} tháng trước`;
+      if (text.includes("عام") || text.includes("سنة") || text.includes("سنوات")) return `${count} năm trước`;
     }
 
     if (/streamed|live/i.test(text)) {

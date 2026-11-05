@@ -48,6 +48,10 @@ export default function YouTubeSearch() {
       navigate(`/tecede-yt/watch/${parsed.id}`, { replace: true });
       return;
     }
+    if (parsed && parsed.type === "playlist") {
+      navigate(`/tecede-yt/playlist/${parsed.id}`, { replace: true });
+      return;
+    }
 
     setLoading(true);
     setError(null);

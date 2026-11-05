@@ -1732,6 +1732,62 @@
       font-size: 11px;
     }
   }
+
+  /* --- PLAYLIST CARD OVERLAY IN SEARCH & GRID --- */
+  &.yt-playlist-card-item {
+    .yt-playlist-thumb-wrap {
+      position: relative;
+      overflow: hidden;
+
+      .yt-playlist-badge-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 70%, transparent 100%);
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 2;
+      }
+
+      .yt-playlist-hover-play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.95);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 3;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      }
+
+      &:hover .yt-playlist-hover-play {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .yt-playlist-meta-badge {
+      color: #93c5fd;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      font-weight: 500;
+    }
+  }
 }
 
 /* ==========================================================================

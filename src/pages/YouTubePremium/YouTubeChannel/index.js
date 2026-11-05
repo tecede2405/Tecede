@@ -5,6 +5,7 @@ import YouTubeHeader from "../components/YouTubeHeader";
 import VideoCard from "../components/VideoCard";
 import {
   fetchChannel,
+  fetchChannelVideos,
   fetchChannelTab,
   fetchSearch,
   formatViews,
@@ -21,7 +22,8 @@ import {
   FaExclamationTriangle,
   FaSpinner,
   FaPlay,
-  FaShareAlt
+  FaShareAlt,
+  FaPlus
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "../style.scss";
@@ -33,6 +35,8 @@ export default function YouTubeChannel() {
   
   // Tab contents
   const [videos, setVideos] = useState([]);
+  const [videoContinuation, setVideoContinuation] = useState(null);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [shorts, setShorts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   
@@ -58,47 +62,59 @@ export default function YouTubeChannel() {
     if (!channelId) return;
     setIsLoading(true);
     setError(null);
+    setVideoContinuation(null);
 
     try {
       const decodedId = decodeURIComponent(channelId).trim();
       const data = await fetchChannel(decodedId);
       setChannelData(data);
 
-      // Thu thập video cho kênh:
-      // A. Lấy từ relatedStreams nếu có
-      let initialVideos = Array.isArray(data.relatedStreams) ? [...data.relatedStreams] : [];
+      const realChannelId = data.id || decodedId;
 
-      // B. Gọi search video theo tên kênh để có danh sách video đầy đủ nhất
+      // Ưu tiên A: Tải video đầy đủ từ kênh (60 video/trang) với token phân trang continuation
+      let initialVideos = [];
+      let nextContinuation = null;
+
       try {
-        const searchRes = await fetchSearch(data.name || "", "videos");
-        if (searchRes && Array.isArray(searchRes.items)) {
-          // Lọc ưu tiên các video đúng tên uploader của kênh
-          const chNameLower = (data.name || "").toLowerCase().trim();
-          const channelVideos = searchRes.items.filter(
-            (item) => (item.uploaderName || "").toLowerCase().trim().includes(chNameLower) ||
-                      chNameLower.includes((item.uploaderName || "").toLowerCase().trim())
-          );
-          
-          // Gộp và loại bỏ video trùng lặp theo ID
-          const combined = [...initialVideos, ...channelVideos, ...searchRes.items];
-          const seen = new Set();
-          const uniqueVideos = [];
-          
-          combined.forEach((v) => {
-            const vidId = v.id || extractVideoId(v.url);
-            if (vidId && !seen.has(vidId)) {
-              seen.add(vidId);
-              uniqueVideos.push(v);
-            }
-          });
-          
-          setVideos(uniqueVideos);
-        } else {
-          setVideos(initialVideos);
+        const chanVideosRes = await fetchChannelVideos(realChannelId);
+        if (chanVideosRes && Array.isArray(chanVideosRes.videos) && chanVideosRes.videos.length > 0) {
+          initialVideos = chanVideosRes.videos;
+          nextContinuation = chanVideosRes.continuation;
         }
       } catch (e) {
-        setVideos(initialVideos);
+        console.warn("Lỗi fetchChannelVideos:", e);
       }
+
+      // Dự phòng B: Nếu endpoint kênh không trả video, fallback sang relatedStreams hoặc search
+      if (initialVideos.length === 0) {
+        let fallbackStreams = Array.isArray(data.relatedStreams) ? [...data.relatedStreams] : [];
+        try {
+          const searchRes = await fetchSearch(data.name || "", "videos");
+          if (searchRes && Array.isArray(searchRes.items)) {
+            const chNameLower = (data.name || "").toLowerCase().trim();
+            const channelVideos = searchRes.items.filter(
+              (item) => (item.uploaderName || "").toLowerCase().trim().includes(chNameLower) ||
+                        chNameLower.includes((item.uploaderName || "").toLowerCase().trim())
+            );
+            const combined = [...fallbackStreams, ...channelVideos, ...searchRes.items];
+            const seen = new Set();
+            combined.forEach((v) => {
+              const vidId = v.id || extractVideoId(v.url);
+              if (vidId && !seen.has(vidId)) {
+                seen.add(vidId);
+                initialVideos.push(v);
+              }
+            });
+          } else {
+            initialVideos = fallbackStreams;
+          }
+        } catch (e) {
+          initialVideos = fallbackStreams;
+        }
+      }
+
+      setVideos(initialVideos);
+      setVideoContinuation(nextContinuation);
 
       // Tự động tải trước Shorts và Playlists nếu có tab data
       if (Array.isArray(data.tabs)) {
@@ -190,6 +206,30 @@ export default function YouTubeChannel() {
         } catch (e) {}
         setIsTabLoading(false);
       }
+    }
+  };
+
+  // Tải thêm video khi cuộn/bấm xem thêm (tải thêm 60 video mỗi lần)
+  const handleLoadMoreVideos = async () => {
+    if (!videoContinuation || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const realChannelId = channelData?.id || channelId;
+      const res = await fetchChannelVideos(realChannelId, videoContinuation);
+      if (res && Array.isArray(res.videos) && res.videos.length > 0) {
+        setVideos((prev) => {
+          const seen = new Set(prev.map((v) => v.id || v.videoId || extractVideoId(v.url)));
+          const newVideos = res.videos.filter((v) => !seen.has(v.id || v.videoId));
+          return [...prev, ...newVideos];
+        });
+        setVideoContinuation(res.continuation);
+      } else {
+        setVideoContinuation(null);
+      }
+    } catch (e) {
+      console.warn("Lỗi tải thêm video:", e);
+    } finally {
+      setIsLoadingMore(false);
     }
   };
 
@@ -429,11 +469,34 @@ export default function YouTubeChannel() {
                   {activeTab === "videos" && (
                     <div className="yt-channel-videos-section">
                       {videos.length > 0 ? (
-                        <div className="yt-video-grid">
-                          {videos.map((vid, idx) => (
-                            <VideoCard key={vid.id || vid.url || idx} video={vid} layout="grid" />
-                          ))}
-                        </div>
+                        <>
+                          <div className="yt-video-grid">
+                            {videos.map((vid, idx) => (
+                              <VideoCard key={vid.id || vid.url || idx} video={vid} layout="grid" />
+                            ))}
+                          </div>
+
+                          {videoContinuation && (
+                            <div className="yt-loadmore-wrap text-center my-4 py-2">
+                              <button
+                                type="button"
+                                className="yt-btn-load-more"
+                                onClick={handleLoadMoreVideos}
+                                disabled={isLoadingMore}
+                              >
+                                {isLoadingMore ? (
+                                  <>
+                                    <FaSpinner className="yt-spin-icon me-2" /> Đang tải thêm video...
+                                  </>
+                                ) : (
+                                  <>
+                                    <FaPlus className="me-2" /> Tải thêm video (Đã hiển thị {videos.length} video)
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          )}
+                        </>
                       ) : (
                         <div className="yt-channel-empty">
                           <FaVideo className="empty-icon" />

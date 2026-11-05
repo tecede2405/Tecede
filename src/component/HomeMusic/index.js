@@ -3,7 +3,7 @@ import { MdLibraryMusic } from "react-icons/md";
 import "./homemusic.scss";
 import { useNavigate } from "react-router-dom";
 
-const musicData = [
+export const musicData = [
   {
     title: "mood",
     image: "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp",

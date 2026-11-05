@@ -135,6 +135,61 @@ export default function useMusicPlayer(initialSongs) {
     };
   }, []);
 
+  // ⚡ TỰ ĐỘNG PREFETCH / TẢI NGẦM TRƯỚC BÀI HÁT TIẾP THEO (GAPLESS PRE-BUFFERING)
+  const prefetchAudioRef = useRef(null);
+  const prefetchedTrackIdRef = useRef(null);
+
+  // Reset prefetched track id khi đổi bài
+  useEffect(() => {
+    prefetchedTrackIdRef.current = null;
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (!isPlaying || currentIndex === null) return;
+    const list = stateRef.current.playlist;
+    if (!Array.isArray(list) || list.length <= 1 || isRepeat) return;
+
+    // Kích hoạt khi bài hiện tại chạy ổn định qua 10s hoặc khi còn dưới 25s
+    const remainingTime = duration > 0 ? duration - currentTime : 999;
+    const shouldPrefetch = (currentTime >= 10) || (remainingTime <= 25);
+
+    if (shouldPrefetch && !prefetchedTrackIdRef.current) {
+      const nextIdx = (currentIndex + 1) % list.length;
+      const nextSong = list[nextIdx];
+      const nextSongId = nextSong?.id || nextSong?._id;
+
+      if (nextSongId) {
+        prefetchedTrackIdRef.current = nextSongId;
+        const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+        const directUrl = nextSong.file && typeof nextSong.file === "string" && nextSong.file.startsWith("http")
+          ? nextSong.file
+          : null;
+        const nextSrc = directUrl || `${baseUrl}/api/songs/stream/${nextSongId}`;
+
+        try {
+          if (!prefetchAudioRef.current) {
+            prefetchAudioRef.current = new Audio();
+            prefetchAudioRef.current.preload = "auto";
+            prefetchAudioRef.current.muted = true;
+          }
+          prefetchAudioRef.current.src = nextSrc;
+          prefetchAudioRef.current.load();
+        } catch (e) {
+          console.warn("Lỗi prefetch bài tiếp theo:", e);
+        }
+      }
+    }
+  }, [currentTime, duration, isPlaying, currentIndex, isRepeat]);
+
+  useEffect(() => {
+    return () => {
+      if (prefetchAudioRef.current) {
+        prefetchAudioRef.current.src = "";
+        prefetchAudioRef.current = null;
+      }
+    };
+  }, []);
+
   // 🎛️ LƯU THIẾT LẬP VÀO LOCALSTORAGE
   useEffect(() => {
     try {
@@ -341,7 +396,8 @@ export default function useMusicPlayer(initialSongs) {
     }
 
     const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
-    const newSrc = `${baseUrl}/api/songs/stream/${songId}`;
+    const directUrl = song.file && typeof song.file === "string" && song.file.startsWith("http") ? song.file : null;
+    const newSrc = directUrl || `${baseUrl}/api/songs/stream/${songId}`;
     
     setIsPlaying(true); 
     setIsLoading(true); 
@@ -350,9 +406,11 @@ export default function useMusicPlayer(initialSongs) {
     globalAudio.onpause = null;
     globalAudio.onended = null;
     globalAudio.onerror = null;
+    globalAudio.onwaiting = null;
+    globalAudio.oncanplay = null;
 
     // Tránh set lại src nếu bài hát đang phát trùng với bài yêu cầu, ngăn lỗi trình duyệt
-    if (globalAudio.src === newSrc || globalAudio.src.endsWith(`/api/songs/stream/${songId}`)) {
+    if (globalAudio.src === newSrc || (!directUrl && globalAudio.src.endsWith(`/api/songs/stream/${songId}`))) {
       globalAudio.currentTime = 0;
     } else {
       globalAudio.src = newSrc;
@@ -382,6 +440,19 @@ export default function useMusicPlayer(initialSongs) {
       if (spatialEngine.isInitialized) {
         spatialEngine.resumeContext();
       }
+    };
+
+    globalAudio.onwaiting = () => {
+      setIsLoading(true);
+    };
+
+    globalAudio.oncanplay = () => {
+      setIsLoading(false);
+    };
+
+    globalAudio.onplaying = () => {
+      setIsLoading(false);
+      setIsPlaying(true);
     };
 
     globalAudio.onpause = () => setIsPlaying(false);

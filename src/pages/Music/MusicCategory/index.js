@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Tabbar from "../../../component/tabar/index";
+import { musicData } from "../../../component/HomeMusic/index";
 import { useMusic } from "../../../context/MusicContext";
 import {
   FaStepBackward,
@@ -18,6 +19,11 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaMicrophone,
+  FaSoundcloud,
+  FaHeart,
+  FaShareAlt,
+  FaPlus,
+  FaHeadphones,
   FaExpandAlt,
   FaRetweet,
   FaListUl,
@@ -103,8 +109,30 @@ const CATEGORY_CONFIG = {
   category: BASE_CATEGORIES["nhac-tre"],
 };
 
+const getOptimizedAlbumArt = (url) => {
+  if (!url || typeof url !== "string") return url;
+  let optimized = url;
+  // Nâng cấp ảnh Bing từ thumbnail h=180 lên h=600&w=600 HD siêu nét
+  if (optimized.includes("mm.bing.net")) {
+    optimized = optimized.replace(/[?&]h=\d+/g, "&h=600&w=600");
+  }
+  // Nâng cấp ảnh Zing MP3 từ w94/w240 lên w600 HD
+  if (optimized.includes("zmp3") || optimized.includes("zadn.vn")) {
+    optimized = optimized.replace(/w\d+_r/g, "w600_r");
+  }
+  // Nâng cấp ảnh YouTube từ hqdefault lên maxresdefault
+  if (
+    optimized.includes("i.ytimg.com") &&
+    optimized.includes("hqdefault.jpg")
+  ) {
+    optimized = optimized.replace("hqdefault.jpg", "maxresdefault.jpg");
+  }
+  return optimized;
+};
+
 function MusicCategory() {
   const { categorySlug } = useParams();
+  const navigate = useNavigate();
 
   const currentInfo = CATEGORY_CONFIG[categorySlug] || {
     dbType: categorySlug,
@@ -168,6 +196,21 @@ function MusicCategory() {
   const [isAtmosCollapsed, setIsAtmosCollapsed] = useState(false);
   const sleepTimerRef = useRef(null);
   const lyricsRef = useRef(null);
+  const [showSplitLyrics, setShowSplitLyrics] = useState(false);
+  const splitLyricsRef = useRef(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const scTabRef = useRef(null);
+  const [isMobileScreen, setIsMobileScreen] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileScreen(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Fetch Lyrics LRCLIB
   useEffect(() => {
@@ -222,28 +265,84 @@ function MusicCategory() {
     }
   }
 
-  // Auto-scroll lyrics
+  // Auto-scroll lyrics (cuộn mượt nội bộ bên trong container, không dùng scrollIntoView để tránh làm lệch/kéo màn hình cha)
   useEffect(() => {
-    if (
-      fspTab === "lyrics" &&
-      showFullPlayer &&
-      activeLyricIndex !== -1 &&
-      lyricsRef.current
-    ) {
-      const activeEl = lyricsRef.current.querySelector(".lyric-line.active");
-      if (activeEl) {
-        activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-  }, [activeLyricIndex, fspTab, showFullPlayer]);
+    if (!showFullPlayer || activeLyricIndex === -1) return;
 
-  // Auto-scroll playlist
+    const scrollContainerToActive = (container) => {
+      if (!container) return;
+      const activeEl = container.querySelector(".lyric-line.active");
+      if (!activeEl) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+      const relativeTop =
+        activeRect.top - containerRect.top + container.scrollTop;
+      const targetTop =
+        relativeTop - container.clientHeight / 2 + activeEl.clientHeight / 2;
+
+      container.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: "smooth",
+      });
+    };
+
+    if (fspTab === "lyrics" && lyricsRef.current) {
+      scrollContainerToActive(lyricsRef.current);
+    }
+
+    if (fspTab === "karaoke" && showSplitLyrics && splitLyricsRef.current) {
+      scrollContainerToActive(splitLyricsRef.current);
+    }
+  }, [activeLyricIndex, fspTab, showFullPlayer, showSplitLyrics]);
+
+  // Scroll listener cho nút cuộn lên đầu trang
+  useEffect(() => {
+    const handleWinScroll = () => {
+      if (!showFullPlayer) {
+        const threshold =
+          Math.min(window.innerHeight, window.innerWidth) || 350;
+        setShowScrollTop(window.scrollY > threshold);
+      }
+    };
+    window.addEventListener("scroll", handleWinScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleWinScroll);
+  }, [showFullPlayer]);
+
+  useEffect(() => {
+    setShowScrollTop(false);
+  }, [fspTab, currentIndex, showFullPlayer]);
+
+  const handleScrollToTop = () => {
+    if (showFullPlayer && fspTab === "soundcloud" && scTabRef.current) {
+      scTabRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (showFullPlayer && fspTab === "lyrics" && lyricsRef.current) {
+      lyricsRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // Auto-scroll playlist (cuộn an toàn nội bộ container)
   useEffect(() => {
     if (fspTab === "playlist" && showFullPlayer) {
       setTimeout(() => {
+        const container = document.querySelector(".playlist-container");
         const activeEl = document.querySelector(".fsp-playlist-active");
-        if (activeEl) {
-          activeEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        if (container && activeEl) {
+          const containerRect = container.getBoundingClientRect();
+          const activeRect = activeEl.getBoundingClientRect();
+          const relativeTop =
+            activeRect.top - containerRect.top + container.scrollTop;
+          const targetTop =
+            relativeTop -
+            container.clientHeight / 2 +
+            activeEl.clientHeight / 2;
+
+          container.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: "smooth",
+          });
         }
       }, 100);
     }
@@ -944,10 +1043,13 @@ function MusicCategory() {
                         ) : (
                           filteredPlaylist.map((song, idx) => {
                             const currentSong = playlist[currentIndex];
-                            const currentSongId = currentSong?.id || currentSong?._id;
+                            const currentSongId =
+                              currentSong?.id || currentSong?._id;
                             const songId = song?.id || song?._id;
                             const isCurrent = Boolean(
-                              currentSongId && songId && String(currentSongId) === String(songId)
+                              currentSongId &&
+                              songId &&
+                              String(currentSongId) === String(songId),
                             );
                             return (
                               <tr
@@ -955,7 +1057,9 @@ function MusicCategory() {
                                 className={`song-row ${isCurrent ? "playing" : ""}`}
                                 onClick={() => {
                                   const realIndex = playlist.findIndex(
-                                    (p) => String(p?.id || p?._id) === String(songId),
+                                    (p) =>
+                                      String(p?.id || p?._id) ===
+                                      String(songId),
                                   );
                                   handlePlay(realIndex >= 0 ? realIndex : idx);
                                 }}
@@ -987,7 +1091,11 @@ function MusicCategory() {
                                           {song.title}
                                         </span>
                                         <div>
-                                          {isNewSong(song.create_at || song.created_at || song.createdAt) && (
+                                          {isNewSong(
+                                            song.create_at ||
+                                              song.created_at ||
+                                              song.createdAt,
+                                          ) && (
                                             <span className="new-badge ms-2">
                                               Mới
                                             </span>
@@ -1109,29 +1217,29 @@ function MusicCategory() {
                               className="up-next-item d-flex align-items-center gap-3 mb-2"
                               onClick={() => handlePlay(currentIndex + 1 + i)}
                             >
-                            <span className="un-number">
-                              {currentIndex + 2 + i}
-                            </span>
-                            <img
-                              src={song.image}
-                              alt={song.title}
-                              className="un-thumb flex-shrink-0"
-                            />
-                            <div className="un-info flex-grow-1 overflow-hidden">
-                              <h6 className="un-title text-truncate m-0">
-                                {song.title}
-                              </h6>
-                              <p className="un-artist text-truncate m-0">
-                                {song.artist}
-                              </p>
+                              <span className="un-number">
+                                {currentIndex + 2 + i}
+                              </span>
+                              <img
+                                src={song.image}
+                                alt={song.title}
+                                className="un-thumb flex-shrink-0"
+                              />
+                              <div className="un-info flex-grow-1 overflow-hidden">
+                                <h6 className="un-title text-truncate m-0">
+                                  {song.title}
+                                </h6>
+                                <p className="un-artist text-truncate m-0">
+                                  {song.artist}
+                                </p>
+                              </div>
+                              <span className="un-time  flex-shrink-0 d-flex justify-content-center align-items-center gap-2">
+                                <FaPlay style={{ fontSize: "8px" }} />
+                                {song.listens
+                                  ? song.listens.toLocaleString()
+                                  : "0"}
+                              </span>
                             </div>
-                            <span className="un-time  flex-shrink-0 d-flex justify-content-center align-items-center gap-2">
-                              <FaPlay style={{ fontSize: "8px" }} />
-                              {song.listens
-                                ? song.listens.toLocaleString()
-                                : "0"}
-                            </span>
-                          </div>
                           );
                         })}
                       {currentIndex + 1 >= playlist.length && (
@@ -1370,7 +1478,7 @@ function MusicCategory() {
             <div
               className="fsp-background"
               style={{
-                backgroundImage: `url(${playlist[currentIndex].image})`,
+                backgroundImage: `url(${getOptimizedAlbumArt(playlist[currentIndex].image)})`,
               }}
             />
             <div className="fsp-overlay" />
@@ -1420,13 +1528,40 @@ function MusicCategory() {
                       <span className="d-none d-md-inline">Lời bài hát</span>
                       <FaMicrophone className="d-md-none" size={16} />
                     </button>
+                    <button
+                      className={`fsp-tab-btn ${fspTab === "soundcloud" ? "active" : ""}`}
+                      onClick={() => setFspTab("soundcloud")}
+                      title="SC-Theme"
+                    >
+                      <span className="d-none d-md-inline">SC-Theme</span>
+                      <FaSoundcloud className="d-md-none" size={16} />
+                    </button>
                   </div>
                 </div>
 
                 <div
-                  className="z-index-3 position-relative"
+                  className="z-index-3 position-relative d-flex align-items-center gap-2"
                   style={{ zIndex: 10 }}
                 >
+                  {/* Nút lời bài hát ngay cạnh nút điều chỉnh khi có lyrics */}
+                  {fspTab === "karaoke" && lyrics && lyrics.length > 0 && (
+                    <button
+                      className={`fsp-btn fsp-lyrics-toggle-btn d-inline-flex align-items-center gap-1 ${showSplitLyrics ? "active text-primary" : ""}`}
+                      title={
+                        showSplitLyrics ? "Ẩn lời bài hát" : "Hiện lời bài hát"
+                      }
+                      onClick={() => setShowSplitLyrics(!showSplitLyrics)}
+                    >
+                      <FaMicrophone size={15} />
+                      <span
+                        className="d-none d-md-inline"
+                        style={{ fontSize: "13px", fontWeight: 500 }}
+                      >
+                        Ảnh + Lời
+                      </span>
+                    </button>
+                  )}
+
                   <button
                     className={`fsp-btn options-trigger-btn ${showMenu ? "text-primary" : ""}`}
                     title="Dolby Atmos & Cài đặt"
@@ -1442,7 +1577,7 @@ function MusicCategory() {
               </div>
 
               <div
-                className="fsp-body flex-grow-1 d-flex flex-column justify-content-center align-items-center px-4"
+                className="fsp-body flex-grow-1 d-flex flex-column justify-content-center align-items-center px-0 px-md-4"
                 style={{ overflowY: "hidden", position: "relative" }}
               >
                 {/* 1. PLAYLIST */}
@@ -1520,35 +1655,450 @@ function MusicCategory() {
 
                 {/* 2. KARAOKE (Default) */}
                 {fspTab === "karaoke" && (
-                  <>
-                    <img
-                      src={playlist[currentIndex].image}
-                      alt={playlist[currentIndex].title}
-                      className={`fsp-album-art ${isPlaying && !isLoading ? "spinning" : ""}`}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = currentInfo.img;
-                      }}
-                    />
-                    <div className="fsp-song-info text-center mt-4 mb-2">
-                      <h2 className="fsp-title m-0 fw-bold">
-                        {playlist[currentIndex].title}
-                      </h2>
-                      <p className="fsp-artist m-0 fs-5 opacity-75 mt-1">
-                        {playlist[currentIndex].artist}
-                      </p>
+                  <div
+                    className={`fsp-karaoke-layout ${
+                      showSplitLyrics && lyrics && lyrics.length > 0
+                        ? isMobileScreen
+                          ? "has-inline-lyrics"
+                          : "has-split-lyrics"
+                        : ""
+                    }`}
+                  >
+                    <div className="fsp-album-section">
+                      <img
+                        src={getOptimizedAlbumArt(playlist[currentIndex].image)}
+                        alt={playlist[currentIndex].title}
+                        className={`fsp-album-art ${
+                          isPlaying && !isLoading
+                            ? isMobileScreen
+                              ? "spinning"
+                              : "floating"
+                            : ""
+                        }`}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = currentInfo.img;
+                        }}
+                      />
+                      <div className="fsp-song-info text-center mt-3 mb-2">
+                        <h2 className="fsp-title m-0 fw-bold">
+                          {playlist[currentIndex].title}
+                        </h2>
+                        <p className="fsp-artist m-0 opacity-75 mt-1">
+                          {playlist[currentIndex].artist}
+                        </p>
+                      </div>
+
+                      {/* MOBILE INLINE COMPACT LYRICS (KHI BẬT LỜI BÀI HÁT TRÊN MOBILE) */}
+                      {isMobileScreen &&
+                        showSplitLyrics &&
+                        lyrics &&
+                        lyrics.length > 0 && (
+                          <div className="fsp-inline-lyrics-box">
+                            {(() => {
+                              const currentIdx =
+                                activeLyricIndex >= 0 ? activeLyricIndex : 0;
+                              const visibleLines = lyrics.filter(
+                                (_, i) => Math.abs(i - currentIdx) <= 1,
+                              );
+                              return (
+                                <div className="fsp-inline-lyrics-content">
+                                  {visibleLines.map((line, idx) => {
+                                    const isCurrent =
+                                      line.time === lyrics[currentIdx]?.time;
+                                    const isPast =
+                                      line.time < lyrics[currentIdx]?.time;
+                                    return (
+                                      <p
+                                        key={line.time || idx}
+                                        className={`fsp-inline-line ${isCurrent ? "current" : isPast ? "past" : "future"}`}
+                                        onClick={() => {
+                                          if (soundRef.current)
+                                            soundRef.current.seek(line.time);
+                                        }}
+                                      >
+                                        {line.text}
+                                      </p>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        )}
                     </div>
-                  </>
+
+                    {/* DESKTOP SPLIT VIEW LYRICS (KHI BẬT LỜI BÀI HÁT TRÊN PC/LAPTOP) */}
+                    {!isMobileScreen &&
+                      showSplitLyrics &&
+                      lyrics &&
+                      lyrics.length > 0 && (
+                        <div
+                          className="fsp-split-lyrics-section custom-scrollbar"
+                          ref={splitLyricsRef}
+                        >
+                          {lyrics.map((line, idx) => (
+                            <p
+                              key={idx}
+                              className={`lyric-line ${
+                                idx === activeLyricIndex
+                                  ? "active fw-bold text-white fs-4"
+                                  : "text-secondary fs-5"
+                              }`}
+                              style={{
+                                transition: "all 0.3s",
+                                minHeight: "36px",
+                                cursor: "pointer",
+                                margin: "14px 0",
+                                opacity: idx === activeLyricIndex ? 1 : 0.55,
+                              }}
+                              onClick={() => {
+                                if (soundRef.current)
+                                  soundRef.current.seek(line.time);
+                              }}
+                            >
+                              {line.text}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                  </div>
+                )}
+
+                {/* 4. SOUNDCLOUD WAVEFORM TAB */}
+                {fspTab === "soundcloud" && playlist[currentIndex] && (
+                  <div
+                    ref={scTabRef}
+                    className="fsp-soundcloud-tab-container custom-scrollbar w-100 h-100"
+                    onScroll={(e) => {
+                      const threshold =
+                        Math.min(window.innerHeight, window.innerWidth) || 350;
+                      setShowScrollTop(e.currentTarget.scrollTop > threshold);
+                    }}
+                  >
+                    {/* HERO TRACK BANNER */}
+                    <div className="sc-hero-banner">
+                      {/* TOP ROW: CÙNG HÀNG GỒM PLAY BUTTON + TÊN BÀI HÁT + ẢNH THU NHỎ */}
+                      <div className="sc-banner-top">
+                        <div className="sc-header-row">
+                          <button
+                            className="sc-main-play-btn"
+                            onClick={togglePlay}
+                            title={isPlaying ? "Tạm dừng" : "Phát nhạc"}
+                          >
+                            {isPlaying ? (
+                              <FaPause size={22} />
+                            ) : (
+                              <FaPlay size={22} className="ms-1" />
+                            )}
+                          </button>
+                          <div className="sc-track-meta">
+                            <div className="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                              <span className="sc-private-badge">
+                                TECEDE EXCLUSIVE
+                              </span>
+                              <span className="sc-timestamp-tag">#Track</span>
+                            </div>
+                            <h1 className="sc-track-title">
+                              {playlist[currentIndex].title}
+                            </h1>
+                            <p className="sc-track-artist">
+                              {playlist[currentIndex].artist}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* ARTWORK ĐƯA LÊN CÙNG HÀNG */}
+                        <div className="sc-hero-right">
+                          <img
+                            src={getOptimizedAlbumArt(
+                              playlist[currentIndex].image,
+                            )}
+                            alt={playlist[currentIndex].title}
+                            className="sc-hero-artwork"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = currentInfo.img;
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* BOTTOM ROW: INTERACTIVE WAVEFORM SCRUBBER TRẢI RỘNG */}
+                      <div
+                        className="sc-waveform-wrapper"
+                        onClick={(e) => {
+                          if (!duration || !soundRef.current) return;
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          const clickX = e.clientX - rect.left;
+                          const percent = Math.max(
+                            0,
+                            Math.min(1, clickX / rect.width),
+                          );
+                          soundRef.current.seek(percent * duration);
+                        }}
+                      >
+                        <div className="sc-waveform-bars">
+                          {(() => {
+                            const barCount = isMobileScreen ? 80 : 300;
+                            return Array.from({ length: barCount }).map(
+                              (_, idx) => {
+                                const percentCurrent =
+                                  duration > 0
+                                    ? (currentTime / duration) * 100
+                                    : 0;
+                                const barPercent = (idx / barCount) * 100;
+                                const isPlayed = barPercent <= percentCurrent;
+
+                                // Waveform linh hoạt: 300 vạch trên PC/Laptop, 80 vạch trên Mobile
+                                const titleStr =
+                                  playlist[currentIndex].title || "music";
+                                const seed =
+                                  titleStr.charCodeAt(idx % titleStr.length) ||
+                                  55;
+                                const waveEnvelope =
+                                  Math.sin((idx / barCount) * Math.PI) * 0.4 +
+                                  0.55;
+                                const harmonic =
+                                  Math.sin(
+                                    (idx / barCount) *
+                                      Math.PI *
+                                      (isMobileScreen ? 6 : 9),
+                                  ) * 0.16;
+                                const pseudoNoise =
+                                  (((seed * (idx * 7 + 19)) % 100) / 100) *
+                                  0.42;
+                                const barHeight = Math.max(
+                                  12,
+                                  Math.min(
+                                    96,
+                                    Math.floor(
+                                      (waveEnvelope + harmonic + pseudoNoise) *
+                                        62,
+                                    ),
+                                  ),
+                                );
+
+                                return (
+                                  <div
+                                    key={idx}
+                                    className={`sc-wave-bar ${isPlayed ? "played" : ""}`}
+                                    style={{ height: `${barHeight}%` }}
+                                  />
+                                );
+                              },
+                            );
+                          })()}
+                        </div>
+
+                        {/* TIMESTAMPS */}
+                        <div className="sc-time-badge sc-time-left">
+                          {Math.floor(currentTime / 60)}:
+                          {String(Math.floor(currentTime % 60)).padStart(
+                            2,
+                            "0",
+                          )}
+                        </div>
+                        <div className="sc-time-badge sc-time-right">
+                          -
+                          {Math.floor(Math.max(0, duration - currentTime) / 60)}
+                          :
+                          {String(
+                            Math.floor(
+                              Math.max(0, duration - currentTime) % 60,
+                            ),
+                          ).padStart(2, "0")}
+                        </div>
+
+                        {/* AVATAR COMMENT MARKERS ON WAVEFORM */}
+                        <div className="sc-waveform-avatars">
+                          {[12, 28, 42, 60, 75].map((pos, aIdx) => (
+                            <img
+                              key={aIdx}
+                              src={`https://i.pravatar.cc/40?img=${aIdx * 7 + 10}`}
+                              alt="user"
+                              className="sc-comment-avatar"
+                              style={{ left: `${pos}%` }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="sc-action-bar">
+                      <div className="sc-action-left">
+                        <button className="sc-btn-action active">
+                          <FaHeart className="me-1 text-danger" /> Like
+                        </button>
+                        <button className="sc-btn-action">
+                          <FaShareAlt className="me-1" /> Share
+                        </button>
+                        <button className="sc-btn-action">
+                          <FaPlus className="me-1" /> Add to Next up
+                        </button>
+                        <button className="sc-btn-action">••• More</button>
+                      </div>
+                      <div className="sc-action-right">
+                        <span className="sc-stats-pill">
+                          <FaHeadphones className="me-1" />{" "}
+                          {playlist[currentIndex].listens !== undefined &&
+                          playlist[currentIndex].listens !== null
+                            ? playlist[currentIndex].listens.toLocaleString()
+                            : "0"}{" "}
+                          lượt nghe
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* TWO-COLUMN LAYOUT */}
+                    <div className="sc-two-columns">
+                      {/* COLUMN LEFT: RELATED TRACKLIST */}
+                      <div className="sc-column-left">
+                        <h4 className="sc-section-heading">Phát tiếp theo</h4>
+                        <div className="sc-tracklist">
+                          {playlist.slice(currentIndex + 1).length > 0 ? (
+                            playlist
+                              .slice(currentIndex + 1)
+                              .map((song, sIdx) => {
+                                const realIdx = currentIndex + 1 + sIdx;
+                                return (
+                                  <div
+                                    key={song.id || realIdx}
+                                    className="sc-track-row"
+                                    onClick={() => handlePlay(realIdx)}
+                                  >
+                                    <span className="sc-row-num">
+                                      {realIdx + 1}
+                                    </span>
+                                    <img
+                                      src={song.image}
+                                      alt={song.title}
+                                      className="sc-row-thumb"
+                                    />
+                                    <div className="sc-row-info">
+                                      <span className="sc-row-title">
+                                        {song.title}
+                                      </span>
+                                      <span className="sc-row-divider">-</span>
+                                      <span className="sc-row-artist">
+                                        {song.artist}
+                                      </span>
+                                    </div>
+                                    <span className="sc-row-plays">
+                                      <FaPlay
+                                        size={10}
+                                        className="me-1 opacity-75"
+                                      />
+                                      {song.listens !== undefined &&
+                                      song.listens !== null
+                                        ? song.listens.toLocaleString()
+                                        : "0"}
+                                    </span>
+                                  </div>
+                                );
+                              })
+                          ) : (
+                            <div
+                              className="p-3 text-secondary"
+                              style={{ fontSize: "13px" }}
+                            >
+                              Hết danh sách phát tiếp theo
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* COLUMN RIGHT: GENRES FEATURED (REPLACING ARTISTS FEATURED) */}
+                      <div className="sc-column-right">
+                        {/* BASED ON TRACK ARTIST */}
+                        <div className="sc-based-on-box mb-4">
+                          <p className="sc-based-label">
+                            {playlist[currentIndex].artist} -{" "}
+                            {playlist[currentIndex].title}
+                          </p>
+                          <div className="d-flex align-items-center gap-3">
+                            <img
+                              src={playlist[currentIndex].image}
+                              alt={playlist[currentIndex].artist}
+                              className="sc-artist-avatar-round"
+                            />
+                            <div>
+                              <p className="m-0 fw-bold text-white">
+                                {playlist[currentIndex].artist}
+                              </p>
+                              <span className="sc-sub-text">
+                                Người tạo bản phối
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* THỂ LOẠI NỔI BẬT (TỪ HOMEMUSIC/INDEX.JS) */}
+                        <div className="sc-genres-feature-box">
+                          <h4 className="sc-section-heading-sm">
+                            THỂ LOẠI NỔI BẬT
+                          </h4>
+                          <div className="sc-genre-list">
+                            {musicData.map((genre, gIdx) => {
+                              const genreConfig =
+                                CATEGORY_CONFIG[genre.path] ||
+                                BASE_CATEGORIES[genre.path] ||
+                                {};
+                              const displayName =
+                                genreConfig.title || genre.title;
+
+                              return (
+                                <div key={gIdx} className="sc-genre-item">
+                                  <div className="d-flex align-items-center gap-2 overflow-hidden">
+                                    <img
+                                      src={genre.image}
+                                      alt={displayName}
+                                      className="sc-genre-avatar"
+                                      onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src =
+                                          "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp";
+                                      }}
+                                    />
+                                    <div className="overflow-hidden">
+                                      <p className="sc-genre-name text-truncate m-0">
+                                        {displayName}
+                                      </p>
+                                      <span className="sc-genre-meta">
+                                        {genreConfig.desc ||
+                                          "Tuyển tập hay nhất"}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <button
+                                    className="sc-genre-btn-follow"
+                                    onClick={() => {
+                                      setShowFullPlayer(false);
+                                      navigate(`/music/${genre.path}`);
+                                    }}
+                                  >
+                                    Khám phá
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 )}
 
                 {/* 3. LYRICS */}
                 {fspTab === "lyrics" && (
                   <div
-                    className="lyrics-container custom-scrollbar w-100 h-100"
+                    className="lyrics-container w-100 h-100"
                     ref={lyricsRef}
                     style={{
                       overflowY: "auto",
-                      padding: "20vh 0",
+                      overflowX: "hidden",
+                      padding: "20vh 0 45vh 0",
                       maskImage:
                         "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
                     }}
@@ -1557,12 +2107,10 @@ function MusicCategory() {
                       lyrics.map((line, idx) => (
                         <p
                           key={idx}
-                          className={`lyric-line ${idx === activeLyricIndex ? "active fw-bold text-white fs-3" : "text-secondary fs-5"} text-center`}
+                          className={`lyric-line ${idx === activeLyricIndex ? "active fw-bold text-white" : "text-secondary"} text-center`}
                           style={{
                             transition: "all 0.3s",
-                            minHeight: "40px",
                             cursor: "pointer",
-                            margin: "15px 0",
                             opacity: idx === activeLyricIndex ? 1 : 0.6,
                           }}
                           onClick={() => {
@@ -1584,99 +2132,115 @@ function MusicCategory() {
                 )}
               </div>
 
-              <div className="fsp-footer p-4 pt-0">
-                {fspTab === "lyrics" && (
-                  <div className="fsp-song-info-small d-flex align-items-center mb-3">
-                    <img
-                      src={playlist[currentIndex].image}
-                      alt="thumb"
+              {fspTab !== "soundcloud" && (
+                <div className="fsp-footer p-4 pt-0">
+                  {fspTab === "lyrics" && (
+                    <div className="fsp-song-info-small d-flex align-items-center mb-3">
+                      <img
+                        src={playlist[currentIndex].image}
+                        alt="thumb"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "4px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div className="ms-3 overflow-hidden text-start">
+                        <p
+                          className="m-0 fw-bold text-white text-truncate"
+                          style={{ fontSize: "14px" }}
+                        >
+                          {playlist[currentIndex].title}
+                        </p>
+                        <p
+                          className="m-0 text-light opacity-75 text-truncate"
+                          style={{ fontSize: "12px" }}
+                        >
+                          {playlist[currentIndex].artist}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="fsp-progress-container mb-4 mt-2">
+                    <div className="d-flex justify-content-between mb-2">
+                      <span className="time-text">
+                        {formatTime(currentTime)}
+                      </span>
+                      <span className="time-text">{formatTime(duration)}</span>
+                    </div>
+                    <input
+                      type="range"
+                      className="custom-range w-100"
+                      min="0"
+                      max={duration || 0}
+                      value={currentTime}
+                      onChange={handleSeek}
                       style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "4px",
-                        objectFit: "cover",
+                        background: `linear-gradient(to right, #fff ${progressPercent}%, rgba(255,255,255,0.2) ${progressPercent}%)`,
                       }}
                     />
-                    <div className="ms-3 overflow-hidden text-start">
-                      <p
-                        className="m-0 fw-bold text-white text-truncate"
-                        style={{ fontSize: "14px" }}
-                      >
-                        {playlist[currentIndex].title}
-                      </p>
-                      <p
-                        className="m-0 text-light opacity-75 text-truncate"
-                        style={{ fontSize: "12px" }}
-                      >
-                        {playlist[currentIndex].artist}
-                      </p>
-                    </div>
                   </div>
-                )}
-                <div className="fsp-progress-container mb-4 mt-2">
-                  <div className="d-flex justify-content-between mb-2">
-                    <span className="time-text">{formatTime(currentTime)}</span>
-                    <span className="time-text">{formatTime(duration)}</span>
-                  </div>
-                  <input
-                    type="range"
-                    className="custom-range w-100"
-                    min="0"
-                    max={duration || 0}
-                    value={currentTime}
-                    onChange={handleSeek}
-                    style={{
-                      background: `linear-gradient(to right, #fff ${progressPercent}%, rgba(255,255,255,0.2) ${progressPercent}%)`,
-                    }}
-                  />
-                </div>
 
-                <div className="fsp-controls d-flex justify-content-center align-items-center gap-3 gap-md-5">
-                  <button
-                    onClick={handleShufflePlaylist}
-                    className="fsp-btn opacity-75 hover-opacity-100"
-                  >
-                    <FaRandom className="fsp-icon-sm" />
-                  </button>
-                  <button onClick={handlePrev} className="fsp-btn">
-                    <FaStepBackward className="fsp-icon-md" />
-                  </button>
+                  <div className="fsp-controls d-flex justify-content-center align-items-center gap-3 gap-md-5">
+                    <button
+                      onClick={handleShufflePlaylist}
+                      className="fsp-btn opacity-75 hover-opacity-100"
+                    >
+                      <FaRandom className="fsp-icon-sm" />
+                    </button>
+                    <button onClick={handlePrev} className="fsp-btn">
+                      <FaStepBackward className="fsp-icon-md" />
+                    </button>
 
-                  <button
-                    onClick={togglePlay}
-                    className="fsp-btn fsp-play-pause-btn"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <FaSpinner
-                        className="fsp-icon-lg"
-                        style={{ animation: "spin 1s linear infinite" }}
+                    <button
+                      onClick={togglePlay}
+                      className="fsp-btn fsp-play-pause-btn"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <FaSpinner
+                          className="fsp-icon-lg"
+                          style={{ animation: "spin 1s linear infinite" }}
+                        />
+                      ) : isPlaying ? (
+                        <FaPause className="fsp-icon-lg" />
+                      ) : (
+                        <FaPlay className="fsp-icon-lg ms-1" />
+                      )}
+                    </button>
+
+                    <button onClick={handleNext} className="fsp-btn">
+                      <FaStepForward className="fsp-icon-md" />
+                    </button>
+                    <button
+                      onClick={toggleRepeat}
+                      className={`fsp-btn opacity-75 hover-opacity-100 ${isRepeat ? "text-primary" : ""}`}
+                    >
+                      <FaRetweet
+                        className="fsp-icon-sm"
+                        color={isRepeat ? "#c084fc" : "inherit"}
                       />
-                    ) : isPlaying ? (
-                      <FaPause className="fsp-icon-lg" />
-                    ) : (
-                      <FaPlay className="fsp-icon-lg ms-1" />
-                    )}
-                  </button>
-
-                  <button onClick={handleNext} className="fsp-btn">
-                    <FaStepForward className="fsp-icon-md" />
-                  </button>
-                  <button
-                    onClick={toggleRepeat}
-                    className={`fsp-btn opacity-75 hover-opacity-100 ${isRepeat ? "text-primary" : ""}`}
-                  >
-                    <FaRetweet
-                      className="fsp-icon-sm"
-                      color={isRepeat ? "#c084fc" : "inherit"}
-                    />
-                  </button>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </>
         )}
       </div>
+
+      {/* NÚT CUỘN LÊN ĐẦU TRANG BÊN GÓC PHẢI */}
+      {showScrollTop && (
+        <button
+          className={`fsp-scroll-top-btn ${showFullPlayer ? "in-fsp" : ""}`}
+          onClick={handleScrollToTop}
+          title="Cuộn lên đầu trang"
+          aria-label="Cuộn lên đầu trang"
+        >
+          <FaChevronUp size={18} />
+        </button>
+      )}
     </div>
   );
 }
