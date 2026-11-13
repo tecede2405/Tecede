@@ -1,6 +1,6 @@
 import { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaInfoCircle } from "react-icons/fa";
 import "./style.scss";
 
 const MovieSlide = ({ movie }) => {
@@ -9,17 +9,15 @@ const MovieSlide = ({ movie }) => {
   // state kiểm tra video load xong chưa
   const [videoLoaded, setVideoLoaded] = useState(false);
 
-  function Tag({ text, color }) {
-  if (!text) return null;
-  return (
-    <span
-      className="film-info-tag"
-      style={{ borderLeft: color ? `5px solid ${color}` : "1px solid #444" }}
-    >
-      {text}
-    </span>
-  );
-}
+  function Tag({ text, type }) {
+    if (!text) return null;
+    return (
+      <span className={`film-info-tag tag-${type}`}>
+        <span className="tag-dot" />
+        <span className="tag-text">{text}</span>
+      </span>
+    );
+  }
   return (
     <div className="cinemaHeroCard">
 
@@ -76,24 +74,37 @@ const MovieSlide = ({ movie }) => {
           </p>
 
           <div className="cinemaHeroCard__meta">
-            <Tag text={movie.episode_current} color="#d31709" />
-            <Tag text={movie.lang} color="#09d31a" />
+            <Tag text={movie.episode_current} type="episode" />
+            <Tag text={movie.lang} type="lang" />
           </div>
 
           <p className="cinemaHeroCard__overview">
             {movie.content}
           </p>
 
-          <button
-            className="cinemaHeroCard__playBtn"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/chi-tiet/${movie.path}`);
-            }}
-          >
-            <FaPlay />
-            <span>Xem ngay</span>
-          </button>
+          <div className="cinemaHeroCard__actions">
+            <button
+              className="cinemaHeroCard__playBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/chi-tiet/${movie.path}`);
+              }}
+            >
+              <FaPlay />
+              <span>Xem ngay</span>
+            </button>
+
+            <button
+              className="cinemaHeroCard__infoBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/chi-tiet/${movie.path}`);
+              }}
+            >
+              <FaInfoCircle />
+              <span>Thông tin</span>
+            </button>
+          </div>
 
         </div>
       </div>

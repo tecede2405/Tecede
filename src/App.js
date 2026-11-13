@@ -26,6 +26,7 @@ import AddDonate from "./component/AddDonate/index";
 import MovieManager from "./pages/MovieManager/index";
 import UploadFile from "./pages/Storage/upload/index";
 import Gallery from "./pages/Storage/gallery/index";
+import AdminTtsStudio from "./pages/Admin/AdminTts/index";
 // Other pages
 import UsingApp from "./pages/using-app/index";
 import UsingAppIos from "./pages/using-app/ios";
@@ -202,6 +203,7 @@ function App() {
                     <Route path="users" element={<ManageUsers />} />
 
                     <Route path="donate" element={<AddDonate />} />
+                    <Route path="tts" element={<AdminTtsStudio />} />
                     <Route
                       path="songs/edit/:id"
                       element={<EditSong />}

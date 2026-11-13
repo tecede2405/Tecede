@@ -2,7 +2,7 @@
     display: flex;
     width: 100%; // Dùng 100% thay cho vw để tránh lỗi thanh cuộn ngang
     color: #ddd;
-    background: #121212;
+    background: #090610; // Đen ánh tím sâu (Deep Midnight Violet) đồng bộ với Tabbar & Header
     
     // Cực kỳ quan trọng để tabbar bên trái có thể "sticky" (bám dính)
     align-items: flex-start; 
