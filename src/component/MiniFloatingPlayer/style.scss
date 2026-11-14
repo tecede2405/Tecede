@@ -1,198 +1,210 @@
+/* ========================================================
+   HEADER CENTER CONTAINER FOR MINI MUSIC PILL
+======================================================== */
+.header__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  padding: 0 16px;
+  animation: miniHeaderFadeIn 0.3s ease-out;
+}
+
+/* ========================================================
+   MINI PLAYER STYLE - ADAPTIVE ALBUM BACKGROUND & REDUCED RADIUS
+======================================================== */
 .mini-floating-player-wrapper {
-  position: fixed;
-  right: 20px;
-  bottom: 24px;
-  z-index: 99999;
-  background: rgba(18, 12, 28, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(192, 132, 252, 0.25);
-  border-radius: 16px;
-  padding: 10px 14px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(168, 85, 247, 0.2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 440px;
+  height: 44px;
+  background: #14101e;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 13px;
+  padding: 4px 14px 4px 5px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.12);
   cursor: pointer;
-  max-width: 330px;
-  width: calc(100vw - 40px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: slideInUp 0.35s ease-out;
+  overflow: hidden;
+  user-select: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 
   &:hover {
-    transform: translateY(-4px) scale(1.02);
-    border-color: rgba(192, 132, 252, 0.5);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(168, 85, 247, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.65), 0 0 14px rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.28);
+
+    .mini-floating-bg-img {
+      filter: blur(24px) brightness(0.6) saturate(2);
+    }
   }
 
-  .mini-floating-close-btn {
+  /* Nền mờ thích ứng theo ảnh bìa bài hát */
+  .mini-floating-bg {
     position: absolute;
-    top: -8px;
-    left: -8px;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #271a38;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    opacity: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: inherit;
 
-    svg {
-      stroke: currentColor;
-      stroke-width: 1.5px;
-    }
-
-    &:hover {
-      background: #ef4444;
-      color: #fff;
-      border-color: #ef4444;
-      transform: scale(1.1);
-    }
-  }
-
-  &:hover .mini-floating-close-btn {
-    opacity: 1;
-  }
-
-  .mini-floating-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* Đĩa nhạc xoay */
-  .mini-floating-thumb-wrapper {
-    position: relative;
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-
-    .mini-floating-thumb {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(192, 132, 252, 0.4);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-
-      &.spinning {
-        animation: spin 12s linear infinite;
-      }
-    }
-
-    .mini-floating-disc-center {
+    .mini-floating-bg-img {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #0f0919;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      object-fit: cover;
+      filter: blur(28px) brightness(0.5) saturate(1.85);
+      transform: translate3d(0, 0, 0);
+      transition: filter 0.4s ease;
     }
+
+    .mini-floating-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(10, 8, 16, 0.4) 0%,
+        rgba(10, 8, 16, 0.25) 50%,
+        rgba(10, 8, 16, 0.45) 100%
+      );
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+  }
+
+  /* Ảnh album bo góc nhẹ vuông vắn */
+  .mini-floating-thumb {
+    position: relative;
+    z-index: 1;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    display: block;
   }
 
   /* Thông tin bài hát */
   .mini-floating-info {
+    position: relative;
+    z-index: 1;
     flex: 1;
     min-width: 0;
-
-    .mini-floating-tag {
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #c084fc;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-    }
+    margin-left: 10px;
+    margin-right: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     .mini-floating-title {
       font-size: 13px;
-      font-weight: 600;
-      color: #fff;
+      font-weight: 700;
+      color: #ffffff;
       margin: 0;
-      line-height: 1.3;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.1px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
     }
 
     .mini-floating-artist {
       font-size: 11px;
-      color: #94a3b8;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.78);
       margin: 0;
       line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     }
   }
 
-  /* Bộ điều khiển Mini */
+  /* Cụm nút điều khiển */
   .mini-floating-controls {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 13px;
     flex-shrink: 0;
 
-    .mini-floating-btn {
+    .mini-floating-ctrl-btn {
       background: transparent;
       border: none;
-      color: #cbd5e1;
+      padding: 0;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      padding: 6px;
-      border-radius: 50%;
       transition: all 0.2s ease;
+      line-height: 1;
 
       &:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
       }
 
-      &.play-btn {
-        width: 32px;
-        height: 32px;
-        background: linear-gradient(135deg, #a855f7, #7c3aed);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
-
-        &:hover {
-          transform: scale(1.08);
-          background: linear-gradient(135deg, #b065f8, #894cee);
-        }
+      &:active {
+        transform: scale(0.95);
       }
 
-      &.playlist-btn {
-        color: #c084fc;
-        &:hover {
-          background: rgba(168, 85, 247, 0.15);
-          color: #fff;
-        }
+      &.device-btn.active {
+        color: #facc15;
+      }
 
-        &.active {
-          background: #a855f7;
-          color: #fff;
-        }
+      &.close-btn:hover {
+        color: #f87171;
+        filter: drop-shadow(0 0 6px rgba(248, 113, 113, 0.6));
       }
     }
   }
+
+  /* Thanh tiến trình ở đáy thẻ */
+  .mini-floating-progress-track {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+  }
+
+  .mini-floating-progress-fill {
+    height: 100%;
+    background: #ffffff;
+    border-radius: 999px;
+    transition: width 0.25s linear;
+  }
 }
 
-/* Backdrop làm mờ khi mở Drawer */
+/* ========================================================
+   SIDEBAR DRAWER PLAYLIST (GIỮ NGUYÊN HOẠT ĐỘNG TỐT)
+======================================================== */
 .mini-drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 999998;
   animation: fadeIn 0.25s ease-out;
+  cursor: pointer;
 }
 
-/* Sidebar Drawer danh sách bài hát */
 .mini-playlist-drawer {
   position: fixed;
   top: 0;
@@ -218,12 +230,6 @@
     padding: 16px 18px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.02);
-
-    .mini-drawer-count {
-      font-size: 10px;
-      padding: 3px 6px;
-      border-radius: 10px;
-    }
 
     .mini-drawer-action-btn,
     .mini-drawer-close-btn {
@@ -336,10 +342,10 @@
   to { opacity: 1; }
 }
 
-@keyframes slideInUp {
+@keyframes miniHeaderFadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -347,20 +353,94 @@
   }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* ========================================================
+   RESPONSIVE
+======================================================== */
+@media (max-width: 992px) {
+  .header__center {
+    padding: 0 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mini-floating-player-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
-@media (max-width: 576px) {
-  .mini-floating-player-wrapper {
-    right: 12px;
-    bottom: 16px;
-    max-width: 290px;
-    padding: 8px 12px;
+@media (max-width: 768px) {
+  .header__center {
+    padding: 0 8px;
+    flex: 1;
+    min-width: 0;
+  }
 
-    .mini-floating-close-btn {
-      opacity: 1;
+  .mini-floating-player-wrapper {
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    padding: 3px 10px 3px 4px;
+
+    .mini-floating-thumb {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+    }
+
+    .mini-floating-info {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+
+    .mini-floating-controls {
+      gap: 10px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .header__center {
+    padding: 0 6px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mini-floating-player-wrapper {
+    width: 100%;
+    max-width: 100%;
+    height: 38px;
+    padding: 3px 8px 3px 4px;
+
+    .mini-floating-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+    }
+
+    .mini-floating-info {
+      margin-left: 6px;
+      margin-right: 6px;
+
+      .mini-floating-title {
+        font-size: 12px;
+      }
+
+      .mini-floating-artist {
+        font-size: 10px;
+      }
+    }
+
+    .mini-floating-controls {
+      gap: 8px;
+
+      .mini-floating-ctrl-btn svg {
+        font-size: 14px;
+      }
+    }
+
+    .device-btn {
+      display: none;
     }
   }
 }

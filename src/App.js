@@ -13,7 +13,6 @@ import ScrollToTop from "./component/ScrollToTop/index";
 
 // Music pages
 import MusicCategory  from "./pages/Music/MusicCategory/index";
-import MiniFloatingPlayer from "./component/MiniFloatingPlayer/index";
 // Admin
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
@@ -66,6 +65,7 @@ import YouTubeWatch from "./pages/YouTubePremium/YouTubeWatch/index";
 import YouTubeSearch from "./pages/YouTubePremium/YouTubeSearch/index";
 import YouTubeChannel from "./pages/YouTubePremium/YouTubeChannel/index";
 import YouTubePlaylist from "./pages/YouTubePremium/YouTubePlaylist/index";
+import WatchPartyPage from "./pages/WatchParty/index";
 import { TecedeYtPlayerProvider } from "./context/TecedeYtPlayerContext";
 import TecedeYtMiniPlayer from "./pages/YouTubePremium/components/TecedeYtMiniPlayer";
 // UI
@@ -134,6 +134,8 @@ function App() {
                   <Route path="using-app" element={<UsingApp />} />
                   <Route path="using-app-ios" element={<UsingAppIos />} />
                   {/* Film */}
+                  <Route path="/xem-chung" element={<WatchPartyPage />} />
+                  <Route path="/xem-chung/:roomId" element={<WatchPartyPage />} />
                   <Route path="xem-phim/:slug/:server/:episodeSlug" element={<FilmDetail />} />
                   <Route path="search/:filmSlug" element={<FilmListBySlug />} />
                   <Route path="/chi-tiet/:slug" element={<FilmInfo />} />
@@ -215,8 +217,6 @@ function App() {
                 </Route>
               </Routes>
 
-              {/* Cửa sổ nhạc Mini PIP nổi góc phải khi duyệt các trang khác */}
-              <MiniFloatingPlayer />
               {/* Cửa sổ video TecedeYT Mini thu nhỏ nổi góc phải */}
               <TecedeYtMiniPlayer />
             </div>

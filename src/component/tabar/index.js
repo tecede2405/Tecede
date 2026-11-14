@@ -13,6 +13,7 @@ import {
   FaCalendarAlt,
   FaCrown,
   FaCheck,
+  FaUsers,
 } from "react-icons/fa";
 import { SiGooglegemini } from "react-icons/si";
 import { GoChevronDown, GoChevronRight } from "react-icons/go";
@@ -329,6 +330,25 @@ function Tabbar({ isOpen, onClose }) {
               <span className="title">
                 <FaCalendarAlt style={{ fontSize: "16px" }} />
                 <span className="tab-label">Lịch &amp; Sự kiện</span>
+              </span>
+            </NavLink>
+          </div>
+
+          {/* XEM CHUNG PHIM (WATCH PARTY) */}
+          <div className="tab-parent">
+            <NavLink
+              to="/xem-chung"
+              className="tab-link-direct tab-link-watch-party"
+              onClick={handleLinkClick}
+            >
+              <span className="title">
+                <FaUsers style={{ fontSize: "16px" }} />
+                <span className="tab-label">Xem chung</span>
+              </span>
+              <span className="badge-watch-party-shine">
+                <span className="badge-shine-effect" />
+                <span className="badge-live-dot" />
+                <span className="badge-watch-text">Mới</span>
               </span>
             </NavLink>
           </div>

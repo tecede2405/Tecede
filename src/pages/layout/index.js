@@ -31,6 +31,7 @@ import {
   VerifiedBadge,
   PremiumBadge,
 } from "../../component/VerifiedBadge/index";
+import MiniFloatingPlayer from "../../component/MiniFloatingPlayer/index";
 
 function Layout() {
   const [showTabbar, setShowTabbar] = useState(false);
@@ -161,6 +162,9 @@ function Layout() {
             onClick={() => navigate("/")}
           />
         </div>
+
+        {/* Cụm Mini Music Player nằm ở khoảng trống giữa Header */}
+        <MiniFloatingPlayer />
 
         <div className="header__right">
           {/* Cụm này sẽ ẨN trên Mobile (Home, Truyện, Nhạc) */}

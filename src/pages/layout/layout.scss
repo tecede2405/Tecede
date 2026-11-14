@@ -67,6 +67,7 @@
     &__left {
         display: flex;
         align-items: center;
+        flex-shrink: 0;
     }
 
     &__image {
@@ -80,7 +81,7 @@
         display: flex;
         align-items: center;
         gap: 25px;
-        flex: 1;
+        flex: 0 0 auto;
         justify-content: flex-end;
 
         /* NAV ICONS (Home, Sách, Nhạc - Sẽ bị ẩn trên mobile) */
@@ -472,6 +473,10 @@
     /* Ẩn toàn bộ các cụm icon (Home, Truyện, Nhạc, Donate, Lịch sử) trên mobile */
     .header__right .nav-icons,
     .header__right .action-icons { display: none !important; }
+    .header__right {
+        gap: 10px;
+        flex: 0 0 auto !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -486,7 +491,10 @@
 @media (max-width: 540px) {
     .header {
         height: 60px;
-        &__image { width: 100px; margin-left: 5px; }
+        padding: 0 10px;
+        &__left { flex-shrink: 0; }
+        &__image { width: 90px; margin-left: 5px; }
+        &__right { flex: 0 0 auto !important; gap: 6px; }
     }
     .footer-custom { padding: 25px 0 15px; }
     .animated-text { font-size: 18px; }

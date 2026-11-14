@@ -115,8 +115,16 @@
   height: 100%;
   padding: 0 60px 60px;
   display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+}
+
+.cinemaHeroCard__left {
+  display: flex;
   align-items: flex-end;
   gap: 28px;
+  min-width: 0;
 }
 
 /* ===============================
@@ -176,12 +184,12 @@
    INFO
 ================================= */
 .cinemaHeroCard__info {
-  max-width: 500px;
+  max-width: 540px;
   color: white;
 }
 
 .cinemaHeroCard__title {
-  font-size: 26px;
+  font-size: 29px;
   font-weight: 800;
   margin-bottom: 4px;
   background: linear-gradient(
@@ -286,108 +294,173 @@
 }
 
 /* ===============================
-   ACTIONS BUTTONS
+   ACTIONS BUTTONS (SEPARATED PLAY + FUSED INFO/FAV)
 ================================= */
 .cinemaHeroCard__actions {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 14px;
+  flex-shrink: 0;
+  margin-bottom: 4px;
 }
 
+/* NÚT XEM NGAY TÁCH RIÊNG (ICON + CHỮ) */
 .cinemaHeroCard__playBtn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
+  gap: 10px;
+  padding: 12px 26px 12px 22px;
   border-radius: 999px;
-  border: none;
+  border: 1px solid rgba(34, 197, 94, 0.4);
   background: linear-gradient(135deg, #1db954, #1ed760);
-  color: #000;
-  font-size: 14px;
+  color: #051e0e;
+  font-size: 14.5px;
   font-weight: 700;
-  letter-spacing: .3px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   cursor: pointer;
   z-index: 10;
+  transition: all 0.25s ease;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(29, 185, 84, 0.35);
+
+  svg {
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: #051e0e;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #22c55e, #10b981);
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(34, 197, 94, 0.5);
+
+    svg {
+      transform: scale(1.12);
+    }
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* CỤM NÚT DÍNH NHAU: CHI TIẾT & YÊU THÍCH (CHỈ ICON) */
+.cinemaHeroCard__iconGroup {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(18, 12, 30, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 
-    0 6px 20px rgba(29, 185, 84, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transition: 
-    transform .25s ease,
-    box-shadow .25s ease,
-    filter .25s ease;
-}
+    0 8px 25px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.25s ease;
 
-.cinemaHeroCard__playBtn svg {
-  font-size: 13px;
-  background: rgba(0, 0, 0, 0.15);
-  padding: 5px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  transition: transform .25s ease;
-}
-
-.cinemaHeroCard__playBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 10px 28px rgba(29, 185, 84, 0.45),
-    0 0 16px rgba(29, 185, 84, 0.35);
-  filter: brightness(1.05);
-}
-
-.cinemaHeroCard__playBtn:hover svg {
-  transform: scale(1.1);
-}
-
-.cinemaHeroCard__playBtn:active {
-  transform: translateY(0px) scale(.97);
-  box-shadow: 0 4px 14px rgba(29, 185, 84, 0.3);
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 
+      0 12px 32px rgba(0, 0, 0, 0.75),
+      0 0 15px rgba(255, 255, 255, 0.1);
+  }
 }
 
 .cinemaHeroCard__infoBtn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: .3px;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-  transition: 
-    transform .25s ease,
-    background .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+  transition: all 0.25s ease;
+  user-select: none;
+
+  svg {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.85);
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+
+    svg {
+      transform: scale(1.15);
+      color: #38bdf8;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
-.cinemaHeroCard__infoBtn svg {
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.95);
-  transition: transform .25s ease;
+.cinemaHeroCard__favBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 0;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+  user-select: none;
+
+  svg {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.85);
+    transition: transform 0.25s ease, color 0.25s ease;
+
+    &.heart-active {
+      color: #ef4444;
+      filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.7));
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+
+    svg {
+      transform: scale(1.15);
+      color: #ef4444;
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.active {
+    svg {
+      color: #ef4444;
+      animation: heartBeat 0.35s ease-in-out;
+    }
+  }
 }
 
-.cinemaHeroCard__infoBtn:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.45);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-}
-
-.cinemaHeroCard__infoBtn:hover svg {
-  transform: scale(1.1);
-}
-
-.cinemaHeroCard__infoBtn:active {
-  transform: translateY(0px) scale(.97);
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
 /* ===============================
@@ -721,6 +794,13 @@
     gap: 15px;              /* Khoảng cách giữa các thành phần */
     bottom: -80px;
 
+    .cinemaHeroCard__left {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      text-align: center;
+    }
+
     .cinemaHeroCard__poster img {
       width: 150px;
       height: 225px;
@@ -756,7 +836,9 @@
 
     /* Bỏ position: absolute để nút bấm tự động nằm trong luồng layout */
     .cinemaHeroCard__playBtn,
-    .cinemaHeroCard__infoBtn {
+    .cinemaHeroCard__iconGroup,
+    .cinemaHeroCard__infoBtn,
+    .cinemaHeroCard__favBtn {
       position: static;     
       transform: none;
       align-self: center;
