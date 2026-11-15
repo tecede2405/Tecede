@@ -1116,6 +1116,18 @@ export default function WatchPartyPage() {
             wsRef.current.send(JSON.stringify({ type: "PING" }));
           }
         }, 15000);
+
+        // Nếu là chủ phòng và video đang mở/đã phát, lập tức gửi SYNC_TIME để server và các khách cập nhật ngay
+        if (videoRef.current && videoRef.current.currentTime > 0) {
+          const isUserHost = Boolean(
+            roomData?.isHost ||
+            (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+          );
+          if (isUserHost) {
+            const cur = Math.floor(videoRef.current.currentTime);
+            ws.send(JSON.stringify({ type: "SYNC_TIME", time: cur }));
+          }
+        }
       };
 
       ws.onmessage = (event) => {
@@ -1270,6 +1282,34 @@ export default function WatchPartyPage() {
   const handleServerMessage = useCallback((msg) => {
     switch (msg.type) {
       case "ROOM_INIT": {
+        const isUserHost = Boolean(
+          msg.room?.isHost ||
+          (user?.id && msg.room?.hostId && String(user.id) === String(msg.room.hostId))
+        );
+        // Nếu là chủ phòng và video đang phát ở một mốc thời gian cụ thể (> 2s),
+        // giữ mốc thời gian của chủ phòng và đồng bộ ngược lên server để không bị server ghi đè lùi lại
+        if (isUserHost && videoRef.current && videoRef.current.currentTime > 2) {
+          const currentSeconds = Math.floor(videoRef.current.currentTime);
+          const newStartedAt = Date.now() - currentSeconds * 1000;
+          roomStartedAtRef.current = newStartedAt;
+          setRoomData((prev) => ({
+            ...(prev || msg.room),
+            ...msg.room,
+            startedAt: newStartedAt,
+            isHost: true,
+          }));
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(
+              JSON.stringify({
+                type: "SYNC_TIME",
+                time: currentSeconds,
+              })
+            );
+          }
+          setMembers(msg.members || []);
+          break;
+        }
+
         setRoomData(msg.room);
         roomStartedAtRef.current = msg.room.startedAt;
         setMembers(msg.members || []);
@@ -1442,7 +1482,12 @@ export default function WatchPartyPage() {
     const video = videoRef.current;
     if (!video) return;
 
-    const targetElapsed = Math.max(0, roomData.elapsedSeconds || 0);
+    const targetElapsed = Math.max(
+      0,
+      roomStartedAtRef.current
+        ? Math.floor((Date.now() - roomStartedAtRef.current) / 1000)
+        : (roomData.elapsedSeconds || 0)
+    );
 
     // Hủy triệt để HLS cũ nếu đang chạy để không giữ bộ đệm video tập cũ
     if (hlsInstanceRef.current) {
@@ -1680,27 +1725,48 @@ export default function WatchPartyPage() {
     startElapsedCounter(newStartedAt);
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
 
-    if (
-      roomData?.isHost &&
-      wsRef.current &&
-      wsRef.current.readyState === WebSocket.OPEN
-    ) {
-      wsRef.current.send(
-        JSON.stringify({
-          type: "SYNC_TIME",
-          time: currentSeconds,
-        })
-      );
+    const isUserHost = Boolean(
+      roomData?.isHost ||
+      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+
+    if (isUserHost) {
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(
+          JSON.stringify({
+            type: "SYNC_TIME",
+            time: currentSeconds,
+          })
+        );
+      }
+      // HTTP Fallback: Đảm bảo server lưu mốc tua mới ngay cả khi WebSocket đang tạm reconnecting
+      if (activeRoomId && user?.token) {
+        fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ time: currentSeconds }),
+        }).catch(() => {});
+      }
     }
   };
 
   // Đồng bộ khi chủ phòng Pause / Play
   const handleHostPause = () => {
-    if (!videoRef.current || !roomData?.isHost) return;
+    if (!videoRef.current) return;
+    const isUserHost = Boolean(
+      roomData?.isHost ||
+      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+    if (!isUserHost) return;
+
     const currentSeconds = Math.floor(videoRef.current.currentTime);
     const newStartedAt = Date.now() - currentSeconds * 1000;
     roomStartedAtRef.current = newStartedAt;
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
+
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(
         JSON.stringify({
@@ -1709,14 +1775,31 @@ export default function WatchPartyPage() {
         })
       );
     }
+    if (activeRoomId && user?.token) {
+      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ time: currentSeconds }),
+      }).catch(() => {});
+    }
   };
 
   const handleHostPlay = () => {
-    if (!videoRef.current || !roomData?.isHost) return;
+    if (!videoRef.current) return;
+    const isUserHost = Boolean(
+      roomData?.isHost ||
+      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+    if (!isUserHost) return;
+
     const currentSeconds = Math.floor(videoRef.current.currentTime);
     const newStartedAt = Date.now() - currentSeconds * 1000;
     roomStartedAtRef.current = newStartedAt;
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
+
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(
         JSON.stringify({
@@ -1724,6 +1807,16 @@ export default function WatchPartyPage() {
           time: currentSeconds,
         })
       );
+    }
+    if (activeRoomId && user?.token) {
+      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ time: currentSeconds }),
+      }).catch(() => {});
     }
   };
 
