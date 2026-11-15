@@ -1226,24 +1226,6 @@ export default function WatchPartyPage() {
     };
   }, [activeRoomId, user?.token, user?.id]);
 
-  // Pre-fetch thông tin phòng qua HTTP để hiển thị ngay lập tức khi vào link phòng
-  useEffect(() => {
-    if (activeRoomId) {
-      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}`)
-        .then((res) => res.json())
-        .then((json) => {
-          if (json?.success && json?.data && json.data.roomId) {
-            setRoomData((prev) => prev || json.data);
-            if (json.data.startedAt) {
-              roomStartedAtRef.current = json.data.startedAt;
-              startElapsedCounter(json.data.startedAt);
-            }
-          }
-        })
-        .catch(() => {});
-    }
-  }, [activeRoomId, startElapsedCounter]);
-
   // Bộ đếm thời gian đã chiếu
   const startElapsedCounter = useCallback((startedAt) => {
     if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current);
@@ -1270,6 +1252,24 @@ export default function WatchPartyPage() {
     updateTimer();
     elapsedTimerRef.current = setInterval(updateTimer, 1000);
   }, []);
+
+  // Pre-fetch thông tin phòng qua HTTP để hiển thị ngay lập tức khi vào link phòng
+  useEffect(() => {
+    if (activeRoomId) {
+      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && json?.data && json.data.roomId) {
+            setRoomData((prev) => prev || json.data);
+            if (json.data.startedAt) {
+              roomStartedAtRef.current = json.data.startedAt;
+              startElapsedCounter(json.data.startedAt);
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, [activeRoomId, startElapsedCounter]);
 
   // Xử lý các gói tin nhận từ Server
   const handleServerMessage = useCallback((msg) => {
