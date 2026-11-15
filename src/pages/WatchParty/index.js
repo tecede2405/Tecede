@@ -771,6 +771,52 @@ export default function WatchPartyPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomData?.videoUrl, roomData?.episode, movieEpisodes]);
 
+  // Lọc lỗi "The play() request was interrupted by a call to pause()" ở cấp độ Window để React Error Overlay không nhảy ra
+  useEffect(() => {
+    const handleUnhandledRejection = (event) => {
+      const reason = event?.reason;
+      const msg = typeof reason === "string" ? reason : reason?.message || "";
+      if (
+        reason?.name === "AbortError" ||
+        msg.includes("The play() request was interrupted") ||
+        msg.includes("interrupted by a call to pause")
+      ) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener("unhandledrejection", handleUnhandledRejection);
+    return () => {
+      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+    };
+  }, []);
+
+  // Helper gọi play() an toàn tuyệt đối, triệt tiêu lỗi AbortError / interrupted by pause()
+  const safePlay = useCallback((videoEl) => {
+    const el = videoEl || videoRef.current;
+    if (!el) return;
+    try {
+      const promise = el.play();
+      if (promise !== undefined && typeof promise.catch === "function") {
+        promise.catch((err) => {
+          // Bỏ qua lỗi DOMException khi trình duyệt ngắt play() do tua / đổi tập / pause
+          if (
+            err.name === "AbortError" ||
+            err.message?.includes("interrupted by a call to pause") ||
+            err.message?.includes("play() request was interrupted")
+          ) {
+            return;
+          }
+          if (err.name === "NotAllowedError") {
+            setNeedsUserGesture(true);
+          }
+        });
+      }
+    } catch (e) {
+      // Ignored
+    }
+  }, []);
+
   // Bộ điều khiển âm thanh và toàn màn hình riêng cho khách
   const toggleMute = () => {
     if (videoRef.current) {
@@ -1366,7 +1412,7 @@ export default function WatchPartyPage() {
             isSeekingFromSyncRef.current = true;
             videoRef.current.currentTime = msg.time;
             if (videoRef.current.paused) {
-              videoRef.current.play().catch(() => {});
+              safePlay(videoRef.current);
             }
           }
         }
@@ -1520,9 +1566,7 @@ export default function WatchPartyPage() {
         if (targetElapsed > 0) {
           video.currentTime = targetElapsed;
         }
-        video.play().catch(() => {
-          setNeedsUserGesture(true);
-        });
+        safePlay(video);
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
@@ -1550,9 +1594,7 @@ export default function WatchPartyPage() {
         if (targetElapsed > 0) {
           video.currentTime = targetElapsed;
         }
-        video.play().catch(() => {
-          setNeedsUserGesture(true);
-        });
+        safePlay(video);
       };
       video.addEventListener("loadedmetadata", onMetadata, { once: true });
     }
@@ -1583,11 +1625,11 @@ export default function WatchPartyPage() {
       if (diff > 3.0) {
         isSeekingFromSyncRef.current = true;
         video.currentTime = expectedTime;
-        if (video.paused) video.play().catch(() => {});
+        if (video.paused) safePlay(video);
       }
     }, 4000);
     return () => clearInterval(interval);
-  }, [roomData?.isHost, isConnected, roomData?.startedAt]);
+  }, [roomData?.isHost, isConnected, roomData?.startedAt, safePlay]);
 
   // Bật tiếng và phát video khi bị trình duyệt chặn Autoplay có âm thanh
   const handleUnmuteAndPlay = () => {
@@ -1595,7 +1637,7 @@ export default function WatchPartyPage() {
       if (roomData?.elapsedSeconds) {
         videoRef.current.currentTime = roomData.elapsedSeconds;
       }
-      videoRef.current.play();
+      safePlay(videoRef.current);
       setNeedsUserGesture(false);
     }
   };
@@ -2280,8 +2322,8 @@ export default function WatchPartyPage() {
                         roomData?.isHost
                           ? handleHostPause
                           : () => {
-                              if (videoRef.current && isConnected) {
-                                videoRef.current.play().catch(() => {});
+                              if (videoRef.current && isConnected && !videoRef.current.seeking) {
+                                safePlay(videoRef.current);
                               }
                             }
                       }
