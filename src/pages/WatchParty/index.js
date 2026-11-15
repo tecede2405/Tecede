@@ -196,7 +196,6 @@ export default function WatchPartyPage() {
   const [isSearchingHostMovie, setIsSearchingHostMovie] = useState(false);
 
   // Guest Player Controls
-  const [guestVolume, setGuestVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showGuestControls, setShowGuestControls] = useState(false);
@@ -208,7 +207,7 @@ export default function WatchPartyPage() {
   const reconnectAttemptsRef = useRef(0);
   const reconnectTimerRef = useRef(null);
   const pingIntervalRef = useRef(null);
-  const [isReconnecting, setIsReconnecting] = useState(false);
+  const connectWebSocketRef = useRef(null);
 
   const chatScrollRef = useRef(null);
   const elapsedTimerRef = useRef(null);
@@ -820,18 +819,12 @@ export default function WatchPartyPage() {
   // Bộ điều khiển âm thanh và toàn màn hình riêng cho khách
   const toggleMute = () => {
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-    }
-  };
-
-  const handleGuestVolumeChange = (e) => {
-    const val = parseFloat(e.target.value);
-    setGuestVolume(val);
-    if (videoRef.current) {
-      videoRef.current.volume = val;
-      videoRef.current.muted = val === 0;
-      setIsMuted(val === 0);
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      if (!nextMuted && videoRef.current.volume === 0) {
+        videoRef.current.volume = 1;
+      }
+      setIsMuted(nextMuted);
     }
   };
 
@@ -1103,7 +1096,6 @@ export default function WatchPartyPage() {
         wsRef.current = null;
       }
       setIsConnected(false);
-      setIsReconnecting(false);
       setRoomData(null);
       setMovieServers([]);
       setMovieEpisodes([]);
@@ -1152,16 +1144,15 @@ export default function WatchPartyPage() {
 
       ws.onopen = () => {
         setIsConnected(true);
-        setIsReconnecting(false);
         reconnectAttemptsRef.current = 0;
 
-        // Bắt đầu nhịp tim PING định kỳ 15 giây (Giữ kết nối luôn sống, chống Cloudflare Workers đóng do rảnh)
+        // Bắt đầu nhịp tim PING định kỳ 10 giây (Giữ kết nối luôn sống, chống Cloudflare Workers đóng do rảnh)
         if (pingIntervalRef.current) clearInterval(pingIntervalRef.current);
         pingIntervalRef.current = setInterval(() => {
           if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             wsRef.current.send(JSON.stringify({ type: "PING" }));
           }
-        }, 15000);
+        }, 10000);
 
         // Nếu là chủ phòng và video đang mở/đã phát, lập tức gửi SYNC_TIME để server và các khách cập nhật ngay
         if (videoRef.current && videoRef.current.currentTime > 0) {
@@ -1190,7 +1181,7 @@ export default function WatchPartyPage() {
         setIsConnected(false);
         if (pingIntervalRef.current) clearInterval(pingIntervalRef.current);
 
-        // Nếu đóng có chủ đích (F5, unmount, ấn rời phòng) thì TUYỆT ĐỐI không hiện popup
+        // Nếu đóng có chủ đích (F5, unmount, ấn rời phòng) thì không thử kết nối lại
         if (isIntentionalCloseRef.current) {
           return;
         }
@@ -1224,37 +1215,16 @@ export default function WatchPartyPage() {
           return;
         }
 
-        // Mất kết nối bất ngờ (do rớt mạng wifi/4G hoặc Cloudflare edge rebalancing): Tự động thử kết nối lại
-        if (reconnectAttemptsRef.current < 5) {
-          setIsReconnecting(true);
-          reconnectAttemptsRef.current += 1;
-          const delay = Math.min(4000, reconnectAttemptsRef.current * 1500);
-          if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
-          reconnectTimerRef.current = setTimeout(() => {
-            if (!isIntentionalCloseRef.current) {
-              connectWebSocket();
-            }
-          }, delay);
-          return;
-        }
-
-        // Quá 5 lần thử không được mới báo lỗi
-        setIsReconnecting(false);
-        DarkSwal.fire({
-          icon: "warning",
-          title: "Mất kết nối",
-          text: "Mạng của bạn bị gián đoạn. Bạn có muốn thử kết nối lại không?",
-          showCancelButton: true,
-          confirmButtonText: "Thử kết nối lại",
-          cancelButtonText: "Về sảnh xem chung",
-        }).then((res) => {
-          if (res.isConfirmed) {
-            reconnectAttemptsRef.current = 0;
+        // Mất kết nối bất ngờ (wifi/4G chuyển mạng, sleep, Cloudflare DO ngủ dậy): Tự động thử kết nối lại ngay lập tức
+        reconnectAttemptsRef.current += 1;
+        // Lần đầu thử lại cực nhanh (350ms), các lần sau lùi dần tối đa 2000ms, retry liên tục trong nền không chặn người dùng
+        const delay = reconnectAttemptsRef.current === 1 ? 350 : Math.min(2000, reconnectAttemptsRef.current * 500);
+        if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+        reconnectTimerRef.current = setTimeout(() => {
+          if (!isIntentionalCloseRef.current) {
             connectWebSocket();
-          } else {
-            navigate("/xem-chung");
           }
-        });
+        }, delay);
       };
 
       ws.onerror = (err) => {
@@ -1262,9 +1232,35 @@ export default function WatchPartyPage() {
       };
     };
 
+    connectWebSocketRef.current = connectWebSocket;
     connectWebSocket();
 
+    // Tự động kết nối lại ngay khi người dùng quay lại tab hoặc có mạng trở lại
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+          connectWebSocket();
+        } else {
+          try {
+            wsRef.current.send(JSON.stringify({ type: "PING" }));
+          } catch {}
+        }
+      }
+    };
+
+    const handleOnline = () => {
+      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+        connectWebSocket();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("online", handleOnline);
+
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("online", handleOnline);
+      connectWebSocketRef.current = null;
       isIntentionalCloseRef.current = true;
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
       if (pingIntervalRef.current) clearInterval(pingIntervalRef.current);
@@ -1353,12 +1349,28 @@ export default function WatchPartyPage() {
             );
           }
           setMembers(msg.members || []);
+          if (msg.messages && Array.isArray(msg.messages)) {
+            setMessages(msg.messages);
+            setTimeout(() => {
+              if (chatScrollRef.current) {
+                chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+              }
+            }, 60);
+          }
           break;
         }
 
         setRoomData(msg.room);
         roomStartedAtRef.current = msg.room.startedAt;
         setMembers(msg.members || []);
+        if (msg.messages && Array.isArray(msg.messages)) {
+          setMessages(msg.messages);
+          setTimeout(() => {
+            if (chatScrollRef.current) {
+              chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+            }
+          }, 60);
+        }
         startElapsedCounter(msg.room.startedAt);
         break;
       }
@@ -1466,14 +1478,40 @@ export default function WatchPartyPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, startElapsedCounter]);
 
-  // Hành động: Gửi tin nhắn chat
+  // Hành động: Gửi tin nhắn chat (Hỗ trợ cả WebSocket thời gian thực và HTTP fallback khi đang kết nối lại)
   const handleSendChat = (e) => {
     e.preventDefault();
     const text = chatInput.trim();
-    if (!text || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return;
+    if (!text) return;
 
-    wsRef.current.send(JSON.stringify({ type: "CHAT", text }));
     setChatInput("");
+
+    // Nếu WebSocket đang mở, gửi ngay lập tức qua WebSocket
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ type: "CHAT", text }));
+      return;
+    }
+
+    // Nếu WebSocket đang mất kết nối / đang kết nối lại: gửi fallback qua HTTP POST
+    if (user?.token && activeRoomId) {
+      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          text,
+          username: user.display_name || user.username,
+          avatar: user.avatar || "",
+        }),
+      }).catch((err) => console.error("Lỗi gửi chat qua HTTP fallback:", err));
+    }
+
+    // Lập tức kích hoạt kết nối lại WebSocket nếu nó đang đóng
+    if (connectWebSocketRef.current) {
+      connectWebSocketRef.current();
+    }
   };
 
   // Nhận biết nguồn M3U8 trực tiếp
@@ -1549,7 +1587,7 @@ export default function WatchPartyPage() {
       video.pause();
       video.removeAttribute("src");
       video.currentTime = targetElapsed;
-      video.volume = guestVolume;
+      video.volume = 1;
       video.muted = isMuted;
       video.load();
     } catch (e) {
@@ -2073,13 +2111,6 @@ export default function WatchPartyPage() {
           </div>
 
           <div className="room-header-right">
-            {isReconnecting && (
-              <div className="reconnecting-badge-header" title="Đang thử kết nối lại...">
-                <FaSyncAlt className="spin" />
-                <span className="d-none d-sm-inline">Đang kết nối lại...</span>
-              </div>
-            )}
-
             <div className="elapsed-timer-badge" title={`Đã chiếu: ${elapsedDisplay}`}>
               <FaClock />
               <span className="timer-label">Đã chiếu: </span>
@@ -2356,7 +2387,7 @@ export default function WatchPartyPage() {
                       </button>
                     )}
 
-                    {/* Thanh điều khiển riêng cho khách: Chỉ có Mute/Volume và Fullscreen, TUYỆT ĐỐI KHÔNG TUA HAY PAUSE ĐƯỢC */}
+                    {/* Thanh điều khiển riêng cho khách: Chỉ có Bật/Tắt âm thanh và Fullscreen, TUYỆT ĐỐI KHÔNG TUA HAY PAUSE ĐƯỢC */}
                     {!roomData?.isHost && (
                       <div className={`guest-player-bar ${showGuestControls ? "visible" : ""}`}>
                         <div className="guest-bar-right">
@@ -2364,20 +2395,10 @@ export default function WatchPartyPage() {
                             type="button"
                             className="btn-guest-action"
                             onClick={toggleMute}
-                            title={isMuted || guestVolume === 0 ? "Bật âm thanh" : "Tắt âm thanh"}
+                            title={isMuted ? "Bật âm thanh" : "Tắt âm thanh"}
                           >
-                            {isMuted || guestVolume === 0 ? <FaVolumeMute /> : <FaVolumeUp />}
+                            {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
                           </button>
-                          <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value={isMuted ? 0 : guestVolume}
-                            onChange={handleGuestVolumeChange}
-                            className="guest-volume-slider"
-                            title="Âm lượng"
-                          />
                           <button
                             type="button"
                             className="btn-guest-action"
@@ -2436,43 +2457,46 @@ export default function WatchPartyPage() {
             </div>
           </main>
 
-          {/* Cột phải: Chat & Danh sách người đang xem */}
+          {/* Cột phải: Chat & Danh sách người đang xem (đã gộp chung) */}
           <aside className="room-sidebar-column">
-            {/* Viewers bar */}
-            <div className="viewers-card">
-              <div className="viewers-card-header">
-                <span className="viewers-count">
-                  <FaUsers /> Người đang xem (<strong>{members.length}</strong>)
-                </span>
-                <span className="live-status-pill">
-                  <FaCircle className="live-dot" /> LIVE
-                </span>
-              </div>
-              <div className="viewers-avatar-list">
-                {members.map((m) => (
-                  <div key={m.userId} className="viewer-chip" title={m.username}>
-                    {m.isHost && <FaCrown className="crown-badge" />}
-                    <span className="viewer-name">{m.username}</span>
-                    {roomData?.isHost && !m.isHost && (
-                      <button
-                        className="btn-kick-user"
-                        onClick={() => handleKickUser(m.userId, m.username)}
-                        title="Mời ra khỏi phòng"
-                      >
-                        <FaBan />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* Live Chat Box */}
             <div className="chat-card">
               <div className="chat-card-header">
-                <FaComments className="chat-icon" />
-                <span>Trò Chuyện Trực Tiếp</span>
-                <span className="chat-badge">Real-time</span>
+                <div className="chat-header-main-row">
+                  <div className="chat-title-group">
+                    <FaComments className="chat-icon" />
+                    <span>Trò Chuyện Trực Tiếp</span>
+                  </div>
+                  <div className="chat-viewers-pill" title="Người đang xem trực tiếp">
+                    <FaUsers className="users-icon" />
+                    <span className="viewers-num">{members.length}</span>
+                    <span className="live-divider">•</span>
+                    <span className="live-status-pill">
+                      <FaCircle className="live-dot" /> LIVE
+                    </span>
+                  </div>
+                </div>
+
+                {members.length > 0 && (
+                  <div className="viewers-avatar-ribbon">
+                    {members.map((m) => (
+                      <div key={m.userId} className="viewer-chip" title={m.username}>
+                        {m.isHost && <FaCrown className="crown-badge" />}
+                        <span className="viewer-name">{m.username}</span>
+                        {roomData?.isHost && !m.isHost && (
+                          <button
+                            type="button"
+                            className="btn-kick-user"
+                            onClick={() => handleKickUser(m.userId, m.username)}
+                            title="Mời ra khỏi phòng"
+                          >
+                            <FaBan />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Chat Message List */}
@@ -2518,9 +2542,8 @@ export default function WatchPartyPage() {
                   placeholder="Nhập tin nhắn (tối đa 200 ký tự)..."
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  disabled={!isConnected}
                 />
-                <button type="submit" disabled={!isConnected || !chatInput.trim()}>
+                <button type="submit" disabled={!chatInput.trim()}>
                   <FaPaperPlane />
                 </button>
               </form>
