@@ -596,6 +596,7 @@ export default function WatchPartyPage() {
 
         if (eps.length > 0) {
           // Ưu tiên chọn tập đang phát trong phòng (nếu có), nếu không có mới lấy tập 1
+          const firstEp = eps[0];
           const matchEp = eps.find(
             (ep) =>
               (roomData?.videoUrl &&
@@ -604,7 +605,7 @@ export default function WatchPartyPage() {
                   ep.m3u8 === roomData.videoUrl)) ||
               (roomData?.episode && (ep.name === roomData.episode || ep.slug === roomData.episode))
           );
-          const activeEp = matchEp || eps[0];
+          const activeEp = matchEp || firstEp;
           setSelectedEpisode(activeEp);
           setFormEpisode(activeEp.name || "Tập 1");
           setFormVideoUrl(activeEp.m3u8Url || activeEp.link_m3u8 || activeEp.m3u8 || "");
