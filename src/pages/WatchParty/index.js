@@ -12,7 +12,6 @@ import {
   FaCrown,
   FaComments,
   FaPaperPlane,
-  FaLink,
   FaShareAlt,
   FaBan,
   FaSyncAlt,
@@ -27,7 +26,6 @@ import {
   FaServer,
   FaListOl,
   FaTimes,
-  FaLock,
   FaVolumeUp,
   FaVolumeMute,
   FaExpand,
@@ -45,7 +43,6 @@ const BACKEND_HTTP = (
 const BACKEND_WS = BACKEND_HTTP.replace(/^http/i, "ws");
 const SERVER_API_BASE = process.env.REACT_APP_SERVER_API_URL || "https://movie1-api-worker.nguyengiaminh532.workers.dev";
 const KK_BASE = process.env.REACT_APP_FILM_API_URL || "https://phimapi.com";
-const VM_BASE = process.env.REACT_APP_FILM_API_URL_2 || "https://vsmov.com";
 const NC_BASE = process.env.REACT_APP_FILM_API_URL_3 || "https://phim.nguonc.com";
 
 // Cấu hình Hls.js chuyên biệt cho xem chung: bộ đệm mượt mà, chống giật, tua tức thì và tự phục hồi
@@ -128,6 +125,17 @@ function getYearFromData(f) {
   return "N/A";
 }
 
+// SweetAlert helper
+const DarkSwal = Swal.mixin({
+  background: "#161b22",
+  color: "#fff",
+  confirmButtonColor: "#38bdf8",
+  cancelButtonColor: "#334155",
+  customClass: {
+    popup: "swal-dark",
+  },
+});
+
 export default function WatchPartyPage() {
   const { roomId: urlRoomId } = useParams();
   const [searchParams] = useSearchParams();
@@ -154,7 +162,6 @@ export default function WatchPartyPage() {
   const [selectedServerIdx, setSelectedServerIdx] = useState(0);
   const [movieEpisodes, setMovieEpisodes] = useState([]);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
-  const [showCustomLinkInput, setShowCustomLinkInput] = useState(false);
 
   // Form State: Tạo phòng mới
   const [formRoomName, setFormRoomName] = useState("");
@@ -174,7 +181,6 @@ export default function WatchPartyPage() {
   // State: Inside Room
   const wsRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
   const [roomData, setRoomData] = useState(null);
   const [members, setMembers] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -222,17 +228,6 @@ export default function WatchPartyPage() {
     setShowSkipAd(false);
   }, [roomData?.videoUrl]);
 
-  // SweetAlert helper
-  const DarkSwal = Swal.mixin({
-    background: "#161b22",
-    color: "#fff",
-    confirmButtonColor: "#38bdf8",
-    cancelButtonColor: "#334155",
-    customClass: {
-      popup: "swal-dark",
-    },
-  });
-
   // Tự động tải thông tin phim nếu đi từ trang chi tiết phim sang
   useEffect(() => {
     const slug = searchParams.get("slug");
@@ -248,6 +243,7 @@ export default function WatchPartyPage() {
         thumb_url: poster || "",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, activeRoomId]);
 
   // Tìm kiếm phim live trong modal (Debounced) - lấy full data như trang search từ cả 3 nguồn (KK, VM, NC)
@@ -754,6 +750,7 @@ export default function WatchPartyPage() {
         autoFetch();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRoomId, roomData?.title, roomData?.movieSlug, movieServers.length, isLoadingDetail]);
 
   // Đồng bộ chip tập đang chọn theo đúng tập phòng đang phát
@@ -771,6 +768,7 @@ export default function WatchPartyPage() {
         setSelectedEpisode(match);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomData?.videoUrl, roomData?.episode, movieEpisodes]);
 
   // Bộ điều khiển âm thanh và toàn màn hình riêng cho khách
@@ -1099,7 +1097,6 @@ export default function WatchPartyPage() {
         return;
       }
 
-      setIsConnecting(true);
       const username = user.display_name || user.username || `User #${user.id || ""}`;
       const avatar = user.avatar || "";
       const wsUrl = `${BACKEND_WS}/ws/room/${encodeURIComponent(activeRoomId)}?token=${encodeURIComponent(user.token)}&username=${encodeURIComponent(username)}&avatar=${encodeURIComponent(avatar)}`;
@@ -1109,7 +1106,6 @@ export default function WatchPartyPage() {
 
       ws.onopen = () => {
         setIsConnected(true);
-        setIsConnecting(false);
         setIsReconnecting(false);
         reconnectAttemptsRef.current = 0;
 
@@ -1134,7 +1130,6 @@ export default function WatchPartyPage() {
 
       ws.onclose = (event) => {
         setIsConnected(false);
-        setIsConnecting(false);
         if (pingIntervalRef.current) clearInterval(pingIntervalRef.current);
 
         // Nếu đóng có chủ đích (F5, unmount, ấn rời phòng) thì TUYỆT ĐỐI không hiện popup
@@ -1206,7 +1201,6 @@ export default function WatchPartyPage() {
 
       ws.onerror = (err) => {
         console.error("Lỗi kết nối WebSocket:", err);
-        setIsConnecting(false);
       };
     };
 
@@ -1224,6 +1218,7 @@ export default function WatchPartyPage() {
         clearInterval(elapsedTimerRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRoomId, user?.token, user?.id]);
 
   // Bộ đếm thời gian đã chiếu
@@ -1382,6 +1377,7 @@ export default function WatchPartyPage() {
       default:
         break;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, startElapsedCounter]);
 
   // Hành động: Gửi tin nhắn chat
@@ -1526,6 +1522,7 @@ export default function WatchPartyPage() {
         hlsInstanceRef.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isM3u8Stream, roomData?.videoUrl, roomData?.mediaType]);
 
   // Khách tự động kiểm tra và đồng bộ lại nếu bị trôi thời gian so với phòng (vd: mạng lag buffer 3s)

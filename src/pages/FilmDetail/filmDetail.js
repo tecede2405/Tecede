@@ -16,7 +16,6 @@ import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { useFavoriteToggle } from "../../hooks/useFavorites";
-import { useAuth } from "../../context/AuthContext";
 import "./style.scss";
 
 // TỪ ĐIỂN ĐỂ ĐỒNG BỘ TÊN SERVER VỚI TRANG XEM PHIM
@@ -32,7 +31,6 @@ export default function MovieDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
 
   const sourceFromSearch = location.state?.sourceName;
   const isRefreshParam =
@@ -216,7 +214,9 @@ export default function MovieDetail() {
   }, [sourceFromSearch, allServers]);
 
   const currentServerObj = allServers[currentServer];
-  const episodes = currentServerObj?.server_data || currentServerObj?.items || [];
+  const episodes = useMemo(() => {
+    return currentServerObj?.server_data || currentServerObj?.items || [];
+  }, [currentServerObj]);
   const currentServerName = currentServerObj?.server_name || "";
 
   function getImageUrl(url) {
