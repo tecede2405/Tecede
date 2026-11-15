@@ -48,6 +48,35 @@ const KK_BASE = process.env.REACT_APP_FILM_API_URL || "https://phimapi.com";
 const VM_BASE = process.env.REACT_APP_FILM_API_URL_2 || "https://vsmov.com";
 const NC_BASE = process.env.REACT_APP_FILM_API_URL_3 || "https://phim.nguonc.com";
 
+// Cấu hình Hls.js chuyên biệt cho xem chung: bộ đệm mượt mà, chống giật, tua tức thì và tự phục hồi
+const SMOOTH_HLS_CONFIG = {
+  debug: false,
+  enableWorker: true,
+  lowLatencyMode: false,
+  backBufferLength: 60,
+  maxBufferLength: 45,
+  maxMaxBufferLength: 180,
+  maxBufferSize: 60 * 1024 * 1024,
+  maxBufferHole: 0.5,
+  highBufferWatchdogPeriod: 2,
+  nudgeOffset: 0.1,
+  nudgeMaxRetry: 5,
+  nudgeOnVideoHole: true,
+  maxFragLookUpTolerance: 0.25,
+  startFragPrefetch: true,
+  appendErrorMaxRetry: 5,
+  autoStartLoad: true,
+  fragLoadingTimeOut: 25000,
+  fragLoadingMaxRetry: 6,
+  fragLoadingRetryDelay: 1000,
+  manifestLoadingTimeOut: 25000,
+  manifestLoadingMaxRetry: 6,
+  manifestLoadingRetryDelay: 1000,
+  levelLoadingTimeOut: 25000,
+  levelLoadingMaxRetry: 6,
+  abrEwmaDefaultEstimate: 5000000,
+};
+
 // Helper lấy poster theo nguồn y hệt trang tìm kiếm (FilmListBySlug)
 function getPoster(url, sourceName) {
   if (!url || typeof url !== "string") return "";
@@ -181,6 +210,7 @@ export default function WatchPartyPage() {
   const videoRef = useRef(null);
   const hlsInstanceRef = useRef(null);
   const isSeekingFromSyncRef = useRef(false);
+  const roomStartedAtRef = useRef(0);
   const [needsUserGesture, setNeedsUserGesture] = useState(false);
 
   // Bỏ qua quảng cáo (Server KK: 14:57 [897s] -> 15:31 [931s])
@@ -565,10 +595,19 @@ export default function WatchPartyPage() {
         setMovieEpisodes(eps);
 
         if (eps.length > 0) {
-          const firstEp = eps[0];
-          setSelectedEpisode(firstEp);
-          setFormEpisode(firstEp.name || "Tập 1");
-          setFormVideoUrl(firstEp.m3u8Url || firstEp.link_m3u8 || firstEp.m3u8 || "");
+          // Ưu tiên chọn tập đang phát trong phòng (nếu có), nếu không có mới lấy tập 1
+          const matchEp = eps.find(
+            (ep) =>
+              (roomData?.videoUrl &&
+                (ep.m3u8Url === roomData.videoUrl ||
+                  ep.link_m3u8 === roomData.videoUrl ||
+                  ep.m3u8 === roomData.videoUrl)) ||
+              (roomData?.episode && (ep.name === roomData.episode || ep.slug === roomData.episode))
+          );
+          const activeEp = matchEp || eps[0];
+          setSelectedEpisode(activeEp);
+          setFormEpisode(activeEp.name || "Tập 1");
+          setFormVideoUrl(activeEp.m3u8Url || activeEp.link_m3u8 || activeEp.m3u8 || "");
           setFormMediaType("m3u8");
           if (!formRoomName.trim()) {
             setFormRoomName(`Phòng của ${user?.display_name || user?.username || "Tôi"}`);
@@ -577,6 +616,8 @@ export default function WatchPartyPage() {
           // NẾU LÀ CHỦ PHÒNG ĐỔI PHIM TRONG HOST PANEL: TỰ ĐỘNG PHÁT TẬP 1 PHIM MỚI CHO CẢ PHÒNG!
           if (shouldBroadcastChangeMedia && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             const nextVideoUrl = firstEp.m3u8Url || firstEp.link_m3u8 || firstEp.m3u8 || "";
+            const nowTime = Date.now();
+            roomStartedAtRef.current = nowTime;
             setRoomData((prev) =>
               prev
                 ? {
@@ -585,12 +626,12 @@ export default function WatchPartyPage() {
                     title: m?.name || movie.name,
                     episode: firstEp.name || "Tập 1",
                     movieSlug: movie.slug || m?.slug,
-                    startedAt: Date.now(),
+                    startedAt: nowTime,
                     elapsedSeconds: 0,
                   }
                 : null
             );
-            startElapsedCounter(Date.now());
+            startElapsedCounter(nowTime);
 
             wsRef.current.send(
               JSON.stringify({
@@ -648,6 +689,8 @@ export default function WatchPartyPage() {
     }
 
     setSelectedEpisode(ep);
+    const nowTime = Date.now();
+    roomStartedAtRef.current = nowTime;
     // Cập nhật ngay trên state local để player & chip tập lập tức chuyển đổi không bị trễ
     setRoomData((prev) =>
       prev
@@ -655,12 +698,12 @@ export default function WatchPartyPage() {
             ...prev,
             videoUrl: nextVideoUrl,
             episode: ep.name,
-            startedAt: Date.now(),
+            startedAt: nowTime,
             elapsedSeconds: 0,
           }
         : null
     );
-    startElapsedCounter(Date.now());
+    startElapsedCounter(nowTime);
 
     wsRef.current.send(
       JSON.stringify({
@@ -712,6 +755,23 @@ export default function WatchPartyPage() {
     }
   }, [activeRoomId, roomData?.title, roomData?.movieSlug, movieServers.length, isLoadingDetail]);
 
+  // Đồng bộ chip tập đang chọn theo đúng tập phòng đang phát
+  useEffect(() => {
+    if (movieEpisodes.length > 0 && roomData) {
+      const match = movieEpisodes.find(
+        (ep) =>
+          (roomData.videoUrl &&
+            (ep.m3u8Url === roomData.videoUrl ||
+              ep.link_m3u8 === roomData.videoUrl ||
+              ep.m3u8 === roomData.videoUrl)) ||
+          (roomData.episode && (ep.name === roomData.episode || ep.slug === roomData.episode))
+      );
+      if (match) {
+        setSelectedEpisode(match);
+      }
+    }
+  }, [roomData?.videoUrl, roomData?.episode, movieEpisodes]);
+
   // Bộ điều khiển âm thanh và toàn màn hình riêng cho khách
   const toggleMute = () => {
     if (videoRef.current) {
@@ -730,25 +790,120 @@ export default function WatchPartyPage() {
     }
   };
 
-  const toggleFullscreen = () => {
+  // Fullscreen Handler hỗ trợ đa nền tảng: PC, Android, và đặc biệt là iOS Safari (iPhone / iPad)
+  const toggleFullscreen = useCallback(async () => {
     const container = playerWrapperRef.current;
+    const video = videoRef.current;
     if (!container) return;
-    if (!document.fullscreenElement) {
-      container.requestFullscreen().catch(() => {});
+
+    const isFs = Boolean(
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement ||
+      container.classList.contains("is-fullscreen") ||
+      (video && video.webkitDisplayingFullscreen)
+    );
+
+    if (!isFs) {
+      // 1. Thử HTML5 Standard Fullscreen trên Container trước (PC, Android, Mac)
+      if (container.requestFullscreen) {
+        try {
+          await container.requestFullscreen();
+          setIsFullscreen(true);
+          return;
+        } catch (e) {}
+      } else if (container.webkitRequestFullscreen) {
+        try {
+          container.webkitRequestFullscreen();
+          setIsFullscreen(true);
+          return;
+        } catch (e) {}
+      } else if (container.mozRequestFullScreen) {
+        try {
+          container.mozRequestFullScreen();
+          setIsFullscreen(true);
+          return;
+        } catch (e) {}
+      } else if (container.msRequestFullscreen) {
+        try {
+          container.msRequestFullscreen();
+          setIsFullscreen(true);
+          return;
+        } catch (e) {}
+      }
+
+      // 2. iOS Safari (iPhone) KHÔNG hỗ trợ fullscreen trên thẻ div, BẮT BUỘC phải gọi trên thẻ video
+      if (video && typeof video.webkitEnterFullscreen === "function") {
+        try {
+          video.webkitEnterFullscreen();
+          setIsFullscreen(true);
+          return;
+        } catch (e) {}
+      }
+
+      // 3. Fallback CSS Pseudo-Fullscreen nếu trình duyệt không cho phép requestFullscreen
+      container.classList.add("is-fullscreen");
       setIsFullscreen(true);
     } else {
-      document.exitFullscreen().catch(() => {});
+      if (document.exitFullscreen) {
+        try { await document.exitFullscreen(); } catch (e) {}
+      } else if (document.webkitExitFullscreen) {
+        try { document.webkitExitFullscreen(); } catch (e) {}
+      } else if (document.mozCancelFullScreen) {
+        try { document.mozCancelFullScreen(); } catch (e) {}
+      } else if (document.msExitFullscreen) {
+        try { document.msExitFullscreen(); } catch (e) {}
+      }
+
+      if (video && typeof video.webkitExitFullscreen === "function") {
+        try { video.webkitExitFullscreen(); } catch (e) {}
+      }
+
+      container.classList.remove("is-fullscreen");
       setIsFullscreen(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const onFullscreenChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
+    const handleFsChange = () => {
+      const video = videoRef.current;
+      const isFs = Boolean(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement ||
+        (playerWrapperRef.current && playerWrapperRef.current.classList.contains("is-fullscreen")) ||
+        (video && video.webkitDisplayingFullscreen)
+      );
+      setIsFullscreen(isFs);
     };
-    document.addEventListener("fullscreenchange", onFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
-  }, []);
+
+    const video = videoRef.current;
+    const onVideoEnterFs = () => setIsFullscreen(true);
+    const onVideoExitFs = () => setIsFullscreen(false);
+
+    document.addEventListener("fullscreenchange", handleFsChange);
+    document.addEventListener("webkitfullscreenchange", handleFsChange);
+    document.addEventListener("mozfullscreenchange", handleFsChange);
+    document.addEventListener("MSFullscreenChange", handleFsChange);
+
+    if (video) {
+      video.addEventListener("webkitbeginfullscreen", onVideoEnterFs);
+      video.addEventListener("webkitendfullscreen", onVideoExitFs);
+    }
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFsChange);
+      document.removeEventListener("webkitfullscreenchange", handleFsChange);
+      document.removeEventListener("mozfullscreenchange", handleFsChange);
+      document.removeEventListener("MSFullscreenChange", handleFsChange);
+      if (video) {
+        video.removeEventListener("webkitbeginfullscreen", onVideoEnterFs);
+        video.removeEventListener("webkitendfullscreen", onVideoExitFs);
+      }
+    };
+  }, [roomData?.videoUrl]);
 
   // Quản lý hiển thị thanh điều khiển khi user tương tác (Nếu không làm gì sau 2.5s sẽ tự động ẩn)
   const handlePlayerMouseMove = useCallback(() => {
@@ -905,6 +1060,11 @@ export default function WatchPartyPage() {
       setIsConnected(false);
       setIsReconnecting(false);
       setRoomData(null);
+      setMovieServers([]);
+      setMovieEpisodes([]);
+      setSelectedEpisode(null);
+      setSelectedMovie(null);
+      setMessages([]);
       return;
     }
 
@@ -1065,6 +1225,24 @@ export default function WatchPartyPage() {
     };
   }, [activeRoomId, user?.token, user?.id]);
 
+  // Pre-fetch thông tin phòng qua HTTP để hiển thị ngay lập tức khi vào link phòng
+  useEffect(() => {
+    if (activeRoomId) {
+      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.success && json?.data && json.data.roomId) {
+            setRoomData((prev) => prev || json.data);
+            if (json.data.startedAt) {
+              roomStartedAtRef.current = json.data.startedAt;
+              startElapsedCounter(json.data.startedAt);
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, [activeRoomId, startElapsedCounter]);
+
   // Bộ đếm thời gian đã chiếu
   const startElapsedCounter = useCallback((startedAt) => {
     if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current);
@@ -1080,7 +1258,8 @@ export default function WatchPartyPage() {
         return;
       }
 
-      const sec = Math.max(0, Math.floor((Date.now() - (startedAt || Date.now())) / 1000));
+      const baseStartedAt = startedAt || roomStartedAtRef.current || Date.now();
+      const sec = Math.max(0, Math.floor((Date.now() - baseStartedAt) / 1000));
       const h = Math.floor(sec / 3600);
       const m = Math.floor((sec % 3600) / 60);
       const s = sec % 60;
@@ -1096,6 +1275,7 @@ export default function WatchPartyPage() {
     switch (msg.type) {
       case "ROOM_INIT": {
         setRoomData(msg.room);
+        roomStartedAtRef.current = msg.room.startedAt;
         setMembers(msg.members || []);
         startElapsedCounter(msg.room.startedAt);
         break;
@@ -1127,6 +1307,7 @@ export default function WatchPartyPage() {
 
       case "MEDIA_UPDATED": {
         setRoomData((prev) => (prev ? { ...prev, ...msg.media } : null));
+        roomStartedAtRef.current = msg.media.startedAt;
         startElapsedCounter(msg.media.startedAt);
         DarkSwal.fire({
           toast: true,
@@ -1140,17 +1321,18 @@ export default function WatchPartyPage() {
       }
 
       case "SYNC_TIME": {
+        roomStartedAtRef.current = msg.startedAt;
         setRoomData((prev) => (prev ? { ...prev, startedAt: msg.startedAt } : null));
         startElapsedCounter(msg.startedAt);
-        if (videoRef.current && Math.abs(videoRef.current.currentTime - msg.time) > 1.5) {
-          isSeekingFromSyncRef.current = true;
-          videoRef.current.currentTime = msg.time;
-          if (videoRef.current.paused) {
-            videoRef.current.play().catch(() => {});
+        if (videoRef.current) {
+          const diff = Math.abs(videoRef.current.currentTime - msg.time);
+          if (diff > 1.2) {
+            isSeekingFromSyncRef.current = true;
+            videoRef.current.currentTime = msg.time;
+            if (videoRef.current.paused) {
+              videoRef.current.play().catch(() => {});
+            }
           }
-          setTimeout(() => {
-            isSeekingFromSyncRef.current = false;
-          }, 600);
         }
         break;
       }
@@ -1287,11 +1469,7 @@ export default function WatchPartyPage() {
     }
 
     if (Hls.isSupported()) {
-      const hls = new Hls({
-        enableWorker: true,
-        lowLatencyMode: false,
-        backBufferLength: 60,
-      });
+      const hls = new Hls(SMOOTH_HLS_CONFIG);
       hlsInstanceRef.current = hls;
       hls.loadSource(roomData.videoUrl);
       hls.attachMedia(video);
@@ -1324,19 +1502,17 @@ export default function WatchPartyPage() {
         }
       });
     } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      // Hỗ trợ HLS Native trên Safari iOS (iPhone / iPad) & Mac
       video.src = roomData.videoUrl;
-      video.addEventListener(
-        "loadedmetadata",
-        () => {
-          if (targetElapsed > 0) {
-            video.currentTime = targetElapsed;
-          }
-          video.play().catch(() => {
-            setNeedsUserGesture(true);
-          });
-        },
-        { once: true }
-      );
+      const onMetadata = () => {
+        if (targetElapsed > 0) {
+          video.currentTime = targetElapsed;
+        }
+        video.play().catch(() => {
+          setNeedsUserGesture(true);
+        });
+      };
+      video.addEventListener("loadedmetadata", onMetadata, { once: true });
     }
 
     return () => {
@@ -1350,6 +1526,25 @@ export default function WatchPartyPage() {
       }
     };
   }, [isM3u8Stream, roomData?.videoUrl, roomData?.mediaType]);
+
+  // Khách tự động kiểm tra và đồng bộ lại nếu bị trôi thời gian so với phòng (vd: mạng lag buffer 3s)
+  useEffect(() => {
+    if (roomData?.isHost || !videoRef.current || !isConnected) return;
+    const interval = setInterval(() => {
+      const video = videoRef.current;
+      if (!video || video.paused || isSeekingFromSyncRef.current) return;
+      const startedAt = roomStartedAtRef.current || roomData?.startedAt;
+      if (!startedAt) return;
+      const expectedTime = Math.max(0, (Date.now() - startedAt) / 1000);
+      const diff = Math.abs(video.currentTime - expectedTime);
+      if (diff > 3.0) {
+        isSeekingFromSyncRef.current = true;
+        video.currentTime = expectedTime;
+        if (video.paused) video.play().catch(() => {});
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [roomData?.isHost, isConnected, roomData?.startedAt]);
 
   // Bật tiếng và phát video khi bị trình duyệt chặn Autoplay có âm thanh
   const handleUnmuteAndPlay = () => {
@@ -1477,6 +1672,7 @@ export default function WatchPartyPage() {
     const currentSeconds = Math.floor(videoRef.current.currentTime);
     updateSkipAdState(videoRef.current.currentTime);
     const newStartedAt = Date.now() - currentSeconds * 1000;
+    roomStartedAtRef.current = newStartedAt;
 
     // Cập nhật ngay bộ đếm cho bản thân chủ phòng để mục "Đã chiếu" nhảy ngay lập tức sang thời gian mới
     const h = Math.floor(currentSeconds / 3600);
@@ -1505,6 +1701,7 @@ export default function WatchPartyPage() {
     if (!videoRef.current || !roomData?.isHost) return;
     const currentSeconds = Math.floor(videoRef.current.currentTime);
     const newStartedAt = Date.now() - currentSeconds * 1000;
+    roomStartedAtRef.current = newStartedAt;
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(
@@ -1520,6 +1717,7 @@ export default function WatchPartyPage() {
     if (!videoRef.current || !roomData?.isHost) return;
     const currentSeconds = Math.floor(videoRef.current.currentTime);
     const newStartedAt = Date.now() - currentSeconds * 1000;
+    roomStartedAtRef.current = newStartedAt;
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(
@@ -1970,8 +2168,22 @@ export default function WatchPartyPage() {
                       className={`watch-party-video-element ${!roomData?.isHost ? "guest-video-element" : ""}`}
                       controls={Boolean(roomData?.isHost)}
                       playsInline
+                      webkit-playsinline="true"
+                      x5-playsinline="true"
+                      x-webkit-airplay="allow"
                       tabIndex={roomData?.isHost ? 0 : -1}
-                      onSeeked={roomData?.isHost ? handleHostSeeked : undefined}
+                      onSeeked={() => {
+                        if (roomData?.isHost) {
+                          handleHostSeeked();
+                        } else {
+                          isSeekingFromSyncRef.current = false;
+                        }
+                      }}
+                      onCanPlay={() => {
+                        if (!roomData?.isHost) {
+                          isSeekingFromSyncRef.current = false;
+                        }
+                      }}
                       onTimeUpdate={handleTimeUpdate}
                       onPause={
                         roomData?.isHost
@@ -1983,19 +2195,20 @@ export default function WatchPartyPage() {
                             }
                       }
                       onPlay={roomData?.isHost ? handleHostPlay : undefined}
-                      onSeeking={() => {
-                        if (!roomData?.isHost && videoRef.current) {
-                          if (isSeekingFromSyncRef.current) return;
-                          const expectedTime = Math.max(
-                            0,
-                            Math.floor((Date.now() - (roomData?.startedAt || Date.now())) / 1000)
-                          );
-                          if (Math.abs(videoRef.current.currentTime - expectedTime) > 3) {
-                            videoRef.current.currentTime = expectedTime;
-                          }
-                        }
-                      }}
                     />
+
+                    {/* Nút thoát toàn màn hình nổi tiện lợi cho mobile / tablet */}
+                    {isFullscreen && (
+                      <button
+                        type="button"
+                        className="btn-exit-fullscreen-float"
+                        onClick={toggleFullscreen}
+                        title="Thu nhỏ màn hình"
+                      >
+                        <FaCompress />
+                        <span>Thu nhỏ</span>
+                      </button>
+                    )}
 
                     {/* Nút Bỏ qua quảng cáo cho chủ phòng khi server là KK (từ 14:57 đến 15:31) */}
                     {roomData?.isHost && showSkipAd && (
