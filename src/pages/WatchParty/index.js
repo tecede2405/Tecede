@@ -16,7 +16,6 @@ import {
   FaBan,
   FaSyncAlt,
   FaExclamationTriangle,
-  FaSlidersH,
   FaFilm,
   FaArrowLeft,
   FaSearch,
@@ -30,7 +29,10 @@ import {
   FaVolumeMute,
   FaExpand,
   FaCompress,
-  FaTrashAlt
+  FaTrashAlt,
+  FaPhoneSlash,
+  FaMicrophoneSlash,
+  FaExchangeAlt
 } from "react-icons/fa";
 import { FaForwardStep } from "react-icons/fa6";
 import { useAuth } from "../../context/AuthContext";
@@ -44,6 +46,11 @@ const BACKEND_WS = BACKEND_HTTP.replace(/^http/i, "ws");
 const SERVER_API_BASE = process.env.REACT_APP_SERVER_API_URL || "https://movie1-api-worker.nguyengiaminh532.workers.dev";
 const KK_BASE = process.env.REACT_APP_FILM_API_URL || "https://phimapi.com";
 const NC_BASE = process.env.REACT_APP_FILM_API_URL_3 || "https://phim.nguonc.com";
+
+const AVATAR_COLORS = [
+  "#00796b", "#1565c0", "#6a1b9a", "#d84315", "#00838f",
+  "#2e7d32", "#c2185b", "#4527a0", "#e65100", "#0277bd"
+];
 
 // Cấu hình Hls.js chuyên biệt cho xem chung: bộ đệm mượt mà, chống giật, tua tức thì và tự phục hồi
 const SMOOTH_HLS_CONFIG = {
@@ -210,6 +217,7 @@ export default function WatchPartyPage() {
   const connectWebSocketRef = useRef(null);
 
   const chatScrollRef = useRef(null);
+  const mobileChatScrollRef = useRef(null);
   const elapsedTimerRef = useRef(null);
   const searchInputRef = useRef(null);
   const videoRef = useRef(null);
@@ -217,6 +225,171 @@ export default function WatchPartyPage() {
   const isSeekingFromSyncRef = useRef(false);
   const roomStartedAtRef = useRef(0);
   const [needsUserGesture, setNeedsUserGesture] = useState(false);
+
+  // Meet & TikTok UI States
+  const [showMeetChat, setShowMeetChat] = useState(true);
+  const [meetSideTab, setMeetSideTab] = useState("chat"); // "chat" | "people"
+  const [showMobileViewers, setShowMobileViewers] = useState(false);
+  const [currentTime, setCurrentTime] = useState(() =>
+    new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  );
+  const [activeMovieBackdrop, setActiveMovieBackdrop] = useState("");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+    }, 10000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Tải poster/backdrop cho phòng đang xem để làm background mờ nghệ thuật cho PC/Laptop
+  useEffect(() => {
+    if (!activeRoomId) return;
+
+    // 1. Ưu tiên lấy trực tiếp từ selectedMovie nếu có
+    if (selectedMovie?.thumb_url || selectedMovie?.poster_url) {
+      setActiveMovieBackdrop(getPoster(selectedMovie.thumb_url || selectedMovie.poster_url, selectedMovie.sourceName || "KK"));
+      return;
+    }
+
+    // 2. Lấy từ roomData nếu server đã lưu posterUrl
+    if (roomData?.posterUrl || roomData?.thumbUrl) {
+      setActiveMovieBackdrop(getPoster(roomData.posterUrl || roomData.thumbUrl, "KK"));
+      return;
+    }
+
+    // 3. Lấy từ cache thumbnails của phòng
+    if (roomThumbnails[activeRoomId]) {
+      setActiveMovieBackdrop(getPoster(roomThumbnails[activeRoomId], "KK"));
+      return;
+    }
+
+    const slug = roomData?.movieSlug || (roomData?.title ? slugify(roomData.title) : "");
+    const title = roomData?.title;
+    if (!slug && !title) return;
+
+    let isSubscribed = true;
+
+    const fetchBackdrop = async () => {
+      try {
+        if (slug) {
+          // Lấy trực tiếp từ API phim của KK (phimapi.com/phim/:slug)
+          const kkRes = await fetch(`${KK_BASE}/phim/${slug}`);
+          if (kkRes.ok) {
+            const kkData = await kkRes.json();
+            const m = kkData?.movie;
+            if (m && (m.thumb_url || m.poster_url)) {
+              if (isSubscribed) {
+                const img = m.thumb_url || m.poster_url;
+                setActiveMovieBackdrop(getPoster(img, "KK"));
+                return;
+              }
+            }
+          }
+
+          // Fallback: Thử lấy từ movie-detail worker nếu nguồn khác
+          try {
+            const workerRes = await fetch(`${SERVER_API_BASE}/movie-detail/${slug}`);
+            if (workerRes.ok) {
+              const workerData = await workerRes.json();
+              const wm = workerData?.data?.movie;
+              if (wm && (wm.thumb_url || wm.poster_url)) {
+                if (isSubscribed) {
+                  const img = wm.thumb_url || wm.poster_url;
+                  setActiveMovieBackdrop(getPoster(img, "KK"));
+                  return;
+                }
+              }
+            }
+          } catch (_) {}
+        }
+
+        // Fallback: Tìm kiếm theo keyword title trên PhimAPI
+        if (title) {
+          const sRes = await fetch(`${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(title)}&page=1`);
+          if (sRes.ok) {
+            const sData = await sRes.json();
+            const item = sData?.data?.items?.[0];
+            if (item && (item.thumb_url || item.poster_url)) {
+              if (isSubscribed) {
+                const img = item.thumb_url || item.poster_url;
+                setActiveMovieBackdrop(getPoster(img, "KK"));
+                return;
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("[WatchParty] Lỗi tải backdrop ảnh phim:", err);
+      }
+    };
+
+    fetchBackdrop();
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [
+    activeRoomId,
+    selectedMovie?.thumb_url,
+    selectedMovie?.poster_url,
+    selectedMovie?.sourceName,
+    roomData?.posterUrl,
+    roomData?.thumbUrl,
+    roomData?.movieSlug,
+    roomData?.title,
+    roomThumbnails,
+  ]);
+
+  const getUserColor = useCallback((name = "") => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  }, []);
+
+  const getUserInitial = useCallback((name = "") => {
+    if (!name) return "?";
+    const trimmed = name.trim();
+    const parts = trimmed.split(/\s+/);
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  }, []);
+
+  // Hàm render avatar hỗ trợ kế thừa avatar user hoặc fallback về ký tự đầu với background màu
+  const renderAvatar = useCallback((avatarUrl, name, sizeClass = "", customStyle = {}) => {
+    const initial = getUserInitial(name);
+    const bgColor = getUserColor(name);
+    return (
+      <div
+        className={`user-avatar-badge-wrap ${sizeClass}`}
+        style={{ backgroundColor: bgColor, ...customStyle }}
+      >
+        {avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt={name || "avatar"}
+            className="user-avatar-image-el"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        ) : null}
+        <span className="user-avatar-fallback-text">{initial}</span>
+      </div>
+    );
+  }, [getUserInitial, getUserColor]);
+
+  // Tự động cuộn xuống tin nhắn mới nhất trên cả Desktop (Meet) và Mobile (TikTok)
+  useEffect(() => {
+    if (chatScrollRef.current) {
+      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+    }
+    if (mobileChatScrollRef.current) {
+      mobileChatScrollRef.current.scrollTop = mobileChatScrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Bỏ qua quảng cáo (Server KK: 14:57 [897s] -> 15:31 [931s])
   const [showSkipAd, setShowSkipAd] = useState(false);
@@ -622,6 +795,7 @@ export default function WatchPartyPage() {
                     title: m?.name || movie.name,
                     episode: firstEp.name || "Tập 1",
                     movieSlug: movie.slug || m?.slug,
+                    posterUrl: p || t || "",
                     startedAt: nowTime,
                     elapsedSeconds: 0,
                   }
@@ -637,6 +811,7 @@ export default function WatchPartyPage() {
                 title: m?.name || movie.name,
                 episode: firstEp.name || "Tập 1",
                 movieSlug: movie.slug || m?.slug,
+                posterUrl: p || t || "",
               })
             );
             setHostSearchMode(false);
@@ -709,6 +884,7 @@ export default function WatchPartyPage() {
         title: selectedMovie?.name || roomData?.title,
         episode: ep.name,
         movieSlug: selectedMovie?.slug || roomData?.movieSlug,
+        posterUrl: selectedMovie?.thumb_url || selectedMovie?.poster_url || roomData?.posterUrl || "",
       })
     );
     DarkSwal.fire({
@@ -1309,7 +1485,10 @@ export default function WatchPartyPage() {
         .then((res) => res.json())
         .then((json) => {
           if (json?.success && json?.data && json.data.roomId) {
-            setRoomData((prev) => prev || json.data);
+            const isUserHost = Boolean(
+              user?.id && json.data.hostId && String(user.id) === String(json.data.hostId)
+            );
+            setRoomData((prev) => (prev ? { ...json.data, ...prev, isHost: prev.isHost ?? isUserHost } : { ...json.data, isHost: isUserHost }));
             if (json.data.startedAt) {
               roomStartedAtRef.current = json.data.startedAt;
               startElapsedCounter(json.data.startedAt);
@@ -1318,7 +1497,7 @@ export default function WatchPartyPage() {
         })
         .catch(() => {});
     }
-  }, [activeRoomId, startElapsedCounter]);
+  }, [activeRoomId, startElapsedCounter, user?.id]);
 
   // Xử lý các gói tin nhận từ Server
   const handleServerMessage = useCallback((msg) => {
@@ -1360,7 +1539,7 @@ export default function WatchPartyPage() {
           break;
         }
 
-        setRoomData(msg.room);
+        setRoomData({ ...msg.room, isHost: isUserHost });
         roomStartedAtRef.current = msg.room.startedAt;
         setMembers(msg.members || []);
         if (msg.messages && Array.isArray(msg.messages)) {
@@ -1375,12 +1554,31 @@ export default function WatchPartyPage() {
         break;
       }
 
+      case "PONG":
+      case "MEMBERS_SYNC": {
+        if (msg.members && Array.isArray(msg.members) && msg.members.length > 0) {
+          setMembers(msg.members);
+        }
+        break;
+      }
+
       case "USER_JOINED": {
         setMembers((prev) => {
           const exists = prev.some((m) => m.userId === msg.user.userId);
           if (exists) return prev;
           return [...prev, msg.user];
         });
+        // Nếu là chủ phòng và đang phát video, lập tức gửi SYNC_TIME để thành viên mới tua đúng giây
+        const isUserHost = Boolean(
+          roomData?.isHost ||
+          (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+        );
+        if (isUserHost && videoRef.current && videoRef.current.currentTime > 0) {
+          const cur = Math.floor(videoRef.current.currentTime);
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: "SYNC_TIME", time: cur }));
+          }
+        }
         break;
       }
 
@@ -1415,12 +1613,21 @@ export default function WatchPartyPage() {
       }
 
       case "SYNC_TIME": {
+        const isUserHost = Boolean(
+          roomData?.isHost ||
+          (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+        );
+        // Chủ phòng là nguồn phát chuẩn, KHÔNG BAO GIỜ để gói tin SYNC_TIME tua ngược video của chủ phòng
+        if (isUserHost) {
+          break;
+        }
+
         roomStartedAtRef.current = msg.startedAt;
         setRoomData((prev) => (prev ? { ...prev, startedAt: msg.startedAt } : null));
         startElapsedCounter(msg.startedAt);
-        if (videoRef.current) {
+        if (videoRef.current && typeof msg.time === "number") {
           const diff = Math.abs(videoRef.current.currentTime - msg.time);
-          if (diff > 1.2) {
+          if (diff > 2.0) {
             isSeekingFromSyncRef.current = true;
             videoRef.current.currentTime = msg.time;
             if (videoRef.current.paused) {
@@ -1549,6 +1756,30 @@ export default function WatchPartyPage() {
     return raw;
   }, [roomData?.roomName, roomData?.hostUsername, roomData?.title]);
 
+  // Danh sách thành viên hiển thị: Luôn đảm bảo có Chủ phòng ở đầu, không bao giờ bị mất do mạng chập chờn
+  const displayMembers = useMemo(() => {
+    let list = [...members];
+    if (roomData?.hostUsername && !list.some((m) => m.isHost || String(m.userId) === String(roomData.hostId))) {
+      list.unshift({
+        userId: roomData.hostId || "host-fallback-id",
+        username: roomData.hostUsername,
+        avatar: roomData?.hostAvatar || (roomData?.isHost ? user?.avatar : ""),
+        isHost: true,
+      });
+    }
+    return list.sort((a, b) => {
+      const aIsHost = Boolean(a.isHost || (roomData?.hostId && String(a.userId) === String(roomData.hostId)));
+      const bIsHost = Boolean(b.isHost || (roomData?.hostId && String(b.userId) === String(roomData.hostId)));
+      if (aIsHost && !bIsHost) return -1;
+      if (!aIsHost && bIsHost) return 1;
+      const aIsMe = Boolean(user?.id && String(a.userId) === String(user.id));
+      const bIsMe = Boolean(user?.id && String(b.userId) === String(user.id));
+      if (aIsMe && !bIsMe) return -1;
+      if (!aIsMe && bIsMe) return 1;
+      return 0;
+    });
+  }, [members, roomData, user]);
+
   // Khởi tạo và tự động tua đến đúng giây đã chiếu bằng Hls.js khi nguồn là M3U8
   useEffect(() => {
     if (!isM3u8Stream || !roomData?.videoUrl) {
@@ -1586,7 +1817,6 @@ export default function WatchPartyPage() {
     try {
       video.pause();
       video.removeAttribute("src");
-      video.currentTime = targetElapsed;
       video.volume = 1;
       video.muted = isMuted;
       video.load();
@@ -1602,6 +1832,7 @@ export default function WatchPartyPage() {
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         if (targetElapsed > 0) {
+          isSeekingFromSyncRef.current = true;
           video.currentTime = targetElapsed;
         }
         safePlay(video);
@@ -1630,6 +1861,7 @@ export default function WatchPartyPage() {
       video.src = roomData.videoUrl;
       const onMetadata = () => {
         if (targetElapsed > 0) {
+          isSeekingFromSyncRef.current = true;
           video.currentTime = targetElapsed;
         }
         safePlay(video);
@@ -1649,25 +1881,6 @@ export default function WatchPartyPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isM3u8Stream, roomData?.videoUrl, roomData?.mediaType]);
-
-  // Khách tự động kiểm tra và đồng bộ lại nếu bị trôi thời gian so với phòng (vd: mạng lag buffer 3s)
-  useEffect(() => {
-    if (roomData?.isHost || !videoRef.current || !isConnected) return;
-    const interval = setInterval(() => {
-      const video = videoRef.current;
-      if (!video || video.paused || isSeekingFromSyncRef.current) return;
-      const startedAt = roomStartedAtRef.current || roomData?.startedAt;
-      if (!startedAt) return;
-      const expectedTime = Math.max(0, (Date.now() - startedAt) / 1000);
-      const diff = Math.abs(video.currentTime - expectedTime);
-      if (diff > 3.0) {
-        isSeekingFromSyncRef.current = true;
-        video.currentTime = expectedTime;
-        if (video.paused) safePlay(video);
-      }
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [roomData?.isHost, isConnected, roomData?.startedAt, safePlay]);
 
   // Bật tiếng và phát video khi bị trình duyệt chặn Autoplay có âm thanh
   const handleUnmuteAndPlay = () => {
@@ -1900,9 +2113,13 @@ export default function WatchPartyPage() {
     }
   };
 
-  // Heartbeat định kỳ 15s để giữ startedAt trên server luôn tươi mới nhất cho người mới vào phòng
+  // Heartbeat định kỳ 6s để các khách luôn được đồng bộ mượt mà theo đúng player của chủ phòng
   useEffect(() => {
-    if (!roomData?.isHost || !videoRef.current) return;
+    const isUserHost = Boolean(
+      roomData?.isHost ||
+      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+    if (!isUserHost || !videoRef.current) return;
     const interval = setInterval(() => {
       if (
         wsRef.current &&
@@ -1919,9 +2136,9 @@ export default function WatchPartyPage() {
           })
         );
       }
-    }, 15000);
+    }, 6000);
     return () => clearInterval(interval);
-  }, [roomData?.isHost]);
+  }, [roomData?.isHost, roomData?.hostId, user?.id]);
 
   // Link Embed kèm tham số thời gian
   const embedUrlWithParams = useMemo(() => {
@@ -1945,6 +2162,33 @@ export default function WatchPartyPage() {
     }).then((res) => {
       if (res.isConfirmed && wsRef.current) {
         wsRef.current.send(JSON.stringify({ type: "KICK_USER", targetUserId }));
+      }
+    });
+  };
+
+  // Hành động: Chuyển quyền chủ phòng (yêu cầu phòng từ 3 người trở lên)
+  const handleTransferHost = (targetUserId, targetUsername) => {
+    if (!roomData?.isHost) return;
+    if (displayMembers.length < 3) {
+      DarkSwal.fire({
+        icon: "warning",
+        title: "Chưa đủ điều kiện",
+        text: "Phòng phải có từ 3 người trở lên mới có thể chuyển quyền chủ phòng.",
+      });
+      return;
+    }
+
+    DarkSwal.fire({
+      icon: "question",
+      title: "Chuyển quyền chủ phòng?",
+      text: `Bạn có chắc muốn chuyển quyền chủ phòng cho "${targetUsername}" không? Bạn sẽ trở thành người xem thông thường.`,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý chuyển quyền",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#f59e0b",
+    }).then((res) => {
+      if (res.isConfirmed && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({ type: "TRANSFER_HOST", targetUserId }));
       }
     });
   };
@@ -2052,6 +2296,7 @@ export default function WatchPartyPage() {
           videoUrl: formVideoUrl.trim(),
           mediaType: formMediaType,
           movieSlug: selectedMovie?.slug || "",
+          posterUrl: selectedMovie?.thumb_url || selectedMovie?.poster_url || "",
           username: user.display_name || user.username,
         }),
       });
@@ -2085,238 +2330,184 @@ export default function WatchPartyPage() {
 
   // Render: Nếu đang trong phòng xem (`activeRoomId`)
   if (activeRoomId) {
+    const hostMember = members.find((m) => m.isHost || m.username === roomData?.hostUsername);
+    const hostAvatar = roomData?.hostAvatar || hostMember?.avatar || (roomData?.isHost ? user?.avatar : "");
+    const rawBackdrop =
+      selectedMovie?.thumb_url ||
+      selectedMovie?.poster_url ||
+      roomData?.posterUrl ||
+      roomData?.thumbUrl ||
+      activeMovieBackdrop ||
+      roomThumbnails[activeRoomId] ||
+      "";
+    const currentBackdrop = rawBackdrop ? getPoster(rawBackdrop, selectedMovie?.sourceName || "KK") : "";
+
     return (
       <div className="watch-party-room-page">
         <Helmet>
           <title>{roomData?.title ? `${roomData.title} - Xem Chung` : "Phòng Xem Chung"} | Tecede</title>
         </Helmet>
 
-        {/* Top Navbar của phòng xem */}
-        <header className="room-header">
-          <div className="room-header-left">
-            <button className="btn-back-lobby" onClick={handleLeaveOrDestroyRoom} title="Quay lại danh sách phòng">
-              <FaArrowLeft />
-              <span className="btn-leave-text">Rời phòng</span>
-            </button>
-            <div className="room-meta">
-              <h1 className="room-movie-title">{roomData?.title || "Đang tải phim..."}</h1>
-              <div className="room-sub-meta">
-                <span className="room-episode-tag">{displayEpisode}</span>
-                <span className="room-name-tag">{displayRoomName}</span>
-                <span className="room-host-tag">
-                  <FaCrown className="host-icon" /> {roomData?.hostUsername || "Host"}
-                </span>
-              </div>
+        {/* Backdrop ảnh phim làm mờ cho PC/Laptop */}
+        <div
+          className={`meet-ambient-bg desktop-only ${currentBackdrop ? "has-backdrop" : ""}`}
+          style={currentBackdrop ? { backgroundImage: `url("${currentBackdrop}")` } : undefined}
+        />
+
+        {/* 1. GOOGLE MEET TOP BAR (DESKTOP / PC / LAPTOP) */}
+        <header className="meet-top-bar desktop-only">
+          <div className="meet-top-left">
+            <span className="meet-clock">{currentTime}</span>
+            <span className="meet-sep">|</span>
+            <div className="meet-room-info-group">
+              <span className="meet-movie-title" title={roomData?.title || "Đang phát phim"}>
+                {roomData?.title || "Phòng xem chung"}
+              </span>
+              <span className="meet-ep-pill">{displayEpisode}</span>
+              <span className="meet-room-tag" title={displayRoomName}>{displayRoomName}</span>
             </div>
           </div>
 
-          <div className="room-header-right">
-            <div className="elapsed-timer-badge" title={`Đã chiếu: ${elapsedDisplay}`}>
+          <div className="meet-top-center">
+            <div className="meet-presenting-pill" title="Người đang phát phim">
+              {renderAvatar(hostAvatar, roomData?.hostUsername, "meet-presenting-avatar")}
+              <span className="meet-presenting-name">{roomData?.hostUsername || "Host"}</span>
+              <span className="meet-presenting-sub">(Chủ phòng)</span>
+            </div>
+          </div>
+
+          <div className="meet-top-right">
+            <div className="meet-timer-pill" title={`Thời gian đã chiếu: ${elapsedDisplay}`}>
               <FaClock />
-              <span className="timer-label">Đã chiếu: </span>
-              <strong>{elapsedDisplay}</strong>
+              <span>{elapsedDisplay}</span>
             </div>
 
-            <button className="btn-share-room" onClick={handleCopyInvite} title="Sao chép link mời bạn bè">
+            <button
+              type="button"
+              className="btn-meet-action"
+              onClick={handleCopyInvite}
+              title="Sao chép link mời bạn bè"
+            >
               <FaShareAlt />
-              <span className="d-none d-md-inline">Mời bạn</span>
             </button>
 
             {roomData?.isHost && (
               <button
-                className={`btn-host-toggle ${showHostPanel ? "active" : ""}`}
-                onClick={() => setShowHostPanel(!showHostPanel)}
+                type="button"
+                className={`btn-meet-action ${showHostPanel ? "active" : ""}`}
+                onClick={() => setShowHostPanel(true)}
                 title="Bảng điều khiển chủ phòng"
               >
-                <FaSlidersH />
-                <span className="d-none d-md-inline">Chủ phòng</span>
+                <FaCrown />
               </button>
             )}
+
+            <button
+              type="button"
+              className={`btn-meet-action ${showMeetChat && meetSideTab === "people" ? "active" : ""}`}
+              onClick={() => {
+                if (showMeetChat && meetSideTab === "people") {
+                  setShowMeetChat(false);
+                } else {
+                  setShowMeetChat(true);
+                  setMeetSideTab("people");
+                  if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                    wsRef.current.send(JSON.stringify({ type: "GET_MEMBERS" }));
+                  }
+                }
+              }}
+              title="Danh sách thành viên"
+            >
+              <FaUsers />
+              <span className="meet-count-badge">{displayMembers.length}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`btn-meet-action ${showMeetChat && meetSideTab === "chat" ? "active" : ""}`}
+              onClick={() => {
+                if (showMeetChat && meetSideTab === "chat") {
+                  setShowMeetChat(false);
+                } else {
+                  setShowMeetChat(true);
+                  setMeetSideTab("chat");
+                }
+              }}
+              title="Trò chuyện trong cuộc gọi"
+            >
+              <FaComments />
+            </button>
+
+            <button
+              type="button"
+              className="btn-meet-leave"
+              onClick={handleLeaveOrDestroyRoom}
+              title="Rời phòng"
+            >
+              <FaPhoneSlash />
+              <span className="leave-text">Rời phòng</span>
+            </button>
           </div>
         </header>
 
-        {/* Nội dung phòng: Bên trái Video Player, bên phải Khung Chat & Viewers */}
-        <div className="room-body-grid">
-          {/* Cột trái: Trình phát Video & Host Panel */}
-          <main className="room-player-column">
-            {/* Host Control Box */}
-            {roomData?.isHost && showHostPanel && (
-              <div className="host-controls-card">
-                <div className="host-card-header">
-                  <div className="header-title-row">
-                    <h3 title="Bảng Điều Khiển Chủ Phòng">
-                      <FaCrown className="crown-icon" />
-                      <span className="host-panel-title-text">Bảng Điều Khiển Chủ Phòng</span>
-                    </h3>
-                  </div>
-                  <div className="header-actions-row">
-                    <button
-                      type="button"
-                      className={`btn-toggle-search-movie ${hostSearchMode ? "active" : ""}`}
-                      onClick={() => setHostSearchMode(!hostSearchMode)}
-                    >
-                      {hostSearchMode ? (
-                        <>
-                          <FaArrowLeft /> Quay lại chọn tập
-                        </>
-                      ) : (
-                        <>
-                          <FaFilm /> Đổi phim khác
-                        </>
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-destroy-room"
-                      onClick={handleHostDestroyRoom}
-                      title="Giải tán phòng xem và xóa dữ liệu hoàn toàn"
-                    >
-                      <FaTrashAlt /> Giải tán
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-close-host-panel"
-                      onClick={() => setShowHostPanel(false)}
-                      title="Đóng bảng điều khiển"
-                    >
-                      ×
-                    </button>
-                  </div>
-                </div>
+        {/* 2. TIKTOK TOP BAR (MOBILE) */}
+        <header className="tiktok-top-bar mobile-only">
+          <div className="tiktok-host-pill" onClick={() => roomData?.isHost && setShowHostPanel(true)}>
+            {renderAvatar(hostAvatar, roomData?.hostUsername, "tiktok-host-avatar")}
+            <div className="tiktok-host-info">
+              <span className="tiktok-host-name">{roomData?.hostUsername || "Host"}</span>
+              <span className="tiktok-host-badge">
+                <FaCrown /> Chủ phòng
+              </span>
+            </div>
+          </div>
 
-                {hostSearchMode ? (
-                  /* Giao diện Đổi Phim Khác: Tìm kiếm phim thông minh từ KK & NC */
-                  <div className="host-movie-search-section">
-                    <div className="host-search-input-box">
-                      <FaSearch className="search-icon" />
-                      <input
-                        type="text"
-                        placeholder="Gõ tên phim mới bạn muốn đổi (vd: Doraemon, Naruto, Spider-Man...)"
-                        value={hostMovieSearchText}
-                        onChange={(e) => setHostMovieSearchText(e.target.value)}
-                        autoFocus
-                      />
-                      {isSearchingHostMovie && <div className="search-spinner" />}
-                    </div>
+          <div className="tiktok-top-right">
+            {/* Nút xem danh sách người xem */}
+            <button
+              type="button"
+              className="tiktok-viewers-pill"
+              onClick={() => {
+                setShowMobileViewers(true);
+                if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                  wsRef.current.send(JSON.stringify({ type: "GET_MEMBERS" }));
+                }
+              }}
+              title="Danh sách người xem"
+            >
+              <FaUsers />
+              <span>{displayMembers.length}</span>
+            </button>
 
-                    {hostMovieSearchResults.length > 0 ? (
-                      <ul className="host-movie-results-list custom-scroll">
-                        {hostMovieSearchResults.map((m) => (
-                          <li
-                            key={`${m.slug}-${m.sourceName}`}
-                            className="host-result-item"
-                            onClick={() => handleSelectMovie(m, true)}
-                          >
-                            <img
-                              src={m.poster_url || m.thumb_url || "https://placehold.co/45x60/1a1a2e/ffffff?text=Film"}
-                              alt={m.name}
-                              className="result-poster"
-                              onError={(e) => {
-                                e.target.src = "https://placehold.co/45x60/1a1a2e/ffffff?text=Film";
-                              }}
-                            />
-                            <div className="result-info">
-                              <strong className="result-title">{m.name}</strong>
-                              <span className="result-origin">{m.original_name || ""}</span>
-                              <div className="result-badges">
-                                <span className={`badge-tag badge-tag--source badge-tag--source-${m.sourceName?.toLowerCase()}`}>
-                                  {m.sourceName}
-                                </span>
-                                {m.quality && <span className="badge-tag badge-tag--quality">{m.quality}</span>}
-                                {m.year && m.year !== "N/A" && <span className="badge-tag badge-tag--year">{m.year}</span>}
-                                {m.current_episode && <span className="badge-tag badge-tag--ep">{m.current_episode}</span>}
-                              </div>
-                            </div>
-                            <button type="button" className="btn-choose-this-movie">
-                              <FaPlay /> Chọn & Phát
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      hostMovieSearchText.trim().length >= 2 && !isSearchingHostMovie && (
-                        <div className="host-no-results">
-                          Không tìm thấy phim phù hợp với từ khóa "{hostMovieSearchText}".
-                        </div>
-                      )
-                    )}
-                  </div>
-                ) : (
-                  /* Giao diện Đổi Tập & Server của Phim Hiện Tại */
-                  <div className="host-current-movie-section">
-                    <div className="current-movie-overview">
-                      <div className="movie-details">
-                        <span className="label-sub">Đang chiếu:</span>
-                        <strong className="current-movie-name">{roomData?.title || selectedMovie?.name}</strong>
-                        <span className="current-movie-ep">{displayEpisode}</span>
-                      </div>
-                    </div>
-
-                    {isLoadingDetail ? (
-                      <div className="loading-episodes-host">
-                        <div className="spinner-border spinner-border-sm text-info" role="status" />
-                        <span>Đang tải danh sách tập & server...</span>
-                      </div>
-                    ) : (
-                      <>
-                        {/* Chọn Server nếu có nhiều hơn 1 nguồn */}
-                        {movieServers.length > 1 && (
-                          <div className="host-server-selector">
-                            <label><FaServer /> Nguồn / Server ({movieServers.length}):</label>
-                            <div className="server-chips-row">
-                              {movieServers.map((srv, idx) => (
-                                <button
-                                  key={idx}
-                                  type="button"
-                                  className={`host-srv-chip ${idx === selectedServerIdx ? "active" : ""}`}
-                                  onClick={() => handleHostSelectServer(idx)}
-                                >
-                                  {srv.display_name || srv.server_name || `Server ${idx + 1}`}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Danh sách tập phim để chủ phòng bấm chọn */}
-                        <div className="host-episode-selector">
-                          <label><FaListOl /> Danh sách tập ({movieEpisodes.length} tập):</label>
-                          {movieEpisodes.length > 0 ? (
-                            <div className="host-episode-grid custom-scroll">
-                              {movieEpisodes.map((ep, idx) => {
-                                const isActive =
-                                  (roomData?.videoUrl &&
-                                    (ep.m3u8Url === roomData.videoUrl ||
-                                      ep.link_m3u8 === roomData.videoUrl ||
-                                      ep.m3u8 === roomData.videoUrl)) ||
-                                  roomData?.episode === ep.name;
-                                return (
-                                  <button
-                                    key={idx}
-                                    type="button"
-                                    className={`host-ep-chip ${isActive ? "active" : ""}`}
-                                    onClick={() => handleHostChangeEpisode(ep)}
-                                  >
-                                    {isActive && <FaCheck className="ep-check-icon" />}
-                                    {ep.name || `Tập ${idx + 1}`}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          ) : (
-                            <div className="no-episodes-alert">
-                              Đang tải hoặc phim không có nguồn M3U8 từ KK / NC.
-                            </div>
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
+            {/* Nút Cài đặt chủ phòng: Nằm giữa icon số người và nút thoát */}
+            {roomData?.isHost && (
+              <button
+                type="button"
+                className="btn-tiktok-head-host"
+                onClick={() => setShowHostPanel(true)}
+                title="Bảng điều khiển chủ phòng"
+              >
+                <FaCrown />
+              </button>
             )}
 
-            {/* Khung video Player (M3U8 HLS tự động đồng bộ hoặc Embed Iframe) */}
+            {/* Nút thoát */}
+            <button
+              type="button"
+              className="btn-tiktok-close"
+              onClick={handleLeaveOrDestroyRoom}
+              title="Rời phòng"
+            >
+              <FaTimes />
+            </button>
+          </div>
+        </header>
+
+        {/* 3. MAIN WORKSPACE */}
+        <div className="room-meet-container">
+          {/* STAGE: VIDEO PLAYER + PARTICIPANTS */}
+          <div className={`meet-stage-column ${showMeetChat ? "has-side-panel" : "no-side-panel"}`}>
+            {/* The single player wrapper shared across PC and Mobile */}
             <div className="video-player-wrapper" ref={playerWrapperRef}>
               {roomData?.videoUrl ? (
                 isM3u8Stream ? (
@@ -2337,16 +2528,20 @@ export default function WatchPartyPage() {
                       x-webkit-airplay="allow"
                       tabIndex={roomData?.isHost ? 0 : -1}
                       onSeeked={() => {
-                        if (roomData?.isHost) {
-                          handleHostSeeked();
-                        } else {
+                        if (isSeekingFromSyncRef.current) {
                           isSeekingFromSyncRef.current = false;
+                          return;
+                        }
+                        const isUserHost = Boolean(
+                          roomData?.isHost ||
+                          (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+                        );
+                        if (isUserHost) {
+                          handleHostSeeked();
                         }
                       }}
                       onCanPlay={() => {
-                        if (!roomData?.isHost) {
-                          isSeekingFromSyncRef.current = false;
-                        }
+                        isSeekingFromSyncRef.current = false;
                       }}
                       onTimeUpdate={handleTimeUpdate}
                       onPause={
@@ -2361,20 +2556,6 @@ export default function WatchPartyPage() {
                       onPlay={roomData?.isHost ? handleHostPlay : undefined}
                     />
 
-                    {/* Nút thoát toàn màn hình nổi tiện lợi cho mobile / tablet */}
-                    {isFullscreen && (
-                      <button
-                        type="button"
-                        className="btn-exit-fullscreen-float"
-                        onClick={toggleFullscreen}
-                        title="Thu nhỏ màn hình"
-                      >
-                        <FaCompress />
-                        <span>Thu nhỏ</span>
-                      </button>
-                    )}
-
-                    {/* Nút Bỏ qua quảng cáo cho chủ phòng khi server là KK (từ 14:57 đến 15:31) */}
                     {roomData?.isHost && showSkipAd && (
                       <button
                         type="button"
@@ -2387,7 +2568,6 @@ export default function WatchPartyPage() {
                       </button>
                     )}
 
-                    {/* Thanh điều khiển riêng cho khách: Chỉ có Bật/Tắt âm thanh và Fullscreen, TUYỆT ĐỐI KHÔNG TUA HAY PAUSE ĐƯỢC */}
                     {!roomData?.isHost && (
                       <div className={`guest-player-bar ${showGuestControls ? "visible" : ""}`}>
                         <div className="guest-bar-right">
@@ -2455,38 +2635,324 @@ export default function WatchPartyPage() {
                 </div>
               )}
             </div>
-          </main>
 
-          {/* Cột phải: Chat & Danh sách người đang xem (đã gộp chung) */}
-          <aside className="room-sidebar-column">
-            {/* Live Chat Box */}
-            <div className="chat-card">
-              <div className="chat-card-header">
-                <div className="chat-header-main-row">
-                  <div className="chat-title-group">
-                    <FaComments className="chat-icon" />
-                    <span>Trò Chuyện Trực Tiếp</span>
+            {/* GOOGLE MEET PARTICIPANT TILES (DESKTOP ONLY) */}
+            <div className="meet-participants-grid desktop-only">
+              {displayMembers.slice(0, 9).map((m) => {
+                const isMe = user?.id?.toString() === m.userId?.toString();
+                const avatarUrl = m.avatar || (isMe ? user?.avatar : "");
+                const isHost = Boolean(m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+                return (
+                  <div key={m.userId} className={`meet-participant-card ${isMe ? "is-me" : ""}`}>
+                    {renderAvatar(avatarUrl, m.username, "participant-circle-avatar")}
+                    <div className="participant-card-name">
+                      {isHost && <FaCrown className="crown-mini" />}
+                      <span className="name-string">{m.username} {isMe ? "(Bạn)" : ""}</span>
+                    </div>
+                    <div className="participant-card-mic" title="Micro">
+                      <FaMicrophoneSlash className="mic-icon-muted" />
+                    </div>
+                    {roomData?.isHost && !isHost && displayMembers.length >= 3 && (
+                      <button
+                        type="button"
+                        className="btn-tile-transfer-host"
+                        onClick={() => handleTransferHost(m.userId, m.username)}
+                        title="Chuyển quyền chủ phòng"
+                      >
+                        <FaExchangeAlt />
+                      </button>
+                    )}
+                    {roomData?.isHost && !isHost && (
+                      <button
+                        type="button"
+                        className="btn-tile-kick"
+                        onClick={() => handleKickUser(m.userId, m.username)}
+                        title="Mời ra khỏi phòng"
+                      >
+                        <FaBan />
+                      </button>
+                    )}
                   </div>
-                  <div className="chat-viewers-pill" title="Người đang xem trực tiếp">
-                    <FaUsers className="users-icon" />
-                    <span className="viewers-num">{members.length}</span>
-                    <span className="live-divider">•</span>
-                    <span className="live-status-pill">
-                      <FaCircle className="live-dot" /> LIVE
-                    </span>
+                );
+              })}
+
+              {displayMembers.length > 9 && (
+                <div className="meet-participant-card meet-tile-more">
+                  <div className="participant-circle-avatar more-avatar">
+                    <span>+{displayMembers.length - 9}</span>
+                  </div>
+                  <div className="participant-card-name">
+                    <span className="name-string">{displayMembers.length - 9} người khác</span>
                   </div>
                 </div>
+              )}
+            </div>
+          </div>
 
-                {members.length > 0 && (
-                  <div className="viewers-avatar-ribbon">
-                    {members.map((m) => (
-                      <div key={m.userId} className="viewer-chip" title={m.username}>
-                        {m.isHost && <FaCrown className="crown-badge" />}
-                        <span className="viewer-name">{m.username}</span>
-                        {roomData?.isHost && !m.isHost && (
+          {/* DESKTOP GOOGLE MEET RIGHT DRAWER (CHAT & PEOPLE) */}
+          {showMeetChat && (
+            <aside className="meet-side-panel desktop-only">
+              <div className="meet-drawer-header">
+                <div className="drawer-tab-switch">
+                  <button
+                    type="button"
+                    className={`drawer-tab-btn ${meetSideTab === "chat" ? "active" : ""}`}
+                    onClick={() => setMeetSideTab("chat")}
+                  >
+                    <FaComments /> Tin nhắn
+                  </button>
+                  <button
+                    type="button"
+                    className={`drawer-tab-btn ${meetSideTab === "people" ? "active" : ""}`}
+                    onClick={() => {
+                      setMeetSideTab("people");
+                      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                        wsRef.current.send(JSON.stringify({ type: "GET_MEMBERS" }));
+                      }
+                    }}
+                  >
+                    <FaUsers /> Mọi người ({displayMembers.length})
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="btn-drawer-close"
+                  onClick={() => setShowMeetChat(false)}
+                  title="Đóng bảng"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+
+              {meetSideTab === "chat" ? (
+                <div className="meet-drawer-chat-body">
+                  <div className="meet-chat-message-list custom-scroll" ref={chatScrollRef}>
+                    {messages.length === 0 ? (
+                      <div className="empty-chat-state">
+                        <p>Chào mừng bạn đến với phòng xem chung!</p>
+                        <span>Hãy gửi lời chào đầu tiên tới mọi người nhé.</span>
+                      </div>
+                    ) : (
+                      messages.map((msg) => {
+                        const isMe = user?.id?.toString() === msg.userId?.toString();
+                        const timeStr = new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+                        const avatarUrl = msg.avatar || (isMe ? user?.avatar : "");
+                        return (
+                          <div key={msg.id} className={`meet-chat-item ${isMe ? "is-me" : ""}`}>
+                            {renderAvatar(avatarUrl, msg.username, "meet-msg-avatar")}
+                            <div className="meet-msg-content">
+                              <div className="meet-msg-meta">
+                                <span className={`meet-msg-sender ${msg.isHost ? "is-host" : ""}`}>
+                                  {msg.isHost && <FaCrown className="mini-crown" />}
+                                  {msg.username}
+                                </span>
+                                <span className="meet-msg-time">{timeStr}</span>
+                              </div>
+                              <div className="meet-msg-bubble">{msg.text}</div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  {errorMessage && (
+                    <div className="meet-chat-error-alert">
+                      <FaExclamationTriangle />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSendChat} className="meet-chat-bottom-input">
+                    <input
+                      type="text"
+                      maxLength={200}
+                      placeholder="Gửi tin nhắn..."
+                      value={chatInput}
+                      onChange={(e) => setChatInput(e.target.value)}
+                    />
+                    <button type="submit" disabled={!chatInput.trim()} title="Gửi">
+                      <FaPaperPlane />
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <div className="meet-drawer-people-body custom-scroll">
+                  <div className="people-group-title">
+                    Đang xem cùng bạn ({displayMembers.length})
+                  </div>
+                  <div className="people-list-container">
+                    {displayMembers.map((m) => {
+                      const isMe = user?.id?.toString() === m.userId?.toString();
+                      const avatarUrl = m.avatar || (isMe ? user?.avatar : "");
+                      const isHost = Boolean(m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+                      return (
+                        <div key={m.userId} className="people-row-item">
+                          {renderAvatar(avatarUrl, m.username, "people-avatar-circle")}
+                          <div className="people-meta-box">
+                            <span className="people-display-name">
+                              {m.username} {isMe ? "(Bạn)" : ""}
+                            </span>
+                            {isHost && (
+                              <span className="people-host-badge">
+                                <FaCrown /> Chủ phòng
+                              </span>
+                            )}
+                          </div>
+                          <div className="people-actions-box">
+                            <FaMicrophoneSlash className="mic-muted-status" title="Micro đã tắt" />
+                            {roomData?.isHost && !isHost && displayMembers.length >= 3 && (
+                              <button
+                                type="button"
+                                className="btn-transfer-host-drawer"
+                                onClick={() => handleTransferHost(m.userId, m.username)}
+                                title="Chuyển quyền chủ phòng"
+                              >
+                                <FaExchangeAlt />
+                              </button>
+                            )}
+                            {roomData?.isHost && !isHost && (
+                              <button
+                                type="button"
+                                className="btn-kick-from-drawer"
+                                onClick={() => handleKickUser(m.userId, m.username)}
+                                title="Mời ra khỏi phòng"
+                              >
+                                <FaBan />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </aside>
+          )}
+
+          {/* MOBILE TIKTOK LIVE STREAM CHAT & BOTTOM BAR (MOBILE ONLY) */}
+          <div className="tiktok-live-container mobile-only">
+            {/* Upward Streaming Chat Messages with full upward scroll support */}
+            <div className="tiktok-messages-stream custom-scroll" ref={mobileChatScrollRef}>
+              <div className="tiktok-scroll-top-anchor" style={{ marginTop: "auto" }} />
+              <div className="tiktok-system-pill">
+                <span>Chào mừng bạn đến với phòng xem chung!</span>
+              </div>
+              {messages.map((msg) => {
+                const isMe = user?.id?.toString() === msg.userId?.toString();
+                const avatarUrl = msg.avatar || (isMe ? user?.avatar : "");
+                return (
+                  <div key={msg.id} className="tiktok-stream-item">
+                    {renderAvatar(avatarUrl, msg.username, "tiktok-stream-avatar")}
+                    <div className="tiktok-stream-bubble">
+                      <span className={`tiktok-sender-name ${msg.isHost ? "is-host" : ""}`}>
+                        {msg.isHost && <FaCrown className="mini-crown" />}
+                        {msg.username}:
+                      </span>
+                      <span className="tiktok-sender-text">{msg.text}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {errorMessage && (
+              <div className="tiktok-error-chip">
+                <FaExclamationTriangle />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
+            {/* Mobile TikTok Live Bottom Input & Action Buttons */}
+            <div className="tiktok-bottom-bar-fixed">
+              <form onSubmit={handleSendChat} className="tiktok-bottom-form">
+                <input
+                  type="text"
+                  maxLength={200}
+                  placeholder="Nhập..."
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                />
+                {chatInput.trim() && (
+                  <button type="submit" className="btn-tiktok-send-arrow">
+                    <FaPaperPlane />
+                  </button>
+                )}
+              </form>
+
+              <div className="tiktok-quick-buttons">
+                <button
+                  type="button"
+                  className="btn-tiktok-pill-action"
+                  onClick={handleCopyInvite}
+                  title="Sao chép link mời"
+                >
+                  <FaShareAlt />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. MOBILE VIEWERS SLIDE-IN DRAWER (Từ phải kéo qua, làm mờ phía sau) */}
+        {showMobileViewers && (
+          <div
+            className="mobile-viewers-drawer-overlay mobile-only"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowMobileViewers(false);
+            }}
+          >
+            <div className="mobile-viewers-drawer-panel">
+              <div className="drawer-header">
+                <div className="drawer-title">
+                  <FaUsers className="title-icon" />
+                  <span>Người xem ({displayMembers.length})</span>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close-drawer"
+                  onClick={() => setShowMobileViewers(false)}
+                  title="Đóng"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+
+              <div className="drawer-body custom-scroll">
+                {displayMembers.map((m) => {
+                  const isMe = user?.id?.toString() === m.userId?.toString();
+                  const avatarUrl = m.avatar || (isMe ? user?.avatar : "");
+                  const isHost = Boolean(m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+                  return (
+                    <div key={m.userId} className="mobile-viewer-item">
+                      {renderAvatar(avatarUrl, m.username, "viewer-avatar-circle")}
+                      <div className="viewer-info">
+                        <span className="viewer-name">
+                          {m.username} {isMe ? "(Bạn)" : ""}
+                        </span>
+                        {isHost && (
+                          <span className="viewer-host-pill">
+                            <FaCrown /> Chủ phòng
+                          </span>
+                        )}
+                      </div>
+                      <div className="viewer-actions">
+                        <FaMicrophoneSlash className="mic-muted-status" title="Micro đã tắt" />
+                        {roomData?.isHost && !isHost && displayMembers.length >= 3 && (
                           <button
                             type="button"
-                            className="btn-kick-user"
+                            className="btn-transfer-host-mobile"
+                            onClick={() => handleTransferHost(m.userId, m.username)}
+                            title="Chuyển quyền chủ phòng"
+                          >
+                            <FaExchangeAlt />
+                          </button>
+                        )}
+                        {roomData?.isHost && !isHost && (
+                          <button
+                            type="button"
+                            className="btn-kick-user-mobile"
                             onClick={() => handleKickUser(m.userId, m.username)}
                             title="Mời ra khỏi phòng"
                           >
@@ -2494,62 +2960,221 @@ export default function WatchPartyPage() {
                           </button>
                         )}
                       </div>
-                    ))}
-                  </div>
-                )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 5. HOST CONTROLS MODAL OVERLAY (DESKTOP & MOBILE) */}
+        {roomData?.isHost && showHostPanel && (
+          <div
+            className="host-controls-modal-overlay"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowHostPanel(false);
+            }}
+          >
+            <div className="host-controls-modal-dialog">
+              <div className="host-card-header">
+                <div className="header-title-row">
+                  <h3 title="Bảng Điều Khiển Chủ Phòng">
+                    <FaCrown className="crown-icon" />
+                    <span>Bảng Điều Khiển Chủ Phòng</span>
+                  </h3>
+                </div>
+                <div className="header-actions-row">
+                  <button
+                    type="button"
+                    className={`btn-toggle-search-movie ${hostSearchMode ? "active" : ""}`}
+                    onClick={() => setHostSearchMode(!hostSearchMode)}
+                  >
+                    {hostSearchMode ? (
+                      <>
+                        <FaArrowLeft /> Quay lại chọn tập
+                      </>
+                    ) : (
+                      <>
+                        <FaFilm /> Đổi phim khác
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-destroy-room"
+                    onClick={handleHostDestroyRoom}
+                    title="Giải tán phòng xem và xóa dữ liệu hoàn toàn"
+                  >
+                    <FaTrashAlt /> Giải tán
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-close-host-panel"
+                    onClick={() => setShowHostPanel(false)}
+                    title="Đóng bảng điều khiển"
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
               </div>
 
-              {/* Chat Message List */}
-              <div className="chat-message-list" ref={chatScrollRef}>
-                {messages.length === 0 ? (
-                  <div className="empty-chat-state">
-                    <p>Chào mừng đến với phòng xem chung!</p>
-                    <span>Hãy gửi lời chào đầu tiên tới mọi người nhé.</span>
+              {hostSearchMode ? (
+                /* Giao diện Đổi Phim Khác: Tìm kiếm phim thông minh từ KK & NC */
+                <div className="host-movie-search-section">
+                  <div className="host-search-input-box">
+                    <FaSearch className="search-icon" />
+                    <input
+                      type="text"
+                      placeholder="Gõ tên phim mới bạn muốn đổi (vd: Doraemon, Naruto, Spider-Man...)"
+                      value={hostMovieSearchText}
+                      onChange={(e) => setHostMovieSearchText(e.target.value)}
+                      autoFocus
+                    />
+                    {isSearchingHostMovie && <div className="search-spinner" />}
                   </div>
-                ) : (
-                  messages.map((msg) => {
-                    const isMe = user?.id?.toString() === msg.userId?.toString();
-                    const timeStr = new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                    return (
-                      <div key={msg.id} className={`chat-item ${isMe ? "chat-item--me" : ""}`}>
-                        <div className="chat-item-header">
-                          <span className={`sender-name ${msg.isHost ? "sender-name--host" : ""}`}>
-                            {msg.isHost && <FaCrown className="host-mini-crown" />}
-                            {msg.username}
-                          </span>
-                          <span className="send-time">{timeStr}</span>
-                        </div>
-                        <div className="chat-bubble">{msg.text}</div>
+
+                  {hostMovieSearchResults.length > 0 ? (
+                    <ul className="host-movie-results-list custom-scroll">
+                      {hostMovieSearchResults.map((m) => (
+                        <li
+                          key={`${m.slug}-${m.sourceName}`}
+                          className="host-result-item"
+                          onClick={() => handleSelectMovie(m, true)}
+                        >
+                          <img
+                            src={m.poster_url || m.thumb_url || "https://placehold.co/45x60/1a1a2e/ffffff?text=Film"}
+                            alt={m.name}
+                            className="result-poster"
+                            onError={(e) => {
+                              e.target.src = "https://placehold.co/45x60/1a1a2e/ffffff?text=Film";
+                            }}
+                          />
+                          <div className="result-info">
+                            <strong className="result-title">{m.name}</strong>
+                            <span className="result-origin">{m.original_name || ""}</span>
+                            <div className="result-badges">
+                              <span className={`badge-tag badge-tag--source badge-tag--source-${m.sourceName?.toLowerCase()}`}>
+                                {m.sourceName}
+                              </span>
+                              {m.quality && <span className="badge-tag badge-tag--quality">{m.quality}</span>}
+                              {m.year && m.year !== "N/A" && <span className="badge-tag badge-tag--year">{m.year}</span>}
+                              {m.current_episode && <span className="badge-tag badge-tag--ep">{m.current_episode}</span>}
+                            </div>
+                          </div>
+                          <button type="button" className="btn-choose-this-movie">
+                            <FaPlay /> Chọn & Phát
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    hostMovieSearchText.trim().length >= 2 && !isSearchingHostMovie && (
+                      <div className="host-no-results">
+                        Không tìm thấy phim phù hợp với từ khóa "{hostMovieSearchText}".
                       </div>
-                    );
-                  })
-                )}
-              </div>
+                    )
+                  )}
+                </div>
+              ) : (
+                /* Giao diện Đổi Tập & Server của Phim Hiện Tại */
+                <div className="host-current-movie-section">
+                  <div className="current-movie-overview">
+                    <div className="movie-details">
+                      <span className="label-sub">Đang chiếu:</span>
+                      <strong className="current-movie-name">{roomData?.title || selectedMovie?.name}</strong>
+                      <span className="current-movie-ep">{displayEpisode}</span>
+                    </div>
+                  </div>
 
-              {/* Anti-spam error alert */}
-              {errorMessage && (
-                <div className="anti-spam-alert">
-                  <FaExclamationTriangle />
-                  <span>{errorMessage}</span>
+                  {isLoadingDetail ? (
+                    <div className="loading-episodes-host">
+                      <div className="spinner-border spinner-border-sm text-info" role="status" />
+                      <span>Đang tải danh sách tập & server...</span>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Chọn Server nếu có nhiều hơn 1 nguồn */}
+                      {movieServers.length > 1 && (
+                        <div className="host-server-selector">
+                          <label><FaServer /> Nguồn / Server ({movieServers.length}):</label>
+                          <div className="server-chips-row">
+                            {movieServers.map((srv, idx) => (
+                              <button
+                                key={idx}
+                                type="button"
+                                className={`host-srv-chip ${idx === selectedServerIdx ? "active" : ""}`}
+                                onClick={() => handleHostSelectServer(idx)}
+                              >
+                                {srv.display_name || srv.server_name || `Server ${idx + 1}`}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Danh sách tập phim để chủ phòng bấm chọn */}
+                      <div className="host-episode-selector">
+                        <label><FaListOl /> Danh sách tập ({movieEpisodes.length} tập):</label>
+                        {movieEpisodes.length > 0 ? (
+                          <div className="host-episode-grid custom-scroll">
+                            {movieEpisodes.map((ep, idx) => {
+                              const isActive =
+                                (roomData?.videoUrl &&
+                                  (ep.m3u8Url === roomData.videoUrl ||
+                                    ep.link_m3u8 === roomData.videoUrl ||
+                                    ep.m3u8 === roomData.videoUrl)) ||
+                                roomData?.episode === ep.name;
+                              return (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  className={`host-ep-chip ${isActive ? "active" : ""}`}
+                                  onClick={() => handleHostChangeEpisode(ep)}
+                                >
+                                  {isActive && <FaCheck className="ep-check-icon" />}
+                                  {ep.name || `Tập ${idx + 1}`}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <div className="no-episodes-alert">
+                            Đang tải hoặc phim không có nguồn M3U8 từ KK / NC.
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Chuyển quyền chủ phòng (khi phòng có từ 3 người trở lên) */}
+                      {displayMembers.length >= 3 && (
+                        <div className="host-transfer-selector">
+                          <label><FaCrown /> Chuyển quyền chủ phòng ({displayMembers.filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true)).length} người khác):</label>
+                          <div className="host-transfer-chips custom-scroll">
+                            {displayMembers
+                              .filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true))
+                              .map((m) => (
+                                <button
+                                  key={m.userId}
+                                  type="button"
+                                  className="host-transfer-chip"
+                                  onClick={() => handleTransferHost(m.userId, m.username)}
+                                  title={`Chuyển quyền chủ phòng cho ${m.username}`}
+                                >
+                                  {renderAvatar(m.avatar, m.username, "transfer-chip-avatar")}
+                                  <span className="transfer-name">{m.username}</span>
+                                  <span className="transfer-action-text"><FaExchangeAlt /> Chuyển</span>
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
-
-              {/* Chat Form */}
-              <form onSubmit={handleSendChat} className="chat-input-form">
-                <input
-                  type="text"
-                  maxLength={200}
-                  placeholder="Nhập tin nhắn (tối đa 200 ký tự)..."
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                />
-                <button type="submit" disabled={!chatInput.trim()}>
-                  <FaPaperPlane />
-                </button>
-              </form>
             </div>
-          </aside>
-        </div>
+          </div>
+        )}
       </div>
     );
   }
