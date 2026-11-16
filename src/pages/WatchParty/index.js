@@ -189,6 +189,10 @@ export default function WatchPartyPage() {
   const wsRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
   const [roomData, setRoomData] = useState(null);
+  const roomDataRef = useRef(null);
+  useEffect(() => {
+    roomDataRef.current = roomData;
+  }, [roomData]);
   const [members, setMembers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState("");
@@ -230,17 +234,54 @@ export default function WatchPartyPage() {
   const [showMeetChat, setShowMeetChat] = useState(true);
   const [meetSideTab, setMeetSideTab] = useState("chat"); // "chat" | "people"
   const [showMobileViewers, setShowMobileViewers] = useState(false);
-  const [currentTime, setCurrentTime] = useState(() =>
-    new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  );
   const [activeMovieBackdrop, setActiveMovieBackdrop] = useState("");
 
+  // Xử lý bàn phím ảo trên iOS & Mobile: Tự động điều chỉnh chiều cao boxchat, giữ header & video cố định không bị zoom hay đẩy ra ngoài
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
+    if (!activeRoomId) return;
+
+    document.body.classList.add("watch-party-active");
+
+    const updateVisualViewport = () => {
+      if (window.visualViewport) {
+        const vvHeight = window.visualViewport.height;
+        document.documentElement.style.setProperty("--visual-viewport-height", `${vvHeight}px`);
+      } else {
+        document.documentElement.style.setProperty("--visual-viewport-height", `${window.innerHeight}px`);
+      }
+      if (window.scrollY !== 0) {
+        window.scrollTo(0, 0);
+      }
+    };
+
+    updateVisualViewport();
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateVisualViewport);
+      window.visualViewport.addEventListener("scroll", updateVisualViewport);
+    } else {
+      window.addEventListener("resize", updateVisualViewport);
+    }
+
+    const preventWindowScroll = () => {
+      if (window.scrollY !== 0) {
+        window.scrollTo(0, 0);
+      }
+    };
+    window.addEventListener("scroll", preventWindowScroll, { passive: true });
+
+    return () => {
+      document.body.classList.remove("watch-party-active");
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", updateVisualViewport);
+        window.visualViewport.removeEventListener("scroll", updateVisualViewport);
+      } else {
+        window.removeEventListener("resize", updateVisualViewport);
+      }
+      window.removeEventListener("scroll", preventWindowScroll);
+      document.documentElement.style.removeProperty("--visual-viewport-height");
+    };
+  }, [activeRoomId]);
 
   // Tải poster/backdrop cho phòng đang xem để làm background mờ nghệ thuật cho PC/Laptop
   useEffect(() => {
@@ -1430,12 +1471,30 @@ export default function WatchPartyPage() {
       }
     };
 
+    const handleBeforeUnload = () => {
+      if (activeRoomId && user?.token) {
+        try {
+          fetch(`${BACKEND_HTTP}/api/rooms/${activeRoomId}/leave`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({}),
+            keepalive: true,
+          }).catch(() => {});
+        } catch {}
+      }
+    };
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("online", handleOnline);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("online", handleOnline);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       connectWebSocketRef.current = null;
       isIntentionalCloseRef.current = true;
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
@@ -1551,12 +1610,35 @@ export default function WatchPartyPage() {
           }, 60);
         }
         startElapsedCounter(msg.room.startedAt);
+
+        // NẾU LÀ KHÁCH VÀO PHÒNG: TUA VIDEO ĐẾN ĐÚNG GIÂY ĐANG CHIẾU CỦA PHÒNG
+        if (!isUserHost) {
+          const targetTime =
+            typeof msg.room?.elapsedSeconds === "number"
+              ? msg.room.elapsedSeconds
+              : Math.max(0, Math.floor((Date.now() - (msg.room?.startedAt || Date.now())) / 1000));
+
+          if (targetTime > 0) {
+            const doSeek = () => {
+              if (videoRef.current && Math.abs(videoRef.current.currentTime - targetTime) > 1.5) {
+                isSeekingFromSyncRef.current = true;
+                videoRef.current.currentTime = targetTime;
+              }
+            };
+            if (videoRef.current && videoRef.current.readyState >= 1) {
+              doSeek();
+            } else if (videoRef.current) {
+              videoRef.current.addEventListener("loadedmetadata", doSeek, { once: true });
+              videoRef.current.addEventListener("canplay", doSeek, { once: true });
+            }
+          }
+        }
         break;
       }
 
       case "PONG":
       case "MEMBERS_SYNC": {
-        if (msg.members && Array.isArray(msg.members) && msg.members.length > 0) {
+        if (msg.members && Array.isArray(msg.members)) {
           setMembers(msg.members);
         }
         break;
@@ -1564,14 +1646,15 @@ export default function WatchPartyPage() {
 
       case "USER_JOINED": {
         setMembers((prev) => {
-          const exists = prev.some((m) => m.userId === msg.user.userId);
+          const exists = prev.some((m) => String(m.userId) === String(msg.user.userId));
           if (exists) return prev;
           return [...prev, msg.user];
         });
         // Nếu là chủ phòng và đang phát video, lập tức gửi SYNC_TIME để thành viên mới tua đúng giây
         const isUserHost = Boolean(
+          roomDataRef.current?.isHost ||
           roomData?.isHost ||
-          (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+          (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
         );
         if (isUserHost && videoRef.current && videoRef.current.currentTime > 0) {
           const cur = Math.floor(videoRef.current.currentTime);
@@ -1583,7 +1666,23 @@ export default function WatchPartyPage() {
       }
 
       case "USER_LEFT": {
-        setMembers((prev) => prev.filter((m) => m.userId !== msg.userId));
+        const leftUserId = String(msg.userId);
+        setMembers((prev) => prev.filter((m) => String(m.userId) !== leftUserId));
+        setRoomData((prev) => {
+          if (!prev) return null;
+          // Nếu người vừa rời là chủ phòng và mình còn ở trong phòng
+          if (String(prev.hostId) === leftUserId) {
+            const nextData = {
+              ...prev,
+              hostId: user?.id || prev.hostId,
+              hostUsername: user?.username || prev.hostUsername,
+              isHost: true,
+            };
+            roomDataRef.current = nextData;
+            return nextData;
+          }
+          return prev;
+        });
         break;
       }
 
@@ -1614,8 +1713,9 @@ export default function WatchPartyPage() {
 
       case "SYNC_TIME": {
         const isUserHost = Boolean(
+          roomDataRef.current?.isHost ||
           roomData?.isHost ||
-          (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+          (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
         );
         // Chủ phòng là nguồn phát chuẩn, KHÔNG BAO GIỜ để gói tin SYNC_TIME tua ngược video của chủ phòng
         if (isUserHost) {
@@ -1625,30 +1725,50 @@ export default function WatchPartyPage() {
         roomStartedAtRef.current = msg.startedAt;
         setRoomData((prev) => (prev ? { ...prev, startedAt: msg.startedAt } : null));
         startElapsedCounter(msg.startedAt);
-        if (videoRef.current && typeof msg.time === "number") {
-          const diff = Math.abs(videoRef.current.currentTime - msg.time);
-          if (diff > 2.0) {
-            isSeekingFromSyncRef.current = true;
-            videoRef.current.currentTime = msg.time;
-            if (videoRef.current.paused) {
-              safePlay(videoRef.current);
+        if (typeof msg.time === "number") {
+          const targetSeconds = msg.time;
+          const applySeek = () => {
+            if (videoRef.current) {
+              const diff = Math.abs(videoRef.current.currentTime - targetSeconds);
+              if (diff > 1.5) {
+                isSeekingFromSyncRef.current = true;
+                videoRef.current.currentTime = targetSeconds;
+              }
+              if (videoRef.current.paused) {
+                safePlay(videoRef.current);
+              }
             }
+          };
+
+          if (videoRef.current && videoRef.current.readyState >= 1) {
+            applySeek();
+          } else if (videoRef.current) {
+            videoRef.current.addEventListener("loadedmetadata", applySeek, { once: true });
+            videoRef.current.addEventListener("canplay", applySeek, { once: true });
           }
         }
         break;
       }
 
       case "HOST_CHANGED": {
+        const isMe = Boolean(user?.id && String(user.id) === String(msg.newHostId));
         setRoomData((prev) => {
           if (!prev) return null;
-          const isMe = user?.id?.toString() === msg.newHostId?.toString();
-          return {
+          const nextData = {
             ...prev,
             hostId: msg.newHostId,
             hostUsername: msg.newHostUsername,
             isHost: isMe,
           };
+          roomDataRef.current = nextData;
+          return nextData;
         });
+        setMembers((prev) =>
+          prev.map((m) => ({
+            ...m,
+            isHost: String(m.userId) === String(msg.newHostId),
+          }))
+        );
         DarkSwal.fire({
           toast: true,
           position: "top-end",
@@ -1756,17 +1876,9 @@ export default function WatchPartyPage() {
     return raw;
   }, [roomData?.roomName, roomData?.hostUsername, roomData?.title]);
 
-  // Danh sách thành viên hiển thị: Luôn đảm bảo có Chủ phòng ở đầu, không bao giờ bị mất do mạng chập chờn
+  // Danh sách thành viên hiển thị: Luôn đảm bảo có Chủ phòng ở đầu, không bao giờ tự ý chèn người đã rời
   const displayMembers = useMemo(() => {
     let list = [...members];
-    if (roomData?.hostUsername && !list.some((m) => m.isHost || String(m.userId) === String(roomData.hostId))) {
-      list.unshift({
-        userId: roomData.hostId || "host-fallback-id",
-        username: roomData.hostUsername,
-        avatar: roomData?.hostAvatar || (roomData?.isHost ? user?.avatar : ""),
-        isHost: true,
-      });
-    }
     return list.sort((a, b) => {
       const aIsHost = Boolean(a.isHost || (roomData?.hostId && String(a.userId) === String(roomData.hostId)));
       const bIsHost = Boolean(b.isHost || (roomData?.hostId && String(b.userId) === String(roomData.hostId)));
@@ -1778,7 +1890,7 @@ export default function WatchPartyPage() {
       if (!aIsMe && bIsMe) return 1;
       return 0;
     });
-  }, [members, roomData, user]);
+  }, [members, roomData?.hostId, user?.id]);
 
   // Khởi tạo và tự động tua đến đúng giây đã chiếu bằng Hls.js khi nguồn là M3U8
   useEffect(() => {
@@ -1825,18 +1937,28 @@ export default function WatchPartyPage() {
     }
 
     if (Hls.isSupported()) {
-      const hls = new Hls(SMOOTH_HLS_CONFIG);
+      const hls = new Hls({
+        ...SMOOTH_HLS_CONFIG,
+        startPosition: targetElapsed > 0 ? targetElapsed : -1,
+      });
       hlsInstanceRef.current = hls;
       hls.loadSource(roomData.videoUrl);
       hls.attachMedia(video);
 
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        if (targetElapsed > 0) {
+      const seekToTarget = () => {
+        if (targetElapsed > 0 && Math.abs(video.currentTime - targetElapsed) > 1.5) {
           isSeekingFromSyncRef.current = true;
           video.currentTime = targetElapsed;
         }
         safePlay(video);
+      };
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        seekToTarget();
       });
+
+      video.addEventListener("loadedmetadata", seekToTarget, { once: true });
+      video.addEventListener("canplay", seekToTarget, { once: true });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
@@ -1970,21 +2092,36 @@ export default function WatchPartyPage() {
     setShowSkipAd(false);
 
     const newStartedAt = Date.now() - targetTime * 1000;
+    roomStartedAtRef.current = newStartedAt;
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
     startElapsedCounter(newStartedAt);
     setElapsedDisplay("00:15:31");
 
-    if (
-      roomData?.isHost &&
-      wsRef.current &&
-      wsRef.current.readyState === WebSocket.OPEN
-    ) {
-      wsRef.current.send(
-        JSON.stringify({
-          type: "SYNC_TIME",
-          time: targetTime,
-        })
-      );
+    const isUserHost = Boolean(
+      roomDataRef.current?.isHost ||
+      roomData?.isHost ||
+      (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
+    );
+
+    if (isUserHost) {
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(
+          JSON.stringify({
+            type: "SYNC_TIME",
+            time: targetTime,
+          })
+        );
+      }
+      if (activeRoomId && user?.token) {
+        fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ time: targetTime }),
+        }).catch(() => {});
+      }
     }
   };
 
@@ -2113,15 +2250,17 @@ export default function WatchPartyPage() {
     }
   };
 
-  // Heartbeat định kỳ 6s để các khách luôn được đồng bộ mượt mà theo đúng player của chủ phòng
+  // Heartbeat định kỳ 4s để các khách luôn được đồng bộ mượt mà theo đúng player của chủ phòng
   useEffect(() => {
-    const isUserHost = Boolean(
-      roomData?.isHost ||
-      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
-    );
-    if (!isUserHost || !videoRef.current) return;
+    if (!activeRoomId) return;
     const interval = setInterval(() => {
+      const isUserHost = Boolean(
+        roomDataRef.current?.isHost ||
+        roomData?.isHost ||
+        (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
+      );
       if (
+        isUserHost &&
         wsRef.current &&
         wsRef.current.readyState === WebSocket.OPEN &&
         videoRef.current &&
@@ -2136,9 +2275,9 @@ export default function WatchPartyPage() {
           })
         );
       }
-    }, 6000);
+    }, 4000);
     return () => clearInterval(interval);
-  }, [roomData?.isHost, roomData?.hostId, user?.id]);
+  }, [activeRoomId, user?.id, roomData?.isHost]);
 
   // Link Embed kèm tham số thời gian
   const embedUrlWithParams = useMemo(() => {
@@ -2166,17 +2305,13 @@ export default function WatchPartyPage() {
     });
   };
 
-  // Hành động: Chuyển quyền chủ phòng (yêu cầu phòng từ 3 người trở lên)
+  // Hành động: Chuyển quyền chủ phòng
   const handleTransferHost = (targetUserId, targetUsername) => {
-    if (!roomData?.isHost) return;
-    if (displayMembers.length < 3) {
-      DarkSwal.fire({
-        icon: "warning",
-        title: "Chưa đủ điều kiện",
-        text: "Phòng phải có từ 3 người trở lên mới có thể chuyển quyền chủ phòng.",
-      });
-      return;
-    }
+    const isUserHost = Boolean(
+      roomData?.isHost ||
+      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+    if (!isUserHost) return;
 
     DarkSwal.fire({
       icon: "question",
@@ -2212,7 +2347,87 @@ export default function WatchPartyPage() {
 
   // Hành động: Rời phòng (Nếu là chủ phòng sẽ hỏi muốn chuyển quyền hay giải tán luôn)
   const handleLeaveOrDestroyRoom = () => {
-    if (roomData?.isHost) {
+    const isUserHost = Boolean(
+      roomData?.isHost ||
+      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+
+    const otherMembers = displayMembers.filter(
+      (m) => String(m.userId) !== String(user?.id)
+    );
+
+    const doLeaveAndTransfer = (targetUserId) => {
+      isIntentionalCloseRef.current = true;
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(
+          JSON.stringify({
+            type: "LEAVE_AND_TRANSFER",
+            targetUserId,
+          })
+        );
+      }
+      if (activeRoomId && user?.token) {
+        try {
+          fetch(`${BACKEND_HTTP}/api/rooms/${activeRoomId}/leave`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({ targetUserId }),
+            keepalive: true,
+          }).catch(() => {});
+        } catch {}
+      }
+      navigate("/xem-chung");
+    };
+
+    const doLeaveRoom = () => {
+      isIntentionalCloseRef.current = true;
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({ type: "LEAVE_ROOM" }));
+      }
+      if (activeRoomId && user?.token) {
+        try {
+          fetch(`${BACKEND_HTTP}/api/rooms/${activeRoomId}/leave`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+            keepalive: true,
+          }).catch(() => {});
+        } catch {}
+      }
+      navigate("/xem-chung");
+    };
+
+    const doDestroyRoom = () => {
+      isIntentionalCloseRef.current = true;
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({ type: "DESTROY_ROOM" }));
+      }
+      navigate("/xem-chung");
+    };
+
+    if (isUserHost) {
+      if (otherMembers.length === 0) {
+        DarkSwal.fire({
+          icon: "question",
+          title: "Rời phòng xem",
+          text: "Hiện không có thành viên nào khác trong phòng. Bạn có chắc muốn rời phòng và đóng phòng xem không?",
+          showCancelButton: true,
+          confirmButtonText: "Rời phòng",
+          cancelButtonText: "Ở lại",
+          confirmButtonColor: "#ef4444",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            doLeaveRoom();
+          }
+        });
+        return;
+      }
+
       DarkSwal.fire({
         icon: "question",
         title: "Tùy chọn rời phòng",
@@ -2226,18 +2441,38 @@ export default function WatchPartyPage() {
         denyButtonColor: "#ef4444",
       }).then((result) => {
         if (result.isConfirmed) {
-          isIntentionalCloseRef.current = true;
-          navigate("/xem-chung");
-        } else if (result.isDenied) {
-          isIntentionalCloseRef.current = true;
-          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({ type: "DESTROY_ROOM" }));
+          if (otherMembers.length === 1) {
+            // Đúng 1 người khác: chuyển quyền ngay cho người đó
+            doLeaveAndTransfer(otherMembers[0].userId);
+          } else {
+            // Có từ 2 người khác trở lên (tổng phòng từ 3 người): chọn người nhận quyền
+            const inputOptions = {};
+            otherMembers.forEach((m) => {
+              inputOptions[m.userId] = m.username || `Thành viên #${m.userId}`;
+            });
+
+            DarkSwal.fire({
+              title: "Chọn chủ phòng mới",
+              text: "Vui lòng chọn thành viên bạn muốn chuyển giao quyền chủ phòng:",
+              input: "select",
+              inputOptions,
+              inputValue: otherMembers[0].userId,
+              showCancelButton: true,
+              confirmButtonText: "Chuyển & Rời phòng",
+              cancelButtonText: "Hủy",
+              confirmButtonColor: "#3b82f6",
+            }).then((selectRes) => {
+              if (selectRes.isConfirmed && selectRes.value) {
+                doLeaveAndTransfer(selectRes.value);
+              }
+            });
           }
+        } else if (result.isDenied) {
+          doDestroyRoom();
         }
       });
     } else {
-      isIntentionalCloseRef.current = true;
-      navigate("/xem-chung");
+      doLeaveRoom();
     }
   };
 
@@ -2330,8 +2565,12 @@ export default function WatchPartyPage() {
 
   // Render: Nếu đang trong phòng xem (`activeRoomId`)
   if (activeRoomId) {
-    const hostMember = members.find((m) => m.isHost || m.username === roomData?.hostUsername);
-    const hostAvatar = roomData?.hostAvatar || hostMember?.avatar || (roomData?.isHost ? user?.avatar : "");
+    const isCurrentUserHost = Boolean(
+      roomData?.isHost || (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+    );
+    const hostMember = members.find((m) => m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+    const currentHostUsername = hostMember?.username || roomData?.hostUsername || "Host";
+    const hostAvatar = hostMember?.avatar || roomData?.hostAvatar || (isCurrentUserHost ? user?.avatar : "");
     const rawBackdrop =
       selectedMovie?.thumb_url ||
       selectedMovie?.poster_url ||
@@ -2346,6 +2585,10 @@ export default function WatchPartyPage() {
       <div className="watch-party-room-page">
         <Helmet>
           <title>{roomData?.title ? `${roomData.title} - Xem Chung` : "Phòng Xem Chung"} | Tecede</title>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
+          />
         </Helmet>
 
         {/* Backdrop ảnh phim làm mờ cho PC/Laptop */}
@@ -2357,8 +2600,6 @@ export default function WatchPartyPage() {
         {/* 1. GOOGLE MEET TOP BAR (DESKTOP / PC / LAPTOP) */}
         <header className="meet-top-bar desktop-only">
           <div className="meet-top-left">
-            <span className="meet-clock">{currentTime}</span>
-            <span className="meet-sep">|</span>
             <div className="meet-room-info-group">
               <span className="meet-movie-title" title={roomData?.title || "Đang phát phim"}>
                 {roomData?.title || "Phòng xem chung"}
@@ -2370,8 +2611,8 @@ export default function WatchPartyPage() {
 
           <div className="meet-top-center">
             <div className="meet-presenting-pill" title="Người đang phát phim">
-              {renderAvatar(hostAvatar, roomData?.hostUsername, "meet-presenting-avatar")}
-              <span className="meet-presenting-name">{roomData?.hostUsername || "Host"}</span>
+              {renderAvatar(hostAvatar, currentHostUsername, "meet-presenting-avatar")}
+              <span className="meet-presenting-name">{currentHostUsername}</span>
               <span className="meet-presenting-sub">(Chủ phòng)</span>
             </div>
           </div>
@@ -2391,7 +2632,7 @@ export default function WatchPartyPage() {
               <FaShareAlt />
             </button>
 
-            {roomData?.isHost && (
+            {isCurrentUserHost && (
               <button
                 type="button"
                 className={`btn-meet-action ${showHostPanel ? "active" : ""}`}
@@ -2452,10 +2693,10 @@ export default function WatchPartyPage() {
 
         {/* 2. TIKTOK TOP BAR (MOBILE) */}
         <header className="tiktok-top-bar mobile-only">
-          <div className="tiktok-host-pill" onClick={() => roomData?.isHost && setShowHostPanel(true)}>
-            {renderAvatar(hostAvatar, roomData?.hostUsername, "tiktok-host-avatar")}
+          <div className="tiktok-host-pill" onClick={() => isCurrentUserHost && setShowHostPanel(true)}>
+            {renderAvatar(hostAvatar, currentHostUsername, "tiktok-host-avatar")}
             <div className="tiktok-host-info">
-              <span className="tiktok-host-name">{roomData?.hostUsername || "Host"}</span>
+              <span className="tiktok-host-name">{currentHostUsername}</span>
               <span className="tiktok-host-badge">
                 <FaCrown /> Chủ phòng
               </span>
@@ -2480,7 +2721,7 @@ export default function WatchPartyPage() {
             </button>
 
             {/* Nút Cài đặt chủ phòng: Nằm giữa icon số người và nút thoát */}
-            {roomData?.isHost && (
+            {isCurrentUserHost && (
               <button
                 type="button"
                 className="btn-tiktok-head-host"
@@ -2512,31 +2753,27 @@ export default function WatchPartyPage() {
               {roomData?.videoUrl ? (
                 isM3u8Stream ? (
                   <div
-                    className={`hls-video-container ${!roomData?.isHost ? "guest-mode" : ""} ${!showGuestControls && !roomData?.isHost ? "hide-cursor" : ""}`}
-                    onMouseMove={!roomData?.isHost ? handlePlayerMouseMove : undefined}
-                    onMouseLeave={!roomData?.isHost ? handlePlayerMouseLeave : undefined}
-                    onClick={!roomData?.isHost ? handlePlayerMouseMove : undefined}
+                    className={`hls-video-container ${!isCurrentUserHost ? "guest-mode" : ""} ${!showGuestControls && !isCurrentUserHost ? "hide-cursor" : ""}`}
+                    onMouseMove={!isCurrentUserHost ? handlePlayerMouseMove : undefined}
+                    onMouseLeave={!isCurrentUserHost ? handlePlayerMouseLeave : undefined}
+                    onClick={!isCurrentUserHost ? handlePlayerMouseMove : undefined}
                   >
                     <video
                       key={roomData?.videoUrl || "watch-party-video"}
                       ref={videoRef}
-                      className={`watch-party-video-element ${!roomData?.isHost ? "guest-video-element" : ""}`}
-                      controls={Boolean(roomData?.isHost)}
+                      className={`watch-party-video-element ${!isCurrentUserHost ? "guest-video-element" : ""}`}
+                      controls={Boolean(isCurrentUserHost)}
                       playsInline
                       webkit-playsinline="true"
                       x5-playsinline="true"
                       x-webkit-airplay="allow"
-                      tabIndex={roomData?.isHost ? 0 : -1}
+                      tabIndex={isCurrentUserHost ? 0 : -1}
                       onSeeked={() => {
                         if (isSeekingFromSyncRef.current) {
                           isSeekingFromSyncRef.current = false;
                           return;
                         }
-                        const isUserHost = Boolean(
-                          roomData?.isHost ||
-                          (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
-                        );
-                        if (isUserHost) {
+                        if (isCurrentUserHost) {
                           handleHostSeeked();
                         }
                       }}
@@ -2545,7 +2782,7 @@ export default function WatchPartyPage() {
                       }}
                       onTimeUpdate={handleTimeUpdate}
                       onPause={
-                        roomData?.isHost
+                        isCurrentUserHost
                           ? handleHostPause
                           : () => {
                               if (videoRef.current && isConnected && !videoRef.current.seeking) {
@@ -2553,10 +2790,10 @@ export default function WatchPartyPage() {
                               }
                             }
                       }
-                      onPlay={roomData?.isHost ? handleHostPlay : undefined}
+                      onPlay={isCurrentUserHost ? handleHostPlay : undefined}
                     />
 
-                    {roomData?.isHost && showSkipAd && (
+                    {isCurrentUserHost && showSkipAd && (
                       <button
                         type="button"
                         className="btn-skip-ad"
@@ -2568,7 +2805,7 @@ export default function WatchPartyPage() {
                       </button>
                     )}
 
-                    {!roomData?.isHost && (
+                    {!isCurrentUserHost && (
                       <div className={`guest-player-bar ${showGuestControls ? "visible" : ""}`}>
                         <div className="guest-bar-right">
                           <button
@@ -2627,7 +2864,7 @@ export default function WatchPartyPage() {
                 <div className="empty-player-placeholder">
                   <FaFilm className="placeholder-icon" />
                   <p>Chưa có video được phát trong phòng này</p>
-                  {roomData?.isHost && (
+                  {isCurrentUserHost && (
                     <button className="btn-add-media" onClick={() => setShowHostPanel(true)}>
                       Thêm link phim ngay
                     </button>
@@ -2652,7 +2889,7 @@ export default function WatchPartyPage() {
                     <div className="participant-card-mic" title="Micro">
                       <FaMicrophoneSlash className="mic-icon-muted" />
                     </div>
-                    {roomData?.isHost && !isHost && displayMembers.length >= 3 && (
+                    {isCurrentUserHost && !isMe && !isHost && (
                       <button
                         type="button"
                         className="btn-tile-transfer-host"
@@ -2662,7 +2899,7 @@ export default function WatchPartyPage() {
                         <FaExchangeAlt />
                       </button>
                     )}
-                    {roomData?.isHost && !isHost && (
+                    {isCurrentUserHost && !isMe && !isHost && (
                       <button
                         type="button"
                         className="btn-tile-kick"
@@ -2801,7 +3038,7 @@ export default function WatchPartyPage() {
                           </div>
                           <div className="people-actions-box">
                             <FaMicrophoneSlash className="mic-muted-status" title="Micro đã tắt" />
-                            {roomData?.isHost && !isHost && displayMembers.length >= 3 && (
+                            {isCurrentUserHost && !isMe && !isHost && (
                               <button
                                 type="button"
                                 className="btn-transfer-host-drawer"
@@ -2811,7 +3048,7 @@ export default function WatchPartyPage() {
                                 <FaExchangeAlt />
                               </button>
                             )}
-                            {roomData?.isHost && !isHost && (
+                            {isCurrentUserHost && !isMe && !isHost && (
                               <button
                                 type="button"
                                 className="btn-kick-from-drawer"
@@ -2833,12 +3070,16 @@ export default function WatchPartyPage() {
 
           {/* MOBILE TIKTOK LIVE STREAM CHAT & BOTTOM BAR (MOBILE ONLY) */}
           <div className="tiktok-live-container mobile-only">
-            {/* Upward Streaming Chat Messages with full upward scroll support */}
-            <div className="tiktok-messages-stream custom-scroll" ref={mobileChatScrollRef}>
-              <div className="tiktok-scroll-top-anchor" style={{ marginTop: "auto" }} />
+            {/* System Pill cố định ở đầu boxchat */}
+            <div className="tiktok-system-header">
               <div className="tiktok-system-pill">
                 <span>Chào mừng bạn đến với phòng xem chung!</span>
               </div>
+            </div>
+
+            {/* Danh sách tin nhắn chat: từ cuối box đi lên */}
+            <div className="tiktok-messages-stream custom-scroll" ref={mobileChatScrollRef}>
+              <div className="tiktok-scroll-top-anchor" style={{ marginTop: "auto" }} />
               {messages.map((msg) => {
                 const isMe = user?.id?.toString() === msg.userId?.toString();
                 const avatarUrl = msg.avatar || (isMe ? user?.avatar : "");
@@ -2873,12 +3114,31 @@ export default function WatchPartyPage() {
                   placeholder="Nhập..."
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
+                  onFocus={() => {
+                    setTimeout(() => {
+                      if (window.scrollY !== 0) window.scrollTo(0, 0);
+                      if (mobileChatScrollRef.current) {
+                        mobileChatScrollRef.current.scrollTop = mobileChatScrollRef.current.scrollHeight;
+                      }
+                    }, 60);
+                  }}
+                  onBlur={() => {
+                    setTimeout(() => {
+                      if (window.scrollY !== 0) window.scrollTo(0, 0);
+                      if (mobileChatScrollRef.current) {
+                        mobileChatScrollRef.current.scrollTop = mobileChatScrollRef.current.scrollHeight;
+                      }
+                    }, 60);
+                  }}
                 />
-                {chatInput.trim() && (
-                  <button type="submit" className="btn-tiktok-send-arrow">
-                    <FaPaperPlane />
-                  </button>
-                )}
+                <button
+                  type="submit"
+                  className={`btn-tiktok-send-arrow ${chatInput.trim() ? "active" : "disabled"}`}
+                  disabled={!chatInput.trim()}
+                  title="Gửi"
+                >
+                  <FaPaperPlane />
+                </button>
               </form>
 
               <div className="tiktok-quick-buttons">
@@ -2939,7 +3199,7 @@ export default function WatchPartyPage() {
                       </div>
                       <div className="viewer-actions">
                         <FaMicrophoneSlash className="mic-muted-status" title="Micro đã tắt" />
-                        {roomData?.isHost && !isHost && displayMembers.length >= 3 && (
+                        {isCurrentUserHost && !isMe && !isHost && (
                           <button
                             type="button"
                             className="btn-transfer-host-mobile"
@@ -2949,7 +3209,7 @@ export default function WatchPartyPage() {
                             <FaExchangeAlt />
                           </button>
                         )}
-                        {roomData?.isHost && !isHost && (
+                        {isCurrentUserHost && !isMe && !isHost && (
                           <button
                             type="button"
                             className="btn-kick-user-mobile"
@@ -2969,7 +3229,7 @@ export default function WatchPartyPage() {
         )}
 
         {/* 5. HOST CONTROLS MODAL OVERLAY (DESKTOP & MOBILE) */}
-        {roomData?.isHost && showHostPanel && (
+        {isCurrentUserHost && showHostPanel && (
           <div
             className="host-controls-modal-overlay"
             onClick={(e) => {
@@ -3145,13 +3405,13 @@ export default function WatchPartyPage() {
                         )}
                       </div>
 
-                      {/* Chuyển quyền chủ phòng (khi phòng có từ 3 người trở lên) */}
-                      {displayMembers.length >= 3 && (
+                      {/* Chuyển quyền chủ phòng */}
+                      {displayMembers.filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true) && (user?.id ? String(m.userId) !== String(user.id) : true)).length > 0 && (
                         <div className="host-transfer-selector">
-                          <label><FaCrown /> Chuyển quyền chủ phòng ({displayMembers.filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true)).length} người khác):</label>
+                          <label><FaCrown /> Chuyển quyền chủ phòng ({displayMembers.filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true) && (user?.id ? String(m.userId) !== String(user.id) : true)).length} người khác):</label>
                           <div className="host-transfer-chips custom-scroll">
                             {displayMembers
-                              .filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true))
+                              .filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true) && (user?.id ? String(m.userId) !== String(user.id) : true))
                               .map((m) => (
                                 <button
                                   key={m.userId}
@@ -3274,7 +3534,11 @@ export default function WatchPartyPage() {
         ) : (
           <div className="rooms-grid">
             {filteredRooms.map((room) => {
-              const elapsedMins = Math.floor((Date.now() - (room.startedAt || Date.now())) / 60000);
+              const elapsedSec =
+                typeof room.elapsedSeconds === "number"
+                  ? room.elapsedSeconds
+                  : Math.max(0, Math.floor((Date.now() - (room.startedAt || Date.now())) / 1000));
+              const elapsedMins = Math.floor(elapsedSec / 60);
               const thumb = roomThumbnails[room.roomId];
               return (
                 <div
@@ -3312,7 +3576,9 @@ export default function WatchPartyPage() {
                     </div>
 
                     <div className="room-card-action">
-                      <span className="elapsed-text">Đã phát ~{elapsedMins > 0 ? `${elapsedMins} phút` : "vừa mới"}</span>
+                      <span className="elapsed-text">
+                        Đã phát ~{elapsedMins > 0 ? `${elapsedMins} phút` : elapsedSec > 10 ? `${elapsedSec}s` : "vừa mới"}
+                      </span>
                       <button className="btn-join-card">
                         <FaPlay /> Vào xem
                       </button>
