@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
@@ -32,7 +38,8 @@ import {
   FaTrashAlt,
   FaPhoneSlash,
   FaMicrophoneSlash,
-  FaExchangeAlt
+  FaExchangeAlt,
+  FaSlidersH,
 } from "react-icons/fa";
 import { FaForwardStep } from "react-icons/fa6";
 import { useAuth } from "../../context/AuthContext";
@@ -43,13 +50,24 @@ const BACKEND_HTTP = (
   "https://watch-party-backend.ptoan5950.workers.dev"
 ).replace(/\/$/, "");
 const BACKEND_WS = BACKEND_HTTP.replace(/^http/i, "ws");
-const SERVER_API_BASE = process.env.REACT_APP_SERVER_API_URL || "https://movie1-api-worker.nguyengiaminh532.workers.dev";
+const SERVER_API_BASE =
+  process.env.REACT_APP_SERVER_API_URL ||
+  "https://movie1-api-worker.nguyengiaminh532.workers.dev";
 const KK_BASE = process.env.REACT_APP_FILM_API_URL || "https://phimapi.com";
-const NC_BASE = process.env.REACT_APP_FILM_API_URL_3 || "https://phim.nguonc.com";
+const NC_BASE =
+  process.env.REACT_APP_FILM_API_URL_3 || "https://phim.nguonc.com";
 
 const AVATAR_COLORS = [
-  "#00796b", "#1565c0", "#6a1b9a", "#d84315", "#00838f",
-  "#2e7d32", "#c2185b", "#4527a0", "#e65100", "#0277bd"
+  "#00796b",
+  "#1565c0",
+  "#6a1b9a",
+  "#d84315",
+  "#00838f",
+  "#2e7d32",
+  "#c2185b",
+  "#4527a0",
+  "#e65100",
+  "#0277bd",
 ];
 
 // Cấu hình Hls.js chuyên biệt cho xem chung: bộ đệm mượt mà, chống giật, tua tức thì và tự phục hồi
@@ -86,11 +104,15 @@ function getPoster(url, sourceName) {
   if (!url || typeof url !== "string") return "";
   const cleanUrl = url.trim();
   if (!cleanUrl) return "";
-  if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) return cleanUrl;
+  if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://"))
+    return cleanUrl;
   if (cleanUrl.startsWith("//")) return `https:${cleanUrl}`;
-  if (sourceName === "VM") return `https://vsmov.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
-  if (sourceName === "KK") return `https://phimimg.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
-  if (sourceName === "NC") return `https://phim.nguonc.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
+  if (sourceName === "VM")
+    return `https://vsmov.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
+  if (sourceName === "KK")
+    return `https://phimimg.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
+  if (sourceName === "NC")
+    return `https://phim.nguonc.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
   return cleanUrl;
 }
 
@@ -113,7 +135,8 @@ function slugify(text) {
 function getYearFromData(f) {
   if (!f) return "N/A";
   if (f.year) {
-    if (typeof f.year === "string" || typeof f.year === "number") return String(f.year);
+    if (typeof f.year === "string" || typeof f.year === "number")
+      return String(f.year);
     if (typeof f.year === "object" && f.year?.name) return String(f.year.name);
   }
   if (f.category && typeof f.category === "object") {
@@ -150,7 +173,12 @@ export default function WatchPartyPage() {
   const { user } = useAuth();
 
   // Mode: If roomId is present in URL, we are inside a room. Otherwise we are in the Lobby.
-  const activeRoomId = (urlRoomId && urlRoomId !== "default") ? urlRoomId : (searchParams.get("room") && searchParams.get("room") !== "default" ? searchParams.get("room") : null);
+  const activeRoomId =
+    urlRoomId && urlRoomId !== "default"
+      ? urlRoomId
+      : searchParams.get("room") && searchParams.get("room") !== "default"
+        ? searchParams.get("room")
+        : null;
 
   // State: Lobby
   const [activeRooms, setActiveRooms] = useState([]);
@@ -180,7 +208,9 @@ export default function WatchPartyPage() {
 
   const handleOpenCreateModal = () => {
     if (!formRoomName.trim()) {
-      setFormRoomName(`Phòng của ${user?.display_name || user?.username || "Tôi"}`);
+      setFormRoomName(
+        `Phòng của ${user?.display_name || user?.username || "Tôi"}`,
+      );
     }
     setShowCreateModal(true);
   };
@@ -245,9 +275,15 @@ export default function WatchPartyPage() {
     const updateVisualViewport = () => {
       if (window.visualViewport) {
         const vvHeight = window.visualViewport.height;
-        document.documentElement.style.setProperty("--visual-viewport-height", `${vvHeight}px`);
+        document.documentElement.style.setProperty(
+          "--visual-viewport-height",
+          `${vvHeight}px`,
+        );
       } else {
-        document.documentElement.style.setProperty("--visual-viewport-height", `${window.innerHeight}px`);
+        document.documentElement.style.setProperty(
+          "--visual-viewport-height",
+          `${window.innerHeight}px`,
+        );
       }
       if (window.scrollY !== 0) {
         window.scrollTo(0, 0);
@@ -273,8 +309,14 @@ export default function WatchPartyPage() {
     return () => {
       document.body.classList.remove("watch-party-active");
       if (window.visualViewport) {
-        window.visualViewport.removeEventListener("resize", updateVisualViewport);
-        window.visualViewport.removeEventListener("scroll", updateVisualViewport);
+        window.visualViewport.removeEventListener(
+          "resize",
+          updateVisualViewport,
+        );
+        window.visualViewport.removeEventListener(
+          "scroll",
+          updateVisualViewport,
+        );
       } else {
         window.removeEventListener("resize", updateVisualViewport);
       }
@@ -289,13 +331,20 @@ export default function WatchPartyPage() {
 
     // 1. Ưu tiên lấy trực tiếp từ selectedMovie nếu có
     if (selectedMovie?.thumb_url || selectedMovie?.poster_url) {
-      setActiveMovieBackdrop(getPoster(selectedMovie.thumb_url || selectedMovie.poster_url, selectedMovie.sourceName || "KK"));
+      setActiveMovieBackdrop(
+        getPoster(
+          selectedMovie.thumb_url || selectedMovie.poster_url,
+          selectedMovie.sourceName || "KK",
+        ),
+      );
       return;
     }
 
     // 2. Lấy từ roomData nếu server đã lưu posterUrl
     if (roomData?.posterUrl || roomData?.thumbUrl) {
-      setActiveMovieBackdrop(getPoster(roomData.posterUrl || roomData.thumbUrl, "KK"));
+      setActiveMovieBackdrop(
+        getPoster(roomData.posterUrl || roomData.thumbUrl, "KK"),
+      );
       return;
     }
 
@@ -305,7 +354,8 @@ export default function WatchPartyPage() {
       return;
     }
 
-    const slug = roomData?.movieSlug || (roomData?.title ? slugify(roomData.title) : "");
+    const slug =
+      roomData?.movieSlug || (roomData?.title ? slugify(roomData.title) : "");
     const title = roomData?.title;
     if (!slug && !title) return;
 
@@ -330,7 +380,9 @@ export default function WatchPartyPage() {
 
           // Fallback: Thử lấy từ movie-detail worker nếu nguồn khác
           try {
-            const workerRes = await fetch(`${SERVER_API_BASE}/movie-detail/${slug}`);
+            const workerRes = await fetch(
+              `${SERVER_API_BASE}/movie-detail/${slug}`,
+            );
             if (workerRes.ok) {
               const workerData = await workerRes.json();
               const wm = workerData?.data?.movie;
@@ -347,7 +399,9 @@ export default function WatchPartyPage() {
 
         // Fallback: Tìm kiếm theo keyword title trên PhimAPI
         if (title) {
-          const sRes = await fetch(`${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(title)}&page=1`);
+          const sRes = await fetch(
+            `${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(title)}&page=1`,
+          );
           if (sRes.ok) {
             const sData = await sRes.json();
             const item = sData?.data?.items?.[0];
@@ -395,32 +449,37 @@ export default function WatchPartyPage() {
     const trimmed = name.trim();
     const parts = trimmed.split(/\s+/);
     if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    return (
+      parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
+    ).toUpperCase();
   }, []);
 
   // Hàm render avatar hỗ trợ kế thừa avatar user hoặc fallback về ký tự đầu với background màu
-  const renderAvatar = useCallback((avatarUrl, name, sizeClass = "", customStyle = {}) => {
-    const initial = getUserInitial(name);
-    const bgColor = getUserColor(name);
-    return (
-      <div
-        className={`user-avatar-badge-wrap ${sizeClass}`}
-        style={{ backgroundColor: bgColor, ...customStyle }}
-      >
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt={name || "avatar"}
-            className="user-avatar-image-el"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-        ) : null}
-        <span className="user-avatar-fallback-text">{initial}</span>
-      </div>
-    );
-  }, [getUserInitial, getUserColor]);
+  const renderAvatar = useCallback(
+    (avatarUrl, name, sizeClass = "", customStyle = {}) => {
+      const initial = getUserInitial(name);
+      const bgColor = getUserColor(name);
+      return (
+        <div
+          className={`user-avatar-badge-wrap ${sizeClass}`}
+          style={{ backgroundColor: bgColor, ...customStyle }}
+        >
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={name || "avatar"}
+              className="user-avatar-image-el"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          ) : null}
+          <span className="user-avatar-fallback-text">{initial}</span>
+        </div>
+      );
+    },
+    [getUserInitial, getUserColor],
+  );
 
   // Tự động cuộn xuống tin nhắn mới nhất trên cả Desktop (Meet) và Mobile (TikTok)
   useEffect(() => {
@@ -428,7 +487,8 @@ export default function WatchPartyPage() {
       chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
     }
     if (mobileChatScrollRef.current) {
-      mobileChatScrollRef.current.scrollTop = mobileChatScrollRef.current.scrollHeight;
+      mobileChatScrollRef.current.scrollTop =
+        mobileChatScrollRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -487,15 +547,22 @@ export default function WatchPartyPage() {
         };
 
         const [resKk, resNc] = await Promise.all([
-          fetchSourceItems(`${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(query)}`),
-          fetchSourceItems(`${NC_BASE}/api/films/search?keyword=${encodeURIComponent(query)}`),
+          fetchSourceItems(
+            `${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(query)}`,
+          ),
+          fetchSourceItems(
+            `${NC_BASE}/api/films/search?keyword=${encodeURIComponent(query)}`,
+          ),
         ]);
 
         const normKk = (resKk || []).map((f) => ({
           ...f,
           sourceName: "KK",
           name: typeof f.name === "string" ? f.name : "N/A",
-          original_name: typeof (f.origin_name || f.original_name) === "string" ? (f.origin_name || f.original_name) : "",
+          original_name:
+            typeof (f.origin_name || f.original_name) === "string"
+              ? f.origin_name || f.original_name
+              : "",
           poster_url: getPoster(f.poster_url || f.thumb_url, "KK"),
           thumb_url: getPoster(f.thumb_url || f.poster_url, "KK"),
           slug: f.slug || f._id || "",
@@ -510,12 +577,18 @@ export default function WatchPartyPage() {
           ...f,
           sourceName: "NC",
           name: typeof f.name === "string" ? f.name : "N/A",
-          original_name: typeof (f.original_name || f.origin_name) === "string" ? (f.original_name || f.origin_name) : "",
+          original_name:
+            typeof (f.original_name || f.origin_name) === "string"
+              ? f.original_name || f.origin_name
+              : "",
           poster_url: getPoster(f.thumb_url || f.poster_url, "NC"),
           thumb_url: getPoster(f.poster_url || f.thumb_url, "NC"),
           slug: f.slug || f.id || "",
           quality: typeof f.quality === "string" ? f.quality : "HD",
-          language: typeof (f.language || f.lang) === "string" ? (f.language || f.lang) : "Vietsub",
+          language:
+            typeof (f.language || f.lang) === "string"
+              ? f.language || f.lang
+              : "Vietsub",
           current_episode: f.current_episode || f.episode_current || "",
           year: getYearFromData(f),
           time: typeof f.time === "string" ? f.time : "",
@@ -526,8 +599,8 @@ export default function WatchPartyPage() {
           new Map(
             combined
               .filter((item) => item && item.slug)
-              .map((item) => [`${item.slug}-${item.sourceName}`, item])
-          ).values()
+              .map((item) => [`${item.slug}-${item.sourceName}`, item]),
+          ).values(),
         );
 
         setMovieSearchResults(uniqueResults);
@@ -569,15 +642,22 @@ export default function WatchPartyPage() {
         };
 
         const [resKk, resNc] = await Promise.all([
-          fetchSourceItems(`${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(query)}`),
-          fetchSourceItems(`${NC_BASE}/api/films/search?keyword=${encodeURIComponent(query)}`),
+          fetchSourceItems(
+            `${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(query)}`,
+          ),
+          fetchSourceItems(
+            `${NC_BASE}/api/films/search?keyword=${encodeURIComponent(query)}`,
+          ),
         ]);
 
         const normKk = (resKk || []).map((f) => ({
           ...f,
           sourceName: "KK",
           name: typeof f.name === "string" ? f.name : "N/A",
-          original_name: typeof (f.origin_name || f.original_name) === "string" ? (f.origin_name || f.original_name) : "",
+          original_name:
+            typeof (f.origin_name || f.original_name) === "string"
+              ? f.origin_name || f.original_name
+              : "",
           poster_url: getPoster(f.poster_url || f.thumb_url, "KK"),
           thumb_url: getPoster(f.thumb_url || f.poster_url, "KK"),
           slug: f.slug || f._id || "",
@@ -592,12 +672,18 @@ export default function WatchPartyPage() {
           ...f,
           sourceName: "NC",
           name: typeof f.name === "string" ? f.name : "N/A",
-          original_name: typeof (f.original_name || f.origin_name) === "string" ? (f.original_name || f.origin_name) : "",
+          original_name:
+            typeof (f.original_name || f.origin_name) === "string"
+              ? f.original_name || f.origin_name
+              : "",
           poster_url: getPoster(f.thumb_url || f.poster_url, "NC"),
           thumb_url: getPoster(f.poster_url || f.thumb_url, "NC"),
           slug: f.slug || f.id || "",
           quality: typeof f.quality === "string" ? f.quality : "HD",
-          language: typeof (f.language || f.lang) === "string" ? (f.language || f.lang) : "Vietsub",
+          language:
+            typeof (f.language || f.lang) === "string"
+              ? f.language || f.lang
+              : "Vietsub",
           current_episode: f.current_episode || f.episode_current || "",
           year: getYearFromData(f),
           time: typeof f.time === "string" ? f.time : "",
@@ -608,8 +694,8 @@ export default function WatchPartyPage() {
           new Map(
             combined
               .filter((item) => item && item.slug)
-              .map((item) => [`${item.slug}-${item.sourceName}`, item])
-          ).values()
+              .map((item) => [`${item.slug}-${item.sourceName}`, item]),
+          ).values(),
         );
 
         setHostMovieSearchResults(uniqueResults);
@@ -624,7 +710,10 @@ export default function WatchPartyPage() {
   }, [hostMovieSearchText]);
 
   // Xử lý khi user chọn 1 phim từ danh sách tìm kiếm: Gọi API /movie-detail/:slug y hệt trang /chi-tiet/:slug
-  const handleSelectMovie = async (movie, shouldBroadcastChangeMedia = false) => {
+  const handleSelectMovie = async (
+    movie,
+    shouldBroadcastChangeMedia = false,
+  ) => {
     setSelectedMovie(movie);
     setMovieSearchResults([]);
     setMovieSearchText("");
@@ -632,7 +721,9 @@ export default function WatchPartyPage() {
     setHostMovieSearchText("");
     setFormTitle(movie.name);
     if (!formRoomName.trim()) {
-      setFormRoomName(`Phòng của ${user?.display_name || user?.username || "Tôi"}`);
+      setFormRoomName(
+        `Phòng của ${user?.display_name || user?.username || "Tôi"}`,
+      );
     }
     setIsLoadingDetail(true);
 
@@ -649,9 +740,9 @@ export default function WatchPartyPage() {
         return list.some((src) =>
           (src.episodes || []).some((srv) =>
             (srv.server_data || srv.items || []).some((ep) =>
-              Boolean(ep.link_m3u8 || ep.m3u8)
-            )
-          )
+              Boolean(ep.link_m3u8 || ep.m3u8),
+            ),
+          ),
         );
       };
 
@@ -660,13 +751,13 @@ export default function WatchPartyPage() {
         const nc = list.find(
           (s) =>
             s.source?.toLowerCase() === "nc" ||
-            s.source?.toLowerCase() === "nguonc"
+            s.source?.toLowerCase() === "nguonc",
         );
         if (!nc) return true;
         return (nc.episodes || []).some((srv) =>
           (srv.server_data || srv.items || []).some((ep) =>
-            Boolean(ep.link_m3u8 || ep.m3u8)
-          )
+            Boolean(ep.link_m3u8 || ep.m3u8),
+          ),
         );
       };
 
@@ -676,9 +767,10 @@ export default function WatchPartyPage() {
         epList.some(
           (s) =>
             s.source?.toLowerCase() === "nc" ||
-            s.source?.toLowerCase() === "nguonc"
+            s.source?.toLowerCase() === "nguonc",
         );
-      const lacksM3u8 = !checkHasM3u8(epList) || (isNc && !checkNcHasM3u8(epList));
+      const lacksM3u8 =
+        !checkHasM3u8(epList) || (isNc && !checkNcHasM3u8(epList));
 
       // Tự động refresh nếu data chưa có hoặc thiếu m3u8 giống FilmDetail
       if (!data.success || !m || epList.length === 0 || lacksM3u8) {
@@ -710,7 +802,8 @@ export default function WatchPartyPage() {
         ...movie,
         ...m,
         name: m?.name || movie.name,
-        origin_name: m?.origin_name || movie.origin_name || movie.original_name || "",
+        origin_name:
+          m?.origin_name || movie.origin_name || movie.original_name || "",
         poster_url: p,
         thumb_url: t,
         quality: m?.quality || movie.quality,
@@ -734,7 +827,12 @@ export default function WatchPartyPage() {
       (epList || []).forEach((src) => {
         const srcKey = src.source?.toLowerCase();
         // Loại bỏ hoàn toàn các nguồn khác (VM, OP,...), chỉ lấy KK và NC
-        if (srcKey !== "kk" && srcKey !== "kkphim" && srcKey !== "nc" && srcKey !== "nguonc") {
+        if (
+          srcKey !== "kk" &&
+          srcKey !== "kkphim" &&
+          srcKey !== "nc" &&
+          srcKey !== "nguonc"
+        ) {
           return;
         }
 
@@ -744,10 +842,15 @@ export default function WatchPartyPage() {
           const rawEpList = srv.server_data || srv.items || [];
           // CHỈ LẤY CÁC TẬP CÓ LINK M3U8
           const validEpList = rawEpList
-            .filter((ep) => ep.slug && ep.slug.trim() !== "" && Boolean(ep.link_m3u8 || ep.m3u8))
+            .filter(
+              (ep) =>
+                ep.slug &&
+                ep.slug.trim() !== "" &&
+                Boolean(ep.link_m3u8 || ep.m3u8),
+            )
             .map((ep) => ({
               ...ep,
-              m3u8Url: ep.link_m3u8 || ep.m3u8
+              m3u8Url: ep.link_m3u8 || ep.m3u8,
             }));
 
           if (validEpList.length > 0) {
@@ -759,7 +862,11 @@ export default function WatchPartyPage() {
               serverType = "Lồng Tiếng";
             } else if (/vietsub/i.test(serverType)) {
               serverType = "Vietsub";
-            } else if (!serverType || /^#?\d+$/.test(serverType.trim()) || /server/i.test(serverType)) {
+            } else if (
+              !serverType ||
+              /^#?\d+$/.test(serverType.trim()) ||
+              /server/i.test(serverType)
+            ) {
               serverType = "Vietsub";
             }
 
@@ -792,7 +899,9 @@ export default function WatchPartyPage() {
       if (list.length > 0) {
         let initialServerIdx = 0;
         if (movie.sourceName) {
-          const matchIdx = list.findIndex((s) => s.sourceName === movie.sourceName);
+          const matchIdx = list.findIndex(
+            (s) => s.sourceName === movie.sourceName,
+          );
           if (matchIdx !== -1) initialServerIdx = matchIdx;
         }
 
@@ -812,20 +921,30 @@ export default function WatchPartyPage() {
                 (ep.m3u8Url === roomData.videoUrl ||
                   ep.link_m3u8 === roomData.videoUrl ||
                   ep.m3u8 === roomData.videoUrl)) ||
-              (roomData?.episode && (ep.name === roomData.episode || ep.slug === roomData.episode))
+              (roomData?.episode &&
+                (ep.name === roomData.episode || ep.slug === roomData.episode)),
           );
           const activeEp = matchEp || firstEp;
           setSelectedEpisode(activeEp);
           setFormEpisode(activeEp.name || "Tập 1");
-          setFormVideoUrl(activeEp.m3u8Url || activeEp.link_m3u8 || activeEp.m3u8 || "");
+          setFormVideoUrl(
+            activeEp.m3u8Url || activeEp.link_m3u8 || activeEp.m3u8 || "",
+          );
           setFormMediaType("m3u8");
           if (!formRoomName.trim()) {
-            setFormRoomName(`Phòng của ${user?.display_name || user?.username || "Tôi"}`);
+            setFormRoomName(
+              `Phòng của ${user?.display_name || user?.username || "Tôi"}`,
+            );
           }
 
           // NẾU LÀ CHỦ PHÒNG ĐỔI PHIM TRONG HOST PANEL: TỰ ĐỘNG PHÁT TẬP 1 PHIM MỚI CHO CẢ PHÒNG!
-          if (shouldBroadcastChangeMedia && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            const nextVideoUrl = firstEp.m3u8Url || firstEp.link_m3u8 || firstEp.m3u8 || "";
+          if (
+            shouldBroadcastChangeMedia &&
+            wsRef.current &&
+            wsRef.current.readyState === WebSocket.OPEN
+          ) {
+            const nextVideoUrl =
+              firstEp.m3u8Url || firstEp.link_m3u8 || firstEp.m3u8 || "";
             const nowTime = Date.now();
             roomStartedAtRef.current = nowTime;
             setRoomData((prev) =>
@@ -840,7 +959,7 @@ export default function WatchPartyPage() {
                     startedAt: nowTime,
                     elapsedSeconds: 0,
                   }
-                : null
+                : null,
             );
             startElapsedCounter(nowTime);
 
@@ -853,7 +972,7 @@ export default function WatchPartyPage() {
                 episode: firstEp.name || "Tập 1",
                 movieSlug: movie.slug || m?.slug,
                 posterUrl: p || t || "",
-              })
+              }),
             );
             setHostSearchMode(false);
             DarkSwal.fire({
@@ -913,7 +1032,7 @@ export default function WatchPartyPage() {
             startedAt: nowTime,
             elapsedSeconds: 0,
           }
-        : null
+        : null,
     );
     startElapsedCounter(nowTime);
 
@@ -925,8 +1044,12 @@ export default function WatchPartyPage() {
         title: selectedMovie?.name || roomData?.title,
         episode: ep.name,
         movieSlug: selectedMovie?.slug || roomData?.movieSlug,
-        posterUrl: selectedMovie?.thumb_url || selectedMovie?.poster_url || roomData?.posterUrl || "",
-      })
+        posterUrl:
+          selectedMovie?.thumb_url ||
+          selectedMovie?.poster_url ||
+          roomData?.posterUrl ||
+          "",
+      }),
     );
     DarkSwal.fire({
       toast: true,
@@ -947,17 +1070,34 @@ export default function WatchPartyPage() {
 
   // Tự động tải danh sách tập & server cho phòng hiện tại nếu chưa có (vd: khi F5 trang hoặc vào link trực tiếp)
   useEffect(() => {
-    if (activeRoomId && roomData?.title && movieServers.length === 0 && !isLoadingDetail) {
+    if (
+      activeRoomId &&
+      roomData?.title &&
+      movieServers.length === 0 &&
+      !isLoadingDetail
+    ) {
       if (roomData.movieSlug) {
-        handleSelectMovie({ slug: roomData.movieSlug, name: roomData.title }, false);
+        handleSelectMovie(
+          { slug: roomData.movieSlug, name: roomData.title },
+          false,
+        );
       } else {
         const autoFetch = async () => {
           try {
-            const res = await fetch(`${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(roomData.title)}&page=1`);
+            const res = await fetch(
+              `${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(roomData.title)}&page=1`,
+            );
             const data = await res.json();
             const items = data?.data?.items || [];
             if (items.length > 0) {
-              handleSelectMovie({ ...items[0], slug: items[0].slug || items[0]._id, name: items[0].name }, false);
+              handleSelectMovie(
+                {
+                  ...items[0],
+                  slug: items[0].slug || items[0]._id,
+                  name: items[0].name,
+                },
+                false,
+              );
             }
           } catch (e) {
             console.warn("[WatchParty] Lỗi tự động tải tập cho phòng:", e);
@@ -967,7 +1107,13 @@ export default function WatchPartyPage() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeRoomId, roomData?.title, roomData?.movieSlug, movieServers.length, isLoadingDetail]);
+  }, [
+    activeRoomId,
+    roomData?.title,
+    roomData?.movieSlug,
+    movieServers.length,
+    isLoadingDetail,
+  ]);
 
   // Đồng bộ chip tập đang chọn theo đúng tập phòng đang phát
   useEffect(() => {
@@ -978,7 +1124,8 @@ export default function WatchPartyPage() {
             (ep.m3u8Url === roomData.videoUrl ||
               ep.link_m3u8 === roomData.videoUrl ||
               ep.m3u8 === roomData.videoUrl)) ||
-          (roomData.episode && (ep.name === roomData.episode || ep.slug === roomData.episode))
+          (roomData.episode &&
+            (ep.name === roomData.episode || ep.slug === roomData.episode)),
       );
       if (match) {
         setSelectedEpisode(match);
@@ -1003,7 +1150,10 @@ export default function WatchPartyPage() {
 
     window.addEventListener("unhandledrejection", handleUnhandledRejection);
     return () => {
-      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+      window.removeEventListener(
+        "unhandledrejection",
+        handleUnhandledRejection,
+      );
     };
   }, []);
 
@@ -1057,7 +1207,7 @@ export default function WatchPartyPage() {
       document.mozFullScreenElement ||
       document.msFullscreenElement ||
       container.classList.contains("is-fullscreen") ||
-      (video && video.webkitDisplayingFullscreen)
+      (video && video.webkitDisplayingFullscreen),
     );
 
     if (!isFs) {
@@ -1102,17 +1252,27 @@ export default function WatchPartyPage() {
       setIsFullscreen(true);
     } else {
       if (document.exitFullscreen) {
-        try { await document.exitFullscreen(); } catch (e) {}
+        try {
+          await document.exitFullscreen();
+        } catch (e) {}
       } else if (document.webkitExitFullscreen) {
-        try { document.webkitExitFullscreen(); } catch (e) {}
+        try {
+          document.webkitExitFullscreen();
+        } catch (e) {}
       } else if (document.mozCancelFullScreen) {
-        try { document.mozCancelFullScreen(); } catch (e) {}
+        try {
+          document.mozCancelFullScreen();
+        } catch (e) {}
       } else if (document.msExitFullscreen) {
-        try { document.msExitFullscreen(); } catch (e) {}
+        try {
+          document.msExitFullscreen();
+        } catch (e) {}
       }
 
       if (video && typeof video.webkitExitFullscreen === "function") {
-        try { video.webkitExitFullscreen(); } catch (e) {}
+        try {
+          video.webkitExitFullscreen();
+        } catch (e) {}
       }
 
       container.classList.remove("is-fullscreen");
@@ -1128,8 +1288,9 @@ export default function WatchPartyPage() {
         document.webkitFullscreenElement ||
         document.mozFullScreenElement ||
         document.msFullscreenElement ||
-        (playerWrapperRef.current && playerWrapperRef.current.classList.contains("is-fullscreen")) ||
-        (video && video.webkitDisplayingFullscreen)
+        (playerWrapperRef.current &&
+          playerWrapperRef.current.classList.contains("is-fullscreen")) ||
+        (video && video.webkitDisplayingFullscreen),
       );
       setIsFullscreen(isFs);
     };
@@ -1195,7 +1356,9 @@ export default function WatchPartyPage() {
       const firstEp = eps[0];
       setSelectedEpisode(firstEp);
       setFormEpisode(firstEp.name || "Tập 1");
-      setFormVideoUrl(firstEp.m3u8Url || firstEp.link_m3u8 || firstEp.m3u8 || "");
+      setFormVideoUrl(
+        firstEp.m3u8Url || firstEp.link_m3u8 || firstEp.m3u8 || "",
+      );
       setFormMediaType("m3u8");
     }
   };
@@ -1215,7 +1378,9 @@ export default function WatchPartyPage() {
       const res = await fetch(`${BACKEND_HTTP}/api/rooms`);
       const json = await res.json();
       if (json && Array.isArray(json.data)) {
-        setActiveRooms(json.data.filter((r) => r && r.roomId && r.roomId !== "default"));
+        setActiveRooms(
+          json.data.filter((r) => r && r.roomId && r.roomId !== "default"),
+        );
       } else {
         setActiveRooms([]);
       }
@@ -1240,7 +1405,7 @@ export default function WatchPartyPage() {
     if (!activeRooms || activeRooms.length === 0 || activeRoomId) return;
 
     const missingRooms = activeRooms.filter(
-      (r) => !roomThumbnails[r.roomId] && (r.movieSlug || r.title)
+      (r) => !roomThumbnails[r.roomId] && (r.movieSlug || r.title),
     );
     if (missingRooms.length === 0) return;
 
@@ -1253,7 +1418,9 @@ export default function WatchPartyPage() {
           const slug = room.movieSlug || slugify(room.title);
           try {
             if (slug) {
-              const res = await fetch(`${SERVER_API_BASE}/movie-detail/${slug}`);
+              const res = await fetch(
+                `${SERVER_API_BASE}/movie-detail/${slug}`,
+              );
               const data = await res.json();
               if (data.success && data.data?.movie) {
                 const m = data.data.movie;
@@ -1273,7 +1440,9 @@ export default function WatchPartyPage() {
 
             // Fallback: Tìm kiếm nếu slug trực tiếp không có
             if (room.title) {
-              const sRes = await fetch(`${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(room.title)}&page=1`);
+              const sRes = await fetch(
+                `${KK_BASE}/v1/api/tim-kiem?keyword=${encodeURIComponent(room.title)}&page=1`,
+              );
               const sData = await sRes.json();
               const item = sData?.data?.items?.[0];
               if (item) {
@@ -1285,9 +1454,13 @@ export default function WatchPartyPage() {
               }
             }
           } catch (e) {
-            console.warn("[WatchParty] Lỗi tải thumbnail phòng:", room.roomId, e);
+            console.warn(
+              "[WatchParty] Lỗi tải thumbnail phòng:",
+              room.roomId,
+              e,
+            );
           }
-        })
+        }),
       );
 
       if (isMounted && Object.keys(updates).length > 0) {
@@ -1352,7 +1525,8 @@ export default function WatchPartyPage() {
         return;
       }
 
-      const username = user.display_name || user.username || `User #${user.id || ""}`;
+      const username =
+        user.display_name || user.username || `User #${user.id || ""}`;
       const avatar = user.avatar || "";
       const wsUrl = `${BACKEND_WS}/ws/room/${encodeURIComponent(activeRoomId)}?token=${encodeURIComponent(user.token)}&username=${encodeURIComponent(username)}&avatar=${encodeURIComponent(avatar)}`;
 
@@ -1375,7 +1549,9 @@ export default function WatchPartyPage() {
         if (videoRef.current && videoRef.current.currentTime > 0) {
           const isUserHost = Boolean(
             roomData?.isHost ||
-            (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+            (user?.id &&
+              roomData?.hostId &&
+              String(user.id) === String(roomData.hostId)),
           );
           if (isUserHost) {
             const cur = Math.floor(videoRef.current.currentTime);
@@ -1435,7 +1611,10 @@ export default function WatchPartyPage() {
         // Mất kết nối bất ngờ (wifi/4G chuyển mạng, sleep, Cloudflare DO ngủ dậy): Tự động thử kết nối lại ngay lập tức
         reconnectAttemptsRef.current += 1;
         // Lần đầu thử lại cực nhanh (350ms), các lần sau lùi dần tối đa 2000ms, retry liên tục trong nền không chặn người dùng
-        const delay = reconnectAttemptsRef.current === 1 ? 350 : Math.min(2000, reconnectAttemptsRef.current * 500);
+        const delay =
+          reconnectAttemptsRef.current === 1
+            ? 350
+            : Math.min(2000, reconnectAttemptsRef.current * 500);
         if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
         reconnectTimerRef.current = setTimeout(() => {
           if (!isIntentionalCloseRef.current) {
@@ -1516,12 +1695,18 @@ export default function WatchPartyPage() {
 
     const updateTimer = () => {
       // Nếu video đang phát, ưu tiên lấy trực tiếp từ video currentTime để đồng nhất 100%
-      if (videoRef.current && !videoRef.current.paused && videoRef.current.currentTime > 0) {
+      if (
+        videoRef.current &&
+        !videoRef.current.paused &&
+        videoRef.current.currentTime > 0
+      ) {
         const sec = Math.floor(videoRef.current.currentTime);
         const h = Math.floor(sec / 3600);
         const m = Math.floor((sec % 3600) / 60);
         const s = sec % 60;
-        setElapsedDisplay([h, m, s].map((v) => String(v).padStart(2, "0")).join(":"));
+        setElapsedDisplay(
+          [h, m, s].map((v) => String(v).padStart(2, "0")).join(":"),
+        );
         return;
       }
 
@@ -1530,7 +1715,9 @@ export default function WatchPartyPage() {
       const h = Math.floor(sec / 3600);
       const m = Math.floor((sec % 3600) / 60);
       const s = sec % 60;
-      setElapsedDisplay([h, m, s].map((v) => String(v).padStart(2, "0")).join(":"));
+      setElapsedDisplay(
+        [h, m, s].map((v) => String(v).padStart(2, "0")).join(":"),
+      );
     };
 
     updateTimer();
@@ -1545,9 +1732,15 @@ export default function WatchPartyPage() {
         .then((json) => {
           if (json?.success && json?.data && json.data.roomId) {
             const isUserHost = Boolean(
-              user?.id && json.data.hostId && String(user.id) === String(json.data.hostId)
+              user?.id &&
+              json.data.hostId &&
+              String(user.id) === String(json.data.hostId),
             );
-            setRoomData((prev) => (prev ? { ...json.data, ...prev, isHost: prev.isHost ?? isUserHost } : { ...json.data, isHost: isUserHost }));
+            setRoomData((prev) =>
+              prev
+                ? { ...json.data, ...prev, isHost: prev.isHost ?? isUserHost }
+                : { ...json.data, isHost: isUserHost },
+            );
             if (json.data.startedAt) {
               roomStartedAtRef.current = json.data.startedAt;
               startElapsedCounter(json.data.startedAt);
@@ -1559,251 +1752,299 @@ export default function WatchPartyPage() {
   }, [activeRoomId, startElapsedCounter, user?.id]);
 
   // Xử lý các gói tin nhận từ Server
-  const handleServerMessage = useCallback((msg) => {
-    switch (msg.type) {
-      case "ROOM_INIT": {
-        const isUserHost = Boolean(
-          msg.room?.isHost ||
-          (user?.id && msg.room?.hostId && String(user.id) === String(msg.room.hostId))
-        );
-        // Nếu là chủ phòng và video đang phát ở một mốc thời gian cụ thể (> 2s),
-        // giữ mốc thời gian của chủ phòng và đồng bộ ngược lên server để không bị server ghi đè lùi lại
-        if (isUserHost && videoRef.current && videoRef.current.currentTime > 2) {
-          const currentSeconds = Math.floor(videoRef.current.currentTime);
-          const newStartedAt = Date.now() - currentSeconds * 1000;
-          roomStartedAtRef.current = newStartedAt;
-          setRoomData((prev) => ({
-            ...(prev || msg.room),
-            ...msg.room,
-            startedAt: newStartedAt,
-            isHost: true,
-          }));
-          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(
-              JSON.stringify({
-                type: "SYNC_TIME",
-                time: currentSeconds,
-              })
-            );
+  const handleServerMessage = useCallback(
+    (msg) => {
+      switch (msg.type) {
+        case "ROOM_INIT": {
+          const isUserHost = Boolean(
+            msg.room?.isHost ||
+            (user?.id &&
+              msg.room?.hostId &&
+              String(user.id) === String(msg.room.hostId)),
+          );
+          // Nếu là chủ phòng và video đang phát ở một mốc thời gian cụ thể (> 2s),
+          // giữ mốc thời gian của chủ phòng và đồng bộ ngược lên server để không bị server ghi đè lùi lại
+          if (
+            isUserHost &&
+            videoRef.current &&
+            videoRef.current.currentTime > 2
+          ) {
+            const currentSeconds = Math.floor(videoRef.current.currentTime);
+            const newStartedAt = Date.now() - currentSeconds * 1000;
+            roomStartedAtRef.current = newStartedAt;
+            setRoomData((prev) => ({
+              ...(prev || msg.room),
+              ...msg.room,
+              startedAt: newStartedAt,
+              isHost: true,
+            }));
+            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+              wsRef.current.send(
+                JSON.stringify({
+                  type: "SYNC_TIME",
+                  time: currentSeconds,
+                }),
+              );
+            }
+            setMembers(msg.members || []);
+            if (msg.messages && Array.isArray(msg.messages)) {
+              setMessages(msg.messages);
+              setTimeout(() => {
+                if (chatScrollRef.current) {
+                  chatScrollRef.current.scrollTop =
+                    chatScrollRef.current.scrollHeight;
+                }
+              }, 60);
+            }
+            break;
           }
+
+          setRoomData({ ...msg.room, isHost: isUserHost });
+          roomStartedAtRef.current = msg.room.startedAt;
           setMembers(msg.members || []);
           if (msg.messages && Array.isArray(msg.messages)) {
             setMessages(msg.messages);
             setTimeout(() => {
               if (chatScrollRef.current) {
-                chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+                chatScrollRef.current.scrollTop =
+                  chatScrollRef.current.scrollHeight;
               }
             }, 60);
           }
+          startElapsedCounter(msg.room.startedAt);
+
+          // NẾU LÀ KHÁCH VÀO PHÒNG: TUA VIDEO ĐẾN ĐÚNG GIÂY ĐANG CHIẾU CỦA PHÒNG
+          if (!isUserHost) {
+            const targetTime =
+              typeof msg.room?.elapsedSeconds === "number"
+                ? msg.room.elapsedSeconds
+                : Math.max(
+                    0,
+                    Math.floor(
+                      (Date.now() - (msg.room?.startedAt || Date.now())) / 1000,
+                    ),
+                  );
+
+            if (targetTime > 0) {
+              const doSeek = () => {
+                if (
+                  videoRef.current &&
+                  Math.abs(videoRef.current.currentTime - targetTime) > 1.5
+                ) {
+                  isSeekingFromSyncRef.current = true;
+                  videoRef.current.currentTime = targetTime;
+                }
+              };
+              if (videoRef.current && videoRef.current.readyState >= 1) {
+                doSeek();
+              } else if (videoRef.current) {
+                videoRef.current.addEventListener("loadedmetadata", doSeek, {
+                  once: true,
+                });
+                videoRef.current.addEventListener("canplay", doSeek, {
+                  once: true,
+                });
+              }
+            }
+          }
           break;
         }
 
-        setRoomData({ ...msg.room, isHost: isUserHost });
-        roomStartedAtRef.current = msg.room.startedAt;
-        setMembers(msg.members || []);
-        if (msg.messages && Array.isArray(msg.messages)) {
-          setMessages(msg.messages);
+        case "PONG":
+        case "MEMBERS_SYNC": {
+          if (msg.members && Array.isArray(msg.members)) {
+            setMembers(msg.members);
+          }
+          break;
+        }
+
+        case "USER_JOINED": {
+          setMembers((prev) => {
+            const exists = prev.some(
+              (m) => String(m.userId) === String(msg.user.userId),
+            );
+            if (exists) return prev;
+            return [...prev, msg.user];
+          });
+          // Nếu là chủ phòng và đang phát video, lập tức gửi SYNC_TIME để thành viên mới tua đúng giây
+          const isUserHost = Boolean(
+            roomDataRef.current?.isHost ||
+            roomData?.isHost ||
+            (user?.id &&
+              roomDataRef.current?.hostId &&
+              String(user.id) === String(roomDataRef.current.hostId)),
+          );
+          if (
+            isUserHost &&
+            videoRef.current &&
+            videoRef.current.currentTime > 0
+          ) {
+            const cur = Math.floor(videoRef.current.currentTime);
+            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+              wsRef.current.send(
+                JSON.stringify({ type: "SYNC_TIME", time: cur }),
+              );
+            }
+          }
+          break;
+        }
+
+        case "USER_LEFT": {
+          const leftUserId = String(msg.userId);
+          setMembers((prev) =>
+            prev.filter((m) => String(m.userId) !== leftUserId),
+          );
+          setRoomData((prev) => {
+            if (!prev) return null;
+            // Nếu người vừa rời là chủ phòng và mình còn ở trong phòng
+            if (String(prev.hostId) === leftUserId) {
+              const nextData = {
+                ...prev,
+                hostId: user?.id || prev.hostId,
+                hostUsername: user?.username || prev.hostUsername,
+                isHost: true,
+              };
+              roomDataRef.current = nextData;
+              return nextData;
+            }
+            return prev;
+          });
+          break;
+        }
+
+        case "CHAT": {
+          setMessages((prev) => [...prev, msg]);
           setTimeout(() => {
             if (chatScrollRef.current) {
-              chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+              chatScrollRef.current.scrollTop =
+                chatScrollRef.current.scrollHeight;
             }
-          }, 60);
+          }, 50);
+          break;
         }
-        startElapsedCounter(msg.room.startedAt);
 
-        // NẾU LÀ KHÁCH VÀO PHÒNG: TUA VIDEO ĐẾN ĐÚNG GIÂY ĐANG CHIẾU CỦA PHÒNG
-        if (!isUserHost) {
-          const targetTime =
-            typeof msg.room?.elapsedSeconds === "number"
-              ? msg.room.elapsedSeconds
-              : Math.max(0, Math.floor((Date.now() - (msg.room?.startedAt || Date.now())) / 1000));
+        case "MEDIA_UPDATED": {
+          setRoomData((prev) => (prev ? { ...prev, ...msg.media } : null));
+          roomStartedAtRef.current = msg.media.startedAt;
+          startElapsedCounter(msg.media.startedAt);
+          DarkSwal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "info",
+            title: `${msg.changedBy || "Chủ phòng"} đã chuyển sang: ${msg.media.title} (${msg.media.episode})`,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          break;
+        }
 
-          if (targetTime > 0) {
-            const doSeek = () => {
-              if (videoRef.current && Math.abs(videoRef.current.currentTime - targetTime) > 1.5) {
-                isSeekingFromSyncRef.current = true;
-                videoRef.current.currentTime = targetTime;
+        case "SYNC_TIME": {
+          const isUserHost = Boolean(
+            roomDataRef.current?.isHost ||
+            roomData?.isHost ||
+            (user?.id &&
+              roomDataRef.current?.hostId &&
+              String(user.id) === String(roomDataRef.current.hostId)),
+          );
+          // Chủ phòng là nguồn phát chuẩn, KHÔNG BAO GIỜ để gói tin SYNC_TIME tua ngược video của chủ phòng
+          if (isUserHost) {
+            break;
+          }
+
+          roomStartedAtRef.current = msg.startedAt;
+          setRoomData((prev) =>
+            prev ? { ...prev, startedAt: msg.startedAt } : null,
+          );
+          startElapsedCounter(msg.startedAt);
+          if (typeof msg.time === "number") {
+            const targetSeconds = msg.time;
+            const applySeek = () => {
+              if (videoRef.current) {
+                const diff = Math.abs(
+                  videoRef.current.currentTime - targetSeconds,
+                );
+                if (diff > 1.5) {
+                  isSeekingFromSyncRef.current = true;
+                  videoRef.current.currentTime = targetSeconds;
+                }
+                if (videoRef.current.paused) {
+                  safePlay(videoRef.current);
+                }
               }
             };
+
             if (videoRef.current && videoRef.current.readyState >= 1) {
-              doSeek();
+              applySeek();
             } else if (videoRef.current) {
-              videoRef.current.addEventListener("loadedmetadata", doSeek, { once: true });
-              videoRef.current.addEventListener("canplay", doSeek, { once: true });
+              videoRef.current.addEventListener("loadedmetadata", applySeek, {
+                once: true,
+              });
+              videoRef.current.addEventListener("canplay", applySeek, {
+                once: true,
+              });
             }
           }
+          break;
         }
-        break;
-      }
 
-      case "PONG":
-      case "MEMBERS_SYNC": {
-        if (msg.members && Array.isArray(msg.members)) {
-          setMembers(msg.members);
-        }
-        break;
-      }
-
-      case "USER_JOINED": {
-        setMembers((prev) => {
-          const exists = prev.some((m) => String(m.userId) === String(msg.user.userId));
-          if (exists) return prev;
-          return [...prev, msg.user];
-        });
-        // Nếu là chủ phòng và đang phát video, lập tức gửi SYNC_TIME để thành viên mới tua đúng giây
-        const isUserHost = Boolean(
-          roomDataRef.current?.isHost ||
-          roomData?.isHost ||
-          (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
-        );
-        if (isUserHost && videoRef.current && videoRef.current.currentTime > 0) {
-          const cur = Math.floor(videoRef.current.currentTime);
-          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({ type: "SYNC_TIME", time: cur }));
-          }
-        }
-        break;
-      }
-
-      case "USER_LEFT": {
-        const leftUserId = String(msg.userId);
-        setMembers((prev) => prev.filter((m) => String(m.userId) !== leftUserId));
-        setRoomData((prev) => {
-          if (!prev) return null;
-          // Nếu người vừa rời là chủ phòng và mình còn ở trong phòng
-          if (String(prev.hostId) === leftUserId) {
+        case "HOST_CHANGED": {
+          const isMe = Boolean(
+            user?.id && String(user.id) === String(msg.newHostId),
+          );
+          setRoomData((prev) => {
+            if (!prev) return null;
             const nextData = {
               ...prev,
-              hostId: user?.id || prev.hostId,
-              hostUsername: user?.username || prev.hostUsername,
-              isHost: true,
+              hostId: msg.newHostId,
+              hostUsername: msg.newHostUsername,
+              isHost: isMe,
             };
             roomDataRef.current = nextData;
             return nextData;
-          }
-          return prev;
-        });
-        break;
-      }
-
-      case "CHAT": {
-        setMessages((prev) => [...prev, msg]);
-        setTimeout(() => {
-          if (chatScrollRef.current) {
-            chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
-          }
-        }, 50);
-        break;
-      }
-
-      case "MEDIA_UPDATED": {
-        setRoomData((prev) => (prev ? { ...prev, ...msg.media } : null));
-        roomStartedAtRef.current = msg.media.startedAt;
-        startElapsedCounter(msg.media.startedAt);
-        DarkSwal.fire({
-          toast: true,
-          position: "top-end",
-          icon: "info",
-          title: `${msg.changedBy || "Chủ phòng"} đã chuyển sang: ${msg.media.title} (${msg.media.episode})`,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        break;
-      }
-
-      case "SYNC_TIME": {
-        const isUserHost = Boolean(
-          roomDataRef.current?.isHost ||
-          roomData?.isHost ||
-          (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
-        );
-        // Chủ phòng là nguồn phát chuẩn, KHÔNG BAO GIỜ để gói tin SYNC_TIME tua ngược video của chủ phòng
-        if (isUserHost) {
+          });
+          setMembers((prev) =>
+            prev.map((m) => ({
+              ...m,
+              isHost: String(m.userId) === String(msg.newHostId),
+            })),
+          );
+          DarkSwal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: `Chủ phòng mới: ${msg.newHostUsername}`,
+            showConfirmButton: false,
+            timer: 3000,
+          });
           break;
         }
 
-        roomStartedAtRef.current = msg.startedAt;
-        setRoomData((prev) => (prev ? { ...prev, startedAt: msg.startedAt } : null));
-        startElapsedCounter(msg.startedAt);
-        if (typeof msg.time === "number") {
-          const targetSeconds = msg.time;
-          const applySeek = () => {
-            if (videoRef.current) {
-              const diff = Math.abs(videoRef.current.currentTime - targetSeconds);
-              if (diff > 1.5) {
-                isSeekingFromSyncRef.current = true;
-                videoRef.current.currentTime = targetSeconds;
-              }
-              if (videoRef.current.paused) {
-                safePlay(videoRef.current);
-              }
-            }
-          };
-
-          if (videoRef.current && videoRef.current.readyState >= 1) {
-            applySeek();
-          } else if (videoRef.current) {
-            videoRef.current.addEventListener("loadedmetadata", applySeek, { once: true });
-            videoRef.current.addEventListener("canplay", applySeek, { once: true });
-          }
+        case "ROOM_DESTROYED": {
+          isIntentionalCloseRef.current = true;
+          DarkSwal.fire({
+            icon: "info",
+            title: "Phòng đã giải tán",
+            text: msg.reason || "Chủ phòng đã giải tán phòng xem.",
+            confirmButtonText: "Về sảnh xem chung",
+          }).then(() => {
+            navigate("/xem-chung");
+          });
+          break;
         }
-        break;
-      }
 
-      case "HOST_CHANGED": {
-        const isMe = Boolean(user?.id && String(user.id) === String(msg.newHostId));
-        setRoomData((prev) => {
-          if (!prev) return null;
-          const nextData = {
-            ...prev,
-            hostId: msg.newHostId,
-            hostUsername: msg.newHostUsername,
-            isHost: isMe,
-          };
-          roomDataRef.current = nextData;
-          return nextData;
-        });
-        setMembers((prev) =>
-          prev.map((m) => ({
-            ...m,
-            isHost: String(m.userId) === String(msg.newHostId),
-          }))
-        );
-        DarkSwal.fire({
-          toast: true,
-          position: "top-end",
-          icon: "success",
-          title: `Chủ phòng mới: ${msg.newHostUsername}`,
-          showConfirmButton: false,
-          timer: 3000,
-        });
-        break;
-      }
+        case "ERROR": {
+          setErrorMessage(msg.message);
+          setTimeout(() => setErrorMessage(null), 4500);
+          break;
+        }
 
-      case "ROOM_DESTROYED": {
-        isIntentionalCloseRef.current = true;
-        DarkSwal.fire({
-          icon: "info",
-          title: "Phòng đã giải tán",
-          text: msg.reason || "Chủ phòng đã giải tán phòng xem.",
-          confirmButtonText: "Về sảnh xem chung",
-        }).then(() => {
-          navigate("/xem-chung");
-        });
-        break;
+        default:
+          break;
       }
-
-      case "ERROR": {
-        setErrorMessage(msg.message);
-        setTimeout(() => setErrorMessage(null), 4500);
-        break;
-      }
-
-      default:
-        break;
-    }
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, startElapsedCounter]);
+    [user, startElapsedCounter],
+  );
 
   // Hành động: Gửi tin nhắn chat (Hỗ trợ cả WebSocket thời gian thực và HTTP fallback khi đang kết nối lại)
   const handleSendChat = (e) => {
@@ -1821,18 +2062,21 @@ export default function WatchPartyPage() {
 
     // Nếu WebSocket đang mất kết nối / đang kết nối lại: gửi fallback qua HTTP POST
     if (user?.token && activeRoomId) {
-      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+      fetch(
+        `${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/chat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            text,
+            username: user.display_name || user.username,
+            avatar: user.avatar || "",
+          }),
         },
-        body: JSON.stringify({
-          text,
-          username: user.display_name || user.username,
-          avatar: user.avatar || "",
-        }),
-      }).catch((err) => console.error("Lỗi gửi chat qua HTTP fallback:", err));
+      ).catch((err) => console.error("Lỗi gửi chat qua HTTP fallback:", err));
     }
 
     // Lập tức kích hoạt kết nối lại WebSocket nếu nó đang đóng
@@ -1844,10 +2088,7 @@ export default function WatchPartyPage() {
   // Nhận biết nguồn M3U8 trực tiếp
   const isM3u8Stream = useMemo(() => {
     if (!roomData?.videoUrl) return false;
-    return (
-      roomData.mediaType === "m3u8" ||
-      roomData.videoUrl.includes(".m3u8")
-    );
+    return roomData.mediaType === "m3u8" || roomData.videoUrl.includes(".m3u8");
   }, [roomData?.videoUrl, roomData?.mediaType]);
 
   // Chuẩn hóa hiển thị tập phim (Thêm chữ "Tập: ")
@@ -1864,7 +2105,8 @@ export default function WatchPartyPage() {
 
   // Chuẩn hóa tên phòng: Loại bỏ chuỗi tự sinh "Phòng xem [tên phim] - [tập]", giữ đúng tên phòng
   const displayRoomName = useMemo(() => {
-    if (!roomData?.roomName) return `Phòng của ${roomData?.hostUsername || "Host"}`;
+    if (!roomData?.roomName)
+      return `Phòng của ${roomData?.hostUsername || "Host"}`;
     const raw = String(roomData.roomName).trim();
     const title = (roomData?.title || "").trim();
     if (
@@ -1880,8 +2122,14 @@ export default function WatchPartyPage() {
   const displayMembers = useMemo(() => {
     let list = [...members];
     return list.sort((a, b) => {
-      const aIsHost = Boolean(a.isHost || (roomData?.hostId && String(a.userId) === String(roomData.hostId)));
-      const bIsHost = Boolean(b.isHost || (roomData?.hostId && String(b.userId) === String(roomData.hostId)));
+      const aIsHost = Boolean(
+        a.isHost ||
+        (roomData?.hostId && String(a.userId) === String(roomData.hostId)),
+      );
+      const bIsHost = Boolean(
+        b.isHost ||
+        (roomData?.hostId && String(b.userId) === String(roomData.hostId)),
+      );
       if (aIsHost && !bIsHost) return -1;
       if (!aIsHost && bIsHost) return 1;
       const aIsMe = Boolean(user?.id && String(a.userId) === String(user.id));
@@ -1913,7 +2161,7 @@ export default function WatchPartyPage() {
       0,
       roomStartedAtRef.current
         ? Math.floor((Date.now() - roomStartedAtRef.current) / 1000)
-        : (roomData.elapsedSeconds || 0)
+        : roomData.elapsedSeconds || 0,
     );
 
     // Hủy triệt để HLS cũ nếu đang chạy để không giữ bộ đệm video tập cũ
@@ -1946,7 +2194,10 @@ export default function WatchPartyPage() {
       hls.attachMedia(video);
 
       const seekToTarget = () => {
-        if (targetElapsed > 0 && Math.abs(video.currentTime - targetElapsed) > 1.5) {
+        if (
+          targetElapsed > 0 &&
+          Math.abs(video.currentTime - targetElapsed) > 1.5
+        ) {
           isSeekingFromSyncRef.current = true;
           video.currentTime = targetElapsed;
         }
@@ -2024,14 +2275,14 @@ export default function WatchPartyPage() {
           (ep) =>
             (ep.m3u8Url && ep.m3u8Url === roomData?.videoUrl) ||
             (ep.link_m3u8 && ep.link_m3u8 === roomData?.videoUrl) ||
-            (ep.m3u8 && ep.m3u8 === roomData?.videoUrl)
-        )
+            (ep.m3u8 && ep.m3u8 === roomData?.videoUrl),
+        ),
       );
       if (playingServer) {
         return Boolean(
           playingServer.sourceName === "KK" ||
           /kk/i.test(playingServer.server_name || "") ||
-          /kk/i.test(playingServer.display_name || "")
+          /kk/i.test(playingServer.display_name || ""),
         );
       }
 
@@ -2041,16 +2292,23 @@ export default function WatchPartyPage() {
         return Boolean(
           currentSrv.sourceName === "KK" ||
           /kk/i.test(currentSrv.server_name || "") ||
-          /kk/i.test(currentSrv.display_name || "")
+          /kk/i.test(currentSrv.display_name || ""),
         );
       }
     }
 
     // 2. Fallback nếu movieServers chưa load xong
-    if (selectedMovie?.sourceName === "KK" || selectedMovie?.source === "kk" || selectedMovie?.source === "kkphim") {
+    if (
+      selectedMovie?.sourceName === "KK" ||
+      selectedMovie?.source === "kk" ||
+      selectedMovie?.source === "kkphim"
+    ) {
       return true;
     }
-    if (roomData?.videoUrl && /phimapi|kkphim|phim128/i.test(roomData.videoUrl)) {
+    if (
+      roomData?.videoUrl &&
+      /phimapi|kkphim|phim128/i.test(roomData.videoUrl)
+    ) {
       return true;
     }
     if (roomData?.videoUrl && /nguonc|embed69/i.test(roomData.videoUrl)) {
@@ -2061,22 +2319,25 @@ export default function WatchPartyPage() {
   }, [movieServers, selectedServerIdx, roomData?.videoUrl, selectedMovie]);
 
   // Cập nhật trạng thái hiển thị nút bỏ qua quảng cáo (từ 14:57 [897s] đến 15:31 [931s])
-  const updateSkipAdState = useCallback((cur) => {
-    if (!roomData?.isHost || !isKkServer) {
-      setShowSkipAd((prev) => (prev ? false : prev));
-      return;
-    }
-    if (cur < 897) {
-      adSkippedRef.current = false;
-      setShowSkipAd((prev) => (prev ? false : prev));
-    } else if (cur >= 897 && cur <= 931) {
-      if (!adSkippedRef.current) {
-        setShowSkipAd((prev) => (!prev ? true : prev));
+  const updateSkipAdState = useCallback(
+    (cur) => {
+      if (!roomData?.isHost || !isKkServer) {
+        setShowSkipAd((prev) => (prev ? false : prev));
+        return;
       }
-    } else {
-      setShowSkipAd((prev) => (prev ? false : prev));
-    }
-  }, [roomData?.isHost, isKkServer]);
+      if (cur < 897) {
+        adSkippedRef.current = false;
+        setShowSkipAd((prev) => (prev ? false : prev));
+      } else if (cur >= 897 && cur <= 931) {
+        if (!adSkippedRef.current) {
+          setShowSkipAd((prev) => (!prev ? true : prev));
+        }
+      } else {
+        setShowSkipAd((prev) => (prev ? false : prev));
+      }
+    },
+    [roomData?.isHost, isKkServer],
+  );
 
   // Click nút Bỏ qua quảng cáo: Tua thẳng đến 15:31 (931s) và đồng bộ ngay cho cả phòng
   const handleSkipAd = (e) => {
@@ -2100,7 +2361,9 @@ export default function WatchPartyPage() {
     const isUserHost = Boolean(
       roomDataRef.current?.isHost ||
       roomData?.isHost ||
-      (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
+      (user?.id &&
+        roomDataRef.current?.hostId &&
+        String(user.id) === String(roomDataRef.current.hostId)),
     );
 
     if (isUserHost) {
@@ -2109,18 +2372,21 @@ export default function WatchPartyPage() {
           JSON.stringify({
             type: "SYNC_TIME",
             time: targetTime,
-          })
+          }),
         );
       }
       if (activeRoomId && user?.token) {
-        fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
+        fetch(
+          `${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({ time: targetTime }),
           },
-          body: JSON.stringify({ time: targetTime }),
-        }).catch(() => {});
+        ).catch(() => {});
       }
     }
   };
@@ -2133,7 +2399,9 @@ export default function WatchPartyPage() {
         const h = Math.floor(sec / 3600);
         const m = Math.floor((sec % 3600) / 60);
         const s = sec % 60;
-        setElapsedDisplay([h, m, s].map((v) => String(v).padStart(2, "0")).join(":"));
+        setElapsedDisplay(
+          [h, m, s].map((v) => String(v).padStart(2, "0")).join(":"),
+        );
       }
       updateSkipAdState(videoRef.current.currentTime);
     }
@@ -2151,13 +2419,17 @@ export default function WatchPartyPage() {
     const h = Math.floor(currentSeconds / 3600);
     const m = Math.floor((currentSeconds % 3600) / 60);
     const s = currentSeconds % 60;
-    setElapsedDisplay([h, m, s].map((v) => String(v).padStart(2, "0")).join(":"));
+    setElapsedDisplay(
+      [h, m, s].map((v) => String(v).padStart(2, "0")).join(":"),
+    );
     startElapsedCounter(newStartedAt);
     setRoomData((prev) => (prev ? { ...prev, startedAt: newStartedAt } : null));
 
     const isUserHost = Boolean(
       roomData?.isHost ||
-      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+      (user?.id &&
+        roomData?.hostId &&
+        String(user.id) === String(roomData.hostId)),
     );
 
     if (isUserHost) {
@@ -2166,19 +2438,22 @@ export default function WatchPartyPage() {
           JSON.stringify({
             type: "SYNC_TIME",
             time: currentSeconds,
-          })
+          }),
         );
       }
       // HTTP Fallback: Đảm bảo server lưu mốc tua mới ngay cả khi WebSocket đang tạm reconnecting
       if (activeRoomId && user?.token) {
-        fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
+        fetch(
+          `${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({ time: currentSeconds }),
           },
-          body: JSON.stringify({ time: currentSeconds }),
-        }).catch(() => {});
+        ).catch(() => {});
       }
     }
   };
@@ -2188,7 +2463,9 @@ export default function WatchPartyPage() {
     if (!videoRef.current) return;
     const isUserHost = Boolean(
       roomData?.isHost ||
-      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+      (user?.id &&
+        roomData?.hostId &&
+        String(user.id) === String(roomData.hostId)),
     );
     if (!isUserHost) return;
 
@@ -2202,18 +2479,21 @@ export default function WatchPartyPage() {
         JSON.stringify({
           type: "SYNC_TIME",
           time: currentSeconds,
-        })
+        }),
       );
     }
     if (activeRoomId && user?.token) {
-      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+      fetch(
+        `${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ time: currentSeconds }),
         },
-        body: JSON.stringify({ time: currentSeconds }),
-      }).catch(() => {});
+      ).catch(() => {});
     }
   };
 
@@ -2221,7 +2501,9 @@ export default function WatchPartyPage() {
     if (!videoRef.current) return;
     const isUserHost = Boolean(
       roomData?.isHost ||
-      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+      (user?.id &&
+        roomData?.hostId &&
+        String(user.id) === String(roomData.hostId)),
     );
     if (!isUserHost) return;
 
@@ -2235,18 +2517,21 @@ export default function WatchPartyPage() {
         JSON.stringify({
           type: "SYNC_TIME",
           time: currentSeconds,
-        })
+        }),
       );
     }
     if (activeRoomId && user?.token) {
-      fetch(`${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+      fetch(
+        `${BACKEND_HTTP}/api/rooms/${encodeURIComponent(activeRoomId)}/sync`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ time: currentSeconds }),
         },
-        body: JSON.stringify({ time: currentSeconds }),
-      }).catch(() => {});
+      ).catch(() => {});
     }
   };
 
@@ -2257,7 +2542,9 @@ export default function WatchPartyPage() {
       const isUserHost = Boolean(
         roomDataRef.current?.isHost ||
         roomData?.isHost ||
-        (user?.id && roomDataRef.current?.hostId && String(user.id) === String(roomDataRef.current.hostId))
+        (user?.id &&
+          roomDataRef.current?.hostId &&
+          String(user.id) === String(roomDataRef.current.hostId)),
       );
       if (
         isUserHost &&
@@ -2272,7 +2559,7 @@ export default function WatchPartyPage() {
           JSON.stringify({
             type: "SYNC_TIME",
             time: currentSeconds,
-          })
+          }),
         );
       }
     }, 4000);
@@ -2309,7 +2596,9 @@ export default function WatchPartyPage() {
   const handleTransferHost = (targetUserId, targetUsername) => {
     const isUserHost = Boolean(
       roomData?.isHost ||
-      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+      (user?.id &&
+        roomData?.hostId &&
+        String(user.id) === String(roomData.hostId)),
     );
     if (!isUserHost) return;
 
@@ -2322,8 +2611,14 @@ export default function WatchPartyPage() {
       cancelButtonText: "Hủy",
       confirmButtonColor: "#f59e0b",
     }).then((res) => {
-      if (res.isConfirmed && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.send(JSON.stringify({ type: "TRANSFER_HOST", targetUserId }));
+      if (
+        res.isConfirmed &&
+        wsRef.current &&
+        wsRef.current.readyState === WebSocket.OPEN
+      ) {
+        wsRef.current.send(
+          JSON.stringify({ type: "TRANSFER_HOST", targetUserId }),
+        );
       }
     });
   };
@@ -2339,7 +2634,11 @@ export default function WatchPartyPage() {
       cancelButtonText: "Hủy",
       confirmButtonColor: "#ef4444",
     }).then((res) => {
-      if (res.isConfirmed && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      if (
+        res.isConfirmed &&
+        wsRef.current &&
+        wsRef.current.readyState === WebSocket.OPEN
+      ) {
         wsRef.current.send(JSON.stringify({ type: "DESTROY_ROOM" }));
       }
     });
@@ -2349,11 +2648,13 @@ export default function WatchPartyPage() {
   const handleLeaveOrDestroyRoom = () => {
     const isUserHost = Boolean(
       roomData?.isHost ||
-      (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+      (user?.id &&
+        roomData?.hostId &&
+        String(user.id) === String(roomData.hostId)),
     );
 
     const otherMembers = displayMembers.filter(
-      (m) => String(m.userId) !== String(user?.id)
+      (m) => String(m.userId) !== String(user?.id),
     );
 
     const doLeaveAndTransfer = (targetUserId) => {
@@ -2363,7 +2664,7 @@ export default function WatchPartyPage() {
           JSON.stringify({
             type: "LEAVE_AND_TRANSFER",
             targetUserId,
-          })
+          }),
         );
       }
       if (activeRoomId && user?.token) {
@@ -2503,7 +2804,11 @@ export default function WatchPartyPage() {
     }
 
     if (!formTitle.trim()) {
-      DarkSwal.fire({ icon: "warning", title: "Thiếu tên phim", text: "Vui lòng chọn hoặc nhập tên bộ phim muốn xem!" });
+      DarkSwal.fire({
+        icon: "warning",
+        title: "Thiếu tên phim",
+        text: "Vui lòng chọn hoặc nhập tên bộ phim muốn xem!",
+      });
       return;
     }
 
@@ -2525,13 +2830,16 @@ export default function WatchPartyPage() {
           Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
-          roomName: formRoomName.trim() || `Phòng của ${user?.display_name || user?.username || "Tôi"}`,
+          roomName:
+            formRoomName.trim() ||
+            `Phòng của ${user?.display_name || user?.username || "Tôi"}`,
           title: formTitle.trim(),
           episode: formEpisode.trim() || "Tập 1",
           videoUrl: formVideoUrl.trim(),
           mediaType: formMediaType,
           movieSlug: selectedMovie?.slug || "",
-          posterUrl: selectedMovie?.thumb_url || selectedMovie?.poster_url || "",
+          posterUrl:
+            selectedMovie?.thumb_url || selectedMovie?.poster_url || "",
           username: user.display_name || user.username,
         }),
       });
@@ -2541,7 +2849,11 @@ export default function WatchPartyPage() {
         setShowCreateModal(false);
         navigate(`/xem-chung/${data.data.roomId}`);
       } else {
-        DarkSwal.fire({ icon: "error", title: "Lỗi tạo phòng", text: data.message || "Không thể khởi tạo phòng" });
+        DarkSwal.fire({
+          icon: "error",
+          title: "Lỗi tạo phòng",
+          text: data.message || "Không thể khởi tạo phòng",
+        });
       }
     } catch (err) {
       DarkSwal.fire({ icon: "error", title: "Lỗi kết nối", text: err.message });
@@ -2559,18 +2871,29 @@ export default function WatchPartyPage() {
         (r.title && r.title.toLowerCase().includes(q)) ||
         (r.roomName && r.roomName.toLowerCase().includes(q)) ||
         (r.hostUsername && r.hostUsername.toLowerCase().includes(q)) ||
-        (r.roomId && r.roomId.toLowerCase().includes(q))
+        (r.roomId && r.roomId.toLowerCase().includes(q)),
     );
   }, [activeRooms, searchQuery]);
 
   // Render: Nếu đang trong phòng xem (`activeRoomId`)
   if (activeRoomId) {
     const isCurrentUserHost = Boolean(
-      roomData?.isHost || (user?.id && roomData?.hostId && String(user.id) === String(roomData.hostId))
+      roomData?.isHost ||
+      (user?.id &&
+        roomData?.hostId &&
+        String(user.id) === String(roomData.hostId)),
     );
-    const hostMember = members.find((m) => m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
-    const currentHostUsername = hostMember?.username || roomData?.hostUsername || "Host";
-    const hostAvatar = hostMember?.avatar || roomData?.hostAvatar || (isCurrentUserHost ? user?.avatar : "");
+    const hostMember = members.find(
+      (m) =>
+        m.isHost ||
+        (roomData?.hostId && String(m.userId) === String(roomData.hostId)),
+    );
+    const currentHostUsername =
+      hostMember?.username || roomData?.hostUsername || "Host";
+    const hostAvatar =
+      hostMember?.avatar ||
+      roomData?.hostAvatar ||
+      (isCurrentUserHost ? user?.avatar : "");
     const rawBackdrop =
       selectedMovie?.thumb_url ||
       selectedMovie?.poster_url ||
@@ -2579,46 +2902,94 @@ export default function WatchPartyPage() {
       activeMovieBackdrop ||
       roomThumbnails[activeRoomId] ||
       "";
-    const currentBackdrop = rawBackdrop ? getPoster(rawBackdrop, selectedMovie?.sourceName || "KK") : "";
+    const currentBackdrop = rawBackdrop
+      ? getPoster(rawBackdrop, selectedMovie?.sourceName || "KK")
+      : "";
+
+    const isUrlText = (str) => {
+      if (!str || typeof str !== "string") return false;
+      const s = str.trim().toLowerCase();
+      return (
+        s.startsWith("http://") ||
+        s.startsWith("https://") ||
+        s.startsWith("//") ||
+        s.includes(".m3u8") ||
+        s.includes(".mp4")
+      );
+    };
+
+    const cleanDisplayTitle = (() => {
+      if (selectedMovie?.name && !isUrlText(selectedMovie.name))
+        return selectedMovie.name;
+      if (roomData?.title && !isUrlText(roomData.title)) return roomData.title;
+      if (roomData?.roomName && !isUrlText(roomData.roomName))
+        return roomData.roomName;
+      return "Phòng Xem Chung";
+    })();
+
+    const helmetTitle = `${cleanDisplayTitle} - Xem Chung | Tecede`;
 
     return (
       <div className="watch-party-room-page">
         <Helmet>
-          <title>{roomData?.title ? `${roomData.title} - Xem Chung` : "Phòng Xem Chung"} | Tecede</title>
+          <title>{helmetTitle}</title>
           <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
+            name="description"
+            content={`Xem chung phim ${cleanDisplayTitle} cùng bạn bè trực tuyến theo thời gian thực trên Tecede.`}
+          />
+          <meta property="og:title" content={helmetTitle} />
+          <meta
+            property="og:description"
+            content={`Xem chung phim ${cleanDisplayTitle} cùng bạn bè trực tuyến theo thời gian thực trên Tecede.`}
           />
         </Helmet>
 
         {/* Backdrop ảnh phim làm mờ cho PC/Laptop */}
         <div
           className={`meet-ambient-bg desktop-only ${currentBackdrop ? "has-backdrop" : ""}`}
-          style={currentBackdrop ? { backgroundImage: `url("${currentBackdrop}")` } : undefined}
+          style={
+            currentBackdrop
+              ? { backgroundImage: `url("${currentBackdrop}")` }
+              : undefined
+          }
         />
 
         {/* 1. GOOGLE MEET TOP BAR (DESKTOP / PC / LAPTOP) */}
         <header className="meet-top-bar desktop-only">
           <div className="meet-top-left">
             <div className="meet-room-info-group">
-              <span className="meet-movie-title" title={roomData?.title || "Đang phát phim"}>
+              <span
+                className="meet-movie-title"
+                title={roomData?.title || "Đang phát phim"}
+              >
                 {roomData?.title || "Phòng xem chung"}
               </span>
               <span className="meet-ep-pill">{displayEpisode}</span>
-              <span className="meet-room-tag" title={displayRoomName}>{displayRoomName}</span>
+              <span className="meet-room-tag" title={displayRoomName}>
+                {displayRoomName}
+              </span>
             </div>
           </div>
 
           <div className="meet-top-center">
             <div className="meet-presenting-pill" title="Người đang phát phim">
-              {renderAvatar(hostAvatar, currentHostUsername, "meet-presenting-avatar")}
-              <span className="meet-presenting-name">{currentHostUsername}</span>
+              {renderAvatar(
+                hostAvatar,
+                currentHostUsername,
+                "meet-presenting-avatar",
+              )}
+              <span className="meet-presenting-name">
+                {currentHostUsername}
+              </span>
               <span className="meet-presenting-sub">(Chủ phòng)</span>
             </div>
           </div>
 
           <div className="meet-top-right">
-            <div className="meet-timer-pill" title={`Thời gian đã chiếu: ${elapsedDisplay}`}>
+            <div
+              className="meet-timer-pill"
+              title={`Thời gian đã chiếu: ${elapsedDisplay}`}
+            >
               <FaClock />
               <span>{elapsedDisplay}</span>
             </div>
@@ -2637,9 +3008,9 @@ export default function WatchPartyPage() {
                 type="button"
                 className={`btn-meet-action ${showHostPanel ? "active" : ""}`}
                 onClick={() => setShowHostPanel(true)}
-                title="Bảng điều khiển chủ phòng"
+                title="Bảng điều khiển"
               >
-                <FaCrown />
+                <FaSlidersH />
               </button>
             )}
 
@@ -2652,7 +3023,10 @@ export default function WatchPartyPage() {
                 } else {
                   setShowMeetChat(true);
                   setMeetSideTab("people");
-                  if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                  if (
+                    wsRef.current &&
+                    wsRef.current.readyState === WebSocket.OPEN
+                  ) {
                     wsRef.current.send(JSON.stringify({ type: "GET_MEMBERS" }));
                   }
                 }
@@ -2693,8 +3067,15 @@ export default function WatchPartyPage() {
 
         {/* 2. TIKTOK TOP BAR (MOBILE) */}
         <header className="tiktok-top-bar mobile-only">
-          <div className="tiktok-host-pill" onClick={() => isCurrentUserHost && setShowHostPanel(true)}>
-            {renderAvatar(hostAvatar, currentHostUsername, "tiktok-host-avatar")}
+          <div
+            className="tiktok-host-pill"
+            onClick={() => isCurrentUserHost && setShowHostPanel(true)}
+          >
+            {renderAvatar(
+              hostAvatar,
+              currentHostUsername,
+              "tiktok-host-avatar",
+            )}
             <div className="tiktok-host-info">
               <span className="tiktok-host-name">{currentHostUsername}</span>
               <span className="tiktok-host-badge">
@@ -2710,7 +3091,10 @@ export default function WatchPartyPage() {
               className="tiktok-viewers-pill"
               onClick={() => {
                 setShowMobileViewers(true);
-                if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                if (
+                  wsRef.current &&
+                  wsRef.current.readyState === WebSocket.OPEN
+                ) {
                   wsRef.current.send(JSON.stringify({ type: "GET_MEMBERS" }));
                 }
               }}
@@ -2720,15 +3104,15 @@ export default function WatchPartyPage() {
               <span>{displayMembers.length}</span>
             </button>
 
-            {/* Nút Cài đặt chủ phòng: Nằm giữa icon số người và nút thoát */}
+            {/* Nút Bảng điều khiển chủ phòng: Nằm giữa icon số người và nút thoát */}
             {isCurrentUserHost && (
               <button
                 type="button"
                 className="btn-tiktok-head-host"
                 onClick={() => setShowHostPanel(true)}
-                title="Bảng điều khiển chủ phòng"
+                title="Bảng điều khiển"
               >
-                <FaCrown />
+                <FaSlidersH />
               </button>
             )}
 
@@ -2747,16 +3131,24 @@ export default function WatchPartyPage() {
         {/* 3. MAIN WORKSPACE */}
         <div className="room-meet-container">
           {/* STAGE: VIDEO PLAYER + PARTICIPANTS */}
-          <div className={`meet-stage-column ${showMeetChat ? "has-side-panel" : "no-side-panel"}`}>
+          <div
+            className={`meet-stage-column ${showMeetChat ? "has-side-panel" : "no-side-panel"}`}
+          >
             {/* The single player wrapper shared across PC and Mobile */}
             <div className="video-player-wrapper" ref={playerWrapperRef}>
               {roomData?.videoUrl ? (
                 isM3u8Stream ? (
                   <div
                     className={`hls-video-container ${!isCurrentUserHost ? "guest-mode" : ""} ${!showGuestControls && !isCurrentUserHost ? "hide-cursor" : ""}`}
-                    onMouseMove={!isCurrentUserHost ? handlePlayerMouseMove : undefined}
-                    onMouseLeave={!isCurrentUserHost ? handlePlayerMouseLeave : undefined}
-                    onClick={!isCurrentUserHost ? handlePlayerMouseMove : undefined}
+                    onMouseMove={
+                      !isCurrentUserHost ? handlePlayerMouseMove : undefined
+                    }
+                    onMouseLeave={
+                      !isCurrentUserHost ? handlePlayerMouseLeave : undefined
+                    }
+                    onClick={
+                      !isCurrentUserHost ? handlePlayerMouseMove : undefined
+                    }
                   >
                     <video
                       key={roomData?.videoUrl || "watch-party-video"}
@@ -2785,7 +3177,11 @@ export default function WatchPartyPage() {
                         isCurrentUserHost
                           ? handleHostPause
                           : () => {
-                              if (videoRef.current && isConnected && !videoRef.current.seeking) {
+                              if (
+                                videoRef.current &&
+                                isConnected &&
+                                !videoRef.current.seeking
+                              ) {
                                 safePlay(videoRef.current);
                               }
                             }
@@ -2806,7 +3202,9 @@ export default function WatchPartyPage() {
                     )}
 
                     {!isCurrentUserHost && (
-                      <div className={`guest-player-bar ${showGuestControls ? "visible" : ""}`}>
+                      <div
+                        className={`guest-player-bar ${showGuestControls ? "visible" : ""}`}
+                      >
                         <div className="guest-bar-right">
                           <button
                             type="button"
@@ -2820,7 +3218,11 @@ export default function WatchPartyPage() {
                             type="button"
                             className="btn-guest-action"
                             onClick={toggleFullscreen}
-                            title={isFullscreen ? "Thu nhỏ màn hình" : "Toàn màn hình"}
+                            title={
+                              isFullscreen
+                                ? "Thu nhỏ màn hình"
+                                : "Toàn màn hình"
+                            }
                           >
                             {isFullscreen ? <FaCompress /> : <FaExpand />}
                           </button>
@@ -2829,11 +3231,17 @@ export default function WatchPartyPage() {
                     )}
 
                     {needsUserGesture && (
-                      <div className="autoplay-unmute-overlay" onClick={handleUnmuteAndPlay}>
+                      <div
+                        className="autoplay-unmute-overlay"
+                        onClick={handleUnmuteAndPlay}
+                      >
                         <div className="unmute-card">
                           <FaPlay className="play-pulse-icon" />
                           <h4>Bấm vào đây để xem phim</h4>
-                          <p>Phim đã phát được {elapsedDisplay}. Bấm để phát tiếng và cùng xem với mọi người!</p>
+                          <p>
+                            Phim đã phát được {elapsedDisplay}. Bấm để phát
+                            tiếng và cùng xem với mọi người!
+                          </p>
                         </div>
                       </div>
                     )}
@@ -2851,11 +3259,14 @@ export default function WatchPartyPage() {
                       <div className="sync-bar-left">
                         <span className="badge-embed-tag">Nguồn Embed</span>
                         <span className="sync-time-text">
-                          <FaClock /> Thời gian phòng: <strong>{elapsedDisplay}</strong>
+                          <FaClock /> Thời gian phòng:{" "}
+                          <strong>{elapsedDisplay}</strong>
                         </span>
                       </div>
                       <span className="sync-bar-desc">
-                        (Nếu phim chưa tự tua, bạn vui lòng bấm Play và kéo thanh thời gian đến <strong>{elapsedDisplay}</strong> để xem đúng đoạn cùng phòng nhé!)
+                        (Nếu phim chưa tự tua, bạn vui lòng bấm Play và kéo
+                        thanh thời gian đến <strong>{elapsedDisplay}</strong> để
+                        xem đúng đoạn cùng phòng nhé!)
                       </span>
                     </div>
                   </div>
@@ -2865,7 +3276,10 @@ export default function WatchPartyPage() {
                   <FaFilm className="placeholder-icon" />
                   <p>Chưa có video được phát trong phòng này</p>
                   {isCurrentUserHost && (
-                    <button className="btn-add-media" onClick={() => setShowHostPanel(true)}>
+                    <button
+                      className="btn-add-media"
+                      onClick={() => setShowHostPanel(true)}
+                    >
                       Thêm link phim ngay
                     </button>
                   )}
@@ -2878,13 +3292,26 @@ export default function WatchPartyPage() {
               {displayMembers.slice(0, 9).map((m) => {
                 const isMe = user?.id?.toString() === m.userId?.toString();
                 const avatarUrl = m.avatar || (isMe ? user?.avatar : "");
-                const isHost = Boolean(m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+                const isHost = Boolean(
+                  m.isHost ||
+                  (roomData?.hostId &&
+                    String(m.userId) === String(roomData.hostId)),
+                );
                 return (
-                  <div key={m.userId} className={`meet-participant-card ${isMe ? "is-me" : ""}`}>
-                    {renderAvatar(avatarUrl, m.username, "participant-circle-avatar")}
+                  <div
+                    key={m.userId}
+                    className={`meet-participant-card ${isMe ? "is-me" : ""}`}
+                  >
+                    {renderAvatar(
+                      avatarUrl,
+                      m.username,
+                      "participant-circle-avatar",
+                    )}
                     <div className="participant-card-name">
                       {isHost && <FaCrown className="crown-mini" />}
-                      <span className="name-string">{m.username} {isMe ? "(Bạn)" : ""}</span>
+                      <span className="name-string">
+                        {m.username} {isMe ? "(Bạn)" : ""}
+                      </span>
                     </div>
                     <div className="participant-card-mic" title="Micro">
                       <FaMicrophoneSlash className="mic-icon-muted" />
@@ -2919,7 +3346,9 @@ export default function WatchPartyPage() {
                     <span>+{displayMembers.length - 9}</span>
                   </div>
                   <div className="participant-card-name">
-                    <span className="name-string">{displayMembers.length - 9} người khác</span>
+                    <span className="name-string">
+                      {displayMembers.length - 9} người khác
+                    </span>
                   </div>
                 </div>
               )}
@@ -2943,8 +3372,13 @@ export default function WatchPartyPage() {
                     className={`drawer-tab-btn ${meetSideTab === "people" ? "active" : ""}`}
                     onClick={() => {
                       setMeetSideTab("people");
-                      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-                        wsRef.current.send(JSON.stringify({ type: "GET_MEMBERS" }));
+                      if (
+                        wsRef.current &&
+                        wsRef.current.readyState === WebSocket.OPEN
+                      ) {
+                        wsRef.current.send(
+                          JSON.stringify({ type: "GET_MEMBERS" }),
+                        );
                       }
                     }}
                   >
@@ -2963,24 +3397,47 @@ export default function WatchPartyPage() {
 
               {meetSideTab === "chat" ? (
                 <div className="meet-drawer-chat-body">
-                  <div className="meet-chat-message-list custom-scroll" ref={chatScrollRef}>
+                  <div
+                    className="meet-chat-message-list custom-scroll"
+                    ref={chatScrollRef}
+                  >
                     {messages.length === 0 ? (
                       <div className="empty-chat-state">
                         <p>Chào mừng bạn đến với phòng xem chung!</p>
-                        <span>Hãy gửi lời chào đầu tiên tới mọi người nhé.</span>
+                        <span>
+                          Hãy gửi lời chào đầu tiên tới mọi người nhé.
+                        </span>
                       </div>
                     ) : (
                       messages.map((msg) => {
-                        const isMe = user?.id?.toString() === msg.userId?.toString();
-                        const timeStr = new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                        const avatarUrl = msg.avatar || (isMe ? user?.avatar : "");
+                        const isMe =
+                          user?.id?.toString() === msg.userId?.toString();
+                        const timeStr = new Date(
+                          msg.timestamp,
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        });
+                        const avatarUrl =
+                          msg.avatar || (isMe ? user?.avatar : "");
                         return (
-                          <div key={msg.id} className={`meet-chat-item ${isMe ? "is-me" : ""}`}>
-                            {renderAvatar(avatarUrl, msg.username, "meet-msg-avatar")}
+                          <div
+                            key={msg.id}
+                            className={`meet-chat-item ${isMe ? "is-me" : ""}`}
+                          >
+                            {renderAvatar(
+                              avatarUrl,
+                              msg.username,
+                              "meet-msg-avatar",
+                            )}
                             <div className="meet-msg-content">
                               <div className="meet-msg-meta">
-                                <span className={`meet-msg-sender ${msg.isHost ? "is-host" : ""}`}>
-                                  {msg.isHost && <FaCrown className="mini-crown" />}
+                                <span
+                                  className={`meet-msg-sender ${msg.isHost ? "is-host" : ""}`}
+                                >
+                                  {msg.isHost && (
+                                    <FaCrown className="mini-crown" />
+                                  )}
                                   {msg.username}
                                 </span>
                                 <span className="meet-msg-time">{timeStr}</span>
@@ -3000,7 +3457,10 @@ export default function WatchPartyPage() {
                     </div>
                   )}
 
-                  <form onSubmit={handleSendChat} className="meet-chat-bottom-input">
+                  <form
+                    onSubmit={handleSendChat}
+                    className="meet-chat-bottom-input"
+                  >
                     <input
                       type="text"
                       maxLength={200}
@@ -3008,7 +3468,11 @@ export default function WatchPartyPage() {
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
                     />
-                    <button type="submit" disabled={!chatInput.trim()} title="Gửi">
+                    <button
+                      type="submit"
+                      disabled={!chatInput.trim()}
+                      title="Gửi"
+                    >
                       <FaPaperPlane />
                     </button>
                   </form>
@@ -3020,12 +3484,21 @@ export default function WatchPartyPage() {
                   </div>
                   <div className="people-list-container">
                     {displayMembers.map((m) => {
-                      const isMe = user?.id?.toString() === m.userId?.toString();
+                      const isMe =
+                        user?.id?.toString() === m.userId?.toString();
                       const avatarUrl = m.avatar || (isMe ? user?.avatar : "");
-                      const isHost = Boolean(m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+                      const isHost = Boolean(
+                        m.isHost ||
+                        (roomData?.hostId &&
+                          String(m.userId) === String(roomData.hostId)),
+                      );
                       return (
                         <div key={m.userId} className="people-row-item">
-                          {renderAvatar(avatarUrl, m.username, "people-avatar-circle")}
+                          {renderAvatar(
+                            avatarUrl,
+                            m.username,
+                            "people-avatar-circle",
+                          )}
                           <div className="people-meta-box">
                             <span className="people-display-name">
                               {m.username} {isMe ? "(Bạn)" : ""}
@@ -3037,12 +3510,17 @@ export default function WatchPartyPage() {
                             )}
                           </div>
                           <div className="people-actions-box">
-                            <FaMicrophoneSlash className="mic-muted-status" title="Micro đã tắt" />
+                            <FaMicrophoneSlash
+                              className="mic-muted-status"
+                              title="Micro đã tắt"
+                            />
                             {isCurrentUserHost && !isMe && !isHost && (
                               <button
                                 type="button"
                                 className="btn-transfer-host-drawer"
-                                onClick={() => handleTransferHost(m.userId, m.username)}
+                                onClick={() =>
+                                  handleTransferHost(m.userId, m.username)
+                                }
                                 title="Chuyển quyền chủ phòng"
                               >
                                 <FaExchangeAlt />
@@ -3052,7 +3530,9 @@ export default function WatchPartyPage() {
                               <button
                                 type="button"
                                 className="btn-kick-from-drawer"
-                                onClick={() => handleKickUser(m.userId, m.username)}
+                                onClick={() =>
+                                  handleKickUser(m.userId, m.username)
+                                }
                                 title="Mời ra khỏi phòng"
                               >
                                 <FaBan />
@@ -3078,16 +3558,28 @@ export default function WatchPartyPage() {
             </div>
 
             {/* Danh sách tin nhắn chat: từ cuối box đi lên */}
-            <div className="tiktok-messages-stream custom-scroll" ref={mobileChatScrollRef}>
-              <div className="tiktok-scroll-top-anchor" style={{ marginTop: "auto" }} />
+            <div
+              className="tiktok-messages-stream custom-scroll"
+              ref={mobileChatScrollRef}
+            >
+              <div
+                className="tiktok-scroll-top-anchor"
+                style={{ marginTop: "auto" }}
+              />
               {messages.map((msg) => {
                 const isMe = user?.id?.toString() === msg.userId?.toString();
                 const avatarUrl = msg.avatar || (isMe ? user?.avatar : "");
                 return (
                   <div key={msg.id} className="tiktok-stream-item">
-                    {renderAvatar(avatarUrl, msg.username, "tiktok-stream-avatar")}
+                    {renderAvatar(
+                      avatarUrl,
+                      msg.username,
+                      "tiktok-stream-avatar",
+                    )}
                     <div className="tiktok-stream-bubble">
-                      <span className={`tiktok-sender-name ${msg.isHost ? "is-host" : ""}`}>
+                      <span
+                        className={`tiktok-sender-name ${msg.isHost ? "is-host" : ""}`}
+                      >
                         {msg.isHost && <FaCrown className="mini-crown" />}
                         {msg.username}:
                       </span>
@@ -3118,7 +3610,8 @@ export default function WatchPartyPage() {
                     setTimeout(() => {
                       if (window.scrollY !== 0) window.scrollTo(0, 0);
                       if (mobileChatScrollRef.current) {
-                        mobileChatScrollRef.current.scrollTop = mobileChatScrollRef.current.scrollHeight;
+                        mobileChatScrollRef.current.scrollTop =
+                          mobileChatScrollRef.current.scrollHeight;
                       }
                     }, 60);
                   }}
@@ -3126,7 +3619,8 @@ export default function WatchPartyPage() {
                     setTimeout(() => {
                       if (window.scrollY !== 0) window.scrollTo(0, 0);
                       if (mobileChatScrollRef.current) {
-                        mobileChatScrollRef.current.scrollTop = mobileChatScrollRef.current.scrollHeight;
+                        mobileChatScrollRef.current.scrollTop =
+                          mobileChatScrollRef.current.scrollHeight;
                       }
                     }, 60);
                   }}
@@ -3183,10 +3677,18 @@ export default function WatchPartyPage() {
                 {displayMembers.map((m) => {
                   const isMe = user?.id?.toString() === m.userId?.toString();
                   const avatarUrl = m.avatar || (isMe ? user?.avatar : "");
-                  const isHost = Boolean(m.isHost || (roomData?.hostId && String(m.userId) === String(roomData.hostId)));
+                  const isHost = Boolean(
+                    m.isHost ||
+                    (roomData?.hostId &&
+                      String(m.userId) === String(roomData.hostId)),
+                  );
                   return (
                     <div key={m.userId} className="mobile-viewer-item">
-                      {renderAvatar(avatarUrl, m.username, "viewer-avatar-circle")}
+                      {renderAvatar(
+                        avatarUrl,
+                        m.username,
+                        "viewer-avatar-circle",
+                      )}
                       <div className="viewer-info">
                         <span className="viewer-name">
                           {m.username} {isMe ? "(Bạn)" : ""}
@@ -3198,12 +3700,17 @@ export default function WatchPartyPage() {
                         )}
                       </div>
                       <div className="viewer-actions">
-                        <FaMicrophoneSlash className="mic-muted-status" title="Micro đã tắt" />
+                        <FaMicrophoneSlash
+                          className="mic-muted-status"
+                          title="Micro đã tắt"
+                        />
                         {isCurrentUserHost && !isMe && !isHost && (
                           <button
                             type="button"
                             className="btn-transfer-host-mobile"
-                            onClick={() => handleTransferHost(m.userId, m.username)}
+                            onClick={() =>
+                              handleTransferHost(m.userId, m.username)
+                            }
                             title="Chuyển quyền chủ phòng"
                           >
                             <FaExchangeAlt />
@@ -3239,9 +3746,9 @@ export default function WatchPartyPage() {
             <div className="host-controls-modal-dialog">
               <div className="host-card-header">
                 <div className="header-title-row">
-                  <h3 title="Bảng Điều Khiển Chủ Phòng">
-                    <FaCrown className="crown-icon" />
-                    <span>Bảng Điều Khiển Chủ Phòng</span>
+                  <h3 title="Bảng Điều Khiển">
+                    <FaSlidersH className="crown-icon" />
+                    <span>Bảng Điều Khiển</span>
                   </h3>
                 </div>
                 <div className="header-actions-row">
@@ -3252,7 +3759,7 @@ export default function WatchPartyPage() {
                   >
                     {hostSearchMode ? (
                       <>
-                        <FaArrowLeft /> Quay lại chọn tập
+                        <FaArrowLeft /> Quay lại
                       </>
                     ) : (
                       <>
@@ -3303,35 +3810,61 @@ export default function WatchPartyPage() {
                           onClick={() => handleSelectMovie(m, true)}
                         >
                           <img
-                            src={m.poster_url || m.thumb_url || "https://placehold.co/45x60/1a1a2e/ffffff?text=Film"}
+                            src={
+                              m.poster_url ||
+                              m.thumb_url ||
+                              "https://placehold.co/45x60/1a1a2e/ffffff?text=Film"
+                            }
                             alt={m.name}
                             className="result-poster"
                             onError={(e) => {
-                              e.target.src = "https://placehold.co/45x60/1a1a2e/ffffff?text=Film";
+                              e.target.src =
+                                "https://placehold.co/45x60/1a1a2e/ffffff?text=Film";
                             }}
                           />
                           <div className="result-info">
                             <strong className="result-title">{m.name}</strong>
-                            <span className="result-origin">{m.original_name || ""}</span>
+                            <span className="result-origin">
+                              {m.original_name || ""}
+                            </span>
                             <div className="result-badges">
-                              <span className={`badge-tag badge-tag--source badge-tag--source-${m.sourceName?.toLowerCase()}`}>
+                              <span
+                                className={`badge-tag badge-tag--source badge-tag--source-${m.sourceName?.toLowerCase()}`}
+                              >
                                 {m.sourceName}
                               </span>
-                              {m.quality && <span className="badge-tag badge-tag--quality">{m.quality}</span>}
-                              {m.year && m.year !== "N/A" && <span className="badge-tag badge-tag--year">{m.year}</span>}
-                              {m.current_episode && <span className="badge-tag badge-tag--ep">{m.current_episode}</span>}
+                              {m.quality && (
+                                <span className="badge-tag badge-tag--quality">
+                                  {m.quality}
+                                </span>
+                              )}
+                              {m.year && m.year !== "N/A" && (
+                                <span className="badge-tag badge-tag--year">
+                                  {m.year}
+                                </span>
+                              )}
+                              {m.current_episode && (
+                                <span className="badge-tag badge-tag--ep">
+                                  {m.current_episode}
+                                </span>
+                              )}
                             </div>
                           </div>
-                          <button type="button" className="btn-choose-this-movie">
+                          <button
+                            type="button"
+                            className="btn-choose-this-movie"
+                          >
                             <FaPlay /> Chọn & Phát
                           </button>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    hostMovieSearchText.trim().length >= 2 && !isSearchingHostMovie && (
+                    hostMovieSearchText.trim().length >= 2 &&
+                    !isSearchingHostMovie && (
                       <div className="host-no-results">
-                        Không tìm thấy phim phù hợp với từ khóa "{hostMovieSearchText}".
+                        Không tìm thấy phim phù hợp với từ khóa "
+                        {hostMovieSearchText}".
                       </div>
                     )
                   )}
@@ -3342,14 +3875,19 @@ export default function WatchPartyPage() {
                   <div className="current-movie-overview">
                     <div className="movie-details">
                       <span className="label-sub">Đang chiếu:</span>
-                      <strong className="current-movie-name">{roomData?.title || selectedMovie?.name}</strong>
+                      <strong className="current-movie-name">
+                        {roomData?.title || selectedMovie?.name}
+                      </strong>
                       <span className="current-movie-ep">{displayEpisode}</span>
                     </div>
                   </div>
 
                   {isLoadingDetail ? (
                     <div className="loading-episodes-host">
-                      <div className="spinner-border spinner-border-sm text-info" role="status" />
+                      <div
+                        className="spinner-border spinner-border-sm text-info"
+                        role="status"
+                      />
                       <span>Đang tải danh sách tập & server...</span>
                     </div>
                   ) : (
@@ -3357,7 +3895,9 @@ export default function WatchPartyPage() {
                       {/* Chọn Server nếu có nhiều hơn 1 nguồn */}
                       {movieServers.length > 1 && (
                         <div className="host-server-selector">
-                          <label><FaServer /> Nguồn / Server ({movieServers.length}):</label>
+                          <label>
+                            <FaServer /> Nguồn / Server ({movieServers.length}):
+                          </label>
                           <div className="server-chips-row">
                             {movieServers.map((srv, idx) => (
                               <button
@@ -3366,7 +3906,9 @@ export default function WatchPartyPage() {
                                 className={`host-srv-chip ${idx === selectedServerIdx ? "active" : ""}`}
                                 onClick={() => handleHostSelectServer(idx)}
                               >
-                                {srv.display_name || srv.server_name || `Server ${idx + 1}`}
+                                {srv.display_name ||
+                                  srv.server_name ||
+                                  `Server ${idx + 1}`}
                               </button>
                             ))}
                           </div>
@@ -3375,7 +3917,10 @@ export default function WatchPartyPage() {
 
                       {/* Danh sách tập phim để chủ phòng bấm chọn */}
                       <div className="host-episode-selector">
-                        <label><FaListOl /> Danh sách tập ({movieEpisodes.length} tập):</label>
+                        <label>
+                          <FaListOl /> Danh sách tập ({movieEpisodes.length}{" "}
+                          tập):
+                        </label>
                         {movieEpisodes.length > 0 ? (
                           <div className="host-episode-grid custom-scroll">
                             {movieEpisodes.map((ep, idx) => {
@@ -3392,7 +3937,9 @@ export default function WatchPartyPage() {
                                   className={`host-ep-chip ${isActive ? "active" : ""}`}
                                   onClick={() => handleHostChangeEpisode(ep)}
                                 >
-                                  {isActive && <FaCheck className="ep-check-icon" />}
+                                  {isActive && (
+                                    <FaCheck className="ep-check-icon" />
+                                  )}
                                   {ep.name || `Tập ${idx + 1}`}
                                 </button>
                               );
@@ -3406,23 +3953,68 @@ export default function WatchPartyPage() {
                       </div>
 
                       {/* Chuyển quyền chủ phòng */}
-                      {displayMembers.filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true) && (user?.id ? String(m.userId) !== String(user.id) : true)).length > 0 && (
+                      {displayMembers.filter(
+                        (m) =>
+                          !m.isHost &&
+                          (roomData?.hostId
+                            ? String(m.userId) !== String(roomData.hostId)
+                            : true) &&
+                          (user?.id
+                            ? String(m.userId) !== String(user.id)
+                            : true),
+                      ).length > 0 && (
                         <div className="host-transfer-selector">
-                          <label><FaCrown /> Chuyển quyền chủ phòng ({displayMembers.filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true) && (user?.id ? String(m.userId) !== String(user.id) : true)).length} người khác):</label>
+                          <label>
+                            <FaCrown /> Chuyển quyền chủ phòng (
+                            {
+                              displayMembers.filter(
+                                (m) =>
+                                  !m.isHost &&
+                                  (roomData?.hostId
+                                    ? String(m.userId) !==
+                                      String(roomData.hostId)
+                                    : true) &&
+                                  (user?.id
+                                    ? String(m.userId) !== String(user.id)
+                                    : true),
+                              ).length
+                            }{" "}
+                            người khác):
+                          </label>
                           <div className="host-transfer-chips custom-scroll">
                             {displayMembers
-                              .filter((m) => !m.isHost && (roomData?.hostId ? String(m.userId) !== String(roomData.hostId) : true) && (user?.id ? String(m.userId) !== String(user.id) : true))
+                              .filter(
+                                (m) =>
+                                  !m.isHost &&
+                                  (roomData?.hostId
+                                    ? String(m.userId) !==
+                                      String(roomData.hostId)
+                                    : true) &&
+                                  (user?.id
+                                    ? String(m.userId) !== String(user.id)
+                                    : true),
+                              )
                               .map((m) => (
                                 <button
                                   key={m.userId}
                                   type="button"
                                   className="host-transfer-chip"
-                                  onClick={() => handleTransferHost(m.userId, m.username)}
+                                  onClick={() =>
+                                    handleTransferHost(m.userId, m.username)
+                                  }
                                   title={`Chuyển quyền chủ phòng cho ${m.username}`}
                                 >
-                                  {renderAvatar(m.avatar, m.username, "transfer-chip-avatar")}
-                                  <span className="transfer-name">{m.username}</span>
-                                  <span className="transfer-action-text"><FaExchangeAlt /> Chuyển</span>
+                                  {renderAvatar(
+                                    m.avatar,
+                                    m.username,
+                                    "transfer-chip-avatar",
+                                  )}
+                                  <span className="transfer-name">
+                                    {m.username}
+                                  </span>
+                                  <span className="transfer-action-text">
+                                    <FaExchangeAlt /> Chuyển
+                                  </span>
                                 </button>
                               ))}
                           </div>
@@ -3444,374 +4036,488 @@ export default function WatchPartyPage() {
     <div className="watch-party-lobby-wrapper">
       <div className="watch-party-lobby-page">
         <Helmet>
-        <title>Xem Chung Phim Trực Tiếp (Watch Party) | Tecede</title>
-        <meta name="description" content="Xem phim cùng bạn bè theo thời gian thực, trò chuyện trực tiếp và chia sẻ khoảnh khắc điện ảnh đáng nhớ." />
-      </Helmet>
-
-      {/* Hero Header Banner (Đã thu gọn kích thước tinh tế) */}
-      <section className="lobby-hero-banner">
-        <div className="hero-content">
-          <div className="hero-badge">
-            <span className="live-dot" /> TÍNH NĂNG MỚI: WATCH PARTY
-          </div>
-          <h1 className="hero-title">
-            Phòng Xem Chung <span className="highlight-text">Trực Tiếp</span>
-          </h1>
-          <p className="hero-desc">
-            Xem phim cùng bạn bè theo thời gian thực, tự động đồng bộ và chat trực tiếp mà không cần cài đặt phần mềm.
-          </p>
-
-          <div className="hero-actions">
-            <button className="btn-create-room-hero" onClick={handleOpenCreateModal}>
-              <FaPlus /> Tạo Phòng Ngay
-            </button>
-            <button
-              className="btn-join-code-hero"
-              onClick={() => {
-                DarkSwal.fire({
-                  title: "Nhập mã phòng xem",
-                  input: "text",
-                  inputPlaceholder: "Ví dụ: room-abc-123",
-                  showCancelButton: true,
-                  confirmButtonText: "Vào phòng",
-                  cancelButtonText: "Hủy",
-                }).then((res) => {
-                  if (res.isConfirmed && res.value?.trim()) {
-                    navigate(`/xem-chung/${res.value.trim()}`);
-                  }
-                });
-              }}
-            >
-              <FaDoorOpen /> Vào bằng mã phòng
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Search & Filter Bar */}
-      <section className="lobby-filter-bar">
-        <div className="search-box-wrapper">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Tìm phòng theo tên phim, tên phòng hoặc chủ phòng..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+          <title>Xem Chung Phim Trực Tiếp (Watch Party) | Tecede</title>
+          <meta
+            name="description"
+            content="Xem phim cùng bạn bè theo thời gian thực, trò chuyện trực tiếp và chia sẻ khoảnh khắc điện ảnh đáng nhớ."
           />
-        </div>
+        </Helmet>
 
-        <div className="filter-actions">
-          <button className="btn-refresh-rooms" onClick={fetchRooms} title="Làm mới danh sách">
-            <FaSyncAlt className={isLoadingRooms ? "spin" : ""} />
-            <span>Làm mới</span>
-          </button>
-        </div>
-      </section>
+        {/* Hero Header Banner (Đã thu gọn kích thước tinh tế) */}
+        <section className="lobby-hero-banner">
+          <div className="hero-content">
+            <div className="hero-badge">
+              <span className="live-dot" /> TÍNH NĂNG MỚI: WATCH PARTY
+            </div>
+            <h1 className="hero-title">
+              Phòng Xem Chung <span className="highlight-text">Trực Tiếp</span>
+            </h1>
+            <p className="hero-desc">
+              Xem phim cùng bạn bè theo thời gian thực, tự động đồng bộ và chat
+              trực tiếp mà không cần cài đặt phần mềm.
+            </p>
 
-      {/* Grid Danh Sách Phòng Đang Chiếu */}
-      <section className="lobby-rooms-section">
-        <div className="section-header">
-          <h2>
-            <FaTv className="sec-icon" /> Các phòng đang công chiếu (<strong>{filteredRooms.length}</strong>)
-          </h2>
-          <span className="section-note">Tham gia ngay để xem cùng mọi người</span>
-        </div>
-
-        {isLoadingRooms ? (
-          <div className="loading-state">
-            <div className="spinner-border text-info" role="status"></div>
-            <p>Đang tìm kiếm các phòng xem trực tiếp...</p>
+            <div className="hero-actions">
+              <button
+                className="btn-create-room-hero"
+                onClick={handleOpenCreateModal}
+              >
+                <FaPlus /> Tạo Phòng Ngay
+              </button>
+              <button
+                className="btn-join-code-hero"
+                onClick={() => {
+                  DarkSwal.fire({
+                    title: "Nhập mã phòng xem",
+                    input: "text",
+                    inputPlaceholder: "Ví dụ: room-abc-123",
+                    showCancelButton: true,
+                    confirmButtonText: "Vào phòng",
+                    cancelButtonText: "Hủy",
+                  }).then((res) => {
+                    if (res.isConfirmed && res.value?.trim()) {
+                      navigate(`/xem-chung/${res.value.trim()}`);
+                    }
+                  });
+                }}
+              >
+                <FaDoorOpen /> Vào bằng mã phòng
+              </button>
+            </div>
           </div>
-        ) : filteredRooms.length === 0 ? (
-          <div className="empty-rooms-card">
-            <FaUsers className="empty-icon" />
-            <h3>Chưa có phòng xem nào đang mở</h3>
-            <p>Hãy là người đầu tiên tạo phòng xem chung để cùng thưởng thức phim với bạn bè!</p>
-            <button className="btn-create-empty" onClick={handleOpenCreateModal}>
-              <FaPlus /> Tạo phòng đầu tiên ngay
+        </section>
+
+        {/* Search & Filter Bar */}
+        <section className="lobby-filter-bar">
+          <div className="search-box-wrapper">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Tìm phòng theo tên phim, tên phòng hoặc chủ phòng..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <div className="filter-actions">
+            <button
+              className="btn-refresh-rooms"
+              onClick={fetchRooms}
+              title="Làm mới danh sách"
+            >
+              <FaSyncAlt className={isLoadingRooms ? "spin" : ""} />
+              <span>Làm mới</span>
             </button>
           </div>
-        ) : (
-          <div className="rooms-grid">
-            {filteredRooms.map((room) => {
-              const elapsedSec =
-                typeof room.elapsedSeconds === "number"
-                  ? room.elapsedSeconds
-                  : Math.max(0, Math.floor((Date.now() - (room.startedAt || Date.now())) / 1000));
-              const elapsedMins = Math.floor(elapsedSec / 60);
-              const thumb = roomThumbnails[room.roomId];
-              return (
-                <div
-                  key={room.roomId}
-                  className={`room-card ${thumb ? "has-thumb" : ""}`}
-                  onClick={() => navigate(`/xem-chung/${room.roomId}`)}
-                >
-                  {/* Ảnh Thumbnail từ API chi tiết làm background */}
-                  {thumb && (
-                    <div
-                      className="room-card-bg"
-                      style={{ backgroundImage: `url(${thumb})` }}
-                    />
-                  )}
-                  <div className="room-card-overlay" />
+        </section>
 
-                  <div className="room-card-badge-row">
-                    <span className="live-pill">
-                      <FaCircle className="live-dot" /> LIVE
-                    </span>
-                    <span className="viewers-pill">
-                      <FaUsers /> {room.viewersCount || 1} người
-                    </span>
-                  </div>
-
-                  <div className="room-card-content">
-                    <h3 className="room-card-title">{room.title || "Phim xem chung"}</h3>
-                    <p className="room-card-name">{room.roomName}</p>
-
-                    <div className="room-card-footer">
-                      <span className="room-episode-badge">{formatEpisode(room.episode)}</span>
-                      <span className="room-host-info">
-                        <FaCrown /> {room.hostUsername || "Host"}
-                      </span>
-                    </div>
-
-                    <div className="room-card-action">
-                      <span className="elapsed-text">
-                        Đã phát ~{elapsedMins > 0 ? `${elapsedMins} phút` : elapsedSec > 10 ? `${elapsedSec}s` : "vừa mới"}
-                      </span>
-                      <button className="btn-join-card">
-                        <FaPlay /> Vào xem
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Grid Danh Sách Phòng Đang Chiếu */}
+        <section className="lobby-rooms-section">
+          <div className="section-header">
+            <h2>
+              <FaTv className="sec-icon" /> Các phòng đang công chiếu (
+              <strong>{filteredRooms.length}</strong>)
+            </h2>
+            <span className="section-note">
+              Tham gia ngay để xem cùng mọi người
+            </span>
           </div>
-        )}
-      </section>
 
-      {/* Modal Tạo Phòng Mới Thông Minh (Tự Tìm Phim & Chọn Tập, Không Cần Lấy Link) */}
-      {showCreateModal && (
-        <div className="modal-backdrop" onClick={() => setShowCreateModal(false)}>
-          <div className="modal-create-card modal-create-card--smart" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2><FaPlus /> Tạo Phòng Xem Chung</h2>
-              <button className="btn-close-modal" onClick={() => setShowCreateModal(false)}>×</button>
+          {isLoadingRooms ? (
+            <div className="loading-state">
+              <div className="spinner-border text-info" role="status"></div>
+              <p>Đang tìm kiếm các phòng xem trực tiếp...</p>
             </div>
-
-            <form onSubmit={handleCreateRoomSubmit} className="modal-form">
-              {/* 1. Thanh tìm kiếm chọn phim (Tái sử dụng logic tìm kiếm trang chủ) */}
-              <div className="form-group">
-                <label className="label-highlight">
-                  <FaFilm /> Chọn phim bạn muốn xem chung:
-                </label>
-
-                {!selectedMovie ? (
-                  <div className="smart-search-box">
-                    <div className="smart-input-wrapper">
-                      <FaSearch className="smart-search-icon" />
-                      <input
-                        ref={searchInputRef}
-                        type="text"
-                        placeholder="Gõ tên phim để tìm (vd: Naruto, Spider-Man, Lật Mặt...)"
-                        value={movieSearchText}
-                        onChange={(e) => setMovieSearchText(e.target.value)}
-                        autoFocus
+          ) : filteredRooms.length === 0 ? (
+            <div className="empty-rooms-card">
+              <FaUsers className="empty-icon" />
+              <h3>Chưa có phòng xem nào đang mở</h3>
+              <p>
+                Hãy là người đầu tiên tạo phòng xem chung để cùng thưởng thức
+                phim với bạn bè!
+              </p>
+              <button
+                className="btn-create-empty"
+                onClick={handleOpenCreateModal}
+              >
+                <FaPlus /> Tạo phòng đầu tiên ngay
+              </button>
+            </div>
+          ) : (
+            <div className="rooms-grid">
+              {filteredRooms.map((room) => {
+                const elapsedSec =
+                  typeof room.elapsedSeconds === "number"
+                    ? room.elapsedSeconds
+                    : Math.max(
+                        0,
+                        Math.floor(
+                          (Date.now() - (room.startedAt || Date.now())) / 1000,
+                        ),
+                      );
+                const elapsedMins = Math.floor(elapsedSec / 60);
+                const thumb = roomThumbnails[room.roomId];
+                return (
+                  <div
+                    key={room.roomId}
+                    className={`room-card ${thumb ? "has-thumb" : ""}`}
+                    onClick={() => navigate(`/xem-chung/${room.roomId}`)}
+                  >
+                    {/* Ảnh Thumbnail từ API chi tiết làm background */}
+                    {thumb && (
+                      <div
+                        className="room-card-bg"
+                        style={{ backgroundImage: `url(${thumb})` }}
                       />
-                      {isSearchingMovie && <div className="smart-search-spinner" />}
+                    )}
+                    <div className="room-card-overlay" />
+
+                    <div className="room-card-badge-row">
+                      <span className="live-pill">
+                        <FaCircle className="live-dot" /> LIVE
+                      </span>
+                      <span className="viewers-pill">
+                        <FaUsers /> {room.viewersCount || 1} người
+                      </span>
                     </div>
 
-                    {/* Danh sách gợi ý phim tìm được (Full data & Tags) */}
-                    {movieSearchResults.length > 0 && (
-                      <ul className="smart-suggestions-list custom-scroll">
-                        {movieSearchResults.map((m) => (
-                          <li
-                            key={`${m.slug}-${m.sourceName}`}
-                            onClick={() => handleSelectMovie(m)}
-                            className="suggestion-item"
-                          >
-                            <div className="suggestion-poster-wrapper">
-                              {m.sourceName && (
-                                <span className={`poster-source-badge source-${m.sourceName?.toLowerCase()}`}>
-                                  {m.sourceName}
-                                </span>
-                              )}
-                              <img
-                                src={m.poster_url || m.thumb_url || "https://placehold.co/60x80/1a1a2e/ffffff?text=Film"}
-                                alt={m.name}
-                                className="suggestion-poster"
-                                onError={(e) => {
-                                  e.target.src = "https://placehold.co/60x80/1a1a2e/ffffff?text=Film";
-                                }}
-                              />
-                            </div>
-                            <div className="suggestion-info">
-                              <strong className="suggestion-title">{m.name}</strong>
-                              <span className="suggestion-origin">{m.original_name || m.origin_name || ""}</span>
-                              <div className="suggestion-badges-row">
+                    <div className="room-card-content">
+                      <h3 className="room-card-title">
+                        {room.title || "Phim xem chung"}
+                      </h3>
+                      <p className="room-card-name">{room.roomName}</p>
+
+                      <div className="room-card-footer">
+                        <span className="room-episode-badge">
+                          {formatEpisode(room.episode)}
+                        </span>
+                        <span className="room-host-info">
+                          <FaCrown /> {room.hostUsername || "Host"}
+                        </span>
+                      </div>
+
+                      <div className="room-card-action">
+                        <span className="elapsed-text">
+                          Đã phát ~
+                          {elapsedMins > 0
+                            ? `${elapsedMins} phút`
+                            : elapsedSec > 10
+                              ? `${elapsedSec}s`
+                              : "vừa mới"}
+                        </span>
+                        <button className="btn-join-card">
+                          <FaPlay /> Vào xem
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        {/* Modal Tạo Phòng Mới Thông Minh (Tự Tìm Phim & Chọn Tập, Không Cần Lấy Link) */}
+        {showCreateModal && (
+          <div
+            className="modal-backdrop"
+            onClick={() => setShowCreateModal(false)}
+          >
+            <div
+              className="modal-create-card modal-create-card--smart"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="modal-header">
+                <h2>
+                  <FaPlus /> Tạo Phòng Xem Chung
+                </h2>
+                <button
+                  className="btn-close-modal"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  ×
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateRoomSubmit} className="modal-form">
+                {/* 1. Thanh tìm kiếm chọn phim (Tái sử dụng logic tìm kiếm trang chủ) */}
+                <div className="form-group">
+                  <label className="label-highlight">
+                    <FaFilm /> Chọn phim bạn muốn xem chung:
+                  </label>
+
+                  {!selectedMovie ? (
+                    <div className="smart-search-box">
+                      <div className="smart-input-wrapper">
+                        <FaSearch className="smart-search-icon" />
+                        <input
+                          ref={searchInputRef}
+                          type="text"
+                          placeholder="Gõ tên phim để tìm (vd: Naruto, Spider-Man, Lật Mặt...)"
+                          value={movieSearchText}
+                          onChange={(e) => setMovieSearchText(e.target.value)}
+                          autoFocus
+                        />
+                        {isSearchingMovie && (
+                          <div className="smart-search-spinner" />
+                        )}
+                      </div>
+
+                      {/* Danh sách gợi ý phim tìm được (Full data & Tags) */}
+                      {movieSearchResults.length > 0 && (
+                        <ul className="smart-suggestions-list custom-scroll">
+                          {movieSearchResults.map((m) => (
+                            <li
+                              key={`${m.slug}-${m.sourceName}`}
+                              onClick={() => handleSelectMovie(m)}
+                              className="suggestion-item"
+                            >
+                              <div className="suggestion-poster-wrapper">
                                 {m.sourceName && (
-                                  <span className={`badge-tag badge-tag--source badge-tag--source-${m.sourceName.toLowerCase()}`}>
+                                  <span
+                                    className={`poster-source-badge source-${m.sourceName?.toLowerCase()}`}
+                                  >
                                     {m.sourceName}
                                   </span>
                                 )}
-                                {m.quality && m.quality !== "N/A" && (
-                                  <span className="badge-tag badge-tag--quality">{m.quality}</span>
-                                )}
-                                {m.language && m.language !== "N/A" && (
-                                  <span className="badge-tag badge-tag--lang">{m.language}</span>
-                                )}
-                                {m.current_episode && (
-                                  <span className="badge-tag badge-tag--ep">{m.current_episode}</span>
-                                )}
-                                {m.year && m.year !== "N/A" && (
-                                  <span className="badge-tag badge-tag--year">{m.year}</span>
-                                )}
-                                {m.time && m.time !== "N/A" && (
-                                  <span className="badge-tag badge-tag--time">{m.time}</span>
-                                )}
+                                <img
+                                  src={
+                                    m.poster_url ||
+                                    m.thumb_url ||
+                                    "https://placehold.co/60x80/1a1a2e/ffffff?text=Film"
+                                  }
+                                  alt={m.name}
+                                  className="suggestion-poster"
+                                  onError={(e) => {
+                                    e.target.src =
+                                      "https://placehold.co/60x80/1a1a2e/ffffff?text=Film";
+                                  }}
+                                />
                               </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ) : (
-                  /* Thẻ phim đã chọn */
-                  <div className="selected-movie-card">
-                    <img
-                      src={selectedMovie.poster_url || selectedMovie.thumb_url || "https://placehold.co/60x80/1a1a2e/ffffff?text=Film"}
-                      alt={selectedMovie.name}
-                      className="selected-poster"
-                      onError={(e) => {
-                        e.target.src = "https://placehold.co/60x80/1a1a2e/ffffff?text=Film";
-                      }}
-                    />
-                    <div className="selected-meta">
-                      <h4>{selectedMovie.name}</h4>
-                      <span>{selectedMovie.origin_name || selectedMovie.original_name || ""}</span>
-                      <div className="selected-badges-row">
-                        {selectedMovie.sourceName && (
-                          <span className={`badge-tag badge-tag--source badge-tag--source-${selectedMovie.sourceName.toLowerCase()}`}>
-                            {selectedMovie.sourceName}
-                          </span>
-                        )}
-                        {selectedMovie.quality && selectedMovie.quality !== "N/A" && (
-                          <span className="badge-tag badge-tag--quality">{selectedMovie.quality}</span>
-                        )}
-                        {selectedMovie.language && selectedMovie.language !== "N/A" && (
-                          <span className="badge-tag badge-tag--lang">{selectedMovie.language}</span>
-                        )}
-                        {selectedMovie.current_episode && (
-                          <span className="badge-tag badge-tag--ep">{selectedMovie.current_episode}</span>
-                        )}
-                        {selectedMovie.year && selectedMovie.year !== "N/A" && (
-                          <span className="badge-tag badge-tag--year">{selectedMovie.year}</span>
-                        )}
-                      </div>
-                      <button
-                        type="button"
-                        className="btn-change-movie"
-                        onClick={() => {
-                          setSelectedMovie(null);
-                          setMovieServers([]);
-                          setMovieEpisodes([]);
-                          setSelectedEpisode(null);
-                          setFormVideoUrl("");
-                        }}
-                      >
-                        <FaTimes /> Đổi phim khác
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 2. Tự động hiển thị Server & Tập phim (User chỉ việc click chọn) */}
-              {selectedMovie && (
-                <div className="movie-episodes-selection">
-                  {isLoadingDetail ? (
-                    <div className="loading-episodes">
-                      <div className="spinner-border spinner-border-sm text-info" role="status" />
-                      <span>Đang nạp danh sách tập & server...</span>
+                              <div className="suggestion-info">
+                                <strong className="suggestion-title">
+                                  {m.name}
+                                </strong>
+                                <span className="suggestion-origin">
+                                  {m.original_name || m.origin_name || ""}
+                                </span>
+                                <div className="suggestion-badges-row">
+                                  {m.sourceName && (
+                                    <span
+                                      className={`badge-tag badge-tag--source badge-tag--source-${m.sourceName.toLowerCase()}`}
+                                    >
+                                      {m.sourceName}
+                                    </span>
+                                  )}
+                                  {m.quality && m.quality !== "N/A" && (
+                                    <span className="badge-tag badge-tag--quality">
+                                      {m.quality}
+                                    </span>
+                                  )}
+                                  {m.language && m.language !== "N/A" && (
+                                    <span className="badge-tag badge-tag--lang">
+                                      {m.language}
+                                    </span>
+                                  )}
+                                  {m.current_episode && (
+                                    <span className="badge-tag badge-tag--ep">
+                                      {m.current_episode}
+                                    </span>
+                                  )}
+                                  {m.year && m.year !== "N/A" && (
+                                    <span className="badge-tag badge-tag--year">
+                                      {m.year}
+                                    </span>
+                                  )}
+                                  {m.time && m.time !== "N/A" && (
+                                    <span className="badge-tag badge-tag--time">
+                                      {m.time}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   ) : (
-                    <>
-                      {/* Chọn Server nếu có nhiều hơn 1 server */}
-                      {movieServers.length > 1 && (
-                        <div className="server-selector-group">
-                          <label><FaServer /> Nguồn / Server ({movieServers.length}):</label>
-                          <div className="server-pills-row">
-                            {movieServers.map((srv, idx) => (
-                              <button
-                                key={idx}
-                                type="button"
-                                className={`server-chip ${idx === selectedServerIdx ? "active" : ""}`}
-                                onClick={() => handleSelectServer(idx)}
-                              >
-                                {srv.display_name || srv.server_name || `Server ${idx + 1}`}
-                              </button>
-                            ))}
-                          </div>
+                    /* Thẻ phim đã chọn */
+                    <div className="selected-movie-card">
+                      <img
+                        src={
+                          selectedMovie.poster_url ||
+                          selectedMovie.thumb_url ||
+                          "https://placehold.co/60x80/1a1a2e/ffffff?text=Film"
+                        }
+                        alt={selectedMovie.name}
+                        className="selected-poster"
+                        onError={(e) => {
+                          e.target.src =
+                            "https://placehold.co/60x80/1a1a2e/ffffff?text=Film";
+                        }}
+                      />
+                      <div className="selected-meta">
+                        <h4>{selectedMovie.name}</h4>
+                        <span>
+                          {selectedMovie.origin_name ||
+                            selectedMovie.original_name ||
+                            ""}
+                        </span>
+                        <div className="selected-badges-row">
+                          {selectedMovie.sourceName && (
+                            <span
+                              className={`badge-tag badge-tag--source badge-tag--source-${selectedMovie.sourceName.toLowerCase()}`}
+                            >
+                              {selectedMovie.sourceName}
+                            </span>
+                          )}
+                          {selectedMovie.quality &&
+                            selectedMovie.quality !== "N/A" && (
+                              <span className="badge-tag badge-tag--quality">
+                                {selectedMovie.quality}
+                              </span>
+                            )}
+                          {selectedMovie.language &&
+                            selectedMovie.language !== "N/A" && (
+                              <span className="badge-tag badge-tag--lang">
+                                {selectedMovie.language}
+                              </span>
+                            )}
+                          {selectedMovie.current_episode && (
+                            <span className="badge-tag badge-tag--ep">
+                              {selectedMovie.current_episode}
+                            </span>
+                          )}
+                          {selectedMovie.year &&
+                            selectedMovie.year !== "N/A" && (
+                              <span className="badge-tag badge-tag--year">
+                                {selectedMovie.year}
+                              </span>
+                            )}
                         </div>
-                      )}
-
-                      {/* Chọn Tập phim */}
-                      {movieEpisodes.length > 0 ? (
-                        <div className="episode-selector-group">
-                          <label><FaListOl /> Chọn tập bắt đầu xem chung ({movieEpisodes.length} tập):</label>
-                          <div className="episode-chips-grid custom-scroll">
-                            {movieEpisodes.map((ep, idx) => (
-                              <button
-                                key={idx}
-                                type="button"
-                                className={`episode-chip ${selectedEpisode?.slug === ep.slug ? "active" : ""}`}
-                                onClick={() => handleSelectEpisode(ep)}
-                              >
-                                {selectedEpisode?.slug === ep.slug && <FaCheck className="ep-check-icon" />}
-                                {ep.name || `Tập ${idx + 1}`}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="no-episodes-warning">
-                          Phim này chưa có nguồn M3U8 từ KK hoặc NC để đồng bộ thời gian.
-                        </div>
-                      )}
-                    </>
+                        <button
+                          type="button"
+                          className="btn-change-movie"
+                          onClick={() => {
+                            setSelectedMovie(null);
+                            setMovieServers([]);
+                            setMovieEpisodes([]);
+                            setSelectedEpisode(null);
+                            setFormVideoUrl("");
+                          }}
+                        >
+                          <FaTimes /> Đổi phim khác
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
-              )}
 
-              {/* 3. Tên phòng xem */}
-              <div className="form-group">
-                <label>Tên phòng xem:</label>
-                <input
-                  type="text"
-                  placeholder="Ví dụ: Phòng xem phim cuối tuần của Tuấn"
-                  value={formRoomName}
-                  onChange={(e) => setFormRoomName(e.target.value)}
-                />
-              </div>
+                {/* 2. Tự động hiển thị Server & Tập phim (User chỉ việc click chọn) */}
+                {selectedMovie && (
+                  <div className="movie-episodes-selection">
+                    {isLoadingDetail ? (
+                      <div className="loading-episodes">
+                        <div
+                          className="spinner-border spinner-border-sm text-info"
+                          role="status"
+                        />
+                        <span>Đang nạp danh sách tập & server...</span>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Chọn Server nếu có nhiều hơn 1 server */}
+                        {movieServers.length > 1 && (
+                          <div className="server-selector-group">
+                            <label>
+                              <FaServer /> Nguồn / Server ({movieServers.length}
+                              ):
+                            </label>
+                            <div className="server-pills-row">
+                              {movieServers.map((srv, idx) => (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  className={`server-chip ${idx === selectedServerIdx ? "active" : ""}`}
+                                  onClick={() => handleSelectServer(idx)}
+                                >
+                                  {srv.display_name ||
+                                    srv.server_name ||
+                                    `Server ${idx + 1}`}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
-              <div className="modal-footer">
-                <button type="button" className="btn-cancel" onClick={() => setShowCreateModal(false)}>
-                  Hủy
-                </button>
-                <button
-                  type="submit"
-                  className="btn-submit-create"
-                  disabled={isSubmitting || (!selectedMovie && !formVideoUrl)}
-                >
-                  {isSubmitting ? "Đang tạo phòng..." : "Khởi tạo & Vào phòng ngay"}
-                </button>
-              </div>
-            </form>
+                        {/* Chọn Tập phim */}
+                        {movieEpisodes.length > 0 ? (
+                          <div className="episode-selector-group">
+                            <label>
+                              <FaListOl /> Chọn tập bắt đầu xem chung (
+                              {movieEpisodes.length} tập):
+                            </label>
+                            <div className="episode-chips-grid custom-scroll">
+                              {movieEpisodes.map((ep, idx) => (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  className={`episode-chip ${selectedEpisode?.slug === ep.slug ? "active" : ""}`}
+                                  onClick={() => handleSelectEpisode(ep)}
+                                >
+                                  {selectedEpisode?.slug === ep.slug && (
+                                    <FaCheck className="ep-check-icon" />
+                                  )}
+                                  {ep.name || `Tập ${idx + 1}`}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="no-episodes-warning">
+                            Phim này chưa có nguồn M3U8 từ KK hoặc NC để đồng bộ
+                            thời gian.
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* 3. Tên phòng xem */}
+                <div className="form-group">
+                  <label>Tên phòng xem:</label>
+                  <input
+                    type="text"
+                    placeholder="Ví dụ: Phòng xem phim cuối tuần của Tuấn"
+                    value={formRoomName}
+                    onChange={(e) => setFormRoomName(e.target.value)}
+                  />
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => setShowCreateModal(false)}
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn-submit-create"
+                    disabled={isSubmitting || (!selectedMovie && !formVideoUrl)}
+                  >
+                    {isSubmitting
+                      ? "Đang tạo phòng..."
+                      : "Khởi tạo & Vào phòng ngay"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

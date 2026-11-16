@@ -56,7 +56,7 @@ function Home() {
         />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
+        <meta property="og:url" content="https://tecede.netlify.app/" />
 
         {/* nếu có logo thì thêm */}
         <meta property="og:image" content="../../../public/home-image.png" />
