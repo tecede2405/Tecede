@@ -372,7 +372,7 @@ export default function useMusicPlayer(initialSongs) {
     const listToUse = optionalPlaylist || stateRef.current.playlist;
     if (listToUse.length === 0 || index === null) return;
     const song = listToUse[index];
-    const songId = song?.id || song?._id;
+    const songId = song?.song_id || song?._id || song?.id;
     if (!songId) return;
 
     // Cấp quyền AudioSession playback cho iOS Safari (vượt qua công tắc gạt rung/im lặng của iPhone)
@@ -492,7 +492,18 @@ export default function useMusicPlayer(initialSongs) {
       }
     });
 
-    fetch(`${baseUrl}/api/songs/${songId}/listen`, { method: "PUT" }).catch(()=>{});
+    let authToken = "";
+    try {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) authToken = JSON.parse(savedUser)?.token || "";
+    } catch (e) {}
+
+    fetch(`${baseUrl}/api/songs/${songId}/listen`, {
+      method: "PUT",
+      headers: {
+        ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      },
+    }).catch(() => {});
     
     setCurrentPlaylist((prev) => {
       const baseList = optionalPlaylist || prev;

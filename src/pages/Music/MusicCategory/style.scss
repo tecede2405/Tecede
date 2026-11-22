@@ -2659,3 +2659,23 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* ======================================================== */
+/* PLAYLIST EXTENSIONS: MOBILE BUTTONS */
+/* ======================================================== */
+.tc-mc-btn-mobile-row {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s;
+
+  &:hover, &:active {
+    color: #c084fc;
+  }
+}

@@ -4,6 +4,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import Tabbar from "../../../component/tabar/index";
 import { musicData } from "../../../component/HomeMusic/index";
 import { useMusic } from "../../../context/MusicContext";
+import { useAuth } from "../../../context/AuthContext";
+import PlaylistModal from "../../../component/PlaylistModal/index";
+import {
+  getPlaylistDetail,
+  removeSongFromPlaylist,
+} from "../../../services/playlistApi";
+import Swal from "sweetalert2";
 import {
   FaStepBackward,
   FaStepForward,
@@ -34,6 +41,9 @@ import {
   FaFacebook,
   FaExclamationTriangle,
   FaServer,
+  FaTrash,
+  FaFolderOpen,
+  FaMusic,
 } from "react-icons/fa";
 import Loading from "../../../component/LoadingScreen/index";
 import "./style.scss";
@@ -130,16 +140,23 @@ const getOptimizedAlbumArt = (url) => {
   return optimized;
 };
 
-function MusicCategory() {
-  const { categorySlug } = useParams();
+function MusicCategory({ isPlaylistView = false }) {
+  const { categorySlug, playlistId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const currentInfo = CATEGORY_CONFIG[categorySlug] || {
-    dbType: categorySlug,
-    title: "Danh sách phát",
-    desc: "Cập nhật hôm nay",
-    img: "https://i.ibb.co/YBKJGt8X/z6731791091720-ce92821376e7f43bbbf76879ac9f07e3.webp",
-  };
+  const isPlaylistSlug = Boolean(
+    categorySlug && categorySlug.startsWith("playlist-")
+  );
+  const actualPlaylistId =
+    playlistId ||
+    (isPlaylistSlug ? categorySlug.replace("playlist-", "") : null);
+  const isPlaylist = Boolean(actualPlaylistId || isPlaylistView);
+
+  const [playlistDetail, setPlaylistDetail] = useState(null);
+  const [emptyPlaylist, setEmptyPlaylist] = useState(false);
+  const [isPlaylistModalOpen, setIsPlaylistModalOpen] = useState(false);
+  const [songForPlaylist, setSongForPlaylist] = useState(null);
 
   const {
     playlist,
@@ -174,6 +191,60 @@ function MusicCategory() {
     setIsMiniPlayerVisible,
   } = useMusic();
 
+  // Chuẩn hóa redirect nếu URL có dạng /music/playlist-123 sang /music/playlist/123
+  useEffect(() => {
+    if (isPlaylistSlug && actualPlaylistId) {
+      navigate(`/music/playlist/${actualPlaylistId}`, { replace: true });
+    }
+  }, [isPlaylistSlug, actualPlaylistId, navigate]);
+
+  // Kiểm tra xem playlist hiện tại có đang được lưu trong Context không (khi vừa ở trang chủ quay lại)
+  const isSamePlaylistInContext =
+    isPlaylist &&
+    currentCategory &&
+    (String(currentCategory.playlistId) === String(actualPlaylistId) ||
+      currentCategory.slug === `playlist/${actualPlaylistId}` ||
+      currentCategory.slug === `playlist-${actualPlaylistId}` ||
+      currentCategory.dbType === `playlist-${actualPlaylistId}`);
+
+  // Xác định ảnh bìa chuẩn xác:
+  // 1. Thumbnail của playlist từ backend
+  // 2. Thumbnail từ context nếu đang phát / đã tải đúng playlist này
+  // 3. Ảnh bài hát đầu tiên trong playlist nếu có bài hát
+  // 4. Ảnh bìa playlist mặc định (Mood)
+  const playlistImg =
+    playlistDetail?.thumbnail ||
+    (isSamePlaylistInContext ? currentCategory?.img : null) ||
+    (playlist && playlist.length > 0 ? playlist[0]?.image : null) ||
+    "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp";
+
+  const playlistTitle =
+    playlistDetail?.name ||
+    (isSamePlaylistInContext ? currentCategory?.title : null) ||
+    "Danh sách phát";
+
+  const playlistDesc =
+    playlistDetail?.description ||
+    (playlistDetail?.song_count
+      ? `${playlistDetail.song_count} bài hát`
+      : playlist && playlist.length > 0
+      ? `${playlist.length} bài hát`
+      : "Danh sách bài hát yêu thích");
+
+  const currentInfo = isPlaylist
+    ? {
+        dbType: `playlist-${actualPlaylistId}`,
+        title: playlistTitle,
+        desc: playlistDesc,
+        img: playlistImg,
+      }
+    : CATEGORY_CONFIG[categorySlug] || {
+        dbType: categorySlug,
+        title: "Danh sách bài hát",
+        desc: "Cập nhật hôm nay",
+        img: "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp",
+      };
+
   // Khi người dùng vào lại trang nhạc, tự động bật lại trạng thái hiển thị mini player
   useEffect(() => {
     setIsMiniPlayerVisible(true);
@@ -200,6 +271,88 @@ function MusicCategory() {
   const splitLyricsRef = useRef(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const scTabRef = useRef(null);
+
+  const DarkSwal = Swal.mixin({
+    background: "#1f1f1f",
+    color: "#fff",
+    confirmButtonColor: "#9b4de0",
+    cancelButtonColor: "#444",
+    customClass: {
+      popup: "swal-dark",
+      title: "swal-title",
+      htmlContainer: "swal-text",
+      confirmButton: "swal-confirm",
+    },
+  });
+
+  const handleHeartClick = (song, e) => {
+    e?.stopPropagation?.();
+    if (!user?.token) {
+      DarkSwal.fire({
+        title: "Yêu cầu đăng nhập",
+        text: "Vui lòng đăng nhập để lưu bài hát vào danh sách phát!",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Đăng nhập ngay",
+        cancelButtonText: "Đóng",
+      }).then((res) => {
+        if (res.isConfirmed) navigate("/login");
+      });
+      return;
+    }
+    setSongForPlaylist(song);
+    setIsPlaylistModalOpen(true);
+  };
+
+  const handleRemoveSong = (songToRemove) => {
+    DarkSwal.fire({
+      title: "Xóa bài hát?",
+      text: `Bạn có chắc muốn xóa bài hát "${songToRemove.title}" khỏi danh sách phát này?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#444",
+      confirmButtonText: "Xóa bài hát",
+      cancelButtonText: "Hủy",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const songIdToRemove =
+            songToRemove.song_id || songToRemove._id || songToRemove.id;
+          const res = await removeSongFromPlaylist(
+            user?.token,
+            actualPlaylistId,
+            songIdToRemove
+          );
+          if (res?.success) {
+            DarkSwal.fire({
+              icon: "success",
+              title: "Đã xóa khỏi playlist!",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+            const remaining = playlist.filter(
+              (s) =>
+                String(s.song_id || s._id || s.id) !== String(songIdToRemove)
+            );
+            updatePlaylist(remaining);
+            if (remaining.length === 0) {
+              setEmptyPlaylist(true);
+            }
+          } else {
+            DarkSwal.fire({
+              icon: "error",
+              title: "Lỗi",
+              text: res?.message || "Không thể xóa bài hát.",
+            });
+          }
+        } catch (err) {
+          console.error("Lỗi xóa bài hát:", err);
+        }
+      }
+    });
+  };
+
   const [isMobileScreen, setIsMobileScreen] = useState(
     () => typeof window !== "undefined" && window.innerWidth <= 768,
   );
@@ -366,7 +519,117 @@ function MusicCategory() {
     categoryStateRef.current = { currentCategory, playlist };
   }, [currentCategory, playlist]);
 
+  const lastRetryKeyRef = useRef(retryKey);
+
+  // EFFECT TẢI DỮ LIỆU PLAYLIST NẾU ĐANG Ở CHẾ ĐỘ PLAYLIST
   useEffect(() => {
+    if (!isPlaylist || !actualPlaylistId) return;
+
+    const { currentCategory: cat, playlist: pl } = categoryStateRef.current;
+    const isSamePl =
+      cat &&
+      (String(cat.playlistId) === String(actualPlaylistId) ||
+        cat.slug === `playlist/${actualPlaylistId}` ||
+        cat.slug === `playlist-${actualPlaylistId}` ||
+        cat.dbType === `playlist-${actualPlaylistId}`);
+
+    const isRetry = lastRetryKeyRef.current !== retryKey;
+    lastRetryKeyRef.current = retryKey;
+
+    // Nếu playlist này đã có sẵn trong Context (đang nghe dở hoặc vừa ở trang chủ quay lại)
+    // và người dùng không ấn "Thử tải lại", giữ nguyên 100% bài hát đang phát, thanh controls và danh sách
+    if (!isRetry && isSamePl && Array.isArray(pl) && pl.length > 0) {
+      setLoading(false);
+      setPlaylistDetail({
+        id: actualPlaylistId,
+        name: cat.title,
+        thumbnail: cat.img,
+        song_count: pl.length,
+      });
+      setServerError(false);
+      return;
+    }
+
+    let isMounted = true;
+    setLoading(true);
+
+    setServerError(false);
+    setEmptyPlaylist(false);
+
+    const token =
+      user?.token ||
+      (typeof localStorage !== "undefined" && localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user"))?.token
+        : null);
+
+    if (!token) {
+      setLoading(false);
+      setServerError(false);
+      return;
+    }
+
+    getPlaylistDetail(token, actualPlaylistId)
+      .then((res) => {
+        if (!isMounted) return;
+        if (res?.success && res?.data) {
+          const { playlist: plData, songs } = res.data;
+          setPlaylistDetail(plData);
+          const rawSongs = Array.isArray(songs) ? songs : [];
+          if (rawSongs.length === 0) {
+            updatePlaylist([]);
+            setEmptyPlaylist(true);
+            setLoading(false);
+            return;
+          }
+          const formatted = rawSongs.map((s) => ({
+            ...s,
+            id: s.song_id || s._id || s.id,
+            _id: s.song_id || s._id || s.id,
+            playlist_item_id: s.id,
+            song_id: s.song_id || s._id || s.id,
+            listens: s.listens !== undefined ? s.listens : 0,
+          }));
+          updatePlaylist(formatted);
+          setCurrentCategory({
+            slug: `playlist/${actualPlaylistId}`,
+            playlistId: actualPlaylistId,
+            isPlaylist: true,
+            dbType: `playlist-${actualPlaylistId}`,
+            title: plData.name,
+            img:
+              plData.thumbnail ||
+              formatted[0]?.image ||
+              "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp",
+          });
+          setServerError(false);
+        } else {
+          setServerError(true);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        console.error("Lỗi lấy chi tiết playlist:", err);
+        setServerError(true);
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [
+    isPlaylist,
+    actualPlaylistId,
+    retryKey,
+    user?.token,
+    updatePlaylist,
+    setCurrentCategory,
+  ]);
+
+  // EFFECT TẢI DỮ LIỆU THỂ LOẠI NHẠC MẶC ĐỊNH
+  useEffect(() => {
+    if (isPlaylist) return;
+
     const { currentCategory: cat, playlist: pl } = categoryStateRef.current;
     if (cat?.slug === categorySlug && Array.isArray(pl) && pl.length > 0) {
       setLoading(false);
@@ -382,7 +645,7 @@ function MusicCategory() {
     const catTitle = CATEGORY_CONFIG[categorySlug]?.title || "Danh sách phát";
     const catImg =
       CATEGORY_CONFIG[categorySlug]?.img ||
-      "https://i.ibb.co/YBKJGt8X/z6731791091720-ce92821376e7f43bbbf76879ac9f07e3.webp";
+      "https://i.ibb.co/tpQF1yq5/85ea2a41bcba853ca1656f17b54d6a71.webp";
 
     const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
     const controller = new AbortController();
@@ -429,7 +692,7 @@ function MusicCategory() {
       clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [categorySlug, retryKey, updatePlaylist, setCurrentCategory]);
+  }, [isPlaylist, categorySlug, retryKey, updatePlaylist, setCurrentCategory]);
 
   const handleSeek = (e) => {
     const newTime = Number(e.target.value);
@@ -902,6 +1165,37 @@ function MusicCategory() {
             <div className="music-loading-wrapper">
               <Loading />
             </div>
+          ) : emptyPlaylist ? (
+            <div className="music-server-error-wrapper">
+              <div className="music-server-error-card">
+                <div className="error-icon-circle">
+                  <FaFolderOpen className="server-main-icon" />
+                </div>
+
+                <h2 className="error-title">
+                  Danh sách phát đang trống
+                </h2>
+
+                <p className="error-message">
+                  Playlist "{currentInfo.title}" chưa có bài hát nào. Bạn có thể thêm bài hát yêu thích bằng cách nhấn vào biểu tượng Trái tim hoặc Dấu 3 chấm ở các bài hát.
+                </p>
+
+                <div className="error-actions d-flex gap-2 justify-content-center">
+                  <button
+                    onClick={() => navigate("/music/playlist")}
+                    className="btn-retry-fetch"
+                  >
+                    ← Về danh sách phát
+                  </button>
+                  <button
+                    onClick={() => navigate("/music/nhac-tre")}
+                    className="btn-fanpage-contact"
+                  >
+                    <FaMusic className="me-2" /> Khám phá bài hát
+                  </button>
+                </div>
+              </div>
+            </div>
           ) : serverError || !playlist || playlist.length === 0 ? (
             <div className="music-server-error-wrapper">
               <div className="music-server-error-card">
@@ -996,10 +1290,32 @@ function MusicCategory() {
                         >
                           <FaRandom className="me-2" /> Phát ngẫu nhiên
                         </button>
-                        <button className="action-icon-btn">
+                        <button
+                          className="action-icon-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (playlist[currentIndex]) {
+                              handleHeartClick(playlist[currentIndex], e);
+                            } else if (playlist.length > 0) {
+                              handleHeartClick(playlist[0], e);
+                            }
+                          }}
+                          title="Lưu bài hát vào playlist"
+                        >
                           <FaRegHeart />
                         </button>
-                        <button className="action-icon-btn">
+                        <button
+                          className="action-icon-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (playlist[currentIndex]) {
+                              handleHeartClick(playlist[currentIndex], e);
+                            } else if (playlist.length > 0) {
+                              handleHeartClick(playlist[0], e);
+                            }
+                          }}
+                          title="Thêm bài hát vào playlist"
+                        >
                           <FaEllipsisV />
                         </button>
                       </div>
@@ -1106,17 +1422,42 @@ function MusicCategory() {
                                         </div>
                                       </div>
                                       <div
-                                        className="d-md-none text-truncate mt-1"
+                                        className="d-md-none d-flex align-items-center justify-content-between mt-1"
                                         style={{
                                           fontSize: "11px",
                                           color: "#a0a0ab",
                                         }}
                                       >
-                                        {song.artist} •{" "}
-                                        {song.listens
-                                          ? song.listens.toLocaleString()
-                                          : "0"}{" "}
-                                        lượt nghe
+                                        <div className="text-truncate">
+                                          {song.artist} •{" "}
+                                          {song.listens
+                                            ? song.listens.toLocaleString()
+                                            : "0"}{" "}
+                                          lượt nghe
+                                        </div>
+                                        <div className="d-flex align-items-center gap-2 flex-shrink-0 ms-2">
+                                          <button
+                                            type="button"
+                                            className="tc-mc-btn-mobile-row"
+                                            onClick={(e) => handleHeartClick(song, e)}
+                                            title="Thêm vào playlist"
+                                          >
+                                            <FaRegHeart />
+                                          </button>
+                                          {isPlaylist && (
+                                            <button
+                                              type="button"
+                                              className="tc-mc-btn-mobile-row text-danger"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRemoveSong(song);
+                                              }}
+                                              title="Xóa khỏi playlist"
+                                            >
+                                              <FaTrash />
+                                            </button>
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -1130,15 +1471,34 @@ function MusicCategory() {
                                   </div>
                                 </td>
                                 <td className="td-time text-center">
-                                  <div className="d-flex align-items-center justify-content-center gap-3">
-                                    <FaRegHeart className="row-action-icon heart-icon d-none d-md-block" />
+                                  <div className="d-flex align-items-center justify-content-center gap-3 position-relative">
+                                    <FaRegHeart
+                                      className="row-action-icon heart-icon d-none d-md-block"
+                                      onClick={(e) => handleHeartClick(song, e)}
+                                      title="Thêm vào danh sách phát"
+                                    />
                                     <span className="d-flex justify-content-center align-items-center gap-2">
                                       <FaPlay style={{ fontSize: "10px" }} />
                                       {song.listens
                                         ? song.listens.toLocaleString()
                                         : "0"}
                                     </span>
-                                    <FaEllipsisV className="row-action-icon ms-2 d-none d-md-block" />
+                                    {isPlaylist ? (
+                                      <FaTrash
+                                        className="row-action-icon ms-2 d-none d-md-block text-danger"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleRemoveSong(song);
+                                        }}
+                                        title="Xóa khỏi playlist này"
+                                      />
+                                    ) : (
+                                      <FaEllipsisV
+                                        className="row-action-icon ms-2 d-none d-md-block"
+                                        onClick={(e) => handleHeartClick(song, e)}
+                                        title="Thêm vào danh sách phát"
+                                      />
+                                    )}
                                   </div>
                                 </td>
                               </tr>
@@ -2241,6 +2601,17 @@ function MusicCategory() {
           <FaChevronUp size={18} />
         </button>
       )}
+
+      {/* PLAYLIST MODAL THÊM BÀI HÁT / TẠO PLAYLIST */}
+      <PlaylistModal
+        isOpen={isPlaylistModalOpen}
+        onClose={() => {
+          setIsPlaylistModalOpen(false);
+          setSongForPlaylist(null);
+        }}
+        songToAdd={songForPlaylist}
+        userToken={user?.token}
+      />
     </div>
   );
 }

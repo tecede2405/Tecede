@@ -163,6 +163,15 @@ function Tabbar({ isOpen, onClose }) {
             <ul className="tab-child">
               <li>
                 <NavLink
+                  to="/music/playlist"
+                  className="tab-link"
+                  onClick={handleLinkClick}
+                >
+                  Danh sách phát
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/music/nhac-tre"
                   className="tab-link"
                   onClick={handleLinkClick}

@@ -29,13 +29,15 @@ export default function MiniFloatingPlayer() {
   const currentSong = playlist && currentIndex !== null ? playlist[currentIndex] : null;
 
   // Tự động đóng drawer nếu chuyển sang trang nhạc hoặc youtube
-  const isMusicPage = location.pathname.startsWith("/music");
+  const isMusicDetailPage =
+    location.pathname.startsWith("/music") &&
+    location.pathname !== "/music/playlist";
   const isYouTubePage = location.pathname.startsWith("/tecede-yt");
   useEffect(() => {
-    if (isMusicPage || isYouTubePage) {
+    if (isMusicDetailPage || isYouTubePage) {
       setShowDrawer(false);
     }
-  }, [isMusicPage, isYouTubePage]);
+  }, [isMusicDetailPage, isYouTubePage]);
 
   // Cuộn đến bài hát đang phát trong drawer
   useEffect(() => {
@@ -51,13 +53,25 @@ export default function MiniFloatingPlayer() {
 
   // Ẩn khi:
   // 1. Không có bài hát nào đang phát/chọn
-  // 2. Đang ở trong trang phát nhạc /music/... hoặc YouTube Không Quảng Cáo
+  // 2. Đang ở trong trang phát nhạc chi tiết (/music/nhac-tre, /music/playlist/:id...) hoặc YouTube Không Quảng Cáo
   // 3. Người dùng chủ động ấn nút đóng (x)
-  if (!currentSong || isMusicPage || isYouTubePage || !isMiniPlayerVisible) {
+  if (!currentSong || isMusicDetailPage || isYouTubePage || !isMiniPlayerVisible) {
     return null;
   }
 
   const handleOpenMusicPage = () => {
+    if (
+      currentCategory?.isPlaylist ||
+      currentCategory?.playlistId ||
+      currentCategory?.slug?.startsWith("playlist-") ||
+      currentCategory?.slug?.startsWith("playlist/")
+    ) {
+      const plId =
+        currentCategory.playlistId ||
+        currentCategory.slug.replace("playlist-", "").replace("playlist/", "");
+      navigate(`/music/playlist/${plId}`);
+      return;
+    }
     const slug = currentCategory?.slug || "nhac-tre";
     navigate(`/music/${slug}`);
   };

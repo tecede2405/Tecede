@@ -1,0 +1,423 @@
+// src/component/PlaylistModal/style.scss
+
+.tc-plm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: tcPlmFadeIn 0.2s ease-out;
+}
+
+@keyframes tcPlmFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tc-plm-dialog {
+  background: linear-gradient(145deg, #1f1d2b, #171520);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(155, 77, 224, 0.15);
+  overflow: hidden;
+  animation: tcPlmScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #fff;
+  position: relative;
+  z-index: 100000;
+}
+
+@keyframes tcPlmScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.tc-plm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  .tc-plm-header-icon {
+    color: #c084fc;
+    font-size: 18px;
+  }
+
+  .tc-plm-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.2px;
+  }
+
+  .tc-plm-btn-close {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+  }
+}
+
+.tc-plm-song-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  .tc-plm-song-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .tc-plm-song-info {
+    overflow: hidden;
+    flex: 1;
+
+    .tc-plm-song-badge {
+      font-size: 10px;
+      color: #c084fc;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .tc-plm-song-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tc-plm-song-artist {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.tc-plm-body {
+  padding: 20px;
+  max-height: 420px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+  }
+}
+
+.tc-plm-loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+
+  .tc-plm-spinning-icon {
+    font-size: 24px;
+    color: #c084fc;
+    animation: tcPlmSpin 1s linear infinite;
+  }
+}
+
+.tc-plm-first-notice {
+  background: rgba(192, 132, 252, 0.1);
+  border: 1px dashed rgba(192, 132, 252, 0.4);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  color: #e9d5ff;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.tc-plm-form {
+  .tc-plm-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 6px;
+  }
+
+  .tc-plm-input,
+  .tc-plm-textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    color: #fff;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    transition: all 0.2s;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #c084fc;
+      box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.2);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 12.5px;
+    }
+  }
+
+  .tc-plm-textarea {
+    resize: vertical;
+  }
+
+  .tc-plm-btn-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+  }
+
+  .tc-plm-btn-submit {
+    background: linear-gradient(135deg, #9b4de0, #7928ca);
+    border: none;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(155, 77, 224, 0.3);
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(155, 77, 224, 0.45);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.tc-plm-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .tc-plm-btn-create-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    background: rgba(192, 132, 252, 0.08);
+    border: 1px dashed rgba(192, 132, 252, 0.4);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: #e9d5ff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    .tc-plm-plus-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(192, 132, 252, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c084fc;
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+
+    &:hover {
+      background: rgba(192, 132, 252, 0.16);
+      border-color: #c084fc;
+
+      .tc-plm-plus-circle {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .tc-plm-picker-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 4px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+  }
+
+  .tc-plm-picker-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(192, 132, 252, 0.3);
+      transform: translateX(3px);
+
+      .tc-plm-btn-add-circle {
+        background: #9b4de0;
+        color: #fff;
+        border-color: #9b4de0;
+      }
+    }
+
+    &.is-adding {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .tc-plm-item-thumb-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(0, 0, 0, 0.4);
+
+      .tc-plm-item-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .tc-plm-item-thumb-fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 16px;
+        background: linear-gradient(135deg, #2a2438, #181524);
+      }
+    }
+
+    .tc-plm-item-details {
+      flex: 1;
+      overflow: hidden;
+
+      .tc-plm-item-title {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tc-plm-item-meta {
+        font-size: 11.5px;
+        color: rgba(255, 255, 255, 0.55);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+      }
+    }
+
+    .tc-plm-btn-add-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      transition: all 0.2s;
+    }
+  }
+}
+
+@keyframes tcPlmSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

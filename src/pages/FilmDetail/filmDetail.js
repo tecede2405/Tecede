@@ -448,6 +448,12 @@ export default function MovieDetail() {
                   {movie.lang || "Vietsub"}
                 </span>
 
+                {movie.time && movie.time !== "Đang cập nhật" && (
+                  <span className="db-tag-pill tag-time">
+                    {movie.time}
+                  </span>
+                )}
+
                 {statusText && statusText !== "Đang cập nhật" && (
                   <span className="db-tag-pill tag-episode">
                     Trạng thái: {statusText}

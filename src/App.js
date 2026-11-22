@@ -13,6 +13,7 @@ import ScrollToTop from "./component/ScrollToTop/index";
 
 // Music pages
 import MusicCategory  from "./pages/Music/MusicCategory/index";
+import PlaylistList from "./pages/Music/PlaylistList/index";
 // Admin
 import AddSongs from "./component/AddSongs/index";
 import ManageSongs from "./component/ManageSongs/index";
@@ -155,7 +156,9 @@ function App() {
                   <Route path="/history" element={<HistoryFilm />} />
                   <Route path="/yeu-thich" element={<FavoritesPage />} />
                   {/* Music */}
-                  <Route path="music/:categorySlug" element={<MusicCategory />} />
+                  <Route path="/music/playlist" element={<PlaylistList />} />
+                  <Route path="/music/playlist/:playlistId" element={<MusicCategory isPlaylistView={true} />} />
+                  <Route path="/music/:categorySlug" element={<MusicCategory />} />
                   <Route path="/404" element={<NotFound />} />
                   {/* Sell Gemini Pro */}
                   <Route path="/ban-gemini-pro" element={<SellGeminiPro />} />
