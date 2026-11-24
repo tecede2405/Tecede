@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { GoChevronLeft } from "react-icons/go";
+import { FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 import { useMovies } from "../../context/MoviesContext";
 import "./style.scss";
 
@@ -227,51 +229,61 @@ export default function FilmListByType() {
       </div>
       {/* GRID */}
       {loading ? (
-        <div className="film-grid">
+        <div className="filter-film-grid">
           {Array.from({ length: 18 }).map((_, idx) => (
-            <div key={idx} className="film-card film-card--skeleton">
-              <div className="film-poster-wrapper">
-                <div className="skeleton-badge" />
-                <div className="film-overlay">
-                  <div className="skeleton-title-line" />
-                  <div className="skeleton-title-line skeleton-title-line--short" />
-                </div>
-              </div>
+            <div key={idx} className="filter-film-card skeleton">
+              <div className="filter-poster-skeleton" />
             </div>
           ))}
         </div>
       ) : (
         <>
-          <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
+          <div className={`filter-film-grid ${hoverFilm ? "disable-hover" : ""}`}>
             {displayedFilms.map((film) => (
               <Link
                 to={`/chi-tiet/${film.path}`}
                 key={film.path}
-                className="film-card"
+                className="filter-film-card"
                 onMouseEnter={() => handleMouseEnter(film)}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="film-poster-wrapper">
+                <div className="filter-poster-wrapper">
                   <img
                     src={film.image || film.thumb || ""}
                     alt={film.title}
                     loading="lazy"
-                    className="film-poster"
-                    onLoad={(e) => {
-                      e.currentTarget.parentElement?.classList.add("is-loaded");
-                    }}
+                    className="filter-poster-img"
                     onError={(e) => {
-                      e.currentTarget.parentElement?.classList.add("is-loaded");
                       e.currentTarget.src = "https://placehold.co/300x450/141824/ffffff?text=Tecede";
                     }}
                   />
 
-                  <span className="film-episodes">
-                    {film.time || film.episode_current}
-                  </span>
+                  {/* Episode / Time badge */}
+                  {(film.time || film.episode_current) && (
+                    <span className="filter-episode-badge">
+                      <FaLayerGroup className="filter-episode-icon" />
+                      <span>{film.time || film.episode_current}</span>
+                    </span>
+                  )}
 
-                  <div className="film-overlay">
-                    <h6 className="film-name">{film.title}</h6>
+                  {/* Lang badge */}
+                  {film.lang && (
+                    <span className="filter-lang-badge no-quality">
+                      <FaClosedCaptioning className="filter-lang-icon" />
+                      <span>{formatLangBadge(film.lang)}</span>
+                    </span>
+                  )}
+
+                  {/* Overlay info */}
+                  <div className="filter-poster-overlay">
+                    <h6 className="filter-film-name">{film.title}</h6>
+                    {film.origin_name && (
+                      <div className="filter-film-meta">
+                        <span className="filter-film-origin">
+                          {film.origin_name}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Link>
@@ -297,6 +309,9 @@ export default function FilmListByType() {
                 {/* LEFT */}
                 <div className="preview-left">
                   <h5 className="preview-name">{hoverFilm.title}</h5>
+                  {hoverFilm.origin_name && (
+                    <div className="preview-origin">{hoverFilm.origin_name}</div>
+                  )}
 
                   {/* META (chỉ có gì dùng đó) */}
                   <div className="preview-meta">
@@ -305,6 +320,9 @@ export default function FilmListByType() {
                     )}
                     {hoverFilm.episode_current && (
                       <span className="preview-tag">{hoverFilm.episode_current}</span>
+                    )}
+                    {hoverFilm.lang && (
+                      <span className="preview-tag">{hoverFilm.lang}</span>
                     )}
                   </div>
 

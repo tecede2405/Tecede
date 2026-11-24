@@ -8,7 +8,8 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-coverflow";
 import { EffectFade, EffectCoverflow } from "swiper/modules";
 import { useMovies } from "../../context/MoviesContext";
-import { FaPlay, FaInfoCircle, FaFire } from "react-icons/fa"; 
+import { FaPlay, FaInfoCircle, FaLayerGroup, FaClosedCaptioning } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 import "./style.scss";
 
 const MovieRow = () => {
@@ -140,12 +141,14 @@ const MovieRow = () => {
                 <div className="mobile-meta">
                   {activeMovie.episode_current && (
                     <span className="meta-tag episode-tag">
-                      <FaFire className="tag-icon" /> {activeMovie.episode_current}
+                      <FaLayerGroup className="tag-icon" />
+                      <span>{activeMovie.episode_current}</span>
                     </span>
                   )}
                   {activeMovie.lang && (
                     <span className="meta-tag lang-tag">
-                      {activeMovie.lang}
+                      <FaClosedCaptioning className="tag-cc-icon" />
+                      <span>{formatLangBadge(activeMovie.lang)}</span>
                     </span>
                   )}
                   {activeMovie.quality && (

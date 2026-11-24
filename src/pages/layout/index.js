@@ -156,7 +156,7 @@ function Layout() {
             {showTabbar ? <FaTimes /> : <FaBars />}
           </button>
           <img
-            src="https://i.ibb.co/C3PLG9T9/2c06afde0ebca0c687b0d3add5f4b1f2.webp"
+            src="https://i.ibb.co/4gD4Ytw0/logo-gs.webp"
             alt="logo-Page"
             className="header__image"
             onClick={() => navigate("/")}

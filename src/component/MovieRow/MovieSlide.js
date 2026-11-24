@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
-import { FaPlay, FaInfoCircle, FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaPlay, FaInfoCircle, FaHeart, FaRegHeart, FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
 import { useFavoriteToggle } from "../../hooks/useFavorites";
+import { formatLangBadge } from "../../utils/formatLang";
 import "./style.scss";
 
 const MovieSlide = ({ movie }) => {
@@ -20,10 +21,15 @@ const MovieSlide = ({ movie }) => {
 
   function Tag({ text, type }) {
     if (!text) return null;
+    const isLang = type === "lang";
     return (
       <span className={`film-info-tag tag-${type}`}>
-        <span className="tag-dot" />
-        <span className="tag-text">{text}</span>
+        {isLang ? (
+          <FaClosedCaptioning className="tag-cc-icon" />
+        ) : (
+          <FaLayerGroup className="tag-ep-icon" />
+        )}
+        <span className="tag-text">{isLang ? formatLangBadge(text) : text}</span>
       </span>
     );
   }

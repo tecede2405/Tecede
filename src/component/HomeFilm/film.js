@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
 import "animate.css/animate.min.css";
-import { FaFilm } from "react-icons/fa";
+import { FaFilm, FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 import "./style.scss";
 
 function Film() {
@@ -75,11 +76,13 @@ function Film() {
                   />
 
                   <div className="film-card__episode">
-                    {film.episode_current || "?"}
+                    <FaLayerGroup className="film-card__episode-icon" />
+                    <span>{film.episode_current || "?"}</span>
                   </div>
 
                   <div className="film-card__lang">
-                    {film.lang || "Vietsub"}
+                    <FaClosedCaptioning className="film-card__lang-icon" />
+                    <span>{formatLangBadge(film.lang)}</span>
                   </div>
                 </div>
 

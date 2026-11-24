@@ -71,9 +71,9 @@
     }
 
     &__image {
-        width: 150px;
+        width: 175px;
+        margin-left: 5px;
         height: auto;
-        margin-left: 15px;
         cursor: pointer;
     }
 
@@ -182,9 +182,9 @@
     border: none;
     color: #ddd;
     font-size: 25px;
-    font-weight: 400;
+    font-weight: 200;
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 5px;
 }
 
 /* ================= AVATAR TRIGGER & CHEVRON ================= */
@@ -493,7 +493,7 @@
         height: 60px;
         padding: 0 10px;
         &__left { flex-shrink: 0; }
-        &__image { width: 90px; margin-left: 5px; }
+        &__image { width: 120px; }
         &__right { flex: 0 0 auto !important; gap: 6px; }
     }
     .footer-custom { padding: 25px 0 15px; }

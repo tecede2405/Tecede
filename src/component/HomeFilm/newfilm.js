@@ -2,7 +2,8 @@ import FilmCarousel from "../CoverflowCarousel/index";
 import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import { useMovies } from "../../context/MoviesContext";
-import { FaFilm } from "react-icons/fa";
+import { FaFilm, FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 
 function NewFilms() {
   const navigate = useNavigate();
@@ -72,11 +73,13 @@ function NewFilms() {
                   />
 
                   <div className="film-card__episode">
-                    {item.episode_current || "?"}
+                    <FaLayerGroup className="film-card__episode-icon" />
+                    <span>{item.episode_current || "?"}</span>
                   </div>
 
                   <div className="film-card__lang">
-                    {item.lang || "Vietsub"}
+                    <FaClosedCaptioning className="film-card__lang-icon" />
+                    <span>{formatLangBadge(item.lang)}</span>
                   </div>
                 </div>
 

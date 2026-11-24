@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { GoChevronRight } from "react-icons/go";
 import FilmCarousel from "../CoverflowCarousel/index";
 import { useMovies } from "../../context/MoviesContext";
-import { FaFilm } from "react-icons/fa";
+import { FaFilm, FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 
 function KoreaFilms() {
   const navigate = useNavigate();
@@ -71,12 +72,14 @@ function KoreaFilms() {
                 />
 
                 <div className="film-card__episode">
-                  {item.episode_current || "?"}
-                </div>
+                    <FaLayerGroup className="film-card__episode-icon" />
+                    <span>{item.episode_current || "?"}</span>
+                  </div>
 
                 <div className="film-card__lang">
-                  {item.lang || "Vietsub"}
-                </div>
+                    <FaClosedCaptioning className="film-card__lang-icon" />
+                    <span>{formatLangBadge(item.lang)}</span>
+                  </div>
               </div>
 
               <div className="film-card__info">

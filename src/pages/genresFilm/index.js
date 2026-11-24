@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { GoChevronLeft } from "react-icons/go";
+import { FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 import "./style.scss";
 
 export default function FilmListBySlug() {
@@ -43,9 +45,15 @@ export default function FilmListBySlug() {
         const data = await res.json();
 
         if (data.status) {
-          setResults(data.data?.items || []);
-          
+          const rawItems = data.data?.items || [];
           const ogImages = data.data?.seoOnPage?.og_image || [];
+
+          const mappedItems = rawItems.map((item, index) => ({
+            ...item,
+            full_image_path: ogImages[index] || item.poster_url || item.thumb_url,
+          }));
+
+          setResults(mappedItems);
           setImageUrls(ogImages);
 
           // FIX PHÂN TRANG: Tự tính totalPages dựa trên totalItems và totalItemsPerPage
@@ -134,12 +142,18 @@ export default function FilmListBySlug() {
   }, [hoverFilm]);
 
   /* ================= UTILS ================= */
+  const getPoster = (url) => {
+    if (!url || typeof url !== "string") return "";
+    const cleanUrl = url.trim();
+    if (!cleanUrl) return "";
+    if (cleanUrl.startsWith("http")) return cleanUrl;
+    return `https://phimimg.com/${cleanUrl.startsWith("/") ? cleanUrl.slice(1) : cleanUrl}`;
+  };
+
   const getFullImageUrl = (index) => {
     const path = imageUrls[index];
     if (!path) return "";
-    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    
-    // Nối thêm domain phimimg.com vào đầu
+    const cleanPath = path.startsWith("/") ? path.substring(1) : path;
     return `https://phimimg.com/${cleanPath}`;
   };
 
@@ -239,7 +253,7 @@ export default function FilmListBySlug() {
       </h3>
 
       {/* GRID */}
-      <div className={`film-grid ${hoverFilm ? "disable-hover" : ""}`}>
+      <div className={`filter-film-grid ${hoverFilm ? "disable-hover" : ""}`}>
         {results.length === 0 ? (
           <p>Không tìm thấy phim nào trong thể loại này.</p>
         ) : (
@@ -247,31 +261,64 @@ export default function FilmListBySlug() {
             <Link
               to={`/chi-tiet/${film.slug}`}
               key={film.slug}
-              className="film-card"
-              onMouseEnter={enablePreview ? () => handleMouseEnter(film, index) : undefined}
+              className="filter-film-card"
+              onMouseEnter={
+                enablePreview ? () => handleMouseEnter(film, index) : undefined
+              }
               onMouseLeave={enablePreview ? handleMouseLeave : undefined}
             >
-              <div className="film-poster-wrapper">
+              <div className="filter-poster-wrapper">
                 <img
-                  src={getFullImageUrl(index)}
+                  src={getPoster(
+                    film.full_image_path || film.poster_url || film.thumb_url
+                  )}
                   alt={film.name}
                   loading="lazy"
-                  className="film-poster"
+                  className="filter-poster-img"
                 />
 
-                <span className="film-episodes">
-                  {film.episode_total === 1
+                {/* Episode badge */}
+                <span className="filter-episode-badge">
+                      <FaLayerGroup className="filter-episode-icon" />
+                      <span>{film.episode_total === 1
                     ? "Full"
                     : film.episode_current?.includes("Hoàn Tất")
                     ? film.episode_current
                     : film.episode_current && film.episode_total
                     ? `${film.episode_current}/${film.episode_total}`
-                    : film.episode_current || "N/A"}
-                </span>
+                    : film.episode_current || "N/A"}</span>
+                    </span>
 
-                <div className="film-overlay">
-                  <h6 className="film-name">{film.name}</h6>
-                  <span className="film-year">{film.year}</span>
+                {/* Quality badge */}
+                {film.quality && (
+                  <span className="filter-quality-badge">{film.quality}</span>
+                )}
+
+                {/* Lang badge */}
+                {film.lang && (
+                  <span
+                    className={`filter-lang-badge ${
+                      !film.quality ? "no-quality" : ""
+                    }`}
+                  >
+                    <FaClosedCaptioning className="filter-lang-icon" />
+                    <span>{formatLangBadge(film.lang)}</span>
+                  </span>
+                )}
+
+                {/* Overlay info */}
+                <div className="filter-poster-overlay">
+                  <h6 className="filter-film-name">{film.name}</h6>
+                  <div className="filter-film-meta">
+                    {film.year && (
+                      <span className="filter-film-year">{film.year}</span>
+                    )}
+                    {film.origin_name && (
+                      <span className="filter-film-origin">
+                        {film.origin_name}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </Link>
@@ -282,7 +329,7 @@ export default function FilmListBySlug() {
       {renderPagination()}
 
       {/* PREVIEW */}
-      {enablePreview && hoverFilm && hoverFilmIndex !== null && (
+      {enablePreview && hoverFilm && (
         <div className="hover-preview-backdrop">
           <div
             className="hover-preview-card"
@@ -292,7 +339,12 @@ export default function FilmListBySlug() {
             }}
             ref={previewRef}
             style={{
-              backgroundImage: `url(${getFullImageUrl(hoverFilmIndex)})`,
+              backgroundImage: `url(${getPoster(
+                hoverFilm.full_image_path ||
+                  hoverFilm.thumb_url ||
+                  hoverFilm.poster_url ||
+                  getFullImageUrl(hoverFilmIndex)
+              )})`,
             }}
           >
             <div className="preview-info">

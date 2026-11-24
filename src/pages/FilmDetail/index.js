@@ -775,7 +775,9 @@ export default function FilmDetail() {
                       <span key={index} className="badge bg-dark ms-1">{cat.name}</span>
                     ))}
                   </div>
-                  <p className="movie-page__desc mt-3">{movie.content}</p>
+                  <p className="movie-page__desc mt-3">
+                    {movie.content?.replace(/<\/?[^>]+(>|$)/g, "").trim() || "Đang cập nhật nội dung phim..."}
+                  </p>
                 </div>
               </div>
             </div>

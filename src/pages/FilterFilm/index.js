@@ -4,6 +4,8 @@ import { CiSearch } from "react-icons/ci";
 import { GoChevronLeft } from "react-icons/go";
 import { IoFilterSharp } from "react-icons/io5";
 import { MdClear } from "react-icons/md";
+import { FaClosedCaptioning, FaLayerGroup } from "react-icons/fa";
+import { formatLangBadge } from "../../utils/formatLang";
 import Swal from "sweetalert2";
 import "./style.scss";
 
@@ -607,13 +609,14 @@ export default function FilterFilm() {
 
                     {/* Episode badge */}
                     <span className="filter-episode-badge">
-                      {film.episode_total === 1
+                      <FaLayerGroup className="filter-episode-icon" />
+                      <span>{film.episode_total === 1
                         ? "Full"
                         : film.episode_current?.includes("Hoàn Tất")
                         ? film.episode_current
                         : film.episode_current && film.episode_total
                         ? `${film.episode_current}/${film.episode_total}`
-                        : film.episode_current || "N/A"}
+                        : film.episode_current || "N/A"}</span>
                     </span>
 
                     {/* Quality badge */}
@@ -623,7 +626,14 @@ export default function FilterFilm() {
 
                     {/* Lang badge */}
                     {film.lang && (
-                      <span className="filter-lang-badge">{film.lang}</span>
+                      <span
+                        className={`filter-lang-badge ${
+                          !film.quality ? "no-quality" : ""
+                        }`}
+                      >
+                        <FaClosedCaptioning className="filter-lang-icon" />
+                        <span>{formatLangBadge(film.lang)}</span>
+                      </span>
                     )}
 
                     {/* Overlay info */}
