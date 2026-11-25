@@ -16,9 +16,9 @@ import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import "./style.scss";
 
-const TV_CODE = "5196013";
-const SHORT_URL = "https://aftv.news/5196013";
-const DESTINATION_URL = "https://github.com/tecede2405/tecede2405/releases/download/v1.0.3/TecedeTV-V1.0.3.1.apk";
+const TV_CODE = "1406972";
+const SHORT_URL = "https://aftv.news/1406972";
+const DESTINATION_URL = "https://github.com/tecede2405/tecede2405/releases/download/v1.0.3/TecedeTV-V2.0.0.apk";
 const APP_SCREENSHOT = "https://i.ibb.co/WWshyKxG/Anh-chup-man-hinh-2026-07-27-143100.webp";
 
 export default function DownloadAppTV() {
@@ -66,10 +66,10 @@ export default function DownloadAppTV() {
       title: "Tải TecedeTV cho Android TV",
       html: `
         <div style="font-size: 14px; color: #cbd5e1; text-align: left; line-height: 1.6;">
-          <p><strong>Ứng dụng:</strong> TecedeTV</p>
+          <p><strong>Phiên bản:</strong> TecedeTV v2.0.0</p>
           <p><strong>Dung lượng:</strong> ~25 MB</p>
-          <p><strong>Link tải rút gọn:</strong> <code style="color: #38bdf8;">aftv.news/5196013</code></p>
-          <p style="margin-top: 10px; color: #94a3b8; font-size: 13px;">Bạn sẽ được chuyển hướng trực tiếp đến link tải an toàn.</p>
+          <p><strong>Tệp cài đặt:</strong> <code style="color: #38bdf8;">TecedeTV-V2.0.0.apk</code></p>
+          <p style="margin-top: 10px; color: #94a3b8; font-size: 13px;">Bạn sẽ được tải trực tiếp tệp APK cài đặt an toàn.</p>
         </div>
       `,
       icon: "info",
@@ -83,7 +83,7 @@ export default function DownloadAppTV() {
       customClass: { popup: "dark-swal-popup" },
     }).then((res) => {
       if (res.isConfirmed) {
-        window.open(SHORT_URL, "_blank");
+        window.open(DESTINATION_URL, "_blank");
       }
     });
   };
@@ -94,7 +94,7 @@ export default function DownloadAppTV() {
         <title>Tải TecedeTV - Ứng dụng xem phim chuyên biệt cho Android TV & Smart TV</title>
         <meta 
           name="description" 
-          content="Cài đặt TecedeTV trên Android TV qua ứng dụng Downloader với mã 5196013 hoặc tải trực tiếp file APK mượt mà, chất lượng cao, tối ưu Remote." 
+          content="Cài đặt TecedeTV trên Android TV qua ứng dụng Downloader với mã 1406972 hoặc tải trực tiếp file APK mượt mà, chất lượng cao, tối ưu Remote." 
         />
       </Helmet>
 
@@ -245,7 +245,7 @@ export default function DownloadAppTV() {
                 {/* PRIMARY ACTION BUTTON */}
                 <button className="btn-tv-download-main" onClick={handleDownloadClick}>
                   <FaDownload className="btn-icon" />
-                  <span>Tải TecedeTV (aftv.news/{TV_CODE})</span>
+                  <span>Tải TecedeTV APK (v2.0.0)</span>
                 </button>
 
               </div>

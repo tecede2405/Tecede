@@ -749,3 +749,22 @@
     top: 220%;
   }
 }
+
+.badge-tv-update {
+  position: absolute;
+  top: -5px;
+  right: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #dc2626 0%, #f87171 55%, #ffffff 100%);
+  color: #450a0a;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  line-height: 1.1;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseHot 2s infinite;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  z-index: 2;
+}

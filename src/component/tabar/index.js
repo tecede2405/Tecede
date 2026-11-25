@@ -388,6 +388,7 @@ function Tabbar({ isOpen, onClose }) {
                 <FaTv style={{ fontSize: "16px" }} />
                 <span className="tab-label">Tải app Android TV</span>
               </span>
+              <span className="badge-tv-update">Update 25/11/2026</span>
             </NavLink>
           </div>
 
